@@ -1,0 +1,3 @@
+C:/repos/advent-of-code/utils/cmake-build-debug/CMakeFiles/aoc_utils.dir
+C:/repos/advent-of-code/utils/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/repos/advent-of-code/utils/cmake-build-debug/CMakeFiles/rebuild_cache.dir

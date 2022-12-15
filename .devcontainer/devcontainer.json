@@ -1,0 +1,21 @@
+{
+    "name": "C++",
+    "dockerFile": "Dockerfile",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash"
+            },
+            "extensions": [
+                "ms-vscode.cpptools",
+                "ms-vscode.cpptools-themes",
+                "ms-vscode.cmake-tools",
+                "xaver.clang-format",
+                "twxs.cmake"
+            ]
+        }
+    },
+    //"forwardPorts": [],
+    //"postCreateCommand": "",
+    //"remoteUser": "vscode"
+}

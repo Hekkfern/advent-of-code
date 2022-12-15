@@ -1,2 +1,8 @@
-**/.DS_Store
-**/.idea
+# IDEs
+*/.DS_Store
+**/.idea/
+**/.vscode/
+**/.vs/
+
+# Build folders
+**/build/

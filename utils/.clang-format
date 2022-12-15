@@ -1,0 +1,33 @@
+---
+# Language:        Cpp
+BasedOnStyle: WebKit
+NamespaceIndentation: None
+ColumnLimit:     80
+AlignAfterOpenBracket: AlwaysBreak
+BinPackArguments: false
+BinPackParameters: false
+BreakBeforeTernaryOperators: true
+AllowAllParametersOfDeclarationOnNextLine: false
+PenaltyBreakAssignment: 1000
+PenaltyBreakFirstLessLess: 0
+PenaltyReturnTypeOnItsOwnLine: 200
+
+AlignConsecutiveMacros: false
+AllowAllArgumentsOnNextLine: true
+AllowAllConstructorInitializersOnNextLine: true
+AllowShortLambdasOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: Never
+AlwaysBreakTemplateDeclarations: MultiLine
+BreakInheritanceList: BeforeColon
+
+FixNamespaceComments: true
+
+SpaceAfterLogicalNot: false
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeRangeBasedForLoopColon: true
+StatementMacros:
+  - Q_UNUSED
+  - QT_REQUIRE_VERSION
+...
