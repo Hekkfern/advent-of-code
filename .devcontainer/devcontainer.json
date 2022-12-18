@@ -1,6 +1,11 @@
 {
-    "name": "C++",
-    "dockerFile": "Dockerfile",
+    "name": "AdventOfCode C++ Dev Environment",
+    "dockerComposeFile": [
+        "docker-compose.yml"
+    ],
+    "service": "cpp",
+    "workspaceFolder": "/workspace",
+    "shutdownAction": "stopCompose",
     "customizations": {
         "vscode": {
             "settings": {
@@ -14,8 +19,6 @@
                 "twxs.cmake"
             ]
         }
-    },
-    //"forwardPorts": [],
-    //"postCreateCommand": "",
-    //"remoteUser": "vscode"
+    }
+    ,"remoteUser": "developer"
 }
