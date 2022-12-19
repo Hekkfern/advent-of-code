@@ -1,3 +1,0 @@
-C:/repos/advent-of-code/2021/01/aoc_2021_01/cmake-build-debug/CMakeFiles/aoc_2021_01.dir
-C:/repos/advent-of-code/2021/01/aoc_2021_01/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/repos/advent-of-code/2021/01/aoc_2021_01/cmake-build-debug/CMakeFiles/rebuild_cache.dir

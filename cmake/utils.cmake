@@ -53,17 +53,3 @@ macro(set_compiler_flags)
             -Wconversion>
     )
 endmacro()
-
-macro(set_cpp_standard)
-    # C++20 standard
-    set(CMAKE_CXX_STANDARD 20)
-    set(CMAKE_CXX_STANDARD_REQUIRED True)
-    set(CMAKE_CXX_EXTENSIONS OFF)
-endmacro()
-
-macro(set_ccache)
-    find_program(CCACHE_PROGRAM ccache)
-    if(CCACHE_PROGRAM)
-        set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
-    endif()
-endmacro()
