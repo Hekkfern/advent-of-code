@@ -3,10 +3,10 @@ services:
   cpp:
     image: "aoc_cpp"
     build: .
+
     volumes:
-      # Mounts the project folder to '/workspace'. While this file is in .devcontainer,
-      # mounts are relative to the first file in the list, which is a level up.
-      - .:/workspace:cached
+      # Mounts the project folder to '/workspace'
+      - ..:/workspace:cached
 
     # [Optional] Required for ptrace-based debuggers like C++, Go, and Rust
     cap_add:
@@ -16,3 +16,5 @@ services:
 
     # Overrides default command so things don't shut down after the process ends.
     command: /bin/sh -c "while sleep 1000; do :; done"
+
+    user: developer

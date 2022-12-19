@@ -1,2 +1,14 @@
+# Project files
 .github/
 LICENSE
+README.md
+.devcontainer/
+
+# IDEs
+*/.DS_Store
+**/.idea/
+**/.vscode/
+**/.vs/
+
+# Build folders
+**/build/

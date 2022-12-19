@@ -5,7 +5,7 @@
     ],
     "service": "cpp",
     "workspaceFolder": "/workspace",
-    "shutdownAction": "stopCompose",
+    "shutdownAction": "none",
     "customizations": {
         "vscode": {
             "settings": {
@@ -20,5 +20,4 @@
             ]
         }
     }
-    ,"remoteUser": "developer"
 }
