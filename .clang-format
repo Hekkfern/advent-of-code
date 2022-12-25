@@ -2,7 +2,7 @@
 # Language:        Cpp
 BasedOnStyle: WebKit
 NamespaceIndentation: None
-ColumnLimit:     80
+ColumnLimit: 80
 AlignAfterOpenBracket: AlwaysBreak
 BinPackArguments: false
 BinPackParameters: false

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project("aoc_2021_01" LANGUAGES CXX VERSION 1.0.0 DESCRIPTION "AoC 2021 Puzzle 01 solution.")
+project("aoc_2021_01" LANGUAGES CXX VERSION 1.0.0 DESCRIPTION "AoC 2021 Puzzle 01.")
 
 # C++20 standard
 set(CMAKE_CXX_STANDARD 20)
