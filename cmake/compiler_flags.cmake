@@ -1,3 +1,5 @@
+include(CheckCXXCompilerFlag)
+
 macro(set_compiler_flags target_name)
     # setting compiler flags
     target_compile_options(
@@ -44,5 +46,26 @@ macro(set_compiler_flags target_name)
             -pedantic-errors
             -Wextra
             -Wconversion>
+    )
+endmacro()
+
+macro(set_vectorization_flags target_name)
+    check_cxx_compiler_flag("-march=native" _march_native_works)
+    check_cxx_compiler_flag("-xHost" _xhost_works)
+    set(_CXX_FLAGS)
+    if(_march_native_works)
+        message(STATUS "Using processor's vector instructions (-march=native compiler flag set)")
+        set(_CXX_FLAGS "-march=native")
+    elseif(_xhost_works)
+        message(STATUS "Using processor's vector instructions (-xHost compiler flag set)")
+        set(_CXX_FLAGS "-xHost")
+    else()
+        message(STATUS "No suitable compiler flag found for vectorization")
+    endif()
+    # setting architectural flags
+    target_compile_options(
+        ${target_name}
+        PRIVATE
+            ${_CXX_FLAGS}
     )
 endmacro()

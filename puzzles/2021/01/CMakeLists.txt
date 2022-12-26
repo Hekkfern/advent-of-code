@@ -9,5 +9,6 @@ add_executable(aoc_2021_01 main.cpp)
 
 set_cpp_standard(aoc_2021_01)
 set_compiler_flags(aoc_2021_01)
+set_vectorization_flags(aoc_2021_01)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input.txt ${CMAKE_CURRENT_BINARY_DIR}/input.txt COPYONLY)
