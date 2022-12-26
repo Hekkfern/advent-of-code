@@ -5,5 +5,12 @@ cmake_minimum_required(VERSION 3.20)
 
 project (AdventOfCode)
 
+option(SANITIZE "Enable selected sanitizer in build" OFF)
+
+include(cmake/sanitizer.cmake)
+if(SANITIZE)
+  enable_sanitizer(${SANITIZE})
+endif()
+
 # Include sub-projects.
 add_subdirectory(puzzles)
