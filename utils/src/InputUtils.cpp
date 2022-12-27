@@ -2,19 +2,8 @@
 
 #include "StringUtils.hpp"
 #include <fstream>
-#include <sstream>
 
 namespace utils::InputUtils {
-
-namespace {
-int64_t convertStringToNumber(const std::string& str)
-{
-    std::stringstream ss{ str };
-    int64_t num = 0;
-    ss >> num;
-    return num;
-}
-} // namespace
 
 std::vector<std::string> readListOfStrings(const std::string& filename)
 {
@@ -36,7 +25,7 @@ std::vector<int64_t> readListOfNumbers(const std::string& filename)
     std::string line;
 
     while (std::getline(stream, line)) {
-        outList.emplace_back(convertStringToNumber(line));
+        outList.emplace_back(utils::StringUtils::toNumber<int64_t>(line));
     }
 
     return outList;
@@ -53,7 +42,8 @@ std::vector<std::vector<int64_t>> readGroupsOfNumbers(
         if (utils::StringUtils::trim(line).empty()) {
             outList.emplace_back();
         } else {
-            outList.back().emplace_back(convertStringToNumber(line));
+            outList.back().emplace_back(
+                utils::StringUtils::toNumber<int64_t>(line));
         }
     }
 

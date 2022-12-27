@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <sstream>
+#include <concepts>
 
 namespace utils::StringUtils {
 
@@ -22,5 +24,15 @@ bool contains(const std::string& str, const std::string& match);
  * @return
  */
 std::string trim(const std::string& s);
+
+template <typename T>
+requires std::integral<T> || std::floating_point<T>
+T toNumber(const std::string& str)
+{
+    std::stringstream ss{ str };
+    T num;
+    ss >> num;
+    return num;
+}
 
 } // namespace utils::StringUtils
