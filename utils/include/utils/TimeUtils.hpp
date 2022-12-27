@@ -6,6 +6,6 @@
 
 namespace utils::TimeUtils {
 
-std::chrono::nanoseconds  calculateExecutionTime(std::function<std::string()>&& action);
+std::chrono::nanoseconds calculateExecutionTime(std::function<void()>&& action);
 
 }

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <string>
-#include <sstream>
 #include <concepts>
+#include <sstream>
+#include <string>
 
 namespace utils::StringUtils {
 
@@ -26,7 +26,7 @@ bool contains(const std::string& str, const std::string& match);
 std::string trim(const std::string& s);
 
 template <typename T>
-requires std::integral<T> || std::floating_point<T>
+    requires std::integral<T> || std::floating_point<T>
 T toNumber(const std::string& str)
 {
     std::stringstream ss{ str };

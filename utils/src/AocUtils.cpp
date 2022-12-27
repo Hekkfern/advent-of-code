@@ -4,14 +4,20 @@
 
 namespace utils::AocUtils {
 
-void printPart1Solution(const std::string_view solution)
+void printPart1Solution(
+    const std::string_view solution,
+    std::chrono::nanoseconds execTime)
 {
-    std::cout << "Part 1 solution: " << solution << std::endl;
+    std::cout << "-----Part 1-----\nValue: " << solution
+              << "\nExecution time: " << execTime.count() << " ns" << std::endl;
 }
 
-void printPart2Solution(const std::string_view solution)
+void printPart2Solution(
+    const std::string_view solution,
+    std::chrono::nanoseconds execTime)
 {
-    std::cout << "Part 2 solution: " << solution << std::endl;
+    std::cout << "-----Part 1-----\nValue: " << solution
+              << "\nExecution time: " << execTime.count() << " ns" << std::endl;
 }
 
 } // namespace utils::AocUtils

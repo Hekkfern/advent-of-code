@@ -3,7 +3,7 @@
 namespace utils::TimeUtils {
 
 std::chrono::nanoseconds calculateExecutionTime(
-    std::function<std::string()>&& action)
+    std::function<void()>&& action)
 {
     const auto start = std::chrono::high_resolution_clock::now();
     action();
