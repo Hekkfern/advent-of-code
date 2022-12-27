@@ -9,7 +9,7 @@ project(
   VERSION 1.0.0
   DESCRIPTION "AoC 2021 Puzzle 01")
 
-add_executable(aoc_2021_01 main.cpp solutions.cpp)
+add_executable(aoc_2021_01 main.cpp solutions.cpp solutions.hpp)
 
 set_cpp_standard(aoc_2021_01)
 set_compiler_flags(aoc_2021_01)
