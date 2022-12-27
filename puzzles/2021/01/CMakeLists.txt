@@ -15,5 +15,9 @@ set_cpp_standard(aoc_2021_01)
 set_compiler_flags(aoc_2021_01)
 set_vectorization_flags(aoc_2021_01)
 
+target_link_libraries(aoc_2021_01
+        PRIVATE
+        aoc_utils)
+
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input.txt
                ${CMAKE_CURRENT_BINARY_DIR}/input.txt COPYONLY)

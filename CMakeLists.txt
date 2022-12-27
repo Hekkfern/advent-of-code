@@ -14,3 +14,4 @@ endif()
 
 # Include sub-projects.
 add_subdirectory(puzzles)
+add_subdirectory(utils)
