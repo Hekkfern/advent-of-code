@@ -1,29 +1,22 @@
-include(${CMAKE_CURRENT_LIST_DIR}/../cmake/utils.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/../cmake/compiler_flags.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/../cmake/cpp_standard.cmake)
 
 cmake_minimum_required(VERSION 3.20)
 
-project("aoc_utils" VERSION 1.0.0 DESCRIPTION "AoC helpful methods to use.")
-
-# C++ standard
-set_cpp_standard()
-
-set_ccache()
-
-# Create library
 add_library(${PROJECT_NAME} STATIC)
+
+set_cpp_standard(${PROJECT_NAME})
+set_compiler_flags(${PROJECT_NAME})
+set_vectorization_flags(${PROJECT_NAME})
 
 target_sources(${PROJECT_NAME}
     PRIVATE
         src/ContainerUtils.cpp
         src/InputUtils.cpp
-        src/OutputUtils.cpp
+        src/AocUtils.cpp
         src/StringUtils.cpp
+        src/TimeUtils.cpp
 )
-
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    VERSION ${PROJECT_VERSION}
-    SOVERSION 1
-    DEBUG_POSTFIX "d")
 
 target_include_directories(${PROJECT_NAME}
     PRIVATE
@@ -35,6 +28,3 @@ target_include_directories(${PROJECT_NAME}
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
 )
-
-# setting compiler flags
-set_compiler_flags()

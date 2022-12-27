@@ -1,16 +1,13 @@
-#include <fstream>
+#include "solutions.hpp"
+
 #include <string>
-#include <vector>
-#include <iostream>
-#include <numeric>
-#include <algorithm>
 
 int main() {
-    const auto inputValues = ReadLinesFromFile("input.txt");
+    std::string solution1;
+    solution1 = aoc_2021_01::solvePart1();
 
-
-
-    std::cout << counter << std::endl;
+    std::string solution2;
+    solution2 = aoc_2021_01::solvePart2();
 
     return 0;
 }
