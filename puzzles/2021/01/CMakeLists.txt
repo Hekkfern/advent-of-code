@@ -9,13 +9,13 @@ project(
   VERSION 1.0.0
   DESCRIPTION "AoC 2021 Puzzle 01")
 
-add_executable(aoc_2021_01 main.cpp solutions.cpp solutions.hpp)
+add_executable(${PROJECT_NAME} main.cpp solutions.cpp solutions.hpp)
 
-set_cpp_standard(aoc_2021_01)
-set_compiler_flags(aoc_2021_01)
-set_vectorization_flags(aoc_2021_01)
+set_cpp_standard(${PROJECT_NAME})
+set_compiler_flags(${PROJECT_NAME})
+set_vectorization_flags(${PROJECT_NAME})
 
-target_link_libraries(aoc_2021_01
+target_link_libraries(${PROJECT_NAME}
         PRIVATE
         aoc_utils)
 

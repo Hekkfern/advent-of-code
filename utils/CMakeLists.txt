@@ -9,13 +9,13 @@ project(
   VERSION 1.0.0
   DESCRIPTION "AoC utilities")
 
-add_library(aoc_utils STATIC)
+add_library(${PROJECT_NAME} STATIC)
 
-set_cpp_standard(aoc_utils)
-set_compiler_flags(aoc_utils)
-set_vectorization_flags(aoc_utils)
+set_cpp_standard(${PROJECT_NAME})
+set_compiler_flags(${PROJECT_NAME})
+set_vectorization_flags(${PROJECT_NAME})
 
-target_sources(aoc_utils
+target_sources(${PROJECT_NAME}
     PRIVATE
         src/ContainerUtils.cpp
         src/FileUtils.cpp
@@ -24,7 +24,7 @@ target_sources(aoc_utils
         src/TimeUtils.cpp
 )
 
-target_include_directories(aoc_utils
+target_include_directories(${PROJECT_NAME}
     PRIVATE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/utils>
@@ -35,5 +35,5 @@ target_include_directories(aoc_utils
         $<INSTALL_INTERFACE:include>
 )
 
-#find_package(Catch2 3 CONFIG REQUIRED)
-#target_link_libraries(aoc_utils PRIVATE Catch2::Catch2WithMain)
+find_package(Catch2 3 CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE Catch2::Catch2WithMain)
