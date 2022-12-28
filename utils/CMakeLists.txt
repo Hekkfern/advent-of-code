@@ -3,6 +3,12 @@ include(${CMAKE_CURRENT_LIST_DIR}/../cmake/cpp_standard.cmake)
 
 cmake_minimum_required(VERSION 3.20)
 
+project(
+  "aoc_utils"
+  LANGUAGES CXX
+  VERSION 1.0.0
+  DESCRIPTION "AoC utilities")
+
 add_library(aoc_utils STATIC)
 
 set_cpp_standard(aoc_utils)
@@ -12,7 +18,7 @@ set_vectorization_flags(aoc_utils)
 target_sources(aoc_utils
     PRIVATE
         src/ContainerUtils.cpp
-        src/InputUtils.cpp
+        src/FileUtils.cpp
         src/AocUtils.cpp
         src/StringUtils.cpp
         src/TimeUtils.cpp
