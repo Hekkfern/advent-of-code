@@ -6,3 +6,6 @@
 
 # Build folders
 **/build/
+
+# vcpkg folders
+vcpkg_installed/
