@@ -34,3 +34,6 @@ target_include_directories(aoc_utils
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
 )
+
+#find_package(Catch2 3 CONFIG REQUIRED)
+#target_link_libraries(aoc_utils PRIVATE Catch2::Catch2WithMain)

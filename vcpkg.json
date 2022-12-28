@@ -1,11 +1,14 @@
 {
     "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
-    "name": "AdventOfCode",
+    "name": "advent-of-code",
     "version": "1.0.0",
+    "license": "MIT",
     "dependencies": [
         {
             "name": "catch2",
-            "version>=": "3.1.0"
+            "version>=": "3.1.0",
+            "default-features": true
         }
-    ]
+    ],
+    "builtin-baseline": "6f7ffeb18f99796233b958aaaf14ec7bd4fb64b2"
 }

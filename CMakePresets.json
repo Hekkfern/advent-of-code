@@ -10,13 +10,7 @@
             "name": "common-base",
             "hidden": true,
             "binaryDir": "${sourceDir}/out/build/${presetName}",
-            "installDir": "${sourceDir}/out/install/${presetName}",
-            "cacheVariables": {
-                "CMAKE_TOOLCHAIN_FILE": {
-                    "type": "PATH",
-                    "value": "${sourceDir}/extern/vcpkg/scripts/buildsystems/vcpkg.cmake"
-                }
-            }
+            "installDir": "${sourceDir}/out/install/${presetName}"
         },
         {
             "name": "linux-base",

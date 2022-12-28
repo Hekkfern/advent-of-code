@@ -3,6 +3,8 @@
 
 cmake_minimum_required(VERSION 3.20)
 
+#set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/scripts/buildsystems/vcpkg.cmake")
+
 project(AdventOfCode VERSION 1.0.0 DESCRIPTION "Advent Of Code puzzle solutions in C++ language" LANGUAGES CXX)
 
 option(SANITIZE "Enable selected sanitizer in build" OFF)
