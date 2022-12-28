@@ -5,7 +5,7 @@
 #include <string_view>
 #include <vector>
 
-namespace utils::InputUtils {
+namespace utils::FileUtils {
 
 /**
  * @brief
@@ -30,4 +30,4 @@ std::vector<int64_t> readListOfNumbers(const std::string& filename);
 std::vector<std::vector<int64_t>> readGroupsOfNumbers(
     const std::string& filename);
 
-} // namespace utils::InputUtils
+} // namespace utils::FileUtils

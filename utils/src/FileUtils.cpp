@@ -1,9 +1,9 @@
-#include "InputUtils.hpp"
+#include "FileUtils.hpp"
 
 #include "StringUtils.hpp"
 #include <fstream>
 
-namespace utils::InputUtils {
+namespace utils::FileUtils {
 
 std::vector<std::string> readListOfStrings(const std::string& filename)
 {
@@ -49,4 +49,5 @@ std::vector<std::vector<int64_t>> readGroupsOfNumbers(
 
     return outList;
 }
-} // namespace utils::InputUtils
+
+} // namespace utils::FileUtils
