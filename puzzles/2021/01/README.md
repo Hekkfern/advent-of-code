@@ -1,4 +1,4 @@
-# Day 1: Sonar Sweep
+# AoC 2021 Day 1: Sonar Sweep
 
 ## Part 1
 
