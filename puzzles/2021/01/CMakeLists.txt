@@ -15,9 +15,7 @@ set_cpp_standard(${PROJECT_NAME})
 set_compiler_flags(${PROJECT_NAME})
 set_vectorization_flags(${PROJECT_NAME})
 
-target_link_libraries(${PROJECT_NAME}
-        PRIVATE
-        aoc_utils)
+target_link_libraries(${PROJECT_NAME} PRIVATE aoc_utils)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input.txt
                ${CMAKE_CURRENT_BINARY_DIR}/input.txt COPYONLY)
