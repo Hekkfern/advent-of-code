@@ -5,7 +5,7 @@
 **/.vs/
 
 # Build folders
-**/build/
+out/
 
 # vcpkg folders
 vcpkg_installed/
