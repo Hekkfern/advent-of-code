@@ -98,10 +98,8 @@ def main():
         __generate_project()
     elif args.subcommand == "compile":
         pass
-    elif args.subcommand == "update":
-        pass
     elif args.subcommand == "clean":
-        pass
+        __clean_project()
     elif args.subcommand == "add_day":
         pass
     else:
