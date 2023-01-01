@@ -1,11 +1,17 @@
 #!/usr/bin/env python
 
 import argparse
-import sys
-import shutil
 import pathlib
-import git
+import shutil
+import sys
+
 import colorama
+import git
+
+
+def __abort_execution(msg: str):
+    print(colorama.Fore.RED + msg)
+    sys.exit(1)
 
 
 def __get_root_project_path() -> pathlib.Path:
@@ -14,13 +20,18 @@ def __get_root_project_path() -> pathlib.Path:
 
 def __check_min_python_version():
     if sys.version_info[0] < 3 or sys.version_info[1] < 7:
-        print("This script requires Python version 3.7")
-        sys.exit(1)
+        __abort_execution("This script requires Python version 3.7.")
 
 
-def __fetch_last_version():
+def __fetch_last_version(force: bool = False):
     __clean_project()
     repo = git.Repo(__get_root_project_path())
+    if repo.is_dirty():
+        if force:
+            git.repo.reset(hard=True)
+        else:
+            __abort_execution("Pending changes to commit in the repository. Save them or discard them, and try again.")
+    repo.git.checkout("master")
     repo.remotes.origin.pull()
     for submodule in repo.submodules:
         submodule.update(init=True)
@@ -39,18 +50,31 @@ def __get_input_parameters():
     parser = argparse.ArgumentParser(
         prog='AoC Builder',
         description='Assistant software to operate this project in a easier way')
+    parser.add_argument("--no-color", action="store_true",
+                        help="Disables all the colors in the output messages.")
     subparsers = parser.add_subparsers(dest="subcommand", required=True)
-    parser_build = subparsers.add_parser('build', help="Cleans, generates and compiles the project.")
-    parser_generate = subparsers.add_parser('generate', help="Generates the project with CMake.")
-    parser_generate.add_argument("-d", "--debug", action="store_true", help="Sets the debug flags into the compilation environment.")
+    parser_build = subparsers.add_parser(
+        'build', help="Cleans, generates and compiles the project.")
+    parser_generate = subparsers.add_parser(
+        'generate', help="Cleans the project and generates the project with CMake from scratch.")
+    parser_generate.add_argument("-d", "--debug", action="store_true",
+                                 help="Sets the debug flags into the compilation environment.")
     parser_generate.add_argument(
         "-ut", "--unit-tests", action="store_true", help="Generates the unit-test project too.")
-    parser_compile = subparsers.add_parser('compile', help="Compiles the CMake project if it was previously generated.")
-    parser_update = subparsers.add_parser('update', help="Downloads the latest version of this project and updates all its dependencies.")
-    parser_clean = subparsers.add_parser('clean', help="Deletes all the local data stored in the project.")
-    parser_addday = subparsers.add_parser('add_day', help='Set up the project to add a new "Advent Of Code" puzzle.')
+    parser_compile = subparsers.add_parser(
+        'compile', help="Compiles the CMake project if it was previously generated.")
+    parser_update = subparsers.add_parser(
+        'update',
+        help='Downloads the latest version in "master" branch for this project and updates all its dependencies.')
+    parser_update.add_argument("-f", "--force", action="store_true",
+                               help="Deletes all the pending changes in the repo.")
+    parser_clean = subparsers.add_parser(
+        'clean', help="Deletes all the local data stored in the project.")
+    parser_addday = subparsers.add_parser(
+        'add_day', help='Set up the project to add a new "Advent Of Code" puzzle.')
     parser_addday.add_argument(
-        "-y", "--year", type=int, required=True, help="Selects the year (format XXXX, as for instance, 2023) of the puzzle to generate.")
+        "-y", "--year", type=int, required=True,
+        help="Selects the year (format XXXX, as for instance, 2023) of the puzzle to generate.")
     parser_addday.add_argument(
         "-d", "--day", type=int, required=True, help="Selects the day (from 1 to 25) of the puzzle to generate.")
 
@@ -58,7 +82,7 @@ def __get_input_parameters():
 
 
 def main():
-    colorama.init()
+    colorama.init(autoreset=True)
 
     __check_min_python_version()
 
@@ -66,9 +90,10 @@ def main():
     if args.subcommand == "build":
         pass
     elif args.subcommand == "update":
-        pass
+        __fetch_last_version(args.force)
     elif args.subcommand == "generate":
-        pass
+        __clean_project()
+        __generate_project()
     elif args.subcommand == "compile":
         pass
     elif args.subcommand == "update":
@@ -78,10 +103,11 @@ def main():
     elif args.subcommand == "add_day":
         pass
     else:
-        print("This script requires Python version 3.7")
+        # Unreachable option
         sys.exit(1)
 
 
 if __name__ == "__main__":
     main()
+    print(colorama.Fore.GREEN + "Script finished successfully.")
     sys.exit(0)
