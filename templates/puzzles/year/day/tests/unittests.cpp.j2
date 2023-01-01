@@ -1,0 +1,14 @@
+#include "../sources/solutions.hpp"
+#define CATCH_CONFIG_MAIN
+#include <catch.hpp>
+#include <utils/FileUtils.hpp>
+
+TEST_CASE("[{{YEAR}}_{{DAY}}] Use example input", "[2021, {{YEAR}}_{{DAY}}]")
+{
+    constexpr auto inputFile {"input_test.txt"};
+
+    std::string mySolution = aoc_{{YEAR}}_{{DAY}}::solvePart1(inputFile);
+    std::string expectedSolution = utils::FileUtils::readFirstLine("solution_test.txt").value();
+
+    REQUIRE(mySolution == expectedSolution);
+}
