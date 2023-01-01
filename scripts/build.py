@@ -15,7 +15,7 @@ def __abort_execution(msg: str):
 
 
 def __get_root_project_path() -> pathlib.Path:
-    return pathlib.Path().parent
+    return pathlib.Path().absolute().parent
 
 
 def __check_min_python_version():
