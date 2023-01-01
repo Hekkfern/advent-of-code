@@ -38,8 +38,9 @@ def __fetch_last_version(force: bool = False):
 
 
 def __clean_project():
-    shutil.rmtree(__get_root_project_path() / "out")
-    shutil.rmtree(__get_root_project_path() / "vcpkg_installed")
+    root_path = __get_root_project_path()
+    shutil.rmtree(root_path / "out", ignore_errors=True)
+    shutil.rmtree(root_path / "vcpkg_installed", ignore_errors=True)
 
 
 def __generate_project():
