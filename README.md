@@ -14,10 +14,10 @@
 <br />
 <div align="center">
   <a href="https://github.com/Hekkfern/advent-of-code">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="docs/images/logo.png" alt="Logo" width="300" height="300">
   </a>
 
-<h3 align="center">project_title</h3>
+<h3 align="center">Advent Of Code C++ Challenge</h3>
 
   <p align="center">
     <i>Advent Of Code</i> solutions made in C++ language
