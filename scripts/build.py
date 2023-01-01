@@ -28,11 +28,12 @@ def __fetch_last_version(force: bool = False):
     repo = git.Repo(__get_root_project_path())
     if repo.is_dirty():
         if force:
-            git.repo.reset(hard=True)
+            repo.git.reset(hard=True)
         else:
             __abort_execution("Pending changes to commit in the repository. Save them or discard them, and try again.")
     repo.git.checkout("master")
     repo.remotes.origin.pull()
+    print(f'Current commit is {repo.head.object.hexsha}" in "master" branch')
     for submodule in repo.submodules:
         submodule.update(init=True)
 
