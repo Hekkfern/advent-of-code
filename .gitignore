@@ -9,3 +9,6 @@ out/
 
 # vcpkg folders
 vcpkg_installed/
+
+# Python environments
+.venv/
