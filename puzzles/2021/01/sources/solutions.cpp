@@ -10,17 +10,17 @@ std::string solvePart1(const std::string& filename)
 {
     std::ifstream stream{ filename };
     std::string line;
-    int64_t increaseCounter = 0;
-    int64_t numLines = 0;
-    int64_t lastValue = 0;
+    uint32_t increaseCounter = 0;
+    uint32_t entryIndex = 0;
+    uint32_t lastValue = 0;
 
     while (std::getline(stream, line)) {
-        numLines++;
-        int64_t value = utils::StringUtils::toNumber<int64_t>(line);
-        if (numLines > 1 && value > lastValue) {
+        uint32_t value = utils::StringUtils::toNumber<uint32_t>(line);
+        if (entryIndex > 0 && value > lastValue) {
             ++increaseCounter;
         }
         lastValue = value;
+        entryIndex++;
     }
 
     return std::to_string(increaseCounter);
@@ -32,26 +32,29 @@ std::string solvePart2(const std::string& filename)
 
     std::ifstream stream{ filename };
     std::string line;
-    int64_t increaseCounter = 0;
-    int64_t numLines = 0;
-    std::array<int64_t, SlidingWindowSize + 1> sums{};
-    int32_t slidingWindowIndex = 0;
+    uint32_t increaseCounter = 0;
+    uint32_t entryIndex = 0;
+    std::array<int32_t, SlidingWindowSize + 1> sums{};
+    uint32_t slidingWindowIndex = 0;
 
     while (std::getline(stream, line)) {
-        int64_t value = utils::StringUtils::toNumber<int64_t>(line);
+        uint32_t value = utils::StringUtils::toNumber<uint32_t>(line);
         // add the new value in every sum
-        for (int i = 0; i < SlidingWindowSize; ++i) {
-            sums[slidingWindowIndex] += value;
-
+        slidingWindowIndex = entryIndex % SlidingWindowSize;
+        for (uint32_t groupIndex = 0; (groupIndex < SlidingWindowSize)
+             && (entryIndex >= groupIndex);
+             ++groupIndex) {
+            sums[slidingWindowIndex - groupIndex] += value;
         }
-        
-        numLines++;
-        if (numLines >= SlidingWindowSize) {
-            if ()
+        // check if it is increasing
+        if (entryIndex >= SlidingWindowSize) {
+            if (sums[slidingWindowIndex] > sums[slidingWindowIndex - 1]) {
                 ++increaseCounter;
+            }
             // clean
             sums[slidingWindowIndex] = 0;
         }
+        entryIndex++;
     }
 
     return std::to_string(increaseCounter);
