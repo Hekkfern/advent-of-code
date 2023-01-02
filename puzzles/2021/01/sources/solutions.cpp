@@ -40,8 +40,11 @@ std::string solvePart2(const std::string& filename)
     while (std::getline(stream, line)) {
         int64_t value = utils::StringUtils::toNumber<int64_t>(line);
         // add the new value in every sum
-        for 
-        sums[slidingWindowIndex] += value;
+        for (int i = 0; i < SlidingWindowSize; ++i) {
+            sums[slidingWindowIndex] += value;
+
+        }
+        
         numLines++;
         if (numLines >= SlidingWindowSize) {
             if ()
