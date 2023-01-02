@@ -16,5 +16,5 @@ int main()
         [&solution2]() { solution2 = aoc_2021_01::solvePart2(inputFile); });
     utils::AocUtils::printPart2Solution(solution2, part2ExecTime);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

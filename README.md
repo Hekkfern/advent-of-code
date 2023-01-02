@@ -60,6 +60,7 @@ This project has been created with the main goal to provide a easy-to-use develo
 
 Features:
 
+* C++ 20
 * CMake-based project: feel free to split your logic into several files and classes.
 * VCPKG already integrated: import and use any C++ library very easily from the [vcpkg catalog](https://vcpkg.io/en/packages.html).
 * Unit-testing with Catch2 library: create unit tests to validate the example inputs, or to validate that your future changes don't break your code.
