@@ -6,6 +6,7 @@
 
 # Build folders
 out/
+build/
 
 # vcpkg folders
 vcpkg_installed/
