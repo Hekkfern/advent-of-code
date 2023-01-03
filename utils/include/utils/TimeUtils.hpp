@@ -2,10 +2,9 @@
 
 #include <chrono>
 #include <functional>
-#include <string>
 
 namespace utils::TimeUtils {
 
-std::chrono::nanoseconds calculateExecutionTime(std::function<void()>&& action);
+std::chrono::milliseconds calculateExecutionTime(std::function<void()>&& action);
 
 }
