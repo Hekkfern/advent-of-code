@@ -123,9 +123,6 @@
             "hidden": true,
             "inherits": "common-base",
             "generator": "Ninja",
-            "cacheVariables": {
-                "CMAKE_CXX_COMPILER": "cl.exe"
-            },
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
