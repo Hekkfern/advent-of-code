@@ -9,6 +9,7 @@ import colorama
 import git
 
 import internal.puzzleassistant as pzas
+import internal.argparse_range as apr
 
 
 def __abort_execution(msg: str) -> None:
@@ -50,9 +51,9 @@ def __generate_project() -> None:
     pass
 
 
-def __add_new_day() -> None:
+def __add_new_day(year: int, day: int) -> None:
     __clean_project()
-    pzas.add_new_day(__get_root_project_path())
+    pzas.add_new_day(__get_root_project_path(), year, day)
 
 
 def __get_input_parameters():
@@ -82,10 +83,11 @@ def __get_input_parameters():
     parser_addday = subparsers.add_parser(
         'add_day', help='Set up the project to add a new "Advent Of Code" puzzle.')
     parser_addday.add_argument(
-        "-y", "--year", type=int, required=True,
+        "-y", "--year", type=int, required=True, action=apr.Range, min=2015, max=2050,
         help="Selects the year (format XXXX, as for instance, 2023) of the puzzle to generate.")
     parser_addday.add_argument(
-        "-d", "--day", type=int, required=True, help="Selects the day (from 1 to 25) of the puzzle to generate.")
+        "-d", "--day", type=int, required=True, action=apr.Range, min=1, max=25,
+        help="Selects the day (from 1 to 25) of the puzzle to generate.")
 
     return parser.parse_args()
 
