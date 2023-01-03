@@ -2,6 +2,7 @@
 
 #include <array>
 #include <fstream>
+#include <numeric>
 #include <utils/StringUtils.hpp>
 
 namespace aoc_2021_01 {
@@ -10,13 +11,13 @@ std::string solvePart1(const std::string& filename)
 {
     std::ifstream stream{ filename };
     std::string line;
-    uint32_t increaseCounter = 0;
-    uint32_t entryIndex = 0;
-    uint32_t lastValue = 0;
+    uint32_t increaseCounter = 0U;
+    uint32_t entryIndex = 0U;
+    uint32_t lastValue = 0U;
 
     while (std::getline(stream, line)) {
-        uint32_t value = utils::StringUtils::toNumber<uint32_t>(line);
-        if (entryIndex > 0 && value > lastValue) {
+        const auto value = utils::StringUtils::toNumber<uint32_t>(line);
+        if (entryIndex > 0U && value > lastValue) {
             ++increaseCounter;
         }
         lastValue = value;
@@ -28,31 +29,32 @@ std::string solvePart1(const std::string& filename)
 
 std::string solvePart2(const std::string& filename)
 {
-    constexpr int32_t SlidingWindowSize{ 3 };
+    constexpr uint32_t SlidingWindowSize{ 3U };
 
     std::ifstream stream{ filename };
     std::string line;
-    uint32_t increaseCounter = 0;
-    uint32_t entryIndex = 0;
-    std::array<int32_t, SlidingWindowSize + 1> sums{};
-    uint32_t slidingWindowIndex = 0;
+    uint32_t increaseCounter = 0U;
+    uint32_t entryIndex = 0U;
+    std::array<uint32_t, SlidingWindowSize + 1> values{};
 
     while (std::getline(stream, line)) {
-        uint32_t value = utils::StringUtils::toNumber<uint32_t>(line);
-        // add the new value in every sum
-        slidingWindowIndex = entryIndex % SlidingWindowSize;
-        for (uint32_t groupIndex = 0; (groupIndex < SlidingWindowSize)
-             && (entryIndex >= groupIndex);
-             ++groupIndex) {
-            sums[slidingWindowIndex - groupIndex] += value;
-        }
-        // check if it is increasing
-        if (entryIndex >= SlidingWindowSize) {
-            if (sums[slidingWindowIndex] > sums[slidingWindowIndex - 1]) {
+        const auto value = utils::StringUtils::toNumber<uint32_t>(line);
+        if (entryIndex < SlidingWindowSize) {
+            // add the new value
+            values[SlidingWindowSize - entryIndex] = value;
+        } else {
+            values[0] = value;
+            // check if it is increasing
+            const auto currentSum = std::accumulate(
+                std::begin(values) + 1, std::end(values), 0U);
+            const auto previousSum = std::accumulate(
+                std::begin(values), std::end(values) - 1, 0U);
+            if (currentSum > previousSum) {
                 ++increaseCounter;
             }
             // clean
-            sums[slidingWindowIndex] = 0;
+            std::rotate(
+                std::begin(values), std::begin(values) + 1, std::end(values));
         }
         entryIndex++;
     }
