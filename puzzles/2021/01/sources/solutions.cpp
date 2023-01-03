@@ -45,9 +45,9 @@ std::string solvePart2(const std::string& filename)
         } else {
             values.back() = value;
             // check if it is increasing
-            const auto previousSum = std::accumulate(
-                std::begin(values) + 1, std::end(values), 0U);
             const auto currentSum = std::accumulate(
+                std::begin(values) + 1, std::end(values), 0U);
+            const auto previousSum = std::accumulate(
                 std::begin(values), std::end(values) - 1, 0U);
             if (currentSum > previousSum) {
                 ++increaseCounter;
