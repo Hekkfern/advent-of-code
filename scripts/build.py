@@ -8,8 +8,10 @@ import sys
 import colorama
 import git
 
+import internal.puzzleassistant as pzas
 
-def __abort_execution(msg: str):
+
+def __abort_execution(msg: str) -> None:
     print(colorama.Fore.RED + msg)
     sys.exit(1)
 
@@ -18,19 +20,20 @@ def __get_root_project_path() -> pathlib.Path:
     return pathlib.Path().absolute().parent
 
 
-def __check_min_python_version():
+def __check_min_python_version() -> None:
     if sys.version_info[0] < 3 or sys.version_info[1] < 7:
-        __abort_execution("This script requires Python version 3.7.")
+        __abort_execution("This script requires Python version 3.7 or newer.")
 
 
-def __fetch_last_version(force: bool = False):
+def __fetch_last_version(force: bool = False) -> None:
     __clean_project()
     repo = git.Repo(__get_root_project_path())
     if repo.is_dirty():
         if force:
             repo.git.reset(hard=True)
         else:
-            __abort_execution("Pending changes to commit in the repository. Save them or discard them, and try again.")
+            __abort_execution(
+                "Pending changes to commit in the repository. Save them or discard them, and try again.")
     repo.git.checkout("master")
     repo.remotes.origin.pull()
     print(f'Current commit is {repo.head.object.hexsha} in "master" branch')
@@ -38,14 +41,18 @@ def __fetch_last_version(force: bool = False):
         submodule.update(init=True)
 
 
-def __clean_project():
+def __clean_project() -> None:
     root_path = __get_root_project_path()
     shutil.rmtree(root_path / "out", ignore_errors=True)
-    shutil.rmtree(root_path / "vcpkg_installed", ignore_errors=True)
 
 
-def __generate_project():
+def __generate_project() -> None:
     pass
+
+
+def __add_new_day() -> None:
+    __clean_project()
+    pzas.add_new_day(__get_root_project_path())
 
 
 def __get_input_parameters():
@@ -101,7 +108,7 @@ def main():
     elif args.subcommand == "clean":
         __clean_project()
     elif args.subcommand == "add_day":
-        pass
+        __add_new_day()
     else:
         # Unreachable option
         sys.exit(1)
