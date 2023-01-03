@@ -41,9 +41,9 @@ std::string solvePart2(const std::string& filename)
         const auto value = utils::StringUtils::toNumber<uint32_t>(line);
         if (entryIndex < SlidingWindowSize) {
             // add the new value
-            values[SlidingWindowSize - entryIndex] = value;
+            values.at(entryIndex) = value;
         } else {
-            values[0] = value;
+            values.back() = value;
             // check if it is increasing
             const auto previousSum = std::accumulate(
                 std::begin(values) + 1, std::end(values), 0U);
