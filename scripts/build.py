@@ -56,6 +56,7 @@ def __add_new_day(year: int, day: int, is_forced: bool) -> None:
     root_path = __get_root_project_path()
     day_path = root_path / f"puzzles/{year}/{day}/"
     if not day_path.is_dir() or is_forced:
+        shutil.rmtree(day_path, ignore_errors=True)
         pzas.add_new_day(root_path, year, day)
         print(f"Added new files in \"{day_path.absolute()}\" folder.")
     else:
