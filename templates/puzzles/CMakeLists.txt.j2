@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
 
-{% for YEAR in YEARS %}
+{% for YEAR in YEARS -%}
 add_subdirectory({{YEAR}})
 {% endfor %}
