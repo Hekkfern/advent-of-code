@@ -60,6 +60,7 @@ std::string solvePart2(const std::string& filename)
             currentSum += utils::StringUtils::toNumber<uint32_t>(line);
         }
     }
+    insertInRanking(highestSums, currentSum);
 
     return std::to_string(
         std::accumulate(std::begin(highestSums), std::end(highestSums), 0U));
