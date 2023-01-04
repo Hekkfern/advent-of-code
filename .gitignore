@@ -11,5 +11,6 @@ build/
 # vcpkg folders
 vcpkg_installed/
 
-# Python environments
+# Python
 .venv/
+**/__pycache__/
