@@ -1,5 +1,7 @@
 #include "rps.h"
 
+#include <stdexcept>
+
 namespace aoc_2022_2 {
 
 Shape convertStringToShape(char str)
