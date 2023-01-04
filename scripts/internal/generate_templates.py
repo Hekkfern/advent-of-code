@@ -34,6 +34,7 @@ def create_cmakelists_for_puzzles(root_dir: pathlib.Path) -> None:
         year = int(pathlib.PurePath(path).name)
         if year >= constants.MINIMAL_AOC_YEAR:
             year_list.append(str(year))
+    year_list.sort()
     # Generate file
     __generate_file_from_template(root_dir, "puzzles/CMakeLists.txt.j2", {"YEARS": year_list},
                                   root_dir / "puzzles/CMakeLists.txt")
@@ -52,6 +53,7 @@ def create_cmakelists_for_year(root_dir: pathlib.Path, year: int) -> None:
                     day_list.append(day)
             except:
                 pass
+    day_list.sort()
     # Generate file
     __generate_file_from_template(root_dir, "puzzles/year/CMakeLists.txt.j2", {"DAYS": day_list},
                                   root_dir / f"puzzles/{year}/CMakeLists.txt")
