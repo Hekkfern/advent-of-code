@@ -28,19 +28,18 @@ std::string solvePart1(const std::string& filename)
 
 std::string solvePart2(const std::string& filename)
 {
-    //constexpr uint32_t GroupSize{ 3U };
+    constexpr uint32_t GroupSize{ 3U };
 
     std::ifstream stream{ filename };
-    std::string line1;
-    std::string line2;
-    std::string line3;
+    std::array<std::string, GroupSize> rucksacks;
     uint32_t totalPriority = 0U;
 
-    while (std::getline(stream, line1)) {
-        std::getline(stream, line2);
-        std::getline(stream, line3);
+    while (std::getline(stream, rucksacks[0])) {
+        for (uint32_t i = 1; i < GroupSize; ++i) {
+            std::getline(stream, rucksacks.at(i));
+        }
         totalPriority += calculatePriority(
-            searchCommonItemInGroup(line1, line2, line3));
+            searchCommonItemInGroup(rucksacks[0], rucksacks[1], rucksacks[2]));
     }
 
     return std::to_string(totalPriority);
