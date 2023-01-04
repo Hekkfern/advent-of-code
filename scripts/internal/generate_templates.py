@@ -56,7 +56,7 @@ def create_cmakelists_for_year(root_dir: pathlib.Path, year: int) -> None:
 # ----------- puzzles/year/day -------------
 
 def create_cmakelists_for_day(root_dir: pathlib.Path, year: int, day: int) -> None:
-    shutil.copyfile(root_dir / "templates/year/day/CMakeLists.txt",
+    shutil.copyfile(root_dir / "templates/puzzles/year/day/CMakeLists.txt",
                     root_dir / f"puzzles/{year}/{day}/CMakeLists.txt")
 
 
