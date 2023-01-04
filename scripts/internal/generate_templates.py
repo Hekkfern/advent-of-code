@@ -70,25 +70,25 @@ def create_readme_for_day(root_dir: pathlib.Path, year: int, day: int) -> None:
 
 def create_cmakelists_for_sources(root_dir: pathlib.Path, year: int, day: int) -> None:
     # Generate file
-    __generate_file_from_template(root_dir, "puzzles/year/sources/CMakeLists.txt.j2", {"DAY": day, "YEAR": year},
+    __generate_file_from_template(root_dir, "puzzles/year/day/sources/CMakeLists.txt.j2", {"DAY": day, "YEAR": year},
                                   root_dir / f"puzzles/{year}/{day}/sources/CMakeLists.txt")
 
 
 def create_maincpp_for_sources(root_dir: pathlib.Path, year: int, day: int) -> None:
     # Generate file
-    __generate_file_from_template(root_dir, "puzzles/year/sources/main.cpp.j2", {"DAY": day, "YEAR": year},
+    __generate_file_from_template(root_dir, "puzzles/year/day/sources/main.cpp.j2", {"DAY": day, "YEAR": year},
                                   root_dir / f"puzzles/{year}/{day}/sources/main.cpp")
 
 
 def create_solutionscpp_for_sources(root_dir: pathlib.Path, year: int, day: int) -> None:
     # Generate file
-    __generate_file_from_template(root_dir, "puzzles/year/sources/solutions.cpp.j2", {"DAY": day, "YEAR": year},
+    __generate_file_from_template(root_dir, "puzzles/year/day/sources/solutions.cpp.j2", {"DAY": day, "YEAR": year},
                                   root_dir / f"puzzles/{year}/{day}/sources/solutions.cpp")
 
 
 def create_solutionshpp_for_sources(root_dir: pathlib.Path, year: int, day: int) -> None:
     # Generate file
-    __generate_file_from_template(root_dir, "puzzles/year/sources/solutions.hpp.j2", {"DAY": day, "YEAR": year},
+    __generate_file_from_template(root_dir, "puzzles/year/day/sources/solutions.hpp.j2", {"DAY": day, "YEAR": year},
                                   root_dir / f"puzzles/{year}/{day}/sources/solutions.hpp")
 
 
