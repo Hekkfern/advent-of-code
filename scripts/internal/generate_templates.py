@@ -18,6 +18,7 @@ def __generate_file_from_template(root_dir: pathlib.Path, template_name: str, pa
         params
     )
     # Write the content into the file
+    file_path.parent.mkdir(parents=True, exist_ok=True)
     with open(file_path, mode="w", encoding="utf-8") as file:
         file.write(content)
 
