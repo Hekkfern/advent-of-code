@@ -116,11 +116,11 @@ def create_inputtxt_for_tests(root_dir: pathlib.Path, year: int, day: int) -> No
 
 def create_cmakelists_for_tests(root_dir: pathlib.Path, year: int, day: int) -> None:
     # Generate file
-    __generate_file_from_template(root_dir, "puzzles/year/tests/CMakeLists.txt.j2", {"DAY": day, "YEAR": year},
+    __generate_file_from_template(root_dir, "puzzles/year/day/tests/CMakeLists.txt.j2", {"DAY": day, "YEAR": year},
                                   root_dir / f"puzzles/{year}/{day}/tests/CMakeLists.txt")
 
 
 def create_unittestscpp_for_tests(root_dir: pathlib.Path, year: int, day: int) -> None:
     # Generate file
-    __generate_file_from_template(root_dir, "puzzles/year/tests/unittests.cpp.j2", {"DAY": day, "YEAR": year},
+    __generate_file_from_template(root_dir, "puzzles/year/day/tests/unittests.cpp.j2", {"DAY": day, "YEAR": year},
                                   root_dir / f"puzzles/{year}/{day}/tests/unittests.cpp")
