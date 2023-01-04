@@ -18,7 +18,7 @@ def __abort_execution(msg: str) -> None:
 
 
 def __get_root_project_path() -> pathlib.Path:
-    return pathlib.Path().absolute().parent
+    return pathlib.Path(__file__).absolute().parents[1]
 
 
 def __check_min_python_version() -> None:
