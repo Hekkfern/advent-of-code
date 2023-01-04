@@ -28,8 +28,10 @@ def create_cmakelists_for_puzzles(root_dir: pathlib.Path) -> None:
     # Look for all the year folders
     year_list: typing.List[str] = []
     for path in (root_dir / "puzzles/").iterdir():
+        if not path.is_dir():
+            continue
         year = int(pathlib.PurePath(path).name)
-        if path.is_dir() and year >= constants.MINIMAL_AOC_YEAR:
+        if year >= constants.MINIMAL_AOC_YEAR:
             year_list.append(str(year))
     # Generate file
     __generate_file_from_template(root_dir, "puzzles/CMakeLists.txt.j2", {"YEARS": year_list},
