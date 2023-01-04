@@ -17,19 +17,19 @@ Shape convertStringToShape(char str)
 
 constexpr uint32_t PointsPerUsedRock{ 1U };
 constexpr uint32_t PointsPerUsedPaper{ 2U };
-constexpr uint32_t PointsPerUsedScissor{ 3U };
+constexpr uint32_t PointsPerUsedScissors{ 3U };
 
-uint32_t calculatePointsOfUsedShape(const Shape shape)
+uint32_t calculatePointsOfUsedShape(const Shape yourShape)
 {
-    switch (shape) {
+    switch (yourShape) {
     case Shape::Rock:
         return PointsPerUsedRock;
     case Shape::Paper:
         return PointsPerUsedPaper;
     case Shape::Scissors:
-        return PointsPerUsedScissor;
+        return PointsPerUsedScissors;
     default:
-        return 0;
+        throw std::invalid_argument("Invalid enum value.");
     }
 }
 
