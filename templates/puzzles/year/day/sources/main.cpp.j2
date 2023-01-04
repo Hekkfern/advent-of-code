@@ -4,17 +4,21 @@
 
 int main()
 {
-    constexpr auto inputFile {"input.txt"};
+    const std::string inputFile{ "input.txt" };
 
     std::string solution1;
-    auto part1ExecTime = utils::TimeUtils::calculateExecutionTime(
-        [&solution1]() { solution1 = aoc_{{YEAR}}_{{DAY}}::solvePart1(inputFile); });
+    const auto part1ExecTime = utils::TimeUtils::calculateExecutionTime(
+        [&solution1, &inputFile]() {
+            solution1 = aoc_{{YEAR}}_{{DAY}}::solvePart1(inputFile);
+        });
     utils::AocUtils::printPart1Solution(solution1, part1ExecTime);
 
     std::string solution2;
-    auto part2ExecTime = utils::TimeUtils::calculateExecutionTime(
-        [&solution2]() { solution2 = aoc_{{YEAR}}_{{DAY}}::solvePart2(inputFile); });
+    const auto part2ExecTime = utils::TimeUtils::calculateExecutionTime(
+        [&solution2, &inputFile]() {
+            solution2 = aoc_{{YEAR}}_{{DAY}}::solvePart2(inputFile);
+        });
     utils::AocUtils::printPart2Solution(solution2, part2ExecTime);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
