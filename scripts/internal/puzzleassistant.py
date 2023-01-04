@@ -1,7 +1,7 @@
 import pathlib
 
-import constants
-import generate_templates
+from . import constants
+from . import generate_templates
 
 
 def add_new_day(root_dir: pathlib.Path, year: int, day: int) -> None:

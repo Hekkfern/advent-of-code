@@ -4,8 +4,8 @@ import typing
 
 import jinja2
 
-import constants
-import utils
+from . import constants
+from . import utils
 
 
 def __generate_file_from_template(root_dir: pathlib.Path, template_name: str, params: typing.Dict[str, any],

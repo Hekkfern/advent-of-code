@@ -8,8 +8,8 @@ import sys
 import colorama
 import git
 
-import internal.argparse_range as apr
-import internal.puzzleassistant as pzas
+from internal import argparse_range as apr
+from internal import puzzleassistant as pzas
 
 
 def __abort_execution(msg: str) -> None:
