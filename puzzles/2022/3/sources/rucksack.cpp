@@ -23,7 +23,7 @@ uint32_t calculatePriority(const char itemType)
     }
 }
 
-char searchCommonItemType(
+char searchCommonItemInRucksack(
     const std::string& compartment1,
     const std::string& compartment2)
 {
@@ -35,6 +35,30 @@ char searchCommonItemType(
         if (const auto search = itemTypes1.find(c);
             search != itemTypes1.cend()) {
             return c;
+        }
+    }
+    return 0;
+}
+
+char searchCommonItemInGroup(
+    const std::string& rucksack1,
+    const std::string& rucksack2,
+    const std::string& rucksack3)
+{
+    // fill first set
+    const std::unordered_set<char> itemTypes1(
+        std::cbegin(rucksack1), std::cend(rucksack1));
+    // fill second set
+    const std::unordered_set<char> itemTypes2(
+        std::cbegin(rucksack2), std::cend(rucksack2));
+    // look for repeated item types in both compartments
+    for (const char& c : rucksack3) {
+        if (const auto search1 = itemTypes1.find(c);
+            search1 != itemTypes1.cend()) {
+            if (const auto search2 = itemTypes2.find(c);
+                search2 != itemTypes2.cend()) {
+                return c;
+            }
         }
     }
     return 0;

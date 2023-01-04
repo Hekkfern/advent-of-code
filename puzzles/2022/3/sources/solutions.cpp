@@ -2,6 +2,7 @@
 
 #include "rucksack.h"
 
+#include <array>
 #include <cassert>
 #include <fstream>
 
@@ -19,7 +20,7 @@ std::string solvePart1(const std::string& filename)
         const std::string compartment2 = line.substr(
             line.size() / 2, line.size());
         totalPriority += calculatePriority(
-            searchCommonItemType(compartment1, compartment2));
+            searchCommonItemInRucksack(compartment1, compartment2));
     }
 
     return std::to_string(totalPriority);
@@ -27,8 +28,22 @@ std::string solvePart1(const std::string& filename)
 
 std::string solvePart2(const std::string& filename)
 {
-    (void)filename;
-    return "";
+    //constexpr uint32_t GroupSize{ 3U };
+
+    std::ifstream stream{ filename };
+    std::string line1;
+    std::string line2;
+    std::string line3;
+    uint32_t totalPriority = 0U;
+
+    while (std::getline(stream, line1)) {
+        std::getline(stream, line2);
+        std::getline(stream, line3);
+        totalPriority += calculatePriority(
+            searchCommonItemInGroup(line1, line2, line3));
+    }
+
+    return std::to_string(totalPriority);
 }
 
 } // namespace aoc_2022_3
