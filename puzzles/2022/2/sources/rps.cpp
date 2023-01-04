@@ -11,7 +11,7 @@ Shape convertStringToShape(char str)
     } else if (str == 'C' || str == 'Z') {
         return Shape::Scissors;
     } else {
-        throw std::invalid_argument("Invalid string.");
+        throw std::invalid_argument("Invalid character.");
     }
 }
 
@@ -57,6 +57,62 @@ uint32_t calculateRoundScore(const Shape yourShape, const Shape opponentShape)
 {
     return calculatePointsOfUsedShape(yourShape)
         + calculatePointsPerMatch(yourShape, opponentShape);
+}
+
+MatchResult convertStringToMatchResult(char str)
+{
+    if (str == 'X') {
+        return MatchResult::Lose;
+    } else if (str == 'Y') {
+        return MatchResult::Draw;
+    } else if (str == 'Z') {
+        return MatchResult::Win;
+    } else {
+        throw std::invalid_argument("Invalid character.");
+    }
+}
+
+Shape selectShapeBasedOnMatchResult(
+    const MatchResult matchResult,
+    const Shape opponentShape)
+{
+    switch (matchResult) {
+    case MatchResult::Lose:
+        switch (opponentShape) {
+        case Shape::Rock:
+            return Shape::Scissors;
+        case Shape::Paper:
+            return Shape::Rock;
+        case Shape::Scissors:
+            return Shape::Paper;
+        default:
+            throw std::invalid_argument("Invalid enum.");
+        }
+    case MatchResult::Draw:
+        return opponentShape;
+    case MatchResult::Win:
+        switch (opponentShape) {
+        case Shape::Rock:
+            return Shape::Paper;
+        case Shape::Paper:
+            return Shape::Scissors;
+        case Shape::Scissors:
+            return Shape::Rock;
+        default:
+            throw std::invalid_argument("Invalid enum.");
+        }
+    default:
+        throw std::invalid_argument("Invalid enum.");
+    }
+}
+
+uint32_t calculateRoundScore(
+    const MatchResult matchResult,
+    const Shape opponentShape)
+{
+    const Shape yourShape = selectShapeBasedOnMatchResult(
+        matchResult, opponentShape);
+    return calculateRoundScore(yourShape, opponentShape);
 }
 
 } // namespace aoc_2022_2
