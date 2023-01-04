@@ -45,9 +45,13 @@ def create_cmakelists_for_year(root_dir: pathlib.Path, year: int) -> None:
     # Look for all the day folders
     day_list = []
     for path in (root_dir / f"puzzles/{year}").iterdir():
-        day = int(pathlib.PurePath(path).name)
-        if path.is_dir() and constants.MINIMAL_AOC_DAY <= day <= constants.MAXIMUM_AOC_DAY:
-            day_list.append(day)
+        if path.is_dir():
+            try:
+                day = int(pathlib.PurePath(path).name)
+                if constants.MINIMAL_AOC_DAY <= day <= constants.MAXIMUM_AOC_DAY:
+                    day_list.append(day)
+            except:
+                pass
     # Generate file
     __generate_file_from_template(root_dir, "puzzles/year/CMakeLists.txt.j2", {"DAYS": day_list},
                                   root_dir / f"puzzles/{year}/CMakeLists.txt")
