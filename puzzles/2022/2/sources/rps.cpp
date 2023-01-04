@@ -7,9 +7,9 @@ Shape convertStringToShape(char str)
     if (str == 'A' || str == 'X') {
         return Shape::Rock;
     } else if (str == 'B' || str == 'Y') {
-        return Shape::Rock;
+        return Shape::Paper;
     } else if (str == 'C' || str == 'Z') {
-        return Shape::Rock;
+        return Shape::Scissors;
     } else {
         throw std::invalid_argument("Invalid string.");
     }
