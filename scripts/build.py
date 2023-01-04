@@ -8,7 +8,7 @@ import sys
 import colorama
 import git
 
-from internal import argparse_range as apr
+from internal import argparse_utils as apr
 from internal import puzzleassistant as pzas
 
 
@@ -58,7 +58,6 @@ def __add_new_day(year: int, day: int) -> None:
 
 def __get_input_parameters():
     parser = argparse.ArgumentParser(
-        prog='AoC Builder',
         description='Assistant software to operate this project in a easier way')
     parser.add_argument("--no-color", action="store_true",
                         help="Disables all the colors in the output messages.")
@@ -83,10 +82,10 @@ def __get_input_parameters():
     parser_addday = subparsers.add_parser(
         'add_day', help='Set up the project to add a new "Advent Of Code" puzzle.')
     parser_addday.add_argument(
-        "-y", "--year", type=int, required=True, action=apr.Range, min=2015, max=2050,
+        "-y", "--year", type=apr.ranged_int(2015, 2050), required=True,
         help="Selects the year (format XXXX, as for instance, 2023) of the puzzle to generate.")
     parser_addday.add_argument(
-        "-d", "--day", type=int, required=True, action=apr.Range, min=1, max=25,
+        "-d", "--day", type=apr.ranged_int(1, 25), required=True,
         help="Selects the day (from 1 to 25) of the puzzle to generate.")
 
     return parser.parse_args()
