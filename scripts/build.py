@@ -8,8 +8,8 @@ import sys
 import colorama
 import git
 
-import internal.puzzleassistant as pzas
 import internal.argparse_range as apr
+import internal.puzzleassistant as pzas
 
 
 def __abort_execution(msg: str) -> None:
@@ -110,7 +110,7 @@ def main():
     elif args.subcommand == "clean":
         __clean_project()
     elif args.subcommand == "add_day":
-        __add_new_day()
+        __add_new_day(args.year, args.day)
     else:
         # Unreachable option
         sys.exit(1)
