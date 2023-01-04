@@ -51,16 +51,22 @@ def __generate_project() -> None:
     pass
 
 
-def __add_new_day(year: int, day: int) -> None:
+def __add_new_day(year: int, day: int, is_forced: bool) -> None:
     __clean_project()
-    pzas.add_new_day(__get_root_project_path(), year, day)
+    root_path = __get_root_project_path()
+    day_path = root_path / f"puzzles/{year}/{day}/"
+    if not day_path.is_dir() or is_forced:
+        pzas.add_new_day(root_path, year, day)
+        print(f"Added new files in \"{day_path.absolute()}\" folder.")
+    else:
+        print(f"Task skipped. Already-existing files in \"{day_path.absolute()}\" folder.")
 
 
 def __get_input_parameters():
     parser = argparse.ArgumentParser(
         description='Assistant software to operate this project in a easier way')
-    parser.add_argument("--no-color", action="store_true",
-                        help="Disables all the colors in the output messages.")
+    # parser.add_argument("--no-color", action="store_true",
+    #                     help="Disables all the colors in the output messages.")
     subparsers = parser.add_subparsers(dest="subcommand", required=True)
     parser_build = subparsers.add_parser(
         'build', help="Cleans, generates and compiles the project.")
@@ -87,6 +93,9 @@ def __get_input_parameters():
     parser_addday.add_argument(
         "-d", "--day", type=apr.ranged_int(1, 25), required=True,
         help="Selects the day (from 1 to 25) of the puzzle to generate.")
+    parser_addday.add_argument(
+        "-f", "--force", action="store_true",
+        help="Forces the overwrite of existing files.")
 
     return parser.parse_args()
 
@@ -109,7 +118,7 @@ def main():
     elif args.subcommand == "clean":
         __clean_project()
     elif args.subcommand == "add_day":
-        __add_new_day(args.year, args.day)
+        __add_new_day(args.year, args.day, args.force)
     else:
         # Unreachable option
         sys.exit(1)
