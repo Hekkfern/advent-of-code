@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 {% for YEAR in YEARS -%}
-add_subdirectory({{YEAR}})
+if(GENERATE_YEARS STREQUAL "" OR "{{YEAR}}" IN_LIST GENERATE_YEARS)
+  add_subdirectory({{YEAR}})
+endif()
 {% endfor %}

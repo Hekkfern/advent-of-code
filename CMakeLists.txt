@@ -7,7 +7,14 @@ set(CMAKE_TOOLCHAIN_FILE
     "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/scripts/buildsystems/vcpkg.cmake"
     CACHE STRING "Vcpkg toolchain file")
 
-option(GENERATE_UNIT_TESTS "Generate the unit tests executables of every puzzle." ON)
+option(GENERATE_UNIT_TESTS
+       "Generate the unit tests executables of every puzzle." ON)
+set(GENERATE_YEARS
+    ""
+    CACHE
+      INTERNAL
+      "Generate the projects of the selected years. Or left empty to generate them all."
+)
 
 project(
   AdventOfCode
