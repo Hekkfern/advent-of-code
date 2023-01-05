@@ -7,6 +7,8 @@ set(CMAKE_TOOLCHAIN_FILE
     "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/scripts/buildsystems/vcpkg.cmake"
     CACHE STRING "Vcpkg toolchain file")
 
+option(GENERATE_UNIT_TESTS "Generate the unit tests executables of every puzzle." ON)
+
 project(
   AdventOfCode
   VERSION 1.0.0
