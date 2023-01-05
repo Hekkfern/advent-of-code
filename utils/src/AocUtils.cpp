@@ -16,7 +16,7 @@ void printPart2Solution(
     const std::string_view solution,
     const std::chrono::milliseconds execTime)
 {
-    std::cout << "-----Part 1-----\nValue: " << solution
+    std::cout << "-----Part 2-----\nValue: " << solution
               << "\nExecution time: " << execTime.count() << " ms" << std::endl;
 }
 
