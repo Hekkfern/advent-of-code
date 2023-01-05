@@ -5,8 +5,8 @@
 namespace aoc_2022_4 {
 
 struct SectionRange {
-    uint32_t first;
-    uint32_t last;
+    uint32_t mFirst;
+    uint32_t mLast;
 };
 
 bool areSectionsOverlapped(

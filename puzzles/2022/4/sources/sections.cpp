@@ -2,24 +2,22 @@
 
 namespace aoc_2022_4 {
 
-constexpr uint32_t MaximumSectionId{ 99U };
-
 bool areSectionsOverlapped(
     const SectionRange& sectionsElf1,
     const SectionRange& sectionsElf2)
 {
-    return ((sectionsElf1.first >= sectionsElf2.first)
-            && (sectionsElf1.last <= sectionsElf2.last))
-        || ((sectionsElf1.first <= sectionsElf2.first)
-            && (sectionsElf1.last >= sectionsElf2.last));
+    return ((sectionsElf1.mFirst >= sectionsElf2.mFirst)
+            && (sectionsElf1.mLast <= sectionsElf2.mLast))
+        || ((sectionsElf1.mFirst <= sectionsElf2.mFirst)
+            && (sectionsElf1.mLast >= sectionsElf2.mLast));
 }
 
 bool areSectionsNotOverlapped(
     const SectionRange& sectionsElf1,
     const SectionRange& sectionsElf2)
 {
-    return (sectionsElf1.last < sectionsElf2.first)
-        || (sectionsElf1.first > sectionsElf2.last);
+    return (sectionsElf1.mLast < sectionsElf2.mFirst)
+        || (sectionsElf1.mFirst > sectionsElf2.mLast);
 }
 
 } // namespace aoc_2022_4

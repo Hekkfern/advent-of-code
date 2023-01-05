@@ -29,9 +29,9 @@ std::array<SectionRange, GroupSize> parseInputLine(const std::string& line)
             const auto value = utils::StringUtils::toNumber<uint32_t>(
                 rangeEdge);
             if (valueCounter == 0) {
-                sections.at(elfCounter).first = value;
+                sections.at(elfCounter).mFirst = value;
             } else {
-                sections.at(elfCounter).last = value;
+                sections.at(elfCounter).mLast = value;
             }
             ++valueCounter;
         }

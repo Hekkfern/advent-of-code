@@ -61,5 +61,8 @@ CheckOptions:
   - { key: readability-identifier-length.MinimumParameterNameLength,value: 1 }
   - { key: readability-identifier-length.MinimumVariableNameLength, value: 1 }
   - { key: readability-identifier-naming.PrivateMemberPrefix,       value: m }
+  - { key: readability-identifier-naming.PrivateMemberCase,         value: CamelCase }
+  - { key: readability-identifier-naming.PublicMemberPrefix,        value: m }
+  - { key: readability-identifier-naming.PublicMemberCase,          value: CamelCase }
   - { key: readability-identifier-naming.GlobalConstantCase,  	    value: CamelCase }
   - { key: readability-identifier-naming.ConstexprVariableCase,  	value: CamelCase }
