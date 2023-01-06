@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string_view>
 #include <cstdint>
+#include <string_view>
 
 namespace aoc_2022_2 {
 
