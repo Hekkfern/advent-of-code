@@ -29,6 +29,19 @@ def __check_min_python_version() -> None:
         __abort_execution("This script requires Python version 3.7 or newer.")
 
 
+def __store_current_preset(preset: str) -> None:
+    out_path = __get_root_project_path() / "out"
+    with open(out_path / "current_preset.txt", mode="w", encoding="utf-8") as file:
+        file.write(preset)
+
+
+def __read_current_preset() -> str:
+    out_path = __get_root_project_path() / "out"
+    with open(out_path / "current_preset.txt", mode="r", encoding="utf-8") as file:
+        preset: str = file.readline()
+    return preset
+
+
 def __fetch_last_version(force: bool = False) -> None:
     __clean_project()
     repo = git.Repo(__get_root_project_path())
@@ -81,14 +94,23 @@ def __generate_project(platform: PlatformType, years: typing.List[int], release:
     years_flag: str = '-DGENERATE_YEARS="' + ';'.join(map(str, years)) + '"'
     # run CMake
     command: str = f'cmake -S {root_path} --preset {preset} {ut_flag} {years_flag}'
-    execute_program(command, root_path)
+    execute_program(command)
     print()  # add empty line in stdout
+    # store generated preset
+    __store_current_preset(preset)
 
 
 def __build_project():
+    # get current preset name
+    preset = __read_current_preset()
+    # check if the CMakeCache.txt file of the current preset exists
+    out_preset_path = __get_root_project_path() / "out/build" / preset
+    if not (out_preset_path / "CMakeCache.txt").is_file():
+        __abort_execution("Output folder doesn't exist. Generate the project first.")
     # run CMake
-    # subprocess.run(cmake --build out)
-    pass
+    command: str = f'cmake --build {out_preset_path}'
+    execute_program(command)
+    print()  # add empty line in stdout
 
 
 def __add_new_day(year: int, day: int, is_forced: bool) -> None:
@@ -103,35 +125,44 @@ def __add_new_day(year: int, day: int, is_forced: bool) -> None:
         print(f"Task skipped. Already-existing files in \"{day_path.absolute()}\" folder.")
 
 
+def __add_generation_input_arguments(parser):
+    parser.add_argument("-r", "--release", action="store_true",
+                        help="Sets the release flags into the compilation environment.")
+    parser.add_argument(
+        "--platform", required=True, choices=["windows", "macos", "linux"],
+        help="Selects the platform where you are executing this script.")
+    parser.add_argument(
+        "--unit-tests", action="store_true", help="Generates the unit-test project too.")
+    parser.add_argument(
+        "--filter", type=apr.ranged_int(2015, 2050), nargs='+',
+        help="List of years whose puzzles will only be generated.")
+
+
 def __get_input_parameters():
     parser = argparse.ArgumentParser(
         description='Assistant software to operate this project in a easier way')
-    # parser.add_argument("--no-color", action="store_true",
-    #                     help="Disables all the colors in the output messages.")
     subparsers = parser.add_subparsers(dest="subcommand", required=True)
-    parser_build = subparsers.add_parser(
-        'build', help="Cleans, generates and compiles the project.")
+    # ----- generate -----
     parser_generate = subparsers.add_parser(
         'generate', help="Cleans the project and generates the project with CMake from scratch.")
-    parser_generate.add_argument("-r", "--release", action="store_true",
-                                 help="Sets the release flags into the compilation environment.")
-    parser_generate.add_argument(
-        "--platform", required=True, choices=["windows", "macos", "linux"],
-        help="Selects the platform where you are executing this script.")
-    parser_generate.add_argument(
-        "--unit-tests", action="store_true", help="Generates the unit-test project too.")
-    parser_generate.add_argument(
-        "--filter", type=apr.ranged_int(2015, 2050), nargs='+',
-        help="List of years whose puzzles will only be generated.")
+    __add_generation_input_arguments(parser_generate)
+    # ----- compile -----
     parser_compile = subparsers.add_parser(
-        'compile', help="Compiles the CMake project if it was previously generated.")
+        'compile', help="Compiles the last CMake project which was generated.")
+    # ----- build -----
+    parser_build = subparsers.add_parser(
+        'build', help="Cleans, generates and compiles the project.")
+    __add_generation_input_arguments(parser_build)
+    # ----- update -----
     parser_update = subparsers.add_parser(
         'update',
         help='Downloads the latest version in "master" branch for this project and updates all its dependencies.')
     parser_update.add_argument("-f", "--force", action="store_true",
                                help="Deletes all the pending changes in the repo.")
+    # ----- clean -----
     parser_clean = subparsers.add_parser(
         'clean', help="Deletes all the local data stored in the project.")
+    # ----- add_day -----
     parser_addday = subparsers.add_parser(
         'add_day', help='Set up the project to add a new "Advent Of Code" puzzle.')
     parser_addday.add_argument(
@@ -155,7 +186,7 @@ def main():
     args = __get_input_parameters()
     if args.subcommand == "build":
         __clean_project()
-        __generate_project(args.platform, args.release, args.unit_tests)
+        __generate_project(PlatformType.from_str(args.platform), args.filter, args.release, args.unit_tests)
         __build_project()
     elif args.subcommand == "update":
         __fetch_last_version(args.force)
