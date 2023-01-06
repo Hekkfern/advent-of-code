@@ -3,7 +3,6 @@
 import argparse
 import pathlib
 import shutil
-import subprocess
 import sys
 import typing
 
@@ -13,6 +12,7 @@ import git
 from internal import argparse_utils as apr
 from internal import puzzleassistant as pzas
 from internal.platform_type import PlatformType
+from internal.utils import execute_program
 
 
 def __abort_execution(msg: str) -> None:
@@ -81,11 +81,8 @@ def __generate_project(platform: PlatformType, years: typing.List[int], release:
     years_flag: str = '-DGENERATE_YEARS="' + ';'.join(map(str, years)) + '"'
     # run CMake
     command: str = f'cmake -S {root_path} --preset {preset} {ut_flag} {years_flag}'
-    with subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=root_path,
-                          universal_newlines=True, encoding='utf-8', bufsize=1) as p:
-        for line in p.stdout:
-            print(line, end='')
-    print()
+    execute_program(command, root_path)
+    print()  # add empty line in stdout
 
 
 def __build_project():
