@@ -11,11 +11,12 @@ class PlatformType(Enum):
 
     @staticmethod
     def from_str(label):
-        if label in ('windows', 'Windows', 'win'):
+        label_lower = label.lower()
+        if label_lower in ('windows', 'win'):
             return PlatformType.WINDOWS
-        elif label in ('linux', 'Linux'):
+        elif label_lower in ('linux', 'ubuntu'):
             return PlatformType.LINUX
-        elif label in ('macos', 'macOS', 'osx'):
+        elif label_lower in ('macos', 'osx'):
             return PlatformType.MACOS
         else:
             raise NotImplementedError

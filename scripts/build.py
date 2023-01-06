@@ -76,20 +76,16 @@ def __generate_project(platform: PlatformType, years: typing.List[int], release:
     else:
         raise ValueError
     # enable unit-tests
-    ut_flag: str = "-DGENERATE_UNIT_TESTS:BOOL="
-    if unittests:
-        ut_flag += "ON"
-    else:
-        ut_flag += "OFF"
+    ut_flag: str = '-DGENERATE_UNIT_TESTS:BOOL=' + ('ON' if unittests else 'OFF')
     # filter years
-    years_flag: str = "-DGENERATE_YEARS="
-    if years:
-        years_flag += '"' + ';'.join(map(str, years)) + '"'
-    else:
-        years_flag += '""'
+    years_flag: str = '-DGENERATE_YEARS="' + ';'.join(map(str, years)) + '"'
     # run CMake
     command: str = f'cmake -S {root_path} --preset {preset} {ut_flag} {years_flag}'
-    subprocess.run(command, shell=True, capture_output=True)
+    with subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=root_path,
+                          universal_newlines=True, encoding='utf-8', bufsize=1) as p:
+        for line in p.stdout:
+            print(line, end='')
+    print()
 
 
 def __build_project():
@@ -128,7 +124,8 @@ def __get_input_parameters():
     parser_generate.add_argument(
         "--unit-tests", action="store_true", help="Generates the unit-test project too.")
     parser_generate.add_argument(
-        "--filter", type=apr.aoc_year, nargs='+', help="List of years whose puzzles will only be generated.")
+        "--filter", type=apr.ranged_int(2015, 2050), nargs='+',
+        help="List of years whose puzzles will only be generated.")
     parser_compile = subparsers.add_parser(
         'compile', help="Compiles the CMake project if it was previously generated.")
     parser_update = subparsers.add_parser(
@@ -167,7 +164,7 @@ def main():
         __fetch_last_version(args.force)
     elif args.subcommand == "generate":
         __clean_project()
-        __generate_project(args.platform, args.filter, args.release, args.unit_tests)
+        __generate_project(PlatformType.from_str(args.platform), args.filter, args.release, args.unit_tests)
     elif args.subcommand == "compile":
         __build_project()
     elif args.subcommand == "clean":
