@@ -7,8 +7,6 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -26,8 +24,6 @@
     <a href="https://github.com/Hekkfern/advent-of-code/issues">Report Bug</a>
   </p>
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -50,30 +46,36 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
 
-This project has been created with the main goal to provide a easy-to-use development platform to
-solve [Advent of code](https://adventofcode.com/) puzzle.
+This project has been created with the main goal to provide a easy-to-use development platform to solve [Advent of code](https://adventofcode.com/) puzzles in C++.
+
+
 
 Features:
 
 * C++ 20 standard
-* `CMake`-based project: feel free to split your logic into several files and classes, if you wish.
+* `CMake`-based project: feel free to split your logic into several files and classes as you wish.
 * Quality tools: `clang-tidy`, sanitizers, compiler warnings, ...
 * `vcpkg` already integrated: import and use any C++ library very easily from
   the [vcpkg catalog](https://vcpkg.io/en/packages.html).
-* Unit-testing with `Catch2` library: create unit tests to validate the example inputs, or to validate that your future
-  changes don't break your code.
+* Unit-testing with `Catch2` library: create unit tests to validate the example inputs, or to validate that your future changes don't break your code.
 * Multi-platform: designed to be usable in Windows, Linux and MacOs.
 * Dockerization: if you don't want to pollute your computer with all the required development tools, there is a Docker
   image available to start developing in a matter of seconds.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+Tested on:
+
+| Platform | OS | Characteristics |
+|---|---|---|
+| Windows | Windows 10 | cmake X.X.X and MSVC v143 |
+| Linux | Ubuntu 22.04 | cmake X.X.X and GCC X.X.X |
+| Linux | Manjaro 22 | cmake X.X.X and GCC X.X.X |
+| Apple | macOS Monterey 12.6.1  (Intel processor) | cmake 3.25.1 and AppleClang 13.1.6.13160021 |
 
 <!-- GETTING STARTED -->
 
@@ -84,21 +86,47 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-First read the [Prerequisites](docs/prerequisites.md) page to install the necessary tools in your computer to be able to
-use this project.
-Read the corresponding section according to your operating system.
+First read this section to install the necessary tools in your computer to be able to use this project.
+
+#### Windows OS
+
+Install [Git](https://git-scm.com/download/win) for Windows.
+
+Install [Python](https://www.python.org/downloads/). The minimum required version is 3.7, although the most recent versions work correctly too. When the Python installer is executed, be sure that the `pip` package is also installed.
+
+Install [Visual Studio 2022 (Community Edition)](https://visualstudio.microsoft.com/vs/). Make sure you install, at least, the **Desktop Development for C++** package. After the installation finishes, open **Visual Studio Installer** and update Visual Studio to its latest version.
+
+#### Linux OS (Ubuntu 22.04)
+
+Install the following packages:
+
+```bash
+sudo apt-get -y install build-essential g++ cmake git python3 python3-pip ccache clang-format clang-tidy gdb pkg-config
+```
+
+#### MacOs OS
+
+Install [Homebrew](https://brew.sh/) for MacOS, as described in [Install Homebrew](https://docs.brew.sh/Installation) on its official webpage.
+
+Install some development tools:
+
+```bash
+brew install cmake python3 ccache clang-format llvm git
+```
+
+Install the latest version of **XCodes** from the **App Store**.
 
 ### Installation
 
-1. Clone the repo
-   ```sh
-   git clone --recursive https://github.com/Hekkfern/advent-of-code.git
-   ```
-2. a
+Clone the repo and all its submodules:
+
+```bash
+git clone --recursive https://github.com/Hekkfern/advent-of-code.git
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- USAGE EXAMPLES -->
+<!-- USAGE INSTRUCTIONS -->
 
 ## Usage
 
