@@ -1,12 +1,15 @@
 # CMakeList.txt : Top-level CMake project file, do global configuration and
 # include sub-projects here.
 
+include(${CMAKE_SOURCE_DIR}/cmake/ccache.cmake)
+
 cmake_minimum_required(VERSION 3.20)
 
 set(CMAKE_TOOLCHAIN_FILE
     "${CMAKE_CURRENT_SOURCE_DIR}/extern/vcpkg/scripts/buildsystems/vcpkg.cmake"
     CACHE STRING "Vcpkg toolchain file")
 
+option(USE_CCACHE "Use ccache in the project if it is available" ON)
 option(GENERATE_UNIT_TESTS
        "Generate the unit tests executables of every puzzle." ON)
 set(GENERATE_YEARS
@@ -15,6 +18,10 @@ set(GENERATE_YEARS
       INTERNAL
       "Generate the projects of the selected years. Or left empty to generate them all."
 )
+
+if(USE_CCACHE)
+  set_ccache()
+endif(USE_CCACHE)
 
 project(
   AdventOfCode

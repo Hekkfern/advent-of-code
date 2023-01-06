@@ -67,7 +67,7 @@ def __clean_project() -> None:
 
 
 def __generate_project(platform: PlatformType, years: typing.List[int], release: bool = False,
-                       unittests: bool = True) -> None:
+                       unittests: bool = True, ccache: bool = True) -> None:
     root_path = __get_root_project_path()
     # select preset
     preset: str = ""
@@ -92,8 +92,10 @@ def __generate_project(platform: PlatformType, years: typing.List[int], release:
     ut_flag: str = '-DGENERATE_UNIT_TESTS:BOOL=' + ('ON' if unittests else 'OFF')
     # filter years
     years_flag: str = '-DGENERATE_YEARS="' + ';'.join(map(str, years)) + '"'
+    # enable ccache
+    ccache_flag: str = '-DUSE_CCACHE:BOOL=' + ('ON' if ccache else 'OFF')
     # run CMake
-    command: str = f'cmake -S {root_path} --preset {preset} {ut_flag} {years_flag}'
+    command: str = f'cmake -S {root_path} --preset {preset} {ut_flag} {ccache_flag} {years_flag}'
     execute_program(command)
     print()  # add empty line in stdout
     # store generated preset
@@ -127,15 +129,18 @@ def __add_new_day(year: int, day: int, is_forced: bool) -> None:
 
 def __add_generation_input_arguments(parser):
     parser.add_argument("-r", "--release", action="store_true",
-                        help="Sets the release flags into the compilation environment.")
+                        help="Sets the release flags into the compilation environment (default: %(default)s)")
     parser.add_argument(
         "--platform", required=True, choices=["windows", "macos", "linux"],
-        help="Selects the platform where you are executing this script.")
+        help="Selects the platform where you are executing this script")
     parser.add_argument(
-        "--unit-tests", action="store_true", help="Generates the unit-test project too.")
+        "--unit-tests", action="store_false", help="Generates the unit-test project too (default: %(default)s)")
     parser.add_argument(
         "--filter", type=apr.ranged_int(2015, 2050), nargs='+',
-        help="List of years whose puzzles will only be generated.")
+        help="List of years whose puzzles will only be generated. (default: everything is generated)")
+    parser.add_argument(
+        "--ccache", action="store_false",
+        help="Use ccache in the project if it is available (default: %(default)s)")
 
 
 def __get_input_parameters():
@@ -144,36 +149,36 @@ def __get_input_parameters():
     subparsers = parser.add_subparsers(dest="subcommand", required=True)
     # ----- generate -----
     parser_generate = subparsers.add_parser(
-        'generate', help="Cleans the project and generates the project with CMake from scratch.")
+        'generate', help="Cleans the project and generates the project with CMake from scratch")
     __add_generation_input_arguments(parser_generate)
     # ----- compile -----
     parser_compile = subparsers.add_parser(
-        'compile', help="Compiles the last CMake project which was generated.")
+        'compile', help="Compiles the last CMake project which was generated")
     # ----- build -----
     parser_build = subparsers.add_parser(
-        'build', help="Cleans, generates and compiles the project.")
+        'build', help="Cleans, generates and compiles the project")
     __add_generation_input_arguments(parser_build)
     # ----- update -----
     parser_update = subparsers.add_parser(
         'update',
-        help='Downloads the latest version in "master" branch for this project and updates all its dependencies.')
+        help='Downloads the latest version in "master" branch for this project and updates all its dependencies')
     parser_update.add_argument("-f", "--force", action="store_true",
-                               help="Deletes all the pending changes in the repo.")
+                               help="Deletes all the pending changes in the repo")
     # ----- clean -----
     parser_clean = subparsers.add_parser(
-        'clean', help="Deletes all the local data stored in the project.")
+        'clean', help="Deletes all the local data stored in the project")
     # ----- add_day -----
     parser_addday = subparsers.add_parser(
-        'add_day', help='Set up the project to add a new "Advent Of Code" puzzle.')
+        'add_day', help='Set up the project to add a new "Advent Of Code" puzzle')
     parser_addday.add_argument(
         "--year", type=apr.ranged_int(2015, 2050), required=True,
-        help="Selects the year (format XXXX, as for instance, 2023) of the puzzle to generate.")
+        help="Selects the year (format XXXX, as for instance, 2023) of the puzzle to generate")
     parser_addday.add_argument(
         "--day", type=apr.ranged_int(1, 25), required=True,
-        help="Selects the day (from 1 to 25) of the puzzle to generate.")
+        help="Selects the day (from 1 to 25) of the puzzle to generate")
     parser_addday.add_argument(
         "-f", "--force", action="store_true",
-        help="Forces the overwrite of existing files.")
+        help="Forces the overwrite of existing files")
 
     return parser.parse_args()
 
