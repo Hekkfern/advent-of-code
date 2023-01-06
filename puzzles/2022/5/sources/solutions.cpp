@@ -37,8 +37,8 @@ std::vector<CrateStack> parseInputStacks(std::ifstream& fileStream)
             crateStackList[stack].push_back(line[i]);
         }
     }
-    // flip the vectors, so we have the top character in the lowest index
-    std::reverse(std::begin(crateStackList), std::end(crateStackList));
+    // flip all the vectors, so we have the top character in the highest index
+    std::ranges::for_each(crateStackList, std::ranges::reverse);
     // eat the empty-line after the initial state
     std::getline(fileStream, line);
 
@@ -64,7 +64,7 @@ std::string generateResult(const std::vector<CrateStack>& crateStackList)
     std::string result;
 
     for (const auto& crate : crateStackList) {
-        if (crate.size() == 0) {
+        if (crate.empty()) {
             continue;
         }
         result += crate.back();
