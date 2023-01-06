@@ -3,13 +3,16 @@
 import argparse
 import pathlib
 import shutil
+import subprocess
 import sys
+import typing
 
 import colorama
 import git
 
 from internal import argparse_utils as apr
 from internal import puzzleassistant as pzas
+from internal.platform_type import PlatformType
 
 
 def __abort_execution(msg: str) -> None:
@@ -44,10 +47,54 @@ def __fetch_last_version(force: bool = False) -> None:
 
 def __clean_project() -> None:
     root_path = __get_root_project_path()
+    shutil.rmtree(root_path / ".idea", ignore_errors=True)
+    shutil.rmtree(root_path / ".vs", ignore_errors=True)
+    shutil.rmtree(root_path / ".vscode", ignore_errors=True)
     shutil.rmtree(root_path / "out", ignore_errors=True)
 
 
-def __generate_project() -> None:
+def __generate_project(platform: PlatformType, years: typing.List[int], release: bool = False,
+                       unittests: bool = True) -> None:
+    root_path = __get_root_project_path()
+    # select preset
+    preset: str = ""
+    if platform == PlatformType.WINDOWS:
+        if release:
+            preset = "windows-x64-release"
+        else:
+            preset = "windows-x64-debug"
+    elif platform == PlatformType.LINUX:
+        if release:
+            preset = "linux-x64-release"
+        else:
+            preset = "linux-x64-debug"
+    elif platform == PlatformType.MACOS:
+        if release:
+            preset = "macos-x64-release"
+        else:
+            preset = "macos-x64-debug"
+    else:
+        raise ValueError
+    # enable unit-tests
+    ut_flag: str = "-DGENERATE_UNIT_TESTS:BOOL="
+    if unittests:
+        ut_flag += "ON"
+    else:
+        ut_flag += "OFF"
+    # filter years
+    years_flag: str = "-DGENERATE_YEARS="
+    if years:
+        years_flag += '"' + ';'.join(map(str, years)) + '"'
+    else:
+        years_flag += '""'
+    # run CMake
+    command: str = f'cmake -S {root_path} --preset {preset} {ut_flag} {years_flag}'
+    subprocess.run(command, shell=True, capture_output=True)
+
+
+def __build_project():
+    # run CMake
+    # subprocess.run(cmake --build out)
     pass
 
 
@@ -73,10 +120,15 @@ def __get_input_parameters():
         'build', help="Cleans, generates and compiles the project.")
     parser_generate = subparsers.add_parser(
         'generate', help="Cleans the project and generates the project with CMake from scratch.")
-    parser_generate.add_argument("-d", "--debug", action="store_true",
-                                 help="Sets the debug flags into the compilation environment.")
+    parser_generate.add_argument("-r", "--release", action="store_true",
+                                 help="Sets the release flags into the compilation environment.")
     parser_generate.add_argument(
-        "-ut", "--unit-tests", action="store_true", help="Generates the unit-test project too.")
+        "--platform", required=True, choices=["windows", "macos", "linux"],
+        help="Selects the platform where you are executing this script.")
+    parser_generate.add_argument(
+        "--unit-tests", action="store_true", help="Generates the unit-test project too.")
+    parser_generate.add_argument(
+        "--filter", type=apr.aoc_year, nargs='+', help="List of years whose puzzles will only be generated.")
     parser_compile = subparsers.add_parser(
         'compile', help="Compiles the CMake project if it was previously generated.")
     parser_update = subparsers.add_parser(
@@ -89,10 +141,10 @@ def __get_input_parameters():
     parser_addday = subparsers.add_parser(
         'add_day', help='Set up the project to add a new "Advent Of Code" puzzle.')
     parser_addday.add_argument(
-        "-y", "--year", type=apr.ranged_int(2015, 2050), required=True,
+        "--year", type=apr.ranged_int(2015, 2050), required=True,
         help="Selects the year (format XXXX, as for instance, 2023) of the puzzle to generate.")
     parser_addday.add_argument(
-        "-d", "--day", type=apr.ranged_int(1, 25), required=True,
+        "--day", type=apr.ranged_int(1, 25), required=True,
         help="Selects the day (from 1 to 25) of the puzzle to generate.")
     parser_addday.add_argument(
         "-f", "--force", action="store_true",
@@ -108,14 +160,16 @@ def main():
 
     args = __get_input_parameters()
     if args.subcommand == "build":
-        pass
+        __clean_project()
+        __generate_project(args.platform, args.release, args.unit_tests)
+        __build_project()
     elif args.subcommand == "update":
         __fetch_last_version(args.force)
     elif args.subcommand == "generate":
         __clean_project()
-        __generate_project()
+        __generate_project(args.platform, args.filter, args.release, args.unit_tests)
     elif args.subcommand == "compile":
-        pass
+        __build_project()
     elif args.subcommand == "clean":
         __clean_project()
     elif args.subcommand == "add_day":
