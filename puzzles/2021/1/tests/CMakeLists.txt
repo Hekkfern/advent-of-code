@@ -13,6 +13,10 @@ set_compiler_flags(${_EXEC_NAME})
 set_vectorization_flags(${_EXEC_NAME})
 target_link_libraries(${_EXEC_NAME} PRIVATE aoc_2021_1_solutions PRIVATE aoc_utils PRIVATE Catch2::Catch2WithMain)
 
+include(CTest)
+include(Catch)
+catch_discover_tests(${_EXEC_NAME})
+
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../sources/input.txt
         ${CMAKE_CURRENT_BINARY_DIR}/input.txt COPYONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input_test.txt

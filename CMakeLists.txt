@@ -37,6 +37,8 @@ project(
   HOMEPAGE_URL "https://github.com/Hekkfern/advent-of-code"
   LANGUAGES CXX)
 
+enable_testing()
+
 include(${CMAKE_SOURCE_DIR}/cmake/top_level_project.cmake)
 is_top_level_project()
 
