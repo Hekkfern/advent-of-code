@@ -1,5 +1,27 @@
 # Docker images
 
+## Table of contents
+
+- [Docker images](#docker-images)
+  - [Table of contents](#table-of-contents)
+  - [Ubuntu 22](#ubuntu-22)
+    - [Build](#build)
+    - [Push](#push)
+    - [Run manually](#run-manually)
+  - [Fedora 37](#fedora-37)
+    - [Build](#build-1)
+    - [Push](#push-1)
+    - [Run manually](#run-manually-1)
+  - [Arch Linux](#arch-linux)
+    - [Build](#build-2)
+    - [Push](#push-2)
+    - [Run manually](#run-manually-2)
+  - [Alpine](#alpine)
+    - [Build](#build-3)
+    - [Push](#push-3)
+    - [Run manually](#run-manually-3)
+
+
 ## Ubuntu 22
 
 ### Build
@@ -11,7 +33,13 @@ docker build -f ubuntu.Dockerfile -t hekkfern/aoc_cpp:ubuntu .
 ### Push
 
 ```bash
-docker push hekkfern/aoc_cpp::ubuntu
+docker push hekkfern/aoc_cpp:ubuntu
+```
+
+### Run manually
+
+```bash
+docker run -it hekkfern/aoc_cpp:ubuntu
 ```
 
 ## Fedora 37
@@ -25,7 +53,13 @@ docker build -f fedora.Dockerfile -t hekkfern/aoc_cpp:fedora .
 ### Push
 
 ```bash
-docker push hekkfern/aoc_cpp::fedora
+docker push hekkfern/aoc_cpp:fedora
+```
+
+### Run manually
+
+```bash
+docker run -it hekkfern/aoc_cpp:fedora
 ```
 
 ## Arch Linux
@@ -39,13 +73,13 @@ docker build -f archlinux.Dockerfile -t hekkfern/aoc_cpp:archlinux .
 ### Push
 
 ```bash
-docker push hekkfern/aoc_cpp::archlinux
+docker push hekkfern/aoc_cpp:archlinux
 ```
 
 ### Run manually
 
 ```bash
-docker run -it hekkfern/aoc_cpp::archlinux
+docker run -it hekkfern/aoc_cpp:archlinux
 ```
 
 ## Alpine
@@ -59,11 +93,11 @@ docker build -f alpine.Dockerfile -t hekkfern/aoc_cpp:alpine .
 ### Push
 
 ```bash
-docker push hekkfern/aoc_cpp::alpine
+docker push hekkfern/aoc_cpp:alpine
 ```
 
 ### Run manually
 
 ```bash
-docker run -it hekkfern/aoc_cpp::alpine
+docker run -it hekkfern/aoc_cpp:alpine
 ```
