@@ -56,12 +56,12 @@ macro(set_vectorization_flags target_name)
   if(_march_native_works)
     message(
       STATUS
-        "Using processor's vector instructions (-march=native compiler flag set)"
+        "Using processor's vector instructions (-march=native compiler flag set) in \"${target_name}\""
     )
     set(_CXX_FLAGS "-march=native")
   elseif(_xhost_works)
     message(
-      STATUS "Using processor's vector instructions (-xHost compiler flag set)")
+      STATUS "Using processor's vector instructions (-xHost compiler flag set) in \"${target_name}\"")
     set(_CXX_FLAGS "-xHost")
   else()
     message(STATUS "No suitable compiler flag found for vectorization")

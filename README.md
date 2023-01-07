@@ -58,9 +58,11 @@ Features:
 
 * C++ 20 standard
 * `CMake`-based project: feel free to split your logic into several files and classes as you wish.
-* Quality tools: `clang-tidy`, sanitizers, compiler warnings, ...
-* `vcpkg` already integrated: import and use any C++ library very easily from
-  the [vcpkg catalog](https://vcpkg.io/en/packages.html).
+* Fast compilation with `ccache`
+* Use of native CPU instructions to minimize the execution times.
+* Quality tools: `clang-tidy`, `cppcheck`, sanitizers, compiler warnings, ...
+* `vcpkg` already integrated: import and use any C++ library very easily from the [vcpkg catalog](https://vcpkg.io/en/packages.html).
+* CI/CD multi-platform pipelines to validate that everything works as it should in every platform available.
 * Unit-testing with `Catch2` library: create unit tests to validate the example inputs, or to validate that your future changes don't break your code.
 * Multi-platform: designed to be usable in Windows, Linux and MacOs.
 * Dockerization: if you don't want to pollute your computer with all the required development tools, there is a Docker
@@ -70,12 +72,12 @@ Features:
 
 Tested on:
 
-| Platform | OS | Characteristics |
-|---|---|---|
-| Windows | Windows 10 | cmake X.X.X and MSVC v143 |
-| Linux | Ubuntu 22.04 | cmake X.X.X and GCC X.X.X |
-| Linux | Manjaro 22 | cmake X.X.X and GCC X.X.X |
-| Apple | macOS Monterey 12.6.1  (Intel processor) | cmake 3.25.1 and AppleClang 13.1.6.13160021 |
+| Platform | OS                                       | Generator | Cmake version | Compiler                   |
+| -------- | ---------------------------------------- | --------- | ------------- | -------------------------- |
+| Windows  | Windows 10                               | Ninja     | X.X.X         | MSVC v143                  |
+| Linux    | Ubuntu 22.04                             | Ninja     | X.X.X         | GCC X.X.X                  |
+| Linux    | Manjaro 22                               | Ninja     | X.X.X         | GCC X.X.X                  |
+| Apple    | macOS Monterey 12.6.1  (Intel processor) | Ninja     | 3.25.1        | AppleClang 13.1.6.13160021 |
 
 <!-- GETTING STARTED -->
 

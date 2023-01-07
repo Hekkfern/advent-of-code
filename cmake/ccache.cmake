@@ -2,7 +2,7 @@
 # even the project() command is called, since project() performs checking on the
 # compilers to be used.
 macro(set_ccache)
-  find_program(CCACHE_PROGRAM ccache)
+  find_program(CCACHE_PROGRAM NAMES ccache)
   if(CCACHE_PROGRAM)
     message(STATUS "ccache found in the system.")
     # configure ccache
