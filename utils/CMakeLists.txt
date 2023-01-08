@@ -10,13 +10,13 @@ set_cpp_standard(${_LIBRARY_NAME})
 set_compiler_flags(${_LIBRARY_NAME})
 set_vectorization_flags(${_LIBRARY_NAME})
 target_sources(
-  ${_LIBRARY_NAME}
-  PRIVATE src/ContainerUtils.cpp src/FileUtils.cpp src/AocUtils.cpp
-          src/StringUtils.cpp src/TimeUtils.cpp)
+        ${_LIBRARY_NAME}
+        PRIVATE src/FileUtils.cpp src/AocUtils.cpp
+        src/StringUtils.cpp src/TimeUtils.cpp)
 target_include_directories(
-  ${_LIBRARY_NAME}
-  PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/utils>
-          $<INSTALL_INTERFACE:include/utils> $<INSTALL_INTERFACE:src>
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-         $<INSTALL_INTERFACE:include>)
+        ${_LIBRARY_NAME}
+        PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/utils>
+        $<INSTALL_INTERFACE:include/utils> $<INSTALL_INTERFACE:src>
+        PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>)

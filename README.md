@@ -96,6 +96,8 @@ Install [Git](https://git-scm.com/download/win) for Windows.
 
 Install [Python](https://www.python.org/downloads/). The minimum required version is 3.7, although the most recent versions work correctly too. When the Python installer is executed, be sure that the `pip` package is also installed.
 
+Install cppcheck.
+
 Install [Visual Studio 2022 (Community Edition)](https://visualstudio.microsoft.com/vs/). Make sure you install, at least, the **Desktop Development for C++** package. After the installation finishes, open **Visual Studio Installer** and update Visual Studio to its latest version.
 
 #### Linux OS (Ubuntu 22.04)
@@ -103,7 +105,7 @@ Install [Visual Studio 2022 (Community Edition)](https://visualstudio.microsoft.
 Install the following packages:
 
 ```bash
-sudo apt-get -y install build-essential g++ cmake git python3 python3-pip ccache clang-format clang-tidy gdb pkg-config
+sudo apt-get -y install build-essential g++ cmake git python3 python3-pip ccache clang-format clang-tidy gdb pkg-config cppcheck
 ```
 
 #### MacOs OS
@@ -113,7 +115,7 @@ Install [Homebrew](https://brew.sh/) for MacOS, as described in [Install Homebre
 Install some development tools:
 
 ```bash
-brew install cmake python3 ccache clang-format llvm git
+brew install cmake python3 ccache clang-format llvm git cppcheck
 ```
 
 Install the latest version of **XCodes** from the **App Store**.
