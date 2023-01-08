@@ -66,8 +66,8 @@ def __clean_project() -> None:
     shutil.rmtree(root_path / "out", ignore_errors=True)
 
 
-def __generate_project(platform: PlatformType, years: typing.List[int], release: bool = False,
-                       unittests: bool = True, ccache: bool = True) -> None:
+def __generate_project(platform: PlatformType, years: typing.List[int], release: bool,
+                       unittests: bool, ccache: bool, cppcheck:bool) -> None:
     root_path = __get_root_project_path()
     # select preset
     preset: str = ""
@@ -94,6 +94,8 @@ def __generate_project(platform: PlatformType, years: typing.List[int], release:
     years_flag: str = '-DGENERATE_YEARS="' + ';'.join(map(str, years)) + '"'
     # enable ccache
     ccache_flag: str = '-DUSE_CCACHE:BOOL=' + ('ON' if ccache else 'OFF')
+    # enable cppcheck
+    cppcheck_flag: str = '-DUSE_CPPCHECK:BOOL=' + ('ON' if cppcheck else 'OFF')
     # run CMake
     command: str = f'cmake -S {root_path} --preset {preset} {ut_flag} {ccache_flag} {years_flag}'
     execute_program(command)
@@ -134,13 +136,16 @@ def __add_generation_input_arguments(parser):
         "--platform", required=True, choices=["windows", "macos", "linux"],
         help="Selects the platform where you are executing this script")
     parser.add_argument(
-        "--unit-tests", action="store_false", help="Generates the unit-test project too (default: %(default)s)")
+        "--no-unit-tests", action="store_false", help="Don't generate the unit-test projects")
     parser.add_argument(
         "--filter", type=apr.ranged_int(2015, 2050), nargs='+',
         help="List of years whose puzzles will only be generated. (default: everything is generated)")
     parser.add_argument(
-        "--ccache", action="store_false",
-        help="Use ccache in the project if it is available (default: %(default)s)")
+        "--no-ccache", action="store_false",
+        help="Disable usage of ccache in the project if it is available")
+    parser.add_argument(
+        "--no-cppcheck", action="store_false",
+        help="Disable usage of cppcheck in the project if it is available")
 
 
 def __get_input_parameters():
@@ -191,13 +196,13 @@ def main():
     args = __get_input_parameters()
     if args.subcommand == "build":
         __clean_project()
-        __generate_project(PlatformType.from_str(args.platform), args.filter, args.release, args.unit_tests)
+        __generate_project(PlatformType.from_str(args.platform), args.filter, args.release, not args.no_unit_tests, not args.no_ccache, not args.no_cppcheck))
         __build_project()
     elif args.subcommand == "update":
         __fetch_last_version(args.force)
     elif args.subcommand == "generate":
         __clean_project()
-        __generate_project(PlatformType.from_str(args.platform), args.filter, args.release, args.unit_tests)
+        __generate_project(PlatformType.from_str(args.platform), args.filter, args.release, not args.no_unit_tests, not args.no_ccache, not args.no_cppcheck)
     elif args.subcommand == "compile":
         __build_project()
     elif args.subcommand == "clean":

@@ -7,7 +7,7 @@ find_package(Catch2 3 CONFIG REQUIRED)
 # aoc_2021_1_tests
 set(_EXEC_NAME "aoc_2021_1_tests")
 add_executable(${_EXEC_NAME} unittests.cpp)
-setup_tests(${_EXEC_NAME})
+setup_test(${_EXEC_NAME})
 target_link_libraries(${_EXEC_NAME} PRIVATE aoc_2021_1_solutions PRIVATE aoc_utils PRIVATE Catch2::Catch2WithMain)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../sources/input.txt

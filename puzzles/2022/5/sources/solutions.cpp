@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <range/v3/all.hpp>
 
 namespace aoc_2022_5 {
 
@@ -38,7 +39,7 @@ std::vector<CrateStack> parseInputStacks(std::ifstream& fileStream)
         }
     }
     // flip all the vectors, so we have the top character in the highest index
-    std::ranges::for_each(crateStackList, std::ranges::reverse);
+    ranges::for_each(crateStackList, ranges::reverse);
     // eat the empty-line after the initial state
     std::getline(fileStream, line);
 

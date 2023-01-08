@@ -1,7 +1,7 @@
 #include "stacks.h"
 
 #include <algorithm>
-#include <ranges>
+#include <range/v3/all.hpp>
 
 namespace aoc_2022_5 {
 
@@ -11,10 +11,10 @@ void executeCrateInstruction(
 {
     auto& originStack = crateStackList[craneInstruction.mOriginStackIndex];
     // view of the last elements of the stack, in reverse order
-    auto originStackView = originStack | std::views::reverse
-        | std::views::take(craneInstruction.mNumCrates);
+    auto originStackView = originStack | ranges::views::reverse
+        | ranges::views::take(craneInstruction.mNumCrates);
     // copy to the end of the other stack
-    std::ranges::copy(
+    ranges::copy(
         originStackView,
         std::back_inserter(
             crateStackList[craneInstruction.mDestinationStackIndex]));

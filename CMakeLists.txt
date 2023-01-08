@@ -9,6 +9,7 @@ set(CMAKE_TOOLCHAIN_FILE
 
 option(GENERATE_UNIT_TESTS
         "Generate the unit tests executables of every puzzle." ON)
+
 set(GENERATE_YEARS
         ""
         CACHE
@@ -17,14 +18,12 @@ set(GENERATE_YEARS
         )
 
 option(USE_CCACHE "Use ccache in the project if it is available" ON)
-
 if (USE_CCACHE)
     include(${CMAKE_SOURCE_DIR}/cmake/ccache.cmake)
     set_ccache()
 endif (USE_CCACHE)
 
 option(USE_CPPCHECK "Use cppcheck in the project if it is available" ON)
-
 if (USE_CPPCHECK)
     include(${CMAKE_SOURCE_DIR}/cmake/cppcheck.cmake)
     set_cppcheck()

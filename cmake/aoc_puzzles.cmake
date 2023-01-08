@@ -9,7 +9,7 @@ macro(setup_puzzle target_name)
     set_vectorization_flags(${target_name})
 endmacro()
 
-macro(setup_tests target_name)
+macro(setup_test target_name)
     set_cpp_standard(${target_name})
     set_compiler_flags(${target_name})
     set_vectorization_flags(${target_name})
