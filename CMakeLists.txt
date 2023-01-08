@@ -30,6 +30,9 @@ if(USE_CPPCHECK)
   set_cppcheck()
 endif(USE_CPPCHECK)
 
+include(${CMAKE_SOURCE_DIR}/cmake/min_compiler_version.cmake)
+check_min_compiler_vesion()
+
 project(
   AdventOfCode
   VERSION 1.0.0
