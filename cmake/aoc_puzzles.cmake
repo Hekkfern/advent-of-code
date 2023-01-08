@@ -1,3 +1,5 @@
+include_guard(GLOBAL)
+
 include(${CMAKE_SOURCE_DIR}/cmake/compiler_flags.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/cpp_standard.cmake)
 

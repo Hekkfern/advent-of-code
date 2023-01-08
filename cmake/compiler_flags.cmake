@@ -1,3 +1,5 @@
+include_guard(GLOBAL)
+
 include(CheckCXXCompilerFlag)
 
 macro(set_compiler_flags target_name)

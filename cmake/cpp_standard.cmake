@@ -1,3 +1,5 @@
+include_guard(GLOBAL)
+
 macro(set_cpp_standard target_name)
   # C++20 standard
   set_target_properties(

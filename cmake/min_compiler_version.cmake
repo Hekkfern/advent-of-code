@@ -1,3 +1,5 @@
+include_guard(GLOBAL)
+
 macro(check_min_compiler_vesion)
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 10)

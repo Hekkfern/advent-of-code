@@ -1,3 +1,5 @@
+include_guard(GLOBAL)
+
 # NOTE: This global property should be set as early as possible, ideally before
 # even the project() command is called, since project() performs checking on the
 # compilers to be used.

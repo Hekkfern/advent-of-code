@@ -1,3 +1,5 @@
+include_guard(GLOBAL)
+
 macro(set_cppcheck)
   find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
   if(CMAKE_CXX_CPPCHECK)

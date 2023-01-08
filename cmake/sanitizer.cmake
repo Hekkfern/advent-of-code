@@ -1,3 +1,5 @@
+include_guard(GLOBAL)
+
 function(enable_sanitizer SANITIZER)
   if(NOT MSVC)
     add_compile_options(-fsanitize=${SANITIZER} -fno-omit-frame-pointer)
