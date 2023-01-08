@@ -8,6 +8,11 @@
             "name": "catch2",
             "version>=": "3.1.0",
             "default-features": true
+        },
+        {
+            "name": "range-v3",
+            "version>=": "0.12.0",
+            "default-features": true
         }
     ],
     "builtin-baseline": "6f7ffeb18f99796233b958aaaf14ec7bd4fb64b2"

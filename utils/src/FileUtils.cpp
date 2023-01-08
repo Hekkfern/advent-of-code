@@ -29,7 +29,7 @@ std::optional<std::vector<std::string>> readListOfStrings(const std::string& fil
     std::string line;
 
     while (std::getline(myfile, line)) {
-        outList.emplace_back(std::move(line));
+        outList.emplace_back(line);
     }
 
     return outList;
