@@ -5,6 +5,6 @@
 
 namespace utils::TimeUtils {
 
-std::chrono::milliseconds calculateExecutionTime(std::function<void()>&& action);
+std::chrono::microseconds calculateExecutionTime(std::function<void()>&& action);
 
 }
