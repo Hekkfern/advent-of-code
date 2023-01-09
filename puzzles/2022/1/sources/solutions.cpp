@@ -7,24 +7,7 @@
 
 namespace aoc_2022_1 {
 
-std::string solvePart1(const std::string& filename)
-{
-    std::ifstream stream{ filename };
-    std::string line;
-    uint32_t highestSum = 0U;
-    uint32_t currentSum = 0U;
-
-    while (std::getline(stream, line)) {
-        if (utils::StringUtils::trim(line).empty()) {
-            highestSum = (currentSum > highestSum) ? currentSum : highestSum;
-            currentSum = 0U;
-        } else {
-            currentSum += utils::StringUtils::toNumber<uint32_t>(line);
-        }
-    }
-
-    return std::to_string(highestSum);
-}
+#pragma region Private_Methods
 
 constexpr uint32_t TopQuantity{ 3U };
 
@@ -48,6 +31,29 @@ void insertInRanking(
     }
 }
 
+#pragma endregion Private_Methods
+
+#pragma region Public_Methods
+
+std::string solvePart1(const std::string& filename)
+{
+    std::ifstream stream{ filename };
+    std::string line;
+    uint32_t highestSum = 0U;
+    uint32_t currentSum = 0U;
+
+    while (std::getline(stream, line)) {
+        if (utils::StringUtils::trim(line).empty()) {
+            highestSum = (currentSum > highestSum) ? currentSum : highestSum;
+            currentSum = 0U;
+        } else {
+            currentSum += utils::StringUtils::toNumber<uint32_t>(line);
+        }
+    }
+
+    return std::to_string(highestSum);
+}
+
 std::string solvePart2(const std::string& filename)
 {
     std::ifstream stream{ filename };
@@ -68,5 +74,7 @@ std::string solvePart2(const std::string& filename)
 
     return std::to_string(ranges::accumulate(highestSums, 0U));
 }
+
+#pragma endregion Public_Methods
 
 } // namespace aoc_2022_1

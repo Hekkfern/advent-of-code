@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <stdexcept>
 #include <unordered_set>
-#include <vector>
 
 namespace aoc_2022_3 {
 
