@@ -8,6 +8,9 @@
 out/
 build/
 
+# Test folders
+Testing/
+
 # vcpkg folders
 vcpkg_installed/
 
