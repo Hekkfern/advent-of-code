@@ -106,7 +106,7 @@ def __generate_project(platform: PlatformType, years: typing.List[int], release:
     __store_current_preset(preset)
 
 
-def __build_project():
+def __compile_project():
     # get current preset name
     preset = __read_current_preset()
     # check if the CMakeCache.txt file of the current preset exists
@@ -115,6 +115,13 @@ def __build_project():
         __abort_execution("Output folder doesn't exist. Generate the project first.")
     # run CMake
     command: str = f'cmake --build {out_preset_path}'
+    execute_program(command)
+    print()  # add empty line in stdout
+
+
+def __test_project():
+    # run CTest
+    command: str = 'ctest'
     execute_program(command)
     print()  # add empty line in stdout
 
@@ -202,20 +209,20 @@ def main():
     if args.subcommand == "build":
         __generate_project(PlatformType.from_str(args.platform), args.years, args.release, not args.no_unit_tests,
                            not args.no_ccache, not args.no_cppcheck)
-        __build_project()
+        __compile_project()
     elif args.subcommand == "update":
         __fetch_last_version(args.force)
     elif args.subcommand == "generate":
         __generate_project(PlatformType.from_str(args.platform), args.years, args.release, not args.no_unit_tests,
                            not args.no_ccache, not args.no_cppcheck)
     elif args.subcommand == "compile":
-        __build_project()
+        __compile_project()
     elif args.subcommand == "clean":
         __clean_project()
     elif args.subcommand == "add_day":
         __add_new_day(args.year, args.day, args.force)
     elif args.subcommand == "test":
-        pass
+        __test_project()
     else:
         # Unreachable option
         sys.exit(1)
