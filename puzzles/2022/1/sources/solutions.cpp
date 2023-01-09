@@ -1,9 +1,8 @@
 #include "solutions.hpp"
 
-#include <algorithm>
 #include <array>
 #include <fstream>
-#include <numeric>
+#include <range/v3/all.hpp>
 #include <utils/StringUtils.hpp>
 
 namespace aoc_2022_1 {
@@ -29,14 +28,19 @@ std::string solvePart1(const std::string& filename)
 
 constexpr uint32_t TopQuantity{ 3U };
 
+/**
+ * @brief Checks whether the candidate can be inserted in the provided top
+ * ranking.
+ *
+ * @param[in,out] highestSums Ranking to use.
+ * @param[in] candidate Candidate value to insert into the ranking.
+ */
 void insertInRanking(
     std::array<uint32_t, TopQuantity>& highestSums,
     uint32_t candidate)
 {
-    auto it = std::find_if(
-        std::begin(highestSums),
-        std::end(highestSums),
-        [candidate](uint32_t value) { return candidate > value; });
+    auto it = ranges::find_if(
+        highestSums, [candidate](uint32_t value) { return candidate > value; });
     if (it != std::end(highestSums)) {
         std::copy_backward(
             it, std::end(highestSums) - 1, std::end(highestSums));
@@ -62,8 +66,7 @@ std::string solvePart2(const std::string& filename)
     }
     insertInRanking(highestSums, currentSum);
 
-    return std::to_string(
-        std::accumulate(std::begin(highestSums), std::end(highestSums), 0U));
+    return std::to_string(ranges::accumulate(highestSums, 0U));
 }
 
 } // namespace aoc_2022_1

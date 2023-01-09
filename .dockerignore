@@ -5,10 +5,22 @@ README.md
 .devcontainer/
 
 # IDEs
-*/.DS_Store
+**/.DS_Store
 **/.idea/
 **/.vscode/
 **/.vs/
 
 # Build folders
-**/build/
+out/
+build/
+
+# Test folders
+Testing/
+
+# vcpkg folders
+vcpkg_installed/
+
+# Python
+.venv/
+**/__pycache__/
+
