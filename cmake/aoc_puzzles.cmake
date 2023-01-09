@@ -16,5 +16,5 @@ macro(setup_test target_name)
 
     include(CTest)
     include(Catch)
-    catch_discover_tests(${_EXEC_NAME})
+    catch_discover_tests(${target_name})
 endmacro()
