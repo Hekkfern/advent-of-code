@@ -4,11 +4,13 @@
 
 #include <algorithm>
 #include <fstream>
+#include <range/v3/all.hpp>
 #include <sstream>
 #include <vector>
-#include <range/v3/all.hpp>
 
 namespace aoc_2022_5 {
+
+// ---------- Private Methods ----------
 
 std::vector<CrateStack> parseInputStacks(std::ifstream& fileStream)
 {
@@ -74,6 +76,10 @@ std::string generateResult(const std::vector<CrateStack>& crateStackList)
     return result;
 }
 
+// ---------- End of Private Methods ----------
+
+// ---------- Public Methods ----------
+
 std::string solvePart1(const std::string& filename)
 {
     std::ifstream fileStream{ filename };
@@ -91,5 +97,7 @@ std::string solvePart2(const std::string& filename)
     (void)filename;
     return "";
 }
+
+// ---------- End of Private Methods ----------
 
 } // namespace aoc_2022_5

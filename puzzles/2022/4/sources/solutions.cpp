@@ -8,6 +8,8 @@
 
 namespace aoc_2022_4 {
 
+// ---------- Private Methods ----------
+
 constexpr uint32_t GroupSize{ 2U };
 
 std::array<SectionRange, GroupSize> parseInputLine(const std::string& line)
@@ -41,6 +43,10 @@ std::array<SectionRange, GroupSize> parseInputLine(const std::string& line)
     return sections;
 }
 
+// ---------- End of Private Methods ----------
+
+// ---------- Public Methods ----------
+
 std::string solvePart1(const std::string& filename)
 {
     std::ifstream fileStream{ filename };
@@ -72,5 +78,7 @@ std::string solvePart2(const std::string& filename)
 
     return std::to_string(totalNoOverlaps);
 }
+
+// ---------- End of Public Methods ----------
 
 } // namespace aoc_2022_4

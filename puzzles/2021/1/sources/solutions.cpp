@@ -7,6 +7,12 @@
 
 namespace aoc_2021_1 {
 
+// ---------- Private Methods ----------
+
+// ---------- End of Private Methods ----------
+
+// ---------- Public Methods ----------
+
 std::string solvePart1(const std::string& filename)
 {
     std::ifstream stream{ filename };
@@ -61,5 +67,7 @@ std::string solvePart2(const std::string& filename)
 
     return std::to_string(increaseCounter);
 }
+
+// ---------- End of Public Methods ----------
 
 } // namespace aoc_2021_1

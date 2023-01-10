@@ -7,7 +7,7 @@
 
 namespace aoc_2022_1 {
 
-#pragma region Private_Methods
+// ---------- Private Methods ----------
 
 constexpr uint32_t TopQuantity{ 3U };
 
@@ -31,9 +31,9 @@ void insertInRanking(
     }
 }
 
-#pragma endregion Private_Methods
+// ---------- End of Private Methods ----------
 
-#pragma region Public_Methods
+// ---------- Public Methods ----------
 
 std::string solvePart1(const std::string& filename)
 {
@@ -75,6 +75,6 @@ std::string solvePart2(const std::string& filename)
     return std::to_string(ranges::accumulate(highestSums, 0U));
 }
 
-#pragma endregion Public_Methods
+// ---------- End of Public Methods ----------
 
 } // namespace aoc_2022_1

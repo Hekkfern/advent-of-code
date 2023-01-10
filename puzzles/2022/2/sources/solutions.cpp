@@ -4,7 +4,7 @@
 
 namespace aoc_2022_2 {
 
-#pragma region Private_Methods
+// ---------- Private Methods ----------
 
 /**
  * @brief      This class describes a shape.
@@ -188,9 +188,9 @@ uint32_t calculateRoundScore(
     return calculateRoundScore(yourShape, opponentShape);
 }
 
-#pragma endregion Private_Methods
+// ---------- End of Private Methods ----------
 
-#pragma region Public_Methods
+// ---------- End of Public Methods ----------
 
 std::string solvePart1(const std::string& filename)
 {
@@ -222,6 +222,6 @@ std::string solvePart2(const std::string& filename)
     return std::to_string(totalScore);
 }
 
-#pragma endregion Public_Methods
+// ---------- End of Public Methods ----------
 
 } // namespace aoc_2022_2
