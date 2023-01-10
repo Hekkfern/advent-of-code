@@ -47,7 +47,7 @@ docker run -it --name aoc_cpp_ubuntu hekkfern/aoc_cpp:ubuntu
 or, if it already exists:
 
 ```bash
-docker exec -i aoc_cpp_ubuntu bash
+docker start -i aoc_cpp_ubuntu
 ```
 
 ## Fedora 37
