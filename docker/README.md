@@ -38,8 +38,16 @@ docker push hekkfern/aoc_cpp:ubuntu
 
 ### Run manually
 
+To create a new container:
+
 ```bash
-docker run -it hekkfern/aoc_cpp:ubuntu
+docker run -it --name aoc_cpp_ubuntu hekkfern/aoc_cpp:ubuntu
+```
+
+or, if it already exists:
+
+```bash
+docker exec -i aoc_cpp_ubuntu bash
 ```
 
 ## Fedora 37
