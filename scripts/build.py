@@ -116,7 +116,7 @@ def __compile_project():
     if not (out_preset_path / "CMakeCache.txt").is_file():
         __abort_execution("Output folder doesn't exist. Generate the project first.")
     # run CMake
-    command: str = f'cmake --build {out_preset_path.absolute()} --target all'
+    command: str = f'cmake --build --preset {preset} --target all'
     execute_program(command)
     print()  # add empty line in stdout
 
