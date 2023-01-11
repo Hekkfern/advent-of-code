@@ -35,7 +35,7 @@ def __store_current_preset(preset: str) -> None:
         file.write(preset)
 
 
-def __read_current_preset() -> str:
+def __read_current_preset() -> typing.Optional[str]:
     out_path = __get_root_project_path() / "out"
     with open(out_path / "current_preset.txt", mode="r", encoding="utf-8") as file:
         preset: str = file.readline()
@@ -109,20 +109,28 @@ def __generate_project(platform: PlatformType, years: typing.List[int], release:
 def __compile_project():
     # get current preset name
     preset = __read_current_preset()
+    if preset is None:
+        __abort_execution("Execution aborted. Please, generate the project first.")
     # check if the CMakeCache.txt file of the current preset exists
     out_preset_path = __get_root_project_path() / "out/build" / preset
     if not (out_preset_path / "CMakeCache.txt").is_file():
         __abort_execution("Output folder doesn't exist. Generate the project first.")
     # run CMake
-    command: str = f'cmake --build {out_preset_path}'
+    command: str = f'cmake --build {out_preset_path.absolute()} --target all'
     execute_program(command)
     print()  # add empty line in stdout
 
 
 def __test_project():
+    # get current preset name
+    preset = __read_current_preset()
+    if preset is None:
+        __abort_execution("Execution aborted. Please, generate the project first.")
+    # get path to out folder of this preset
+    out_preset_path = __get_root_project_path() / "out/build" / preset
     # run CTest
-    command: str = 'ctest'
-    execute_program(command)
+    command: str = 'ctest .'
+    execute_program(command, out_preset_path)
     print()  # add empty line in stdout
 
 
