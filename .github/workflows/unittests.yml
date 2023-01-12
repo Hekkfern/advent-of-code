@@ -4,10 +4,10 @@ run-name: Execute the unit tests of all the projects
 on:
   push:
     branches:
-      - "main"
+      - "master"
   pull_request:
     branches:
-      - "main"
+      - "master"
 
 jobs:
   build-and-test:
