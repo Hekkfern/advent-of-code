@@ -134,11 +134,9 @@ def __test_project() -> int:
     preset = __read_current_preset()
     if preset is None:
         __abort_execution("Execution aborted. Please, generate the project first.")
-    # get path to out folder of this preset
-    out_preset_path = __get_root_project_path() / "out/build" / preset
     # run CTest
-    command: str = 'ctest .'
-    cmd_code: int = execute_program(command, out_preset_path)
+    command: str = f'ctest --preset {preset}'
+    cmd_code: int = execute_program(command)
     print()  # add empty line in stdout
 
     if cmd_code != 0:

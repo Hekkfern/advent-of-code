@@ -1,0 +1,26 @@
+name: unit-tests
+run-name: Execute the unit tests of all the projects
+
+on:
+  push:
+    branches:
+      - $default-branch
+  pull_request:
+    branches:
+      - $default-branch
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: install packages
+        run: sudo apt-get update && apt-get install -y g++ cmake git python3 python3-pip ccache pkg-config cppcheck && python3 -m pip install --upgrade pipenv
+      - name: generate project
+        run: cmake -S $GITHUB_WORKSPACE --preset linux-x64-release
+      - name: compile project
+        run: cmake -S $GITHUB_WORKSPACE --build --preset linux-x64-release --target all
+      - name: run unit tests
+        run: ctest --preset linux-x64-release

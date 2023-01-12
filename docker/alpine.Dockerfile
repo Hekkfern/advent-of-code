@@ -5,7 +5,6 @@ LABEL org.opencontainers.image.description="Custom Docker image to solve Advent 
 
 # Install necessary packages
 RUN apk update  \
-    && apk add curl wget tar zip unzip sudo bash-completion \
     && apk add gcc cmake git python3 py3-pip ccache clang gdb cppcheck \
     && python3 -m pip install --upgrade pipenv
 
