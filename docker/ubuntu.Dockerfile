@@ -9,7 +9,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Install necessary packages
 RUN apt-get update \
-  && apt-get install -y g++ cmake git python3 python3-pip ccache clang-format clang-tidy gdb pkg-config cppcheck \
+  && apt-get install -y curl wget tar zip unzip \
+  && apt-get install -y make ninja-build g++ cmake git python3 python3-pip ccache clang-format clang-tidy gdb pkg-config cppcheck \
   && python3 -m pip install --upgrade pipenv
 
 # Create "developer" user

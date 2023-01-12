@@ -19,7 +19,8 @@ jobs:
       - name: install packages
         run: >
           sudo apt-get update
-          && sudo apt-get install -y tar g++ make ninja-build cmake git python3 python3-pip ccache pkg-config cppcheck
+          && sudo apt-get install -y curl wget tar zip unzip
+          && sudo apt-get install -y make ninja-build g++ cmake git python3 python3-pip ccache gdb pkg-config cppcheck
           && python3 -m pip install --upgrade pipenv
       - name: generate project
         run: cmake -S $GITHUB_WORKSPACE --preset linux-x64-release
