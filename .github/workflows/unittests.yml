@@ -21,6 +21,6 @@ jobs:
       - name: generate project
         run: cmake -S $GITHUB_WORKSPACE --preset linux-x64-release
       - name: compile project
-        run: cmake -S $GITHUB_WORKSPACE --build --preset linux-x64-release --target all
+        run: cmake --build --preset linux-x64-release --target all
       - name: run unit tests
         run: ctest --preset linux-x64-release
