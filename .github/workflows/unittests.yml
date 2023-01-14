@@ -1,4 +1,4 @@
-name: unit-tests
+name: Unit Tests
 run-name: Execute the unit tests of all the projects
 
 on:
@@ -8,24 +8,34 @@ on:
   pull_request:
     branches:
       - "master"
+  workflow_dispatch:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
+      - name: Cache APT Packages
+        uses: awalsh128/cache-apt-pkgs-action@v1.2.2
+        id: installpackages
+        with:
+          packages: ccache cppcheck
+          version: 1.0
       - uses: actions/checkout@v3
         with:
           submodules: recursive
           fetch-depth: 0
-      - name: install packages
-        run: >
-          sudo apt-get update
-          && sudo apt-get install -y curl wget tar zip unzip
-          && sudo apt-get install -y make ninja-build g++ cmake git python3 python3-pip ccache gdb pkg-config cppcheck
-          && python3 -m pip install --upgrade pipenv
-      - name: generate project
-        run: cmake -S $GITHUB_WORKSPACE --preset linux-x64-release
-      - name: compile project
-        run: cmake --build --preset linux-x64-release --target all
-      - name: run unit tests
-        run: ctest --preset linux-x64-release
+      - name: Restore artifacts, or setup vcpkg for building artifacts
+        uses: lukka/run-vcpkg@v10
+        id: runvcpkg
+        with:
+          vcpkgDirectory: "${{ github.workspace }}/extern/vcpkg"
+          vcpkgJsonGlob: "${{ github.workspace }}/vcpkg.json"
+      - name: Run CMake+vcpkg+Ninja+CTest to generate/build/test.
+        uses: lukka/run-cmake@v10
+        id: runcmake
+        with:
+          configurePreset: "linux-x64-release"
+          buildPreset: "linux-x64-release"
+          testPreset: "linux-x64-release"
+        env:
+          VCPKG_FORCE_SYSTEM_BINARIES: 1
