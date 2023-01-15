@@ -66,12 +66,13 @@ def __clean_project() -> int:
     shutil.rmtree(root_path / ".vs", ignore_errors=True)
     shutil.rmtree(root_path / ".vscode", ignore_errors=True)
     shutil.rmtree(root_path / "out", ignore_errors=True)
+    shutil.rmtree(root_path / "Testing", ignore_errors=True)
 
     return 0
 
 
 def __generate_project(platform: PlatformType, years: typing.List[int], release: bool,
-                       unittests: bool, ccache: bool, cppcheck: bool) -> int:
+                       project: str, ccache: bool, cppcheck: bool) -> int:
     root_path = __get_root_project_path()
     # select preset
     preset: str = ""
@@ -95,7 +96,7 @@ def __generate_project(platform: PlatformType, years: typing.List[int], release:
     # delete folder if it already exists
     shutil.rmtree(root_path / f"out/build/" / preset, ignore_errors=True)
     # enable unit-tests
-    ut_flag: str = '-DGENERATE_UNIT_TESTS:BOOL=' + ('ON' if unittests else 'OFF')
+    ut_flag: str = f'-DGENERATE_PROJECTS:STRING={project.upper()}'
     # filter years
     years_flag: str = '-DGENERATE_YEARS="' + (';'.join(map(str, years)) if years else '') + '"'
     # enable ccache
@@ -166,10 +167,11 @@ def __add_generation_input_arguments(parser):
         "--platform", required=True, choices=["windows", "macos", "linux"],
         help="Selects the platform where you are executing this script")
     parser.add_argument(
-        "--no-unit-tests", action="store_true", help="Don't generate the unit-test projects")
+        "--project", choices=['all', 'exes', 'unittests'], default='all',
+        help="Selects which projects wants that CMake generate (default: everything is generated)")
     parser.add_argument(
         "--years", type=apr.ranged_int(2015, 2050), nargs='+',
-        help="List of years whose puzzles will only be generated. (default: everything is generated)")
+        help="List of years whose puzzles will only be generated (default: everything is generated)")
     parser.add_argument(
         "--no-ccache", action="store_true",
         help="Disable usage of ccache in the project if it is available")
@@ -229,14 +231,15 @@ def main() -> int:
     ret_code: int = 1
     args = __get_input_parameters()
     if args.subcommand == "build":
-        __generate_project(PlatformType.from_str(args.platform), args.years, args.release, not args.no_unit_tests,
-                           not args.no_ccache, not args.no_cppcheck)
-        ret_code = __compile_project()
+        ret_code = __generate_project(PlatformType.from_str(args.platform), args.years, args.release, args.project,
+                                      not args.no_ccache, not args.no_cppcheck)
+        if ret_code == 0:
+            ret_code = __compile_project()
     elif args.subcommand == "update":
         ret_code = __fetch_last_version(args.force)
     elif args.subcommand == "generate":
         ret_code = __generate_project(PlatformType.from_str(args.platform), args.years, args.release,
-                                      not args.no_unit_tests,
+                                      args.project,
                                       not args.no_ccache, not args.no_cppcheck)
     elif args.subcommand == "compile":
         ret_code = __compile_project()

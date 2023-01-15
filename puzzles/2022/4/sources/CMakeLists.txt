@@ -9,10 +9,12 @@ setup_puzzle(${_LIB_NAME})
 target_link_libraries(${_LIB_NAME} PRIVATE aoc_utils)
 
 # aoc_2022_4
-set(_EXEC_NAME "aoc_2022_4")
-add_executable(${_EXEC_NAME} main.cpp)
-setup_puzzle(${_EXEC_NAME})
-target_link_libraries(${_EXEC_NAME} PRIVATE ${_LIB_NAME} PRIVATE aoc_utils)
+if(GENERATE_PROJECTS STREQUAL "ALL" OR GENERATE_PROJECTS STREQUAL "EXES")
+    set(_EXEC_NAME "aoc_2022_4")
+    add_executable(${_EXEC_NAME} main.cpp)
+    setup_puzzle(${_EXEC_NAME})
+    target_link_libraries(${_EXEC_NAME} PRIVATE ${_LIB_NAME} PRIVATE aoc_utils)
+endif()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input.txt
                ${CMAKE_CURRENT_BINARY_DIR}/input.txt COPYONLY)

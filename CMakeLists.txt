@@ -3,8 +3,13 @@
 
 cmake_minimum_required(VERSION 3.20)
 
-option(GENERATE_UNIT_TESTS
-        "Generate the unit tests executables of every puzzle." ON)
+set(GENERATE_PROJECTS "ALL" CACHE STRING "Select which kind of projects to generate by CMake.")
+set_property(CACHE GENERATE_PROJECTS PROPERTY STRINGS "ALL" "EXES" "UNITTESTS")
+# Check that value of the parameter is inside "STRINGS" list.
+get_property(GENERATE_PROJECTS_STRINGS CACHE GENERATE_PROJECTS PROPERTY STRINGS)
+if (NOT GENERATE_PROJECTS IN_LIST GENERATE_PROJECTS_STRINGS)
+  message(FATAL_ERROR "Wrong value of the parameter 'GENERATE_PROJECTS'")
+endif()
 
 set(GENERATE_YEARS
         ""

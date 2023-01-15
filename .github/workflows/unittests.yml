@@ -35,6 +35,7 @@ jobs:
         id: runcmake
         with:
           configurePreset: "linux-x64-release"
+          configurePresetAdditionalArgs: ['-DGENERATE_PROJECTS=UNITTESTS']
           buildPreset: "linux-x64-release"
           testPreset: "linux-x64-release"
         env:
