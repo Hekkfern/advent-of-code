@@ -123,7 +123,7 @@ def __compile_project() -> int:
     if not (out_preset_path / "CMakeCache.txt").is_file():
         __abort_execution("Output folder doesn't exist. Generate the project first.")
     # run CMake
-    command: str = f'cmake --build --preset {preset}'
+    command: str = f'cmake --build --preset {preset} -j'
     cmd_code: int = execute_program(command)
     print()  # add empty line in stdout
 
@@ -136,7 +136,7 @@ def __test_project() -> int:
     if preset is None:
         __abort_execution("Execution aborted. Please, generate the project first.")
     # run CTest
-    command: str = f'ctest --preset {preset}'
+    command: str = f'ctest --preset {preset} -j'
     cmd_code: int = execute_program(command)
     print()  # add empty line in stdout
 
