@@ -109,9 +109,10 @@ void executeCrateMover9001Instruction(
     const CraneInstruction& craneInstruction)
 {
     auto& originStack = crateStackList[craneInstruction.mOriginStackIndex];
-    // view of the last elements of the stack, in reverse order
-    auto originStackView = originStack
-        | ranges::views::take(craneInstruction.mNumCrates);
+    // view of the last elements of the stack, in order
+    auto originStackView = originStack | ranges::views::reverse
+        | ranges::views::take(craneInstruction.mNumCrates)
+        | ranges::views::reverse;
     // copy to the end of the other stack
     ranges::copy(
         originStackView,
