@@ -18,6 +18,7 @@ objc-*,\
 -readability-named-parameter,\
 -readability-qualified-auto,\
 -cppcoreguidelines-pro-type-vararg,\
+-cppcoreguidelines-avoid-const-or-ref-data-members,\
 "
 WarningsAsErrors: '*'
 HeaderFilterRegex: '.*'
