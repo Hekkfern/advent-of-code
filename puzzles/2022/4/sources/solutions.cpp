@@ -1,16 +1,41 @@
 #include "solutions.hpp"
 
-#include "sections.h"
-
 #include <array>
 #include <fstream>
 #include <utils/StringUtils.hpp>
 
 namespace aoc_2022_4 {
 
-// ---------- Private Methods ----------
+// ---------- Private Types and Constants ----------
+
+struct SectionRange {
+    uint32_t mFirst;
+    uint32_t mLast;
+};
 
 constexpr uint32_t GroupSize{ 2U };
+
+// ---------- End of Private Types and Constants ----------
+
+// ---------- Private Methods ----------
+
+bool areSectionsOverlapped(
+    const SectionRange& sectionsElf1,
+    const SectionRange& sectionsElf2)
+{
+    return ((sectionsElf1.mFirst >= sectionsElf2.mFirst)
+            && (sectionsElf1.mLast <= sectionsElf2.mLast))
+        || ((sectionsElf1.mFirst <= sectionsElf2.mFirst)
+            && (sectionsElf1.mLast >= sectionsElf2.mLast));
+}
+
+bool areSectionsNotOverlapped(
+    const SectionRange& sectionsElf1,
+    const SectionRange& sectionsElf2)
+{
+    return (sectionsElf1.mLast < sectionsElf2.mFirst)
+        || (sectionsElf1.mFirst > sectionsElf2.mLast);
+}
 
 std::array<SectionRange, GroupSize> parseInputLine(const std::string& line)
 {
