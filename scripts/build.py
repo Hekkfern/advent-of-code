@@ -5,6 +5,8 @@ import pathlib
 import shutil
 import sys
 import typing
+import urllib.error
+import urllib.request
 
 import colorama
 import git
@@ -15,18 +17,19 @@ from internal.platform_type import PlatformType
 from internal.utils import execute_program
 
 
-def __abort_execution(msg: str) -> None:
+def __print_error_msg(msg: str) -> None:
     print(colorama.Fore.RED + msg)
-    sys.exit(1)
 
 
 def __get_root_project_path() -> pathlib.Path:
     return pathlib.Path(__file__).absolute().parents[1]
 
 
-def __check_min_python_version() -> None:
+def __check_min_python_version() -> bool:
     if sys.version_info[0] < 3 or sys.version_info[1] < 7:
-        __abort_execution("This script requires Python version 3.7 or newer.")
+        __print_error_msg("This script requires Python version 3.7 or newer.")
+        return False
+    return True
 
 
 def __store_current_preset(preset: str) -> None:
@@ -49,8 +52,9 @@ def __fetch_last_version(force: bool = False) -> int:
         if force:
             repo.git.reset(hard=True)
         else:
-            __abort_execution(
-                "Pending changes to commit in the repository. Save them or discard them, and try again.")
+            __print_error_msg(
+                "Pending changes to commit in the repository. Save them or discard them.")
+            return 1
     repo.git.checkout("master")
     repo.remotes.origin.pull()
     print(f'Current commit is {repo.head.object.hexsha} in "master" branch')
@@ -77,20 +81,11 @@ def __generate_project(platform: PlatformType, years: typing.List[int], release:
     # select preset
     preset: str = ""
     if platform == PlatformType.WINDOWS:
-        if release:
-            preset = "windows-x64-release"
-        else:
-            preset = "windows-x64-debug"
+        preset = "windows-x64-" + ("release" if preset else "debug")
     elif platform == PlatformType.LINUX:
-        if release:
-            preset = "linux-x64-release"
-        else:
-            preset = "linux-x64-debug"
+        preset = "linux-x64-" + ("release" if preset else "debug")
     elif platform == PlatformType.MACOS:
-        if release:
-            preset = "macos-x64-release"
-        else:
-            preset = "macos-x64-debug"
+        preset = "macos-x64-" + ("release" if preset else "debug")
     else:
         raise ValueError
     # delete folder if it already exists
@@ -98,7 +93,8 @@ def __generate_project(platform: PlatformType, years: typing.List[int], release:
     # enable unit-tests
     ut_flag: str = f'-DGENERATE_PROJECTS:STRING={project.upper()}'
     # filter years
-    years_flag: str = '-DGENERATE_YEARS="' + (';'.join(map(str, years)) if years else '') + '"'
+    years_flag: str = '-DGENERATE_YEARS="' + \
+                      (';'.join(map(str, years)) if years else '') + '"'
     # enable ccache
     ccache_flag: str = '-DUSE_CCACHE:BOOL=' + ('ON' if ccache else 'OFF')
     # enable cppcheck
@@ -117,11 +113,15 @@ def __compile_project() -> int:
     # get current preset name
     preset = __read_current_preset()
     if preset is None:
-        __abort_execution("Execution aborted. Please, generate the project first.")
+        __print_error_msg(
+            "Execution aborted. Please, generate the project first.")
+        return 1
     # check if the CMakeCache.txt file of the current preset exists
     out_preset_path = __get_root_project_path() / "out/build" / preset
     if not (out_preset_path / "CMakeCache.txt").is_file():
-        __abort_execution("Output folder doesn't exist. Generate the project first.")
+        __print_error_msg(
+            "Output folder doesn't exist. Generate the project first.")
+        return 1
     # run CMake
     command: str = f'cmake --build --preset {preset} -j'
     cmd_code: int = execute_program(command)
@@ -134,14 +134,36 @@ def __test_project() -> int:
     # get current preset name
     preset = __read_current_preset()
     if preset is None:
-        __abort_execution("Execution aborted. Please, generate the project first.")
+        __print_error_msg(
+            "Project has not been generated. Use \"generate\" subcommand first.")
+        return 1
     # run CTest
     command: str = f'ctest --preset {preset} -j'
     cmd_code: int = execute_program(command)
     print()  # add empty line in stdout
 
     if cmd_code != 0:
-        print(colorama.Fore.RED + "One or more unit tests didn't pass.")
+        __print_error_msg("One or more unit tests didn't pass.")
+
+    return cmd_code
+
+
+def __run_project(year: int, day: int) -> int:
+    # get current preset name
+    preset = __read_current_preset()
+    if preset is None:
+        __print_error_msg(
+            "Project has not been generated. Use \"generate\" subcommand first.")
+        return 1
+    # check if exe exists
+    exe_path = __get_root_project_path() / f"out/build/{preset}/puzzles/{year}/{day}/sources/aoc_{year}_{day}"
+    if not exe_path.is_file():
+        __print_error_msg(
+            "Project has not been either generated or compiled. Use \"build\" subcommand first.")
+        return 1
+    # run exe
+    cmd_code: int = execute_program(str(exe_path.absolute()), exe_path.parent)
+    print()  # add empty line in stdout
 
     return cmd_code
 
@@ -156,8 +178,36 @@ def __add_new_day(year: int, day: int, is_forced: bool) -> int:
         print(f"Added new files in \"{day_path.absolute()}\" folder.")
         return 0
     else:
-        print(f"Task skipped. Already-existing files in \"{day_path.absolute()}\" folder.")
+        __print_error_msg(
+            f'Task skipped. Already-existing files in \"{day_path.absolute()}\" folder. Use \"--force\" option to overwrite the existing files.')
         return 1
+
+
+def __get_input(year: int, day: int, session: str) -> int:
+    # Download data from server
+    url: str = f"https://adventofcode.com/{year}/day/{day}/input"
+    request = urllib.request.Request(
+        url,
+        headers={
+            "Cookie": f"session={session}"
+        })
+    response = urllib.request.urlopen(request)
+    if response.status != 200:
+        __print_error_msg(
+            'Error while trying to connect to the \"Advent of Code\" webpage. Check the input parameters of the script and make sure that the session key is valid.')
+        return 1
+    # Check if the selected puzzle folder structure exists
+    input_path = __get_root_project_path() / f"puzzles/{year}/{day}/sources/input.txt"
+    if not input_path.is_file():
+        __print_error_msg(
+            'Missing folder structure for the selected puzzle. Use \"add_day\" subcommand first.')
+        return 1
+    # Save into file
+    with open(input_path, "wb") as f:
+        f.write(response.read())
+    print(
+        f'Input data for puzzle {year} day {day} has been stored in {input_path.absolute()}.')
+    return 0
 
 
 def __add_generation_input_arguments(parser):
@@ -208,17 +258,43 @@ def __get_input_parameters():
     parser_addday = subparsers.add_parser(
         'add_day', help='Set up the project to add a new "Advent Of Code" puzzle')
     parser_addday.add_argument(
-        "--year", type=apr.ranged_int(2015, 2050), required=True,
+        "--year", type=apr.ranged_int(2015, 2099), required=True, metavar="[2015-2099]",
         help="Selects the year (format XXXX, as for instance, 2023) of the puzzle to generate")
     parser_addday.add_argument(
-        "--day", type=apr.ranged_int(1, 25), required=True,
+        "--day", type=apr.ranged_int(1, 25), required=True, metavar="[1-25]",
         help="Selects the day (from 1 to 25) of the puzzle to generate")
     parser_addday.add_argument(
-        "-f", "--force", action="store_true",
-        help="Forces the overwrite of existing files")
+        "-f", "--force", action="store_true", help="Forces the overwrite of existing files")
     # ----- test -----
     parser_test = subparsers.add_parser(
-        'test', help="Executes all the unit tests of the generated projects.")
+        'test', help="Executes all the unit tests of the generated projects")
+    # ----- get_input -----
+    parser_getinput = subparsers.add_parser(
+        'get_input',
+        help='Downloads the input data for the "Advent Of Code" selected puzzle')
+    parser_getinput.add_argument(
+        "--year", type=apr.ranged_int(2015, 2099), required=True, metavar="[2015-2099]",
+        help="Selects the year (format XXXX, as for instance, 2023) of the puzzle")
+    parser_getinput.add_argument(
+        "--day", type=apr.ranged_int(1, 25), required=True, metavar="[1-25]",
+        help="Selects the day (from 1 to 25) of the puzzle")
+    session_group = parser_getinput.add_mutually_exclusive_group(required=True)
+    session_group.add_argument(
+        "-s", "--session", metavar='SESSION_KEY',
+        help='Provides the session key string of the cookie generated by logging in into the Advent of Code" official webpage')
+    session_group.add_argument(
+        "-S", "--session-file", metavar='FILE', type=argparse.FileType("r"),
+        help='Select the file where the script can found the the session key string of the cookie generated by logging in into the Advent of Code" official webpage')
+    # ----- run -----
+    parser_run = subparsers.add_parser(
+        'run',
+        help='Executes the solution of the selected puzzle')
+    parser_run.add_argument(
+        "--year", type=apr.ranged_int(2015, 2099), required=True, metavar="[2015-2099]",
+        help="Selects the year (format XXXX, as for instance, 2023) of the puzzle")
+    parser_run.add_argument(
+        "--day", type=apr.ranged_int(1, 25), required=True, metavar="[1-25]",
+        help="Selects the day (from 1 to 25) of the puzzle")
 
     return parser.parse_args()
 
@@ -249,6 +325,20 @@ def main() -> int:
         ret_code = __add_new_day(args.year, args.day, args.force)
     elif args.subcommand == "test":
         ret_code = __test_project()
+    elif args.subcommand == "get_input":
+        if args.session:
+            session: str = args.session.strip()
+        else:
+            session_file: typing.IO = args.session_file
+            if not session_file:
+                __print_error_msg(
+                    "Missing session key for accessing your profile in Advent of Code's webpage.")
+                return 1
+            with session_file:
+                session: str = session_file.read().strip()
+        ret_code = __get_input(args.year, args.day, session)
+    elif args.subcommand == "run":
+        ret_code = __run_project(args.year, args.day)
 
     return ret_code
 

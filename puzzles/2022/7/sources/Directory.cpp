@@ -8,13 +8,13 @@ namespace aoc_2022_7 {
 uint32_t Directory::calculateSize() const
 {
     return ranges::accumulate(
-               mDirs | ranges::view::values,
+               mDirs | ranges::views::values,
                0U,
                [](uint32_t value, const std::unique_ptr<IDirectory>& p) {
                    return value + p->getSize();
                })
         + ranges::accumulate(
-               mFiles | ranges::view::values,
+               mFiles | ranges::views::values,
                0U,
                [](uint32_t value, const std::unique_ptr<IFile>& p) {
                    return value + p->getSize();

@@ -40,6 +40,8 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -51,8 +53,6 @@
 ## About The Project
 
 This project has been created with the main goal to provide a easy-to-use development platform to solve [Advent of code](https://adventofcode.com/) puzzles in C++.
-
-
 
 Features:
 
@@ -88,41 +88,11 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-First read this section to install the necessary tools in your computer to be able to use this project.
-
-#### Windows OS
-
-Install [Git](https://git-scm.com/download/win) for Windows.
-
-Install [Python](https://www.python.org/downloads/). The minimum required version is 3.7, although the most recent versions work correctly too. When the Python installer is executed, be sure that the `pip` package is also installed.
-
-Install cppcheck.
-
-Install [Visual Studio 2022 (Community Edition)](https://visualstudio.microsoft.com/vs/). Make sure you install, at least, the **Desktop Development for C++** package. After the installation finishes, open **Visual Studio Installer** and update Visual Studio to its latest version.
-
-#### Linux OS (Ubuntu 22.04)
-
-Install the following packages:
-
-```bash
-sudo apt-get -y install build-essential g++ cmake git python3 python3-pip ccache clang-format clang-tidy gdb pkg-config cppcheck
-```
-
-#### MacOs OS
-
-Install [Homebrew](https://brew.sh/) for MacOS, as described in [Install Homebrew](https://docs.brew.sh/Installation) on its official webpage.
-
-Install some development tools:
-
-```bash
-brew install cmake python3 ccache clang-format llvm git cppcheck
-```
-
-Install the latest version of **XCodes** from the **App Store**.
+First read [SETUP_DEV_ENVIRONMENT.md](./docs/SETUP_DEV_ENVIRONMENT.md) page to install the necessary tools in your computer to be able to use this project.
 
 ### Installation
 
-Clone the repo and all its submodules:
+Clone the repository and all its submodules:
 
 ```bash
 git clone --recursive https://github.com/Hekkfern/advent-of-code.git
@@ -134,28 +104,47 @@ git clone --recursive https://github.com/Hekkfern/advent-of-code.git
 
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos
-work well in this space. You may also link to more resources.
+### How to use
+
+Read [HOW_TO_USE.md](./docs/HOW_TO_USE.md) page.
+
+### How to add a new *Advent of Code* puzzle
+
+Read [HOW_TO_ADD_NEW_PUZZLE.md](./docs/HOW_TO_ADD_NEW_PUZZLE.md) page.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### In-deep explanation of how this framework/project works
+
+If you are curious to know how this project has been designed and build, it is suggested to read [HOW_THE_FRAMEWORK_WORKS.md](./docs/HOW_THE_FRAMEWORK_WORKS.md) page.
+
+<!-- FAQ -->
+
+## FAQ
+
+Read [FAQ.md](./docs/FAQ.md) page.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- ROADMAP -->
+
+## Roadmap
+
+All the pending tasks (and their status) are shown in [@Hekkfern's pending tasks](https://github.com/users/Hekkfern/projects/1) board.
+
+See the [open issues](https://github.com/Hekkfern/advent-of-code//issues) for a list of proposed features (and known issues).
+
+- [Top Feature Requests](https://github.com/Hekkfern/advent-of-code//issues?q=label%3Aenhancement+is%3Aopen+sort%3Areactions-%2B1-desc) (Add your votes using the 👍 reaction)
+- [Top Bugs](https://github.com/Hekkfern/advent-of-code//issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Areactions-%2B1-desc) (Add your votes using the 👍 reaction)
+- [Newest Bugs](https://github.com/Hekkfern/advent-of-code//issues?q=is%3Aopen+is%3Aissue+label%3Abug)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
 
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any
-contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also
-simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+Read [CONTRIBUTING.md](./docs/CONTRIBUTING.md) page.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -167,8 +156,6 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- CONTACT -->
 
 ## Contact
@@ -177,7 +164,6 @@ If you want to suggest anything or discuss some ideas about this project, feel f
 in [Discussions](https://github.com/Hekkfern/advent-of-code/discussions)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 

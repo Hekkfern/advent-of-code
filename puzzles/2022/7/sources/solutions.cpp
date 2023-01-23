@@ -6,7 +6,6 @@
 #include <functional>
 #include <range/v3/all.hpp>
 #include <sstream>
-#include <vector>
 
 namespace aoc_2022_7 {
 
