@@ -1,9 +1,10 @@
 include_guard(GLOBAL)
 
 macro(set_cppcheck)
-  find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
-  if(CMAKE_CXX_CPPCHECK)
+  find_program(CPPCHECK_PROGRAM NAMES cppcheck)
+  if(CPPCHECK_PROGRAM)
     message(STATUS "cppcheck found in the system.")
+    set(CMAKE_CXX_CPPCHECK ${CCACHE_PROGRAM})
     list(
       APPEND
       CMAKE_CXX_CPPCHECK

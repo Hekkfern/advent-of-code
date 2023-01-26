@@ -11,7 +11,7 @@
       - [Run the unit tests of all the solutions](#run-the-unit-tests-of-all-the-solutions-1)
   - [Advanced actions](#advanced-actions)
     - [How to add a new puzzle to the project](#how-to-add-a-new-puzzle-to-the-project)
-  - [How to extract input data from the webpage](#how-to-extract-input-data-from-the-webpage)
+  - [How to extract puzzle instructions and input data from the webpage](#how-to-extract-puzzle-instructions-and-input-data-from-the-webpage)
 
 ## Requirements
 
@@ -101,16 +101,18 @@ where:
 
 **Note:** For more information, read [*"Add new puzzle" subcommand* in BUILDPY_SCRIPT.md](BUILDPY_SCRIPT.md#add-new-puzzle-subcommand).
 
-## How to extract input data from the webpage
+## How to extract puzzle instructions and input data from the webpage
 
 ```bash
 python3 -m pipenv install
 python3 -m pipenv shell
-python3 scripts/build.py get_input --year <year> --day <day>
+python3 scripts/build.py get_input --year <year> --day <day> --session <sessionkey>
+python3 scripts/build.py get_statement --year <year> --day <day> --session <sessionkey>
 ```
 
 where:
 * <year> is the year (format 20XX) of the puzzle.
 * <day> is the day (from 1 to 25) of the puzzle.
+* <sessionkey> is a long string of character which is obtained from the web-browser after logging in into the *Advent of Code* webpage.
 
-**Note:** For more information, read [*"Get puzzle input" subcommand* in BUILDPY_SCRIPT.md](BUILDPY_SCRIPT.md#get-puzzle-input-subcommand).
+**Note:** For more information, read [*"Get puzzle input" subcommand* in BUILDPY_SCRIPT.md](BUILDPY_SCRIPT.md#get-puzzle-input-subcommand) and [*"Get puzzle statement" subcommand* in BUILDPY_SCRIPT.md](BUILDPY_SCRIPT.md#get-puzzle-statement-subcommand).

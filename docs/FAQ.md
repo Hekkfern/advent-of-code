@@ -56,12 +56,12 @@ Another advantage of the usage of unit tests is that other developers can contri
 
 It has been decided to use `CMake` build system because a lot of IDEs have compatibility with it, as well as other tools. Also, it is one of the most common build systems, so finding documentation, books and support in forums is easier.
 
-7. Why does it use `ranges-v3` library instead of C++20 STL `<ranges>`?
+7. Why does it use `range-v3` library instead of C++20 STL `<ranges>`?
 
 Due to how C++ standards are release, it is quite usual that some features are left out of the standard due to lack of time.
 
 Some algorithms and features were not added to the C++20 standard (for instance, `std::accumulate()` with ranges instead of iterators). Also, some compilers haven't implemented some of these methods of the C++ standard yet; or they are still in a experimental phase.
 
-For the reasons above, it has been decided to use `ranges-v3` library, which assures compatibility with all the platforms as well as implements some cutting-edge features not included in the C++ standard.
+For the reasons above, it has been decided to use `range-v3` library, which assures compatibility with all the platforms as well as implements some cutting-edge features not included in the C++ standard.
 
-As C++20 STL `ranges` standard was based on the work done in the `ranges-v3` library, both solutions are very similar, so in the future, this project could be easily migrated in order to use the STL methods instead.
+As C++20 STL `ranges` standard was based on the work done in the `range-v3` library, both solutions are very similar, so in the future, this project could be easily migrated in order to use the STL methods instead.

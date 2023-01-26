@@ -7,6 +7,8 @@ name = "pypi"
 colorama = "*"
 jinja2 = "*"
 gitpython = "*"
+beautifulsoup4 = "*"
+markdownify = "*"
 
 [dev-packages]
 autopep8 = "*"

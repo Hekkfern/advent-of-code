@@ -1,6 +1,8 @@
 import pathlib
 import subprocess
 
+import colorama
+
 
 def create_empty_file(file_path: pathlib.Path):
     try:
@@ -15,3 +17,7 @@ def execute_program(command: str, cwd: pathlib.Path = None) -> int:
         for line in p.stdout:
             print(line, end='')
     return 1 if p.returncode != 0 else 0
+
+
+def print_error_msg(msg: str) -> None:
+    print(colorama.Fore.RED + msg)

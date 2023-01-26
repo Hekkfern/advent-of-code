@@ -5,6 +5,7 @@
   - ["build project" subcommands](#build-project-subcommands)
   - ["Add new puzzle" subcommand](#add-new-puzzle-subcommand)
   - ["Get puzzle input" subcommand](#get-puzzle-input-subcommand)
+  - ["Get puzzle statement" subcommand](#get-puzzle-statement-subcommand)
 
 
 A Python script has been developed to help users to operate with this repository. It automatizes several tasks in a more user-friendly way.
@@ -42,6 +43,8 @@ The `add_day` subcommand helps users to generate the folder structure as well as
 
 After executing this command, a new project is setup inside `puzzles/` folder, according to the selected year and day of the *Advent of Code* puzzle. Then, the solution can be developed inside `solution.cpp` without caring about all the project boilerplate.
 
+The script uses some templates (stored in `templates/` folder) to generate the files of every new puzzle.
+
 **Note:** For more information, execute the console command `python3 script/build.py add_day --help`.
 
 ## "Get puzzle input" subcommand
@@ -52,8 +55,18 @@ The *Advent of Code* session key of your logged-in user is mandatory in order to
 
 **Warning:** This command requires that the selected puzzle's structure folder already exists, i.e., `add_day` subcommand was called earlier.
 
-The script uses some templates (stored in `templates/` folder) to generate the files of every new puzzle.
-
 When the script is executed, it checks that the selected puzzle's folder structure exists and look for its `input.txt` file. If it finds it, then it downloads the input data from the webpage and writes it into this file.
 
 **Note:** For more information, execute the console command `python3 script/build.py get_input --help`.
+
+## "Get puzzle statement" subcommand
+
+The `get_statement` subcommand helps users to download the puzzle instructions from the official *Advent of Code* webpage and store it inside the corresponding subfolder inside `puzzles` path.
+
+The *Advent of Code* session key of your logged-in user is mandatory in order to use this command. That value (long string of characters) can be retrieved from a browser cookie about you have logged-in into the official webpage.
+
+**Warning:** This command requires that the selected puzzle's structure folder already exists, i.e., `add_day` subcommand was called earlier.
+
+When the script is executed, it checks that the selected puzzle's folder structure exists and look for its `README.md` file. If it finds it, then it downloads the puzzle instructions from the webpage and writes it into this file, as *Markdown* text.
+
+**Note:** For more information, execute the console command `python3 script/build.py get_statement --help`.
