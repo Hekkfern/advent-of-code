@@ -61,4 +61,6 @@ def get_statement(root_path: pathlib.Path, year: int, day: int, session: str) ->
     # write file
     gtp.create_readme_for_day(root_path, year, day, title, contents[0], contents[1])
 
+    print(
+        f'Puzzle instructions for puzzle {year} day {day} has been stored in {readme_path.absolute()}.')
     return 0

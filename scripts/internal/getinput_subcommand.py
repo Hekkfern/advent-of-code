@@ -26,6 +26,7 @@ def get_input(root_path: pathlib.Path, year: int, day: int, session: str) -> int
     # Save into file
     with open(input_path, "wb") as f:
         f.write(response.read())
+
     print(
         f'Input data for puzzle {year} day {day} has been stored in {input_path.absolute()}.')
     return 0

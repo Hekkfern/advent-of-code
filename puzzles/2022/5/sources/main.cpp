@@ -1,3 +1,7 @@
+//**********************************************************************
+// GENERATED CODE - DO NOT MODIFY
+//**********************************************************************
+
 #include "solutions.hpp"
 #include <utils/AocUtils.hpp>
 #include <utils/TimeUtils.hpp>

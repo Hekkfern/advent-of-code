@@ -38,4 +38,7 @@ std::optional<std::vector<int64_t>> readListOfNumbers(const std::string& filenam
 std::optional<std::vector<std::vector<int64_t>>> readGroupsOfNumbers(
     const std::string& filename);
 
+std::optional<std::vector<std::vector<uint8_t>>> readMatrixOfDigits(
+    const std::string& filename);
+
 } // namespace utils::FileUtils

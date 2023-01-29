@@ -6,9 +6,9 @@
 
 #include <string>
 
-namespace aoc_2021_1 {
+namespace aoc_2022_8 {
 
 std::string solvePart1(const std::string& filename);
 std::string solvePart2(const std::string& filename);
 
-}
+} // namespace aoc_2022_8

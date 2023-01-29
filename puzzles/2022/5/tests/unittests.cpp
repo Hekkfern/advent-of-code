@@ -1,3 +1,7 @@
+//**********************************************************************
+// GENERATED CODE - DO NOT MODIFY
+//**********************************************************************
+
 #include "../sources/solutions.hpp"
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
