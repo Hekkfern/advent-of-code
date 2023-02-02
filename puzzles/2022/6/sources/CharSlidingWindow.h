@@ -32,6 +32,6 @@ public:
 private:
     static constexpr uint32_t AlphabetSize{ 26U };
 
-    std::deque<char> mChars;
-    std::bitset<AlphabetSize> mSlidingBinary;
+    std::deque<char> mChars{};
+    std::bitset<AlphabetSize> mSlidingBinary{};
 };
