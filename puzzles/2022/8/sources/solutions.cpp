@@ -1,7 +1,7 @@
 #include "solutions.hpp"
 
 #include <fstream>
-#include <range/v3/all.hpp>
+#include <limits>
 #include <vector>
 
 namespace aoc_2022_8 {
@@ -95,8 +95,9 @@ uint32_t checkTreeVisibilityFromBottomRight(
     uint32_t count = 0U;
     TreeHeightLine maxValueInRow(forest.size());
     TreeHeightLine maxValueInColumn(forest[0].size());
-    const uint32_t lastRowIndex = forest.size() - 1U;
-    const uint32_t lastColumnIndex = forest[0].size() - 1U;
+    const uint32_t lastRowIndex{ static_cast<uint32_t>(forest.size()) - 1U };
+    const uint32_t lastColumnIndex{ static_cast<uint32_t>(forest[0].size())
+                                    - 1U };
 
     for (uint32_t i = lastRowIndex; i != std::numeric_limits<uint32_t>::max();
          --i) {
@@ -181,7 +182,7 @@ uint32_t calculateRightView(
     uint32_t row,
     uint32_t column)
 {
-    const uint32_t forestColumns = forest[0].size();
+    const uint32_t forestColumns{ static_cast<uint32_t>(forest[0].size()) };
     uint32_t visibleTress = 0U;
     if (column < (forestColumns - 1U)) {
         for (uint32_t j = column + 1U; j < forestColumns; ++j) {
@@ -233,7 +234,7 @@ calculateUpView(const TreeHeightMatrix& forest, uint32_t row, uint32_t column)
 uint32_t
 calculateDownView(const TreeHeightMatrix& forest, uint32_t row, uint32_t column)
 {
-    const uint32_t forestRows = forest.size();
+    const uint32_t forestRows{ static_cast<uint32_t>(forest.size()) };
     uint32_t visibleTress = 0U;
     if (row < (forestRows - 1U)) {
         for (uint32_t i = row + 1U; i < forestRows; ++i) {

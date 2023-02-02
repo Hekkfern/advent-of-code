@@ -79,11 +79,11 @@ char searchCommonItemInGroup(
 
 std::string solvePart1(const std::string& filename)
 {
-    std::ifstream stream{ filename };
+    std::ifstream fileStream{ filename };
     std::string line;
     uint32_t totalPriority = 0U;
 
-    while (std::getline(stream, line)) {
+    while (std::getline(fileStream, line)) {
         assert(line.size() % 2 == 0);
         const std::string compartment1 = line.substr(0, line.size() / 2);
         const std::string compartment2 = line.substr(

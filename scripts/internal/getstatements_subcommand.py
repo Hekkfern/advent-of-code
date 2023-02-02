@@ -24,7 +24,7 @@ def __parse_title(raw_statement: bs4.element.Tag) -> str:
 def __parse_statement(raw_statement: bs4.element.Tag) -> str:
     st = raw_statement
     st.find("h2").replaceWith('')  # delete h2
-    return md.MarkdownConverter().convert_soup(st)
+    return md.MarkdownConverter().convert_soup(st).strip()
 
 
 def get_statement(root_path: pathlib.Path, year: int, day: int, session: str) -> int:

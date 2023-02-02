@@ -44,9 +44,6 @@ With 16 trees visible on the edge and another 5 visible in the interior, a total
 
 Consider your map; *how many trees are visible from outside the grid?*
 
-
-
-
 ## Part 2
 
 Content with the amount of tree cover available, the Elves just need to know the best spot to build their tree house: they would like to be able to see a lot of *trees*.
@@ -103,5 +100,3 @@ This tree's scenic score is `*8*` (`2 * 2 * 1 * 2`); this is the ideal spot for 
 
 
 Consider each tree on your map. *What is the highest scenic score possible for any tree?*
-
-

@@ -1,9 +1,7 @@
 #include "solutions.hpp"
 
-#include <algorithm>
 #include <fstream>
 #include <range/v3/all.hpp>
-#include <sstream>
 #include <vector>
 
 namespace aoc_2022_5 {
