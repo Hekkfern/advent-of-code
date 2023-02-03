@@ -39,8 +39,8 @@ std::string solvePart1(const std::string& filename)
 {
     std::ifstream stream{ filename };
     std::string line;
-    uint32_t highestSum = 0U;
-    uint32_t currentSum = 0U;
+    uint32_t highestSum{ 0U };
+    uint32_t currentSum{ 0U };
 
     while (std::getline(stream, line)) {
         if (utils::StringUtils::trim(line).empty()) {
@@ -60,7 +60,7 @@ std::string solvePart2(const std::string& filename)
     std::string line;
     std::array<uint32_t, TopQuantity>
         highestSums{}; // the lower index, the higher sum of calories
-    uint32_t currentSum = 0U;
+    uint32_t currentSum{ 0U };
 
     while (std::getline(stream, line)) {
         if (utils::StringUtils::trim(line).empty()) {
