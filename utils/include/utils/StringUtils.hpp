@@ -3,6 +3,7 @@
 #include <concepts>
 #include <sstream>
 #include <string>
+#include <vector>
 
 namespace utils::StringUtils {
 
@@ -34,5 +35,16 @@ T toNumber(const std::string& str)
     ss >> num;
     return num;
 }
+
+std::string join(const std::vector<std::string>& strings, std::string delim);
+
+/**
+ * @brief a
+ *
+ * @param[in] input
+ *
+ * @return
+ */
+std::string convertFrom(const std::vector<std::vector<char>>& input);
 
 } // namespace utils::StringUtils

@@ -3,20 +3,23 @@ include(${CMAKE_CURRENT_LIST_DIR}/../cmake/cpp_standard.cmake)
 
 cmake_minimum_required(VERSION 3.20)
 
+find_package(range-v3 CONFIG REQUIRED)
+
 # aoc_utils
-set(_LIBRARY_NAME "aoc_utils")
-add_library(${_LIBRARY_NAME} STATIC)
-set_cpp_standard(${_LIBRARY_NAME})
-set_compiler_flags(${_LIBRARY_NAME})
-set_vectorization_flags(${_LIBRARY_NAME})
+set(_LIB_NAME "aoc_utils")
+add_library(${_LIB_NAME} STATIC)
+set_cpp_standard(${_LIB_NAME})
+set_compiler_flags(${_LIB_NAME})
+set_vectorization_flags(${_LIB_NAME})
 target_sources(
-        ${_LIBRARY_NAME}
+        ${_LIB_NAME}
         PRIVATE src/FileUtils.cpp src/AocUtils.cpp
         src/StringUtils.cpp src/TimeUtils.cpp)
 target_include_directories(
-        ${_LIBRARY_NAME}
+        ${_LIB_NAME}
         PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/utils>
         $<INSTALL_INTERFACE:include/utils> $<INSTALL_INTERFACE:src>
         PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>)
+target_link_libraries(${_LIB_NAME} PRIVATE range-v3)
