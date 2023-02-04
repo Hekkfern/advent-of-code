@@ -22,7 +22,7 @@ std::string solvePart1(const std::string& filename)
     std::ifstream fileStream{ filename };
     std::string line;
     int32_t cycleStrengthSum{ 0 };
-    uint32_t cycleCounter{ 0U };
+    uint32_t cycleCounter{ 1U };
     int32_t registerValue{ 1 };
     constexpr uint32_t InitialCheckpointCycle{ 20U };
     constexpr uint32_t CyclesBetweenCheckpoints{ 40U };
