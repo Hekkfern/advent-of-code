@@ -33,13 +33,13 @@ std::string solvePart1(const std::string& filename)
         std::string instruction;
         lineStream >> instruction;
         if (((instruction == "addx")
-             && ((cycleCounter < nextCheckpointCycle)
+             && ((cycleCounter <= nextCheckpointCycle)
                  && ((cycleCounter + CyclesPerInstruction.at(instruction))
                      > nextCheckpointCycle)))
             || ((instruction == "noop")
                 && (cycleCounter == nextCheckpointCycle))) {
             cycleStrengthSum
-                += (static_cast<int32_t>(cycleCounter) * registerValue);
+                += (static_cast<int32_t>(nextCheckpointCycle) * registerValue);
             nextCheckpointCycle += CyclesBetweenCheckpoints;
         }
         if (instruction == "addx") {
