@@ -23,23 +23,24 @@ const std::unordered_map<std::string, uint32_t> CyclesPerInstruction{
 void draw(
     std::vector<std::vector<char>>& crtScreen,
     uint8_t rowIndex,
-    uint32_t cycleCounter,
+    uint32_t crtPixelPosition,
     uint32_t registerValue)
 {
-    const bool isLit = (cycleCounter > (registerValue - 1))
-        || (cycleCounter > (registerValue + 1));
+    const bool isLit = (crtPixelPosition >= (registerValue - 1))
+        && (crtPixelPosition <= (registerValue + 1));
     crtScreen.at(rowIndex).emplace_back(
         (isLit) ? (LitCrtCharacter) : (DarkCrtCharacter));
 }
 
 void moveCrtPointer(
-    uint32_t& cycleCounter,
+    uint32_t& crtPixelPosition,
     std::vector<std::vector<char>>& crtScreen,
     uint8_t& crtScreenRowIndex)
 {
-    ++cycleCounter;
-    if (cycleCounter % CrtRowLength == 0) {
+    ++crtPixelPosition;
+    if (crtPixelPosition % CrtRowLength == 0) {
         ++crtScreenRowIndex;
+        crtPixelPosition = 0;
         crtScreen.emplace_back();
     }
 }
@@ -86,7 +87,7 @@ std::string solvePart1(const std::string& filename)
 std::string solvePart2(const std::string& filename)
 {
     uint32_t registerValue{ 1U };
-    uint32_t cycleCounter{ 1U };
+    uint32_t crtPixelPosition{ 0U };
     std::ifstream fileStream{ filename };
     std::string line;
     std::vector<std::vector<char>> crtScreen{ {} };
@@ -107,19 +108,19 @@ std::string solvePart2(const std::string& filename)
                 draw(
                     crtScreen,
                     crtScreenRowIndex,
-                    cycleCounter + i,
+                    crtPixelPosition,
                     registerValue);
-                moveCrtPointer(cycleCounter, crtScreen, crtScreenRowIndex);
+                moveCrtPointer(crtPixelPosition, crtScreen, crtScreenRowIndex);
             }
-            // modify register
+            // modify register based on value provided by addx instruction
             uint32_t increaseValue = 0;
             lineStream >> increaseValue;
             registerValue += increaseValue;
             break;
         }
         case InstructionType::NOOP: {
-            draw(crtScreen, crtScreenRowIndex, cycleCounter, registerValue);
-            moveCrtPointer(cycleCounter, crtScreen, crtScreenRowIndex);
+            draw(crtScreen, crtScreenRowIndex, crtPixelPosition, registerValue);
+            moveCrtPointer(crtPixelPosition, crtScreen, crtScreenRowIndex);
             break;
         }
         default: {
