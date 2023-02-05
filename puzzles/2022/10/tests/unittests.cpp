@@ -28,7 +28,7 @@ TEST_CASE(
     constexpr auto InputFile{ "input_test.txt" };
 
     std::string mySolution = aoc_2022_10::solvePart2(InputFile);
-    std::string expectedSolution = utils::FileUtils::readFirstLine(
+    std::string expectedSolution = utils::FileUtils::readWholeLine(
                                        "solution2_test.txt")
                                        .value();
 
@@ -56,7 +56,7 @@ TEST_CASE(
     constexpr auto InputFile{ "input.txt" };
 
     std::string mySolution = aoc_2022_10::solvePart2(InputFile);
-    std::string expectedSolution = utils::FileUtils::readFirstLine(
+    std::string expectedSolution = utils::FileUtils::readWholeLine(
                                        "solution2.txt")
                                        .value();
 

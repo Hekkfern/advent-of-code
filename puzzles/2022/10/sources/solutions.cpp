@@ -129,6 +129,7 @@ std::string solvePart2(const std::string& filename)
         }
         }
     }
+    crtScreen.pop_back();
 
     return utils::StringUtils::convertFrom(crtScreen);
 }
