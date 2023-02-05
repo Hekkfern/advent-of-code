@@ -1,5 +1,6 @@
 #include "solutions.hpp"
 
+#include "InstructionType.h"
 #include <fstream>
 #include <sstream>
 #include <unordered_map>
@@ -10,10 +11,38 @@ namespace aoc_2022_10 {
 
 // ---------- Private Methods ----------
 
+constexpr char LitCrtCharacter{ '#' };
+constexpr char DarkCrtCharacter{ '.' };
+constexpr uint8_t CrtRowLength{ 40U };
+
 const std::unordered_map<std::string, uint32_t> CyclesPerInstruction{
-    { "addx", 2U },
-    { "noop", 1U }
+    { AddxInstructionName, 2U },
+    { NoopInstructionName, 1U }
 };
+
+void draw(
+    std::vector<std::vector<char>>& crtScreen,
+    uint8_t rowIndex,
+    uint32_t cycleCounter,
+    uint32_t registerValue)
+{
+    const bool isLit = (cycleCounter > (registerValue - 1))
+        || (cycleCounter > (registerValue + 1));
+    crtScreen.at(rowIndex).emplace_back(
+        (isLit) ? (LitCrtCharacter) : (DarkCrtCharacter));
+}
+
+void moveCrtPointer(
+    uint32_t& cycleCounter,
+    std::vector<std::vector<char>>& crtScreen,
+    uint8_t& crtScreenRowIndex)
+{
+    ++cycleCounter;
+    if (cycleCounter % CrtRowLength == 0) {
+        ++crtScreenRowIndex;
+        crtScreen.emplace_back();
+    }
+}
 
 // ---------- End of Private Methods ----------
 
@@ -23,7 +52,7 @@ std::string solvePart1(const std::string& filename)
 {
     std::ifstream fileStream{ filename };
     std::string line;
-    int32_t cycleStrengthSum{ 0 };
+    uint32_t cycleStrengthSum{ 0U };
     uint32_t cycleCounter{ 1U };
     uint32_t registerValue{ 1U };
     constexpr uint32_t InitialCheckpointCycle{ 20U };
@@ -34,16 +63,16 @@ std::string solvePart1(const std::string& filename)
         std::stringstream lineStream{ line };
         std::string instruction;
         lineStream >> instruction;
-        if (((instruction == "addx")
+        if (((instruction == AddxInstructionName)
              && ((cycleCounter <= nextCheckpointCycle)
                  && ((cycleCounter + CyclesPerInstruction.at(instruction))
                      > nextCheckpointCycle)))
-            || ((instruction == "noop")
+            || ((instruction == NoopInstructionName)
                 && (cycleCounter == nextCheckpointCycle))) {
             cycleStrengthSum += (nextCheckpointCycle * registerValue);
             nextCheckpointCycle += CyclesBetweenCheckpoints;
         }
-        if (instruction == "addx") {
+        if (instruction == AddxInstructionName) {
             uint32_t increaseValue = 0;
             lineStream >> increaseValue;
             registerValue += increaseValue;
@@ -56,9 +85,6 @@ std::string solvePart1(const std::string& filename)
 
 std::string solvePart2(const std::string& filename)
 {
-    constexpr uint8_t CrtRowLength{ 40U };
-    constexpr char LitCrtCharacter{ '#' };
-    constexpr char DarkCrtCharacter{ '.' };
     uint32_t registerValue{ 1U };
     uint32_t cycleCounter{ 1U };
     std::ifstream fileStream{ filename };
@@ -68,33 +94,38 @@ std::string solvePart2(const std::string& filename)
 
     while (std::getline(fileStream, line)) {
         std::stringstream lineStream{ line };
-        std::string instruction;
-        lineStream >> instruction;
-        if (instruction == "addx") {
+        std::string instructionText;
+        lineStream >> instructionText;
+        const InstructionType instruction{ convertInstructionType(
+            instructionText) };
+        switch (instruction) {
+        case InstructionType::ADDX: {
             // draw
-            for (uint8_t i = 0U; i < CyclesPerInstruction.at("addx"); ++i) {
-                const bool isLit = ((cycleCounter + i) > (registerValue - 1))
-                    || ((cycleCounter + i) > (registerValue + 1));
-                crtScreen.at(crtScreenRowIndex)
-                    .emplace_back(
-                        (isLit) ? (LitCrtCharacter) : (DarkCrtCharacter));
+            for (uint8_t i = 0U;
+                 i < CyclesPerInstruction.at(AddxInstructionName);
+                 ++i) {
+                draw(
+                    crtScreen,
+                    crtScreenRowIndex,
+                    cycleCounter + i,
+                    registerValue);
+                moveCrtPointer(cycleCounter, crtScreen, crtScreenRowIndex);
             }
             // modify register
             uint32_t increaseValue = 0;
             lineStream >> increaseValue;
             registerValue += increaseValue;
-        } else if (instruction == "addx") {
-            // draw
-            const bool isLit = (cycleCounter > (registerValue - 1))
-                || (cycleCounter > (registerValue + 1));
-            crtScreen.at(crtScreenRowIndex)
-                .emplace_back((isLit) ? (LitCrtCharacter) : (DarkCrtCharacter));
+            break;
         }
-
-        cycleCounter += CyclesPerInstruction.at(instruction);
-        if (cycleCounter >= CrtRowLength) {
-            ++crtScreenRowIndex;
-            crtScreen.emplace_back();
+        case InstructionType::NOOP: {
+            draw(crtScreen, crtScreenRowIndex, cycleCounter, registerValue);
+            moveCrtPointer(cycleCounter, crtScreen, crtScreenRowIndex);
+            break;
+        }
+        default: {
+            /* NO STATEMENTS */
+            break;
+        }
         }
     }
 
