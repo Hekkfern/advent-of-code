@@ -57,6 +57,7 @@ This project has been created with the main goal to provide a easy-to-use develo
 Features:
 
 * C++ 20 standard
+* Parsing of the input files, so you can use your own data to solve the puzzles.
 * `CMake`-based project: feel free to split your logic into several files and classes as you wish.
 * Fast compilation with `ccache`
 * Use of native CPU instructions to minimize the execution times.
