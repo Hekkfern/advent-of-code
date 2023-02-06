@@ -1,5 +1,6 @@
 #include "solutions.hpp"
 
+#include "Monkey.h"
 #include <array>
 #include <fstream>
 #include <regex>
@@ -8,18 +9,23 @@ namespace aoc_2022_11 {
 
 // ---------- Private Methods ----------
 
-void parseInput(const std::string& filename){
-    constexpr uint8_t InputLinesPerMonkey{6U};
-    std::ifstream inputFile{ filename };
-    std::array<std::string,InputLinesPerMonkey> lines;
-
-    for (uint8_t i = 0U; i <InputLinesPerMonkey; ++i){
-        std::getline(inputFile, lines.at(i));
+Monkey parseMonkey(std::ifstream& fileStream)
+{
+    std::string line;
+    std::smatch regexResult;
+    // line 1
+    std::getline(fileStream, line);
+    auto patternLine1{ std::regex(R"(Monkey (\d+):)") };
+    if (!regex_match(line, regexResult, patternLine1)) {
+        throw std::logic_error("Regex failed in line 1");
     }
-
-
+    MonkeyId monkeyId{ regexResult[1] };
 }
 
+void parseInput(const std::string& filename)
+{
+    std::ifstream inputFile{ filename };
+}
 
 // ---------- End of Private Methods ----------
 
