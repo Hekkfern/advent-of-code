@@ -15,8 +15,8 @@ Monkey parseMonkey(std::ifstream& fileStream)
     std::smatch regexResult;
     // line 1
     std::getline(fileStream, line);
-    auto patternLine1{ std::regex(R"(Monkey (\d+):)") };
-    if (!regex_match(line, regexResult, patternLine1)) {
+    const auto patternLine1{ std::regex(R"(Monkey (\d+):)") };
+    if (!std::regex_match(line, regexResult, patternLine1)) {
         throw std::logic_error("Regex failed in line 1");
     }
     MonkeyId monkeyId{ regexResult[1] };
