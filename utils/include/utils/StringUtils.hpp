@@ -47,4 +47,8 @@ std::string join(const std::vector<std::string>& strings, std::string delim);
  */
 std::string convertFrom(const std::vector<std::vector<char>>& input);
 
+std::vector<std::string> split(
+    const std::string& str,
+    const std::string& separator = " ");
+
 } // namespace utils::StringUtils

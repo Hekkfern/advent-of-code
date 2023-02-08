@@ -21,5 +21,5 @@ private:
     const WorryLevel mDivisor;
     const WorryLevel mTargetTrue;
     const WorryLevel mTargetFalse;
-    std::vector<uint64_t> mItems{};
+    std::vector<WorryLevel> mItems{};
 };

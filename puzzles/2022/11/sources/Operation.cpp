@@ -1,5 +1,7 @@
 #include "Operation.h"
 
+#include <stdexcept>
+
 Operation::Operation(const Operator op, const std::optional<WorryLevel> operand)
     : mOperator{ op }
     , mOperand{ operand }
