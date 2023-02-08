@@ -2,6 +2,7 @@
 
 #include "Operation.h"
 #include <cstdint>
+#include <unordered_map>
 #include <vector>
 
 using MonkeyId = uint8_t;
@@ -10,10 +11,12 @@ class Monkey {
 public:
     Monkey(
         MonkeyId id,
-        Operation operation,
+        Operation&& operation,
         WorryLevel divisor,
         WorryLevel targetTrue,
-        WorryLevel targetFalse);
+        WorryLevel targetFalse,
+        std::vector<WorryLevel>&& items = {});
+    void inspectAndThrowAll(std::unordered_map<MonkeyId, Monkey>& monkeys);
 
 private:
     const MonkeyId mId;

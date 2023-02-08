@@ -2,8 +2,8 @@
 
 #include "Monkey.h"
 #include "Operation.h"
-#include <array>
 #include <fstream>
+#include <range/v3/all.hpp>
 #include <regex>
 #include <utils/StringUtils.hpp>
 
@@ -30,10 +30,12 @@ Monkey parseMonkey(std::ifstream& fileStream)
         throw std::logic_error(
             "Regex failed in parsing the line 2 of a Monkey description");
     }
-    std::vector<WorryLevel> monkeyItems;
-    for (const auto& item : utils::StringUtils::split(regexResult[1])) {
-        monkeyItems.push_back(utils::StringUtils::toNumber<WorryLevel>(item));
-    }
+    auto itemTexts{ utils::StringUtils::split(regexResult[1]) };
+    auto monkeyItems = itemTexts
+        | ranges::views::transform([](const std::string& s) {
+                           return utils::StringUtils::toNumber<WorryLevel>(s);
+                       })
+        | ranges::to<std::vector>();
     // line 3
     std::getline(fileStream, line);
     constexpr auto PatternLine3{ R"(  Operation: new = old (.+) (.+))" };
@@ -61,7 +63,7 @@ Monkey parseMonkey(std::ifstream& fileStream)
     // line 4
     std::getline(fileStream, line);
     constexpr auto PatternLine4{ R"(  Test: divisible by (.+))" };
-    if (!std::regex_match(line, regexResult, std::regex(PatternLine3))) {
+    if (!std::regex_match(line, regexResult, std::regex(PatternLine4))) {
         throw std::logic_error(
             "Regex failed in parsing the line 4 of a Monkey description");
     }
@@ -70,7 +72,7 @@ Monkey parseMonkey(std::ifstream& fileStream)
     // line 5
     std::getline(fileStream, line);
     constexpr auto PatternLine5{ R"(    If true: throw to Monkey (.+))" };
-    if (!std::regex_match(line, regexResult, std::regex(PatternLine3))) {
+    if (!std::regex_match(line, regexResult, std::regex(PatternLine5))) {
         throw std::logic_error(
             "Regex failed in parsing the line 5 of a Monkey description");
     }
@@ -79,18 +81,16 @@ Monkey parseMonkey(std::ifstream& fileStream)
     // line 6
     std::getline(fileStream, line);
     constexpr auto PatternLine6{ R"(    If false: throw to Monkey (.+))" };
-    if (!std::regex_match(line, regexResult, std::regex(PatternLine3))) {
+    if (!std::regex_match(line, regexResult, std::regex(PatternLine6))) {
         throw std::logic_error(
             "Regex failed in parsing the line 6 of a Monkey description");
     }
     WorryLevel monkeyTargetFalse{ utils::StringUtils::toNumber<WorryLevel>(
         regexResult[1]) };
     // generate Monkey
-    return Monkey{ monkeyId,
-                   std::move(monkeyOperation),
-                   monkeyDivisor,
-                   monkeyTargetTrue,
-                   monkeyTargetFalse };
+    return Monkey{ monkeyId,          std::move(monkeyOperation),
+                   monkeyDivisor,     monkeyTargetTrue,
+                   monkeyTargetFalse, std::move(monkeyItems) };
 }
 
 std::vector<Monkey> parseInput(const std::string& filename)
@@ -98,9 +98,12 @@ std::vector<Monkey> parseInput(const std::string& filename)
     std::ifstream inputFile{ filename };
     std::vector<Monkey> monkeys;
 
+    std::string line;
     do {
         monkeys.emplace_back(parseMonkey(inputFile));
-    } while (true);
+    } while (std::getline(inputFile, line));
+
+    return monkeys;
 }
 
 // ---------- End of Private Methods ----------
@@ -109,8 +112,7 @@ std::vector<Monkey> parseInput(const std::string& filename)
 
 std::string solvePart1(const std::string& filename)
 {
-    (void)filename;
-    return "";
+    std::vector<Monkey> monkeys{ parseInput(filename) };
 }
 
 std::string solvePart2(const std::string& filename)
