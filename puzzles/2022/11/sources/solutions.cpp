@@ -53,12 +53,10 @@ Monkey parseMonkey(std::ifstream& fileStream)
     default:
         throw std::logic_error("Invalid operator");
     }
-    if (regexResult[2] == "old") {
-        monkeyOperand = std::nullopt;
-    } else {
-        monkeyOperand = std::make_optional(
+    monkeyOperand = (regexResult[2] == "old")
+        ? std::nullopt
+        : std::make_optional(
             utils::StringUtils::toNumber<WorryLevel>(regexResult[2]));
-    }
     Operation monkeyOperation{ monkeyOperator, monkeyOperand };
     // line 4
     std::getline(fileStream, line);
@@ -89,7 +87,7 @@ Monkey parseMonkey(std::ifstream& fileStream)
         regexResult[1]) };
     // generate Monkey
     return Monkey{ monkeyId,
-                   monkeyOperation,
+                   std::move(monkeyOperation),
                    monkeyDivisor,
                    monkeyTargetTrue,
                    monkeyTargetFalse };
