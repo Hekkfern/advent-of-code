@@ -4,6 +4,7 @@
 #include <array>
 #include <fstream>
 #include <regex>
+#include <utils/StringUtils.hpp>
 
 namespace aoc_2022_11 {
 
@@ -19,7 +20,9 @@ Monkey parseMonkey(std::ifstream& fileStream)
     if (!std::regex_match(line, regexResult, patternLine1)) {
         throw std::logic_error("Regex failed in line 1");
     }
-    MonkeyId monkeyId{ regexResult[1] };
+    MonkeyId monkeyId{ utils::StringUtils::toNumber<uint8_t>(regexResult[0]) };
+    //line 2
+
 }
 
 void parseInput(const std::string& filename)
