@@ -4,8 +4,8 @@ Monkey::Monkey(
     MonkeyId id,
     Operation&& operation,
     WorryLevel divisor,
-    WorryLevel targetTrue,
-    WorryLevel targetFalse,
+    MonkeyId targetTrue,
+    MonkeyId targetFalse,
     std::vector<WorryLevel>&& items)
     : mId{ id }
     , mOperation{ std::move(operation) }
@@ -15,6 +15,29 @@ Monkey::Monkey(
     , mItems{ items }
 {
 }
-void Monkey::inspectAndThrowAll(std::unordered_map<MonkeyId, Monkey>& monkeys) {
-    
+
+MonkeyId Monkey::getId() const { return mId; }
+
+void Monkey::inspectAndThrowAll(std::unordered_map<MonkeyId, Monkey>& monkeys)
+{
+    for (auto& item : mItems) {
+        // monkey inspect the object
+        item = mOperation(item);
+        // you are relief
+        item /= WorryLevel{ 3U };
+        // test your worry level and throw to the target monkey
+        const MonkeyId target{ (item % mDivisor == 0) ? mTargetTrue
+                                                      : mTargetFalse };
+        monkeys.at(target).mItems.emplace_back(item);
+    }
 }
+
+bool operator==(const Monkey& lhs, const Monkey& rhs)
+{
+    return (lhs.mId == rhs.mId) && (lhs.mOperation == rhs.mOperation)
+        && (lhs.mDivisor == rhs.mDivisor)
+        && (lhs.mTargetTrue == rhs.mTargetTrue)
+        && (lhs.mTargetFalse == rhs.mTargetFalse) && (lhs.mItems == rhs.mItems);
+}
+
+bool operator!=(const Monkey& lhs, const Monkey& rhs) { return !(lhs == rhs); }

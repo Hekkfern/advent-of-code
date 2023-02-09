@@ -11,6 +11,31 @@ public:
     WorryLevel operator()(WorryLevel oldValue);
 
 private:
+    /**
+     * Friend relationship of the equality operator overload.
+     */
+    friend bool operator==(const Operation& lhs, const Operation& rhs);
+
     const Operator mOperator;
     const std::optional<WorryLevel> mOperand;
 };
+
+/**
+ * @brief      Equality operator.
+ *
+ * @param[in]  lhs   The left hand side of the operation.
+ * @param[in]  rhs   The right hand side of the operation.
+ *
+ * @return     The result of the equality.
+ */
+bool operator==(const Operation& lhs, const Operation& rhs);
+
+/**
+ * @brief      Inequality operator.
+ *
+ * @param[in]  lhs   The left hand side of the operation.
+ * @param[in]  rhs   The right hand side of the operation.
+ *
+ * @return     The result of the inequality.
+ */
+bool operator!=(const Operation& lhs, const Operation& rhs);

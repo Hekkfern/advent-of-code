@@ -13,16 +13,49 @@ public:
         MonkeyId id,
         Operation&& operation,
         WorryLevel divisor,
-        WorryLevel targetTrue,
-        WorryLevel targetFalse,
+        MonkeyId targetTrue,
+        MonkeyId targetFalse,
         std::vector<WorryLevel>&& items = {});
+    MonkeyId getId() const;
     void inspectAndThrowAll(std::unordered_map<MonkeyId, Monkey>& monkeys);
 
 private:
+    /**
+     * Friend relationship of the equality operator overload.
+     */
+    friend bool operator==(const Monkey& lhs, const Monkey& rhs);
+
     const MonkeyId mId;
-    const Operation mOperation;
+    Operation mOperation;
     const WorryLevel mDivisor;
-    const WorryLevel mTargetTrue;
-    const WorryLevel mTargetFalse;
+    const MonkeyId mTargetTrue;
+    const MonkeyId mTargetFalse;
     std::vector<WorryLevel> mItems{};
+};
+
+/**
+ * @brief      Equality operator.
+ *
+ * @param[in]  lhs   The left hand side of the operation.
+ * @param[in]  rhs   The right hand side of the operation.
+ *
+ * @return     The result of the equality.
+ */
+bool operator==(const Monkey& lhs, const Monkey& rhs);
+
+/**
+ * @brief      Inequality operator.
+ *
+ * @param[in]  lhs   The left hand side of the operation.
+ * @param[in]  rhs   The right hand side of the operation.
+ *
+ * @return     The result of the inequality.
+ */
+bool operator!=(const Monkey& lhs, const Monkey& rhs);
+
+template <> struct std::hash<Monkey> {
+    std::size_t operator()(const Monkey& k) const
+    {
+        return (std::hash<MonkeyId>()(k.getId()));
+    }
 };

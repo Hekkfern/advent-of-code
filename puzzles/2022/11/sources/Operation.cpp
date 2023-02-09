@@ -19,3 +19,13 @@ WorryLevel Operation::operator()(const WorryLevel oldValue)
         throw std::logic_error("Invalid operator");
     }
 }
+
+bool operator==(const Operation& lhs, const Operation& rhs)
+{
+    return (lhs.mOperator == rhs.mOperator) && (lhs.mOperand == rhs.mOperand);
+}
+
+bool operator!=(const Operation& lhs, const Operation& rhs)
+{
+    return !(lhs == rhs);
+}
