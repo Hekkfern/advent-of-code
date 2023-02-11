@@ -3,6 +3,7 @@
 #include "Monkey.h"
 #include "Operation.h"
 #include <fstream>
+#include <map>
 #include <range/v3/all.hpp>
 #include <regex>
 #include <unordered_map>
@@ -109,13 +110,39 @@ std::unordered_map<MonkeyId, Monkey> parseInput(const std::string& filename)
     return monkeys;
 }
 
+uint32_t calculateMonkeyBusiness(
+    const std::map<MonkeyId, uint32_t>& monkeyInspections)
+{
+    auto it1 = std::rbegin(monkeyInspections);
+    auto it2 = std::next(it1);
+    return it1->second * it2->second;
+}
+
 // ---------- End of Private Methods ----------
 
 // ---------- Public Methods ----------
 
 std::string solvePart1(const std::string& filename)
 {
+    constexpr uint8_t NumberOfRounds{ 20U };
     std::unordered_map<MonkeyId, Monkey> monkeys{ parseInput(filename) };
+    std::map<MonkeyId, uint32_t> monkeyInspections{};
+    for (auto& m : monkeys) {
+        monkeyInspections.emplace(m.first, 0U);
+    }
+
+    for (uint8_t roundCounter = 0U; roundCounter < NumberOfRounds;
+         ++roundCounter) {
+        for (MonkeyId monkeyIndex = 0U; monkeyIndex < monkeys.size();
+             ++monkeyIndex) {
+            uint32_t numInspections{
+                monkeys.at(monkeyIndex).inspectAndThrowAll(monkeys)
+            };
+            monkeyInspections.at(monkeyIndex) = numInspections;
+        }
+    }
+
+    return std::to_string(calculateMonkeyBusiness(monkeyInspections));
 }
 
 std::string solvePart2(const std::string& filename)

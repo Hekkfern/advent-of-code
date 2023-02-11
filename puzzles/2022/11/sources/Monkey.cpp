@@ -18,8 +18,10 @@ Monkey::Monkey(
 
 MonkeyId Monkey::getId() const { return mId; }
 
-void Monkey::inspectAndThrowAll(std::unordered_map<MonkeyId, Monkey>& monkeys)
+uint32_t Monkey::inspectAndThrowAll(
+    std::unordered_map<MonkeyId, Monkey>& monkeys)
 {
+    uint32_t inspectionsCounter{ 0U };
     for (auto& item : mItems) {
         // monkey inspect the object
         item = mOperation(item);
@@ -29,7 +31,9 @@ void Monkey::inspectAndThrowAll(std::unordered_map<MonkeyId, Monkey>& monkeys)
         const MonkeyId target{ (item % mDivisor == 0) ? mTargetTrue
                                                       : mTargetFalse };
         monkeys.at(target).mItems.emplace_back(item);
+        ++inspectionsCounter;
     }
+    return inspectionsCounter;
 }
 
 bool operator==(const Monkey& lhs, const Monkey& rhs)
