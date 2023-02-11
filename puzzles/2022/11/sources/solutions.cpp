@@ -73,7 +73,7 @@ Monkey parseMonkey(std::ifstream& fileStream)
         regexResult[1]) };
     // line 5
     std::getline(fileStream, line);
-    constexpr auto PatternLine5{ R"(    If true: throw to Monkey (.+))" };
+    constexpr auto PatternLine5{ R"(    If true: throw to monkey (.+))" };
     if (!std::regex_match(line, regexResult, std::regex(PatternLine5))) {
         throw std::logic_error(
             "Regex failed in parsing the line 5 of a Monkey description");
@@ -82,7 +82,7 @@ Monkey parseMonkey(std::ifstream& fileStream)
         regexResult[1]) };
     // line 6
     std::getline(fileStream, line);
-    constexpr auto PatternLine6{ R"(    If false: throw to Monkey (.+))" };
+    constexpr auto PatternLine6{ R"(    If false: throw to monkey (.+))" };
     if (!std::regex_match(line, regexResult, std::regex(PatternLine6))) {
         throw std::logic_error(
             "Regex failed in parsing the line 6 of a Monkey description");
