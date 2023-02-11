@@ -53,7 +53,7 @@ std::vector<std::string> split(
     }
     resultList.push_back(str.substr(begin));
 
-    if (separator == " ") {
+    if (separator.empty()) {
         for (auto it = resultList.begin(); it != resultList.end(); ++it) {
             if (it->empty()) {
                 resultList.erase(it--);

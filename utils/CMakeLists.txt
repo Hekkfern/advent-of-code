@@ -1,5 +1,5 @@
-include(${CMAKE_CURRENT_LIST_DIR}/../cmake/compiler_flags.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/../cmake/cpp_standard.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/compiler_flags.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/cpp_standard.cmake)
 
 cmake_minimum_required(VERSION 3.20)
 
@@ -23,3 +23,7 @@ target_include_directories(
         PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>)
 target_link_libraries(${_LIB_NAME} PRIVATE range-v3)
+
+if(GENERATE_PROJECTS STREQUAL "ALL" OR GENERATE_PROJECTS STREQUAL "UNITTESTS")
+  add_subdirectory(tests)
+endif()
