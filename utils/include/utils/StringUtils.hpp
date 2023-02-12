@@ -36,6 +36,16 @@ T toNumber(const std::string& str)
     return num;
 }
 
+template <> uint8_t toNumber(const std::string& str)
+{
+    return static_cast<uint8_t>(std::stoi(str));
+}
+
+template <> int8_t toNumber(const std::string& str)
+{
+    return static_cast<int8_t>(std::stoi(str));
+}
+
 std::string join(const std::vector<std::string>& strings, std::string delim);
 
 /**
