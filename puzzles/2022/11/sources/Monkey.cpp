@@ -30,6 +30,8 @@ uint32_t Monkey::inspectAndThrowAll(
         // check your relief
         if (reliefEnabled) {
             itemValue /= WorryLevel{ 3U };
+        } else {
+            itemValue %= mDivisor;
         }
         // test your worry level and throw to the target monkey
         const MonkeyId target{ (itemValue % mDivisor == 0) ? mTargetTrue
