@@ -10,7 +10,7 @@ Operation::Operation(const Operator op, const std::optional<WorryLevel> operand)
 
 WorryLevel Operation::operator()(const WorryLevel oldValue)
 {
-    const WorryLevel rhs{ !mOperand ? *mOperand : oldValue };
+    const WorryLevel rhs{ mOperand ? *mOperand : oldValue };
     if (mOperator == Operator::MULTIPLY) {
         return (oldValue * rhs);
     } else if (mOperator == Operator::ADD) {

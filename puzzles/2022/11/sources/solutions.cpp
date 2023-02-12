@@ -3,7 +3,6 @@
 #include "Monkey.h"
 #include "Operation.h"
 #include <fstream>
-#include <map>
 #include <range/v3/all.hpp>
 #include <regex>
 #include <unordered_map>
@@ -111,11 +110,18 @@ std::unordered_map<MonkeyId, Monkey> parseInput(const std::string& filename)
 }
 
 uint32_t calculateMonkeyBusiness(
-    const std::map<MonkeyId, uint32_t>& monkeyInspections)
+    const std::unordered_map<MonkeyId, uint32_t>& monkeyInspections)
 {
-    auto it1 = std::rbegin(monkeyInspections);
-    auto it2 = std::next(it1);
-    return it1->second * it2->second;
+    std::vector<uint32_t> monkeyInspectionsVector;
+
+    ranges::for_each(
+        monkeyInspections,
+        [&monkeyInspectionsVector](const std::pair<MonkeyId, uint32_t>& entry) {
+            monkeyInspectionsVector.push_back(entry.second);
+        });
+    ranges::sort(monkeyInspectionsVector, ranges::greater());
+
+    return monkeyInspectionsVector[0] * monkeyInspectionsVector[1];
 }
 
 // ---------- End of Private Methods ----------
@@ -126,7 +132,7 @@ std::string solvePart1(const std::string& filename)
 {
     constexpr uint8_t NumberOfRounds{ 20U };
     std::unordered_map<MonkeyId, Monkey> monkeys{ parseInput(filename) };
-    std::map<MonkeyId, uint32_t> monkeyInspections{};
+    std::unordered_map<MonkeyId, uint32_t> monkeyInspections{};
     for (auto& m : monkeys) {
         monkeyInspections.emplace(m.first, 0U);
     }
@@ -138,7 +144,7 @@ std::string solvePart1(const std::string& filename)
             uint32_t numInspections{
                 monkeys.at(monkeyIndex).inspectAndThrowAll(monkeys)
             };
-            monkeyInspections.at(monkeyIndex) = numInspections;
+            monkeyInspections.at(monkeyIndex) += numInspections;
         }
     }
 

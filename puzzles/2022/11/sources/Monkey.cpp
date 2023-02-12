@@ -23,16 +23,20 @@ uint32_t Monkey::inspectAndThrowAll(
 {
     uint32_t inspectionsCounter{ 0U };
     for (auto& item : mItems) {
+        WorryLevel itemValue = 0U;
         // monkey inspect the object
-        item = mOperation(item);
+        itemValue = mOperation(item);
         // you are relief
-        item /= WorryLevel{ 3U };
+        itemValue /= WorryLevel{ 3U };
         // test your worry level and throw to the target monkey
-        const MonkeyId target{ (item % mDivisor == 0) ? mTargetTrue
-                                                      : mTargetFalse };
-        monkeys.at(target).mItems.emplace_back(item);
+        const MonkeyId target{ (itemValue % mDivisor == 0) ? mTargetTrue
+                                                           : mTargetFalse };
+        monkeys.at(target).mItems.emplace_back(itemValue);
         ++inspectionsCounter;
     }
+    // delete all the items of this monkey
+    mItems.clear();
+
     return inspectionsCounter;
 }
 
