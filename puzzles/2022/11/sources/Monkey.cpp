@@ -19,15 +19,18 @@ Monkey::Monkey(
 MonkeyId Monkey::getId() const { return mId; }
 
 uint32_t Monkey::inspectAndThrowAll(
-    std::unordered_map<MonkeyId, Monkey>& monkeys)
+    std::unordered_map<MonkeyId, Monkey>& monkeys,
+    bool reliefEnabled)
 {
     uint32_t inspectionsCounter{ 0U };
     for (auto& item : mItems) {
         WorryLevel itemValue = 0U;
         // monkey inspect the object
         itemValue = mOperation(item);
-        // you are relief
-        itemValue /= WorryLevel{ 3U };
+        // check your relief
+        if (reliefEnabled) {
+            itemValue /= WorryLevel{ 3U };
+        }
         // test your worry level and throw to the target monkey
         const MonkeyId target{ (itemValue % mDivisor == 0) ? mTargetTrue
                                                            : mTargetFalse };

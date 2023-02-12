@@ -130,19 +130,19 @@ uint32_t calculateMonkeyBusiness(
 
 std::string solvePart1(const std::string& filename)
 {
-    constexpr uint8_t NumberOfRounds{ 20U };
+    constexpr uint32_t NumberOfRounds{ 20U };
     std::unordered_map<MonkeyId, Monkey> monkeys{ parseInput(filename) };
     std::unordered_map<MonkeyId, uint32_t> monkeyInspections{};
     for (auto& m : monkeys) {
         monkeyInspections.emplace(m.first, 0U);
     }
 
-    for (uint8_t roundCounter = 0U; roundCounter < NumberOfRounds;
+    for (uint32_t roundCounter = 0U; roundCounter < NumberOfRounds;
          ++roundCounter) {
         for (MonkeyId monkeyIndex = 0U; monkeyIndex < monkeys.size();
              ++monkeyIndex) {
             uint32_t numInspections{
-                monkeys.at(monkeyIndex).inspectAndThrowAll(monkeys)
+                monkeys.at(monkeyIndex).inspectAndThrowAll(monkeys, true)
             };
             monkeyInspections.at(monkeyIndex) += numInspections;
         }
@@ -153,8 +153,25 @@ std::string solvePart1(const std::string& filename)
 
 std::string solvePart2(const std::string& filename)
 {
-    (void)filename;
-    return "";
+    constexpr uint32_t NumberOfRounds{ 10000U };
+    std::unordered_map<MonkeyId, Monkey> monkeys{ parseInput(filename) };
+    std::unordered_map<MonkeyId, uint32_t> monkeyInspections{};
+    for (auto& m : monkeys) {
+        monkeyInspections.emplace(m.first, 0U);
+    }
+
+    for (uint32_t roundCounter = 0U; roundCounter < NumberOfRounds;
+         ++roundCounter) {
+        for (MonkeyId monkeyIndex = 0U; monkeyIndex < monkeys.size();
+             ++monkeyIndex) {
+            uint32_t numInspections{
+                monkeys.at(monkeyIndex).inspectAndThrowAll(monkeys, false)
+            };
+            monkeyInspections.at(monkeyIndex) += numInspections;
+        }
+    }
+
+    return std::to_string(calculateMonkeyBusiness(monkeyInspections));
 }
 
 // ---------- End of Public Methods ----------

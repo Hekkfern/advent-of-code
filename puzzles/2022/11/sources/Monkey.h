@@ -17,7 +17,9 @@ public:
         MonkeyId targetFalse,
         std::vector<WorryLevel>&& items = {});
     MonkeyId getId() const;
-    uint32_t inspectAndThrowAll(std::unordered_map<MonkeyId, Monkey>& monkeys);
+    uint32_t inspectAndThrowAll(
+        std::unordered_map<MonkeyId, Monkey>& monkeys,
+        bool reliefEnabled);
 
 private:
     /**
