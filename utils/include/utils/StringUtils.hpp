@@ -36,12 +36,12 @@ T toNumber(const std::string& str)
     return num;
 }
 
-template <> uint8_t toNumber(const std::string& str)
+template <> inline uint8_t toNumber(const std::string& str)
 {
     return static_cast<uint8_t>(std::stoi(str));
 }
 
-template <> int8_t toNumber(const std::string& str)
+template <> inline int8_t toNumber(const std::string& str)
 {
     return static_cast<int8_t>(std::stoi(str));
 }
