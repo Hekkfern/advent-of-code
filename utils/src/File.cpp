@@ -1,9 +1,9 @@
-#include "FileUtils.hpp"
+#include "File.hpp"
 
-#include "StringUtils.hpp"
+#include "String.hpp"
 #include <fstream>
 
-namespace utils::FileUtils {
+namespace utils::file {
 
 std::optional<std::string> readFirstLine(const std::string& filename)
 {
@@ -24,7 +24,7 @@ std::optional<std::string> readWholeLine(const std::string& filename)
         return std::nullopt;
     }
 
-    std::string content{ utils::StringUtils::join(*lines, "\n") };
+    std::string content{ utils::string::join(*lines, "\n") };
     return content;
 }
 
@@ -58,7 +58,7 @@ std::optional<std::vector<int64_t>> readListOfNumbers(
     std::string line;
 
     while (std::getline(fileStream, line)) {
-        outList.emplace_back(utils::StringUtils::toNumber<int64_t>(line));
+        outList.emplace_back(utils::string::toNumber<int64_t>(line));
     }
 
     return outList;
@@ -76,11 +76,11 @@ std::optional<std::vector<std::vector<int64_t>>> readGroupsOfNumbers(
     std::string line;
 
     while (std::getline(fileStream, line)) {
-        if (utils::StringUtils::trim(line).empty()) {
+        if (utils::string::trim(line).empty()) {
             outList.emplace_back();
         } else {
             outList.back().emplace_back(
-                utils::StringUtils::toNumber<int64_t>(line));
+                utils::string::toNumber<int64_t>(line));
         }
     }
 
@@ -110,4 +110,4 @@ std::optional<std::vector<std::vector<uint8_t>>> readMatrixOfDigits(
     return outList;
 }
 
-} // namespace utils::FileUtils
+} // namespace utils::file

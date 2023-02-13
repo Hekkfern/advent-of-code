@@ -1,10 +1,10 @@
-#include "Position2D.h"
+#include "geometry2d/Position2D.hpp"
 
-#include "Direction.h"
-#include "Vector2D.h"
+#include "geometry2d/Direction.hpp"
+#include "geometry2d/Vector2D.hpp"
 #include <algorithm>
 
-namespace aoc_2022_9 {
+namespace utils::geometry2d {
 
 void Position2D::move(Direction direction)
 {

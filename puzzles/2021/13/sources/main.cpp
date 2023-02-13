@@ -3,8 +3,8 @@
 //**********************************************************************
 
 #include "solutions.hpp"
-#include <utils/AocUtils.hpp>
-#include <utils/TimeUtils.hpp>
+#include <utils/AoC.hpp>
+#include <utils/Time.hpp>
 
 int main()
 {

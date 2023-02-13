@@ -3,7 +3,7 @@
 #include <chrono>
 #include <string_view>
 
-namespace utils::AocUtils {
+namespace utils::aoc {
 
 void printPart1Solution(
     std::string_view solution,

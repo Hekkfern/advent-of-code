@@ -1,8 +1,8 @@
-#include "StringUtils.hpp"
+#include "String.hpp"
 
 #include <range/v3/all.hpp>
 
-namespace utils::StringUtils {
+namespace utils::string {
 
 bool contains(const std::string& str, const std::string& match)
 {
@@ -63,4 +63,4 @@ std::vector<std::string> split(
     return resultList;
 }
 
-} // namespace utils::StringUtils
+} // namespace utils::string

@@ -2,7 +2,7 @@
 
 #include <array>
 #include <fstream>
-#include <utils/StringUtils.hpp>
+#include <utils/String.hpp>
 
 namespace aoc_2022_4 {
 
@@ -53,7 +53,7 @@ std::array<SectionRange, GroupSize> parseInputLine(const std::string& line)
         std::string rangeEdge;
         uint32_t valueCounter = 0U;
         while (std::getline(rangeStream, rangeEdge, RangeSeparator)) {
-            const auto value = utils::StringUtils::toNumber<uint32_t>(
+            const auto value = utils::string::toNumber<uint32_t>(
                 rangeEdge);
             if (valueCounter == 0) {
                 sections.at(elfCounter).mFirst = value;

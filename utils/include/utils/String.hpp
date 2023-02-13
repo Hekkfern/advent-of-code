@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-namespace utils::StringUtils {
+namespace utils::string {
 
 /**
  * @brief
@@ -61,4 +61,4 @@ std::vector<std::string> split(
     const std::string& str,
     const std::string& separator = " ");
 
-} // namespace utils::StringUtils
+} // namespace utils::string

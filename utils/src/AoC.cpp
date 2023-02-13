@@ -1,8 +1,8 @@
-#include "AocUtils.hpp"
+#include "AoC.hpp"
 
 #include <iostream>
 
-namespace utils::AocUtils {
+namespace utils::aoc {
 
 void printPart1Solution(
     const std::string_view solution,

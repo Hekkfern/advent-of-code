@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <unordered_map>
-#include <utils/StringUtils.hpp>
+#include <utils/String.hpp>
 #include <vector>
 
 namespace aoc_2022_10 {
@@ -131,7 +131,7 @@ std::string solvePart2(const std::string& filename)
     }
     crtScreen.pop_back();
 
-    return utils::StringUtils::convertFrom(crtScreen);
+    return utils::string::convertFrom(crtScreen);
 }
 
 // ---------- End of Public Methods ----------

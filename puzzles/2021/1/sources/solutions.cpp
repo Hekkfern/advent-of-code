@@ -3,7 +3,7 @@
 #include <array>
 #include <fstream>
 #include <numeric>
-#include <utils/StringUtils.hpp>
+#include <utils/String.hpp>
 
 namespace aoc_2021_1 {
 
@@ -22,7 +22,7 @@ std::string solvePart1(const std::string& filename)
     uint32_t lastValue = 0U;
 
     while (std::getline(stream, line)) {
-        const auto value = utils::StringUtils::toNumber<uint32_t>(line);
+        const auto value = utils::string::toNumber<uint32_t>(line);
         if (entryIndex > 0U && value > lastValue) {
             ++increaseCounter;
         }
@@ -44,7 +44,7 @@ std::string solvePart2(const std::string& filename)
     std::array<uint32_t, SlidingWindowSize + 1> values{};
 
     while (std::getline(stream, line)) {
-        const auto value = utils::StringUtils::toNumber<uint32_t>(line);
+        const auto value = utils::string::toNumber<uint32_t>(line);
         if (entryIndex < SlidingWindowSize) {
             // add the new value
             values.at(entryIndex) = value;

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Position2D.h"
-#include "Vector2D.h"
 #include <array>
 #include <cstdint>
+#include <utils/geometry2d/Position2D.h>
+#include <utils/geometry2d/Vector2D.h>
 
 namespace aoc_2022_9 {
 

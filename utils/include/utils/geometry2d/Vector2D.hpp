@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <utility>
 
-namespace aoc_2022_9 {
+namespace utils::geometry2d {
 
 class Position2D;
 

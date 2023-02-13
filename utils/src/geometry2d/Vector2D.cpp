@@ -1,10 +1,10 @@
-#include "Vector2D.h"
+#include "geometry2d/Vector2D.hpp"
 
-#include "Position2D.h"
+#include "geometry2d/Position2D.hpp"
 #include <algorithm>
 #include <cstdlib>
 
-namespace aoc_2022_9 {
+namespace utils::geometry2d {
 
 Vector2D::Vector2D(int32_t x, int32_t y)
     : mX{ x }

@@ -6,7 +6,7 @@
 #include <range/v3/all.hpp>
 #include <regex>
 #include <unordered_map>
-#include <utils/StringUtils.hpp>
+#include <utils/String.hpp>
 
 namespace aoc_2022_11 {
 
@@ -23,7 +23,7 @@ Monkey parseMonkey(std::ifstream& fileStream)
         throw std::logic_error(
             "Regex failed in parsing the line 1 of a Monkey description");
     }
-    MonkeyId monkeyId{ utils::StringUtils::toNumber<uint8_t>(regexResult[1]) };
+    MonkeyId monkeyId{ utils::string::toNumber<uint8_t>(regexResult[1]) };
     // line 2
     std::getline(fileStream, line);
     constexpr auto PatternLine2{ R"(  Starting items: (.+))" };
@@ -31,10 +31,10 @@ Monkey parseMonkey(std::ifstream& fileStream)
         throw std::logic_error(
             "Regex failed in parsing the line 2 of a Monkey description");
     }
-    auto itemTexts{ utils::StringUtils::split(regexResult[1]) };
+    auto itemTexts{ utils::string::split(regexResult[1]) };
     auto monkeyItems = itemTexts
         | ranges::views::transform([](const std::string& s) {
-                           return utils::StringUtils::toNumber<WorryLevel>(s);
+                           return utils::string::toNumber<WorryLevel>(s);
                        })
         | ranges::to<std::vector>();
     // line 3
@@ -59,7 +59,7 @@ Monkey parseMonkey(std::ifstream& fileStream)
     monkeyOperand = (regexResult[2] == "old")
         ? std::nullopt
         : std::make_optional(
-            utils::StringUtils::toNumber<WorryLevel>(regexResult[2]));
+            utils::string::toNumber<WorryLevel>(regexResult[2]));
     Operation monkeyOperation{ monkeyOperator, monkeyOperand };
     // line 4
     std::getline(fileStream, line);
@@ -68,7 +68,7 @@ Monkey parseMonkey(std::ifstream& fileStream)
         throw std::logic_error(
             "Regex failed in parsing the line 4 of a Monkey description");
     }
-    WorryLevel monkeyDivisor{ utils::StringUtils::toNumber<WorryLevel>(
+    WorryLevel monkeyDivisor{ utils::string::toNumber<WorryLevel>(
         regexResult[1]) };
     // line 5
     std::getline(fileStream, line);
@@ -77,7 +77,7 @@ Monkey parseMonkey(std::ifstream& fileStream)
         throw std::logic_error(
             "Regex failed in parsing the line 5 of a Monkey description");
     }
-    MonkeyId monkeyTargetTrue{ utils::StringUtils::toNumber<MonkeyId>(
+    MonkeyId monkeyTargetTrue{ utils::string::toNumber<MonkeyId>(
         regexResult[1]) };
     // line 6
     std::getline(fileStream, line);
@@ -86,7 +86,7 @@ Monkey parseMonkey(std::ifstream& fileStream)
         throw std::logic_error(
             "Regex failed in parsing the line 6 of a Monkey description");
     }
-    MonkeyId monkeyTargetFalse{ utils::StringUtils::toNumber<MonkeyId>(
+    MonkeyId monkeyTargetFalse{ utils::string::toNumber<MonkeyId>(
         regexResult[1]) };
     // generate Monkey
     return Monkey{ monkeyId,          std::move(monkeyOperation),

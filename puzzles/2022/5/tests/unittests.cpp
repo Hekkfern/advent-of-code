@@ -5,7 +5,7 @@
 #include "../sources/solutions.hpp"
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
-#include <utils/FileUtils.hpp>
+#include <utils/File.hpp>
 
 TEST_CASE(
     "[2022_5] Use example input for Part 1",
@@ -14,7 +14,7 @@ TEST_CASE(
     constexpr auto InputFile{ "input_test.txt" };
 
     std::string mySolution = aoc_2022_5::solvePart1(InputFile);
-    std::string expectedSolution = utils::FileUtils::readFirstLine(
+    std::string expectedSolution = utils::file::readFirstLine(
                                        "solution1_test.txt")
                                        .value();
 
@@ -28,7 +28,7 @@ TEST_CASE(
     constexpr auto InputFile{ "input_test.txt" };
 
     std::string mySolution = aoc_2022_5::solvePart2(InputFile);
-    std::string expectedSolution = utils::FileUtils::readFirstLine(
+    std::string expectedSolution = utils::file::readFirstLine(
                                        "solution2_test.txt")
                                        .value();
 
@@ -42,7 +42,7 @@ TEST_CASE(
     constexpr auto InputFile{ "input.txt" };
 
     std::string mySolution = aoc_2022_5::solvePart1(InputFile);
-    std::string expectedSolution = utils::FileUtils::readFirstLine(
+    std::string expectedSolution = utils::file::readFirstLine(
                                        "solution1.txt")
                                        .value();
 
@@ -56,7 +56,7 @@ TEST_CASE(
     constexpr auto InputFile{ "input.txt" };
 
     std::string mySolution = aoc_2022_5::solvePart2(InputFile);
-    std::string expectedSolution = utils::FileUtils::readFirstLine(
+    std::string expectedSolution = utils::file::readFirstLine(
                                        "solution2.txt")
                                        .value();
 

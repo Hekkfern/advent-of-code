@@ -1,12 +1,12 @@
 #include "solutions.hpp"
 
-#include "Direction.h"
-#include "Rope.h"
-#include "RopeInstruction.h"
+#include "Rope.hpp"
+#include "RopeInstruction.hpp"
 #include <fstream>
 #include <sstream>
 #include <unordered_set>
-#include <utils/StringUtils.hpp>
+#include <utils/String.hpp>
+#include <utils/geometry2d/Direction.hpp>
 
 namespace aoc_2022_9 {
 
@@ -42,7 +42,7 @@ RopeInstruction parseInputLine(const std::string& line)
     std::string numberPositions;
     lineStream >> directionChar >> numberPositions;
     return RopeInstruction{ convertDirectionCharacter(directionChar),
-                            utils::StringUtils::toNumber<uint32_t>(
+                            utils::string::toNumber<uint32_t>(
                                 numberPositions) };
 }
 

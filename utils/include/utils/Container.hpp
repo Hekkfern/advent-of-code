@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-namespace utils::ContainerUtils {
+namespace utils::container {
 
 /**
  * @brief

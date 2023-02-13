@@ -6,7 +6,7 @@
 #include <string_view>
 #include <vector>
 
-namespace utils::FileUtils {
+namespace utils::file {
 
 /**
  * @brief
@@ -51,4 +51,4 @@ std::optional<std::vector<std::vector<int64_t>>> readGroupsOfNumbers(
 std::optional<std::vector<std::vector<uint8_t>>> readMatrixOfDigits(
     const std::string& filename);
 
-} // namespace utils::FileUtils
+} // namespace utils::file

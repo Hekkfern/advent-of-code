@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Direction.h"
+#include <utils/geometry2d/Direction.hpp>
 #include <cstdint>
 
 namespace aoc_2022_9 {

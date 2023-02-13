@@ -1,6 +1,6 @@
-#include "TimeUtils.hpp"
+#include "Time.hpp"
 
-namespace utils::TimeUtils {
+namespace utils::time {
 
 std::chrono::microseconds calculateExecutionTime(std::function<void()>&& action)
 {

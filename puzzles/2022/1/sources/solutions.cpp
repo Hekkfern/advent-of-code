@@ -3,7 +3,7 @@
 #include <array>
 #include <fstream>
 #include <range/v3/all.hpp>
-#include <utils/StringUtils.hpp>
+#include <utils/String.hpp>
 
 namespace aoc_2022_1 {
 
@@ -43,11 +43,11 @@ std::string solvePart1(const std::string& filename)
     uint32_t currentSum{ 0U };
 
     while (std::getline(stream, line)) {
-        if (utils::StringUtils::trim(line).empty()) {
+        if (utils::string::trim(line).empty()) {
             highestSum = (currentSum > highestSum) ? currentSum : highestSum;
             currentSum = 0U;
         } else {
-            currentSum += utils::StringUtils::toNumber<uint32_t>(line);
+            currentSum += utils::string::toNumber<uint32_t>(line);
         }
     }
 
@@ -63,11 +63,11 @@ std::string solvePart2(const std::string& filename)
     uint32_t currentSum{ 0U };
 
     while (std::getline(stream, line)) {
-        if (utils::StringUtils::trim(line).empty()) {
+        if (utils::string::trim(line).empty()) {
             insertInRanking(highestSums, currentSum);
             currentSum = 0U;
         } else {
-            currentSum += utils::StringUtils::toNumber<uint32_t>(line);
+            currentSum += utils::string::toNumber<uint32_t>(line);
         }
     }
     insertInRanking(highestSums, currentSum);

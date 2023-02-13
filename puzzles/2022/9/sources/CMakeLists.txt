@@ -8,13 +8,8 @@ add_library(
   ${_LIB_NAME} STATIC
   solutions.cpp
   solutions.hpp
-  Position2D.cpp
-  Position2D.h
-  Direction.h
-  Vector2D.cpp
-  Vector2D.h
-  RopeInstruction.h
-  Rope.h)
+  RopeInstruction.hpp
+  Rope.hpp)
 setup_puzzle(${_LIB_NAME})
 target_link_libraries(${_LIB_NAME} PRIVATE aoc_utils)
 
