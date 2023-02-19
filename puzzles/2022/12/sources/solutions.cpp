@@ -1,10 +1,13 @@
 #include "solutions.hpp"
 
 #include <fstream>
+#include <vector>
 
 namespace aoc_2022_12 {
 
 // ---------- Private Methods ----------
+
+std::vector<std::vector<Node>> parseInput(const std::string& filename) { }
 
 // ---------- End of Private Methods ----------
 

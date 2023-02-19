@@ -5,11 +5,7 @@
 
 namespace utils::geometry2d {
 
-Point2D::Point2D()
-    : mX{ 0 }
-    , mY{ 0 }
-{
-}
+Point2D::Point2D() { }
 
 Point2D::Point2D(int32_t x, int32_t y)
     : mX{ x }
