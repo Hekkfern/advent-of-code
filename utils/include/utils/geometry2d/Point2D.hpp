@@ -8,10 +8,10 @@ namespace utils::geometry2d {
 enum class Direction;
 class Vector2D;
 
-class Position2D {
+class Point2D {
 public:
-    Position2D();
-    Position2D(int32_t x, int32_t y);
+    Point2D();
+    Point2D(int32_t x, int32_t y);
     void move(Direction direction);
     void move(const Vector2D& vector);
     std::pair<int32_t, int32_t> get() const;
@@ -22,7 +22,7 @@ private:
     /**
      * Friend relationship of the equality operator overload.
      */
-    friend bool operator==(const Position2D& lhs, const Position2D& rhs);
+    friend bool operator==(const Point2D& lhs, const Point2D& rhs);
 
     int32_t mX = 0U;
     int32_t mY = 0U;
@@ -36,7 +36,7 @@ private:
  *
  * @return     The result of the equality.
  */
-bool operator==(const Position2D& lhs, const Position2D& rhs);
+bool operator==(const Point2D& lhs, const Point2D& rhs);
 
 /**
  * @brief      Inequality operator.
@@ -46,6 +46,6 @@ bool operator==(const Position2D& lhs, const Position2D& rhs);
  *
  * @return     The result of the inequality.
  */
-bool operator!=(const Position2D& lhs, const Position2D& rhs);
+bool operator!=(const Point2D& lhs, const Point2D& rhs);
 
 } // namespace utils::geometry2d

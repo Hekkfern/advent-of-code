@@ -12,7 +12,7 @@ add_library(${_LIB_NAME} STATIC
         src/AoC.cpp
         src/String.cpp
         src/Time.cpp
-        src/geometry2d/Position2D.cpp
+        src/geometry2d/Point2D.cpp
         src/geometry2d/Vector2D.cpp)
 set_cpp_standard(${_LIB_NAME})
 set_compiler_flags(${_LIB_NAME})

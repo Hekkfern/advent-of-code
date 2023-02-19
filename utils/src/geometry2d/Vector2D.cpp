@@ -1,6 +1,6 @@
 #include "geometry2d/Vector2D.hpp"
 
-#include "geometry2d/Position2D.hpp"
+#include "geometry2d/Point2D.hpp"
 #include <algorithm>
 #include <cstdlib>
 
@@ -12,7 +12,7 @@ Vector2D::Vector2D(int32_t x, int32_t y)
 {
 }
 
-Vector2D::Vector2D(const Position2D& origin, const Position2D& destination)
+Vector2D::Vector2D(const Point2D& origin, const Point2D& destination)
     : mX{ destination.getX() - origin.getX() }
     , mY{ destination.getY() - origin.getY() }
 {

@@ -7,7 +7,7 @@
 #include <unordered_set>
 #include <utils/String.hpp>
 #include <utils/geometry2d/Direction.hpp>
-#include <utils/geometry2d/Position2D.hpp>
+#include <utils/geometry2d/Point2D.hpp>
 
 namespace aoc_2022_9 {
 
@@ -50,7 +50,7 @@ RopeInstruction parseInputLine(const std::string& line)
 }
 
 struct Position2DHash {
-    size_t operator()(const Position2D& position) const
+    size_t operator()(const Point2D& position) const
     {
         return std::hash<int32_t>{}(position.getX())
             ^ std::hash<int32_t>{}(position.getY());
@@ -68,7 +68,7 @@ std::string solvePart1(const std::string& filename)
     std::ifstream fileStream{ filename };
     std::string line;
     Rope<RopeLength> rope;
-    std::unordered_set<Position2D, Position2DHash> visitedTailPositions;
+    std::unordered_set<Point2D, Position2DHash> visitedTailPositions;
 
     while (std::getline(fileStream, line)) {
         const auto instruction = parseInputLine(line);
@@ -88,7 +88,7 @@ std::string solvePart2(const std::string& filename)
     std::ifstream fileStream{ filename };
     std::string line;
     Rope<RopeLength> rope;
-    std::unordered_set<Position2D, Position2DHash> visitedTailPositions;
+    std::unordered_set<Point2D, Position2DHash> visitedTailPositions;
 
     while (std::getline(fileStream, line)) {
         const auto instruction = parseInputLine(line);

@@ -3,7 +3,7 @@
 #include <array>
 #include <cstdint>
 #include <utils/geometry2d/Direction.hpp>
-#include <utils/geometry2d/Position2D.hpp>
+#include <utils/geometry2d/Point2D.hpp>
 #include <utils/geometry2d/Vector2D.hpp>
 
 namespace aoc_2022_9 {
@@ -17,7 +17,7 @@ public:
         mKnots.front().move(direction);
         updateTails();
     }
-    const Position2D& getTailPosition() const { return mKnots.back(); }
+    const Point2D& getTailPosition() const { return mKnots.back(); }
 
 private:
     void updateTails()
@@ -37,7 +37,7 @@ private:
         }
     }
 
-    std::array<Position2D, RopeLength> mKnots{};
+    std::array<Point2D, RopeLength> mKnots{};
 };
 
 } // namespace aoc_2022_9

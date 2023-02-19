@@ -1,23 +1,23 @@
-#include "geometry2d/Position2D.hpp"
+#include "geometry2d/Point2D.hpp"
 
 #include "geometry2d/Direction.hpp"
 #include "geometry2d/Vector2D.hpp"
 
 namespace utils::geometry2d {
 
-Position2D::Position2D()
+Point2D::Point2D()
     : mX{ 0 }
     , mY{ 0 }
 {
 }
 
-Position2D::Position2D(int32_t x, int32_t y)
+Point2D::Point2D(int32_t x, int32_t y)
     : mX{ x }
     , mY{ y }
 {
 }
 
-void Position2D::move(Direction direction)
+void Point2D::move(Direction direction)
 {
     switch (direction) {
     case Direction::Left:
@@ -51,27 +51,27 @@ void Position2D::move(Direction direction)
     }
 }
 
-void Position2D::move(const Vector2D& vector)
+void Point2D::move(const Vector2D& vector)
 {
     mX += vector.getX();
     mY += vector.getY();
 }
 
-std::pair<int32_t, int32_t> Position2D::get() const
+std::pair<int32_t, int32_t> Point2D::get() const
 {
     return std::make_pair(mX, mY);
 }
 
-int32_t Position2D::getX() const { return mX; }
+int32_t Point2D::getX() const { return mX; }
 
-int32_t Position2D::getY() const { return mY; }
+int32_t Point2D::getY() const { return mY; }
 
-bool operator==(const Position2D& lhs, const Position2D& rhs)
+bool operator==(const Point2D& lhs, const Point2D& rhs)
 {
     return (lhs.mX == rhs.mX) && (lhs.mY == rhs.mY);
 }
 
-bool operator!=(const Position2D& lhs, const Position2D& rhs)
+bool operator!=(const Point2D& lhs, const Point2D& rhs)
 {
     return !(lhs == rhs);
 }
