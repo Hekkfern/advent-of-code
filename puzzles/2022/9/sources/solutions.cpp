@@ -7,8 +7,11 @@
 #include <unordered_set>
 #include <utils/String.hpp>
 #include <utils/geometry2d/Direction.hpp>
+#include <utils/geometry2d/Position2D.hpp>
 
 namespace aoc_2022_9 {
+
+using namespace utils::geometry2d;
 
 // ---------- Private Methods ----------
 

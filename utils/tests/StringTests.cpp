@@ -3,8 +3,8 @@
 #include <utils/String.hpp>
 
 TEST_CASE(
-    "[StringUtils - toNumber] Works OK with all integer types",
-    "[StringUtils, StringUtils_toNumber]")
+    "[String - toNumber] Works OK with all integer types",
+    "[String, String_toNumber]")
 {
     CHECK(utils::string::toNumber<uint8_t>("6") == 6U);
     CHECK(utils::string::toNumber<uint32_t>("6") == 6U);

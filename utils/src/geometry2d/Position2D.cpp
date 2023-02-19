@@ -2,9 +2,20 @@
 
 #include "geometry2d/Direction.hpp"
 #include "geometry2d/Vector2D.hpp"
-#include <algorithm>
 
 namespace utils::geometry2d {
+
+Position2D::Position2D()
+    : mX{ 0 }
+    , mY{ 0 }
+{
+}
+
+Position2D::Position2D(int32_t x, int32_t y)
+    : mX{ x }
+    , mY{ y }
+{
+}
 
 void Position2D::move(Direction direction)
 {
@@ -65,4 +76,4 @@ bool operator!=(const Position2D& lhs, const Position2D& rhs)
     return !(lhs == rhs);
 }
 
-} // namespace aoc_2022_9
+} // namespace utils::geometry2d

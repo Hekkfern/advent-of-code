@@ -1,9 +1,11 @@
 #pragma once
 
-#include <utils/geometry2d/Direction.hpp>
 #include <cstdint>
+#include <utils/geometry2d/Direction.hpp>
 
 namespace aoc_2022_9 {
+
+using namespace utils::geometry2d;
 
 struct RopeInstruction {
     Direction mDirection;

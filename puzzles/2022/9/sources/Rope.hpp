@@ -2,10 +2,13 @@
 
 #include <array>
 #include <cstdint>
-#include <utils/geometry2d/Position2D.h>
-#include <utils/geometry2d/Vector2D.h>
+#include <utils/geometry2d/Direction.hpp>
+#include <utils/geometry2d/Position2D.hpp>
+#include <utils/geometry2d/Vector2D.hpp>
 
 namespace aoc_2022_9 {
+
+using namespace utils::geometry2d;
 
 template <uint32_t RopeLength> class Rope {
 public:

@@ -10,6 +10,8 @@ class Vector2D;
 
 class Position2D {
 public:
+    Position2D();
+    Position2D(int32_t x, int32_t y);
     void move(Direction direction);
     void move(const Vector2D& vector);
     std::pair<int32_t, int32_t> get() const;
@@ -46,4 +48,4 @@ bool operator==(const Position2D& lhs, const Position2D& rhs);
  */
 bool operator!=(const Position2D& lhs, const Position2D& rhs);
 
-} // namespace aoc_2022_9
+} // namespace utils::geometry2d
