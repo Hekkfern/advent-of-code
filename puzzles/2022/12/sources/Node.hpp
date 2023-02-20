@@ -64,6 +64,16 @@ bool operator!=(const Node& lhs, const Node& rhs);
 bool operator>(const Node& lhs, const Node& rhs);
 
 /**
+ * @brief      "Greater or equal than" operator.
+ *
+ * @param[in]  lhs   The left hand side of the operation.
+ * @param[in]  rhs   The right hand side of the operation.
+ *
+ * @return     The result of the comparison.
+ */
+bool operator>=(const Node& lhs, const Node& rhs);
+
+/**
  * @brief      "Less than" operator.
  *
  * @param[in]  lhs   The left hand side of the operation.
@@ -72,5 +82,15 @@ bool operator>(const Node& lhs, const Node& rhs);
  * @return     The result of the comparison.
  */
 bool operator<(const Node& lhs, const Node& rhs);
+
+/**
+ * @brief      "Less or equal than" operator.
+ *
+ * @param[in]  lhs   The left hand side of the operation.
+ * @param[in]  rhs   The right hand side of the operation.
+ *
+ * @return     The result of the comparison.
+ */
+bool operator<=(const Node& lhs, const Node& rhs);
 
 } // namespace aoc_2022_12

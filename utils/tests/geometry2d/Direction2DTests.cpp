@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
+#include "utils/geometry2d/Direction2D.hpp"
 #include <catch.hpp>
-#include <utils/geometry2d/Direction2D.hpp>
 
 using namespace utils::geometry2d;
 
