@@ -6,7 +6,7 @@
 #include <sstream>
 #include <unordered_set>
 #include <utils/String.hpp>
-#include <utils/geometry2d/Direction.hpp>
+#include <utils/geometry2d/Direction2D.hpp>
 #include <utils/geometry2d/Point2D.hpp>
 
 namespace aoc_2022_9 {
@@ -15,21 +15,21 @@ using namespace utils::geometry2d;
 
 // ---------- Private Methods ----------
 
-Direction convertDirectionCharacter(char directionChar)
+Direction2D convertDirectionCharacter(char directionChar)
 {
-    Direction result = Direction::Up;
+    Direction2D result = Direction2D::Up;
     switch (directionChar) {
     case 'U':
-        result = Direction::Up;
+        result = Direction2D::Up;
         break;
     case 'D':
-        result = Direction::Down;
+        result = Direction2D::Down;
         break;
     case 'L':
-        result = Direction::Left;
+        result = Direction2D::Left;
         break;
     case 'R':
-        result = Direction::Right;
+        result = Direction2D::Right;
         break;
     default:
         /* No reachable */

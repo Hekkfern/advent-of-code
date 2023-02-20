@@ -1,6 +1,6 @@
 #include "geometry2d/Point2D.hpp"
 
-#include "geometry2d/Direction.hpp"
+#include "geometry2d/Direction2D.hpp"
 #include "geometry2d/Vector2D.hpp"
 
 namespace utils::geometry2d {
@@ -13,39 +13,7 @@ Point2D::Point2D(int32_t x, int32_t y)
 {
 }
 
-void Point2D::move(Direction direction)
-{
-    switch (direction) {
-    case Direction::Left:
-    case Direction::DownLeft:
-    case Direction::UpLeft:
-        --mX;
-        break;
-    case Direction::Right:
-    case Direction::UpRight:
-    case Direction::DownRight:
-        ++mX;
-        break;
-    default:
-        /* NO STATEMENTS */
-        break;
-    }
-    switch (direction) {
-    case Direction::Down:
-    case Direction::DownRight:
-    case Direction::DownLeft:
-        --mY;
-        break;
-    case Direction::Up:
-    case Direction::UpRight:
-    case Direction::UpLeft:
-        ++mY;
-        break;
-    default:
-        /* NO STATEMENTS */
-        break;
-    }
-}
+void Point2D::move(Direction2D direction) { move(direction.toVector2D()); }
 
 void Point2D::move(const Vector2D& vector)
 {

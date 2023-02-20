@@ -5,14 +5,14 @@
 
 namespace utils::geometry2d {
 
-enum class Direction;
+class Direction2D;
 class Vector2D;
 
 class Point2D {
 public:
     Point2D();
     Point2D(int32_t x, int32_t y);
-    void move(Direction direction);
+    void move(Direction2D direction);
     void move(const Vector2D& vector);
     std::pair<int32_t, int32_t> get() const;
     int32_t getX() const;

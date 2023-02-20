@@ -4,7 +4,7 @@ namespace aoc_2022_12 {
 
 NodeMap::NodeMap(std::vector<std::vector<Node>>&& nodes) { }
 
-bool NodeMap::canMove(const Node& node, const Direction direction) { }
+bool NodeMap::canMove(const Node& node, const Direction2D direction) { }
 
 std::pair<std::size_t, std::size_t> NodeMap::size() const
 {

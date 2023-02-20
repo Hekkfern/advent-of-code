@@ -2,7 +2,7 @@
 
 #include <array>
 #include <cstdint>
-#include <utils/geometry2d/Direction.hpp>
+#include <utils/geometry2d/Direction2D.hpp>
 #include <utils/geometry2d/Point2D.hpp>
 #include <utils/geometry2d/Vector2D.hpp>
 
@@ -12,7 +12,7 @@ using namespace utils::geometry2d;
 
 template <uint32_t RopeLength> class Rope {
 public:
-    void moveHead(Direction direction)
+    void moveHead(Direction2D direction)
     {
         mKnots.front().move(direction);
         updateTails();

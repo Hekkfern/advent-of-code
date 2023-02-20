@@ -8,7 +8,7 @@ namespace aoc_2022_12 {
 class NodeMap {
 public:
     NodeMap(std::vector<std::vector<Node>>&& nodes);
-    bool canMove(const Node& node, const Direction direction);
+    bool canMove(const Node& node, const Direction2D direction);
     std::pair<std::size_t, std::size_t> size() const;
 
 private:

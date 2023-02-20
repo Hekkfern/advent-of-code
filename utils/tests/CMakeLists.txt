@@ -7,7 +7,7 @@ find_package(Catch2 3 CONFIG REQUIRED)
 
 # aoc_utils_tests
 set(_EXEC_NAME "aoc_utils_tests")
-add_executable(${_EXEC_NAME} StringTests.cpp Point2DTests.cpp)
+add_executable(${_EXEC_NAME} StringTests.cpp Point2DTests.cpp DirectionTests.cpp)
 set_cpp_standard(${_EXEC_NAME})
 set_compiler_flags(${_EXEC_NAME})
 set_vectorization_flags(${_EXEC_NAME})
