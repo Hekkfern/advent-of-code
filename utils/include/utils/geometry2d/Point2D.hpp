@@ -17,35 +17,31 @@ public:
     std::pair<int32_t, int32_t> get() const;
     int32_t getX() const;
     int32_t getY() const;
+    /**
+     * @brief      Equality operator.
+     *
+     * @param[in]  other   The other object.
+     *
+     * @return     The result of the equality.
+     */
+    bool operator==(const Point2D& other) const;
+    Point2D operator+(const Point2D& other) const;
+    Point2D operator-() const;
+    Point2D operator-(const Point2D& other) const;
 
 private:
-    /**
-     * Friend relationship of the equality operator overload.
-     */
-    friend bool operator==(const Point2D& lhs, const Point2D& rhs);
-
     int32_t mX = 0U;
     int32_t mY = 0U;
 };
 
 /**
- * @brief      Equality operator.
+ * @brief      Addition operator to move a Point2D according to a Vector2D.
  *
- * @param[in]  lhs   The left hand side of the operation.
- * @param[in]  rhs   The right hand side of the operation.
- *
- * @return     The result of the equality.
+ * @param[in]  point2d   Original position.
+ * @param[in]  vector2d   Vector of movement.
  */
-bool operator==(const Point2D& lhs, const Point2D& rhs);
+Point2D operator+(const Point2D& point2d, const Vector2D& vector2d);
 
-/**
- * @brief      Inequality operator.
- *
- * @param[in]  lhs   The left hand side of the operation.
- * @param[in]  rhs   The right hand side of the operation.
- *
- * @return     The result of the inequality.
- */
-bool operator!=(const Point2D& lhs, const Point2D& rhs);
+Point2D operator+(const Vector2D& vector2d, const Point2D& point2d);
 
 } // namespace utils::geometry2d

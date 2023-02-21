@@ -8,14 +8,8 @@ find_package(range-v3 CONFIG REQUIRED)
 # aoc_utils
 set(_LIB_NAME "aoc_utils")
 add_library(
-  ${_LIB_NAME} STATIC
-  src/File.cpp
-  src/AoC.cpp
-  src/String.cpp
-  src/Time.cpp
-  src/geometry2d/Point2D.cpp
-  src/geometry2d/Vector2D.cpp
-        src/geometry2d/Operations2D.cpp)
+  ${_LIB_NAME} STATIC src/File.cpp src/AoC.cpp src/String.cpp src/Time.cpp
+                      src/geometry2d/Point2D.cpp src/geometry2d/Vector2D.cpp)
 set_cpp_standard(${_LIB_NAME})
 set_compiler_flags(${_LIB_NAME})
 set_vectorization_flags(${_LIB_NAME})
