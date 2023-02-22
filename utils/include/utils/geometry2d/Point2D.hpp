@@ -12,6 +12,7 @@ class Point2D {
 public:
     Point2D();
     Point2D(int32_t x, int32_t y);
+    Point2D(const std::pair<int32_t, int32_t>& coords);
     void move(Direction2D direction);
     void move(const Vector2D& vector);
     std::pair<int32_t, int32_t> get() const;

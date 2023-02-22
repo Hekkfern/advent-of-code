@@ -13,6 +13,12 @@ Point2D::Point2D(int32_t x, int32_t y)
 {
 }
 
+Point2D::Point2D(const std::pair<int32_t, int32_t>& coords)
+    : mX{ coords.first }
+    , mY{ coords.second }
+{
+}
+
 void Point2D::move(Direction2D direction) { move(direction.toVector2D()); }
 
 void Point2D::move(const Vector2D& vector)
