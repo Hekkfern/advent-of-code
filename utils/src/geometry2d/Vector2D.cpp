@@ -6,6 +6,8 @@
 
 namespace utils::geometry2d {
 
+Vector2D::Vector2D() { }
+
 Vector2D::Vector2D(int32_t x, int32_t y)
     : mX{ x }
     , mY{ y }

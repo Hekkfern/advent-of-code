@@ -9,6 +9,7 @@ class Point2D;
 
 class Vector2D {
 public:
+    Vector2D();
     Vector2D(int32_t x, int32_t y);
     Vector2D(const Point2D& origin, const Point2D& destination);
     Vector2D(const std::pair<int32_t, int32_t>& coords);
@@ -29,8 +30,8 @@ public:
     Vector2D operator-(const Vector2D& other) const;
 
 private:
-    int32_t mX;
-    int32_t mY;
+    int32_t mX = 0;
+    int32_t mY = 0;
 };
 
 Vector2D operator*(const Vector2D& vector2D, const int32_t real);
