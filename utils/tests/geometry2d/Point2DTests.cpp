@@ -1,5 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
+#include <utils/geometry2d/Direction2D.hpp>
 #include <utils/geometry2d/Point2D.hpp>
 #include <utils/geometry2d/Vector2D.hpp>
 
@@ -42,6 +43,22 @@ TEST_CASE(
     const auto coords{ point2D.get() };
     CHECK(coords.first == 2);
     CHECK(coords.second == 3);
+}
+
+TEST_CASE(
+    "[Point2D - move] Move point towards a direction",
+    "[Point2D, Point2D_move]")
+{
+    Point2D p1{ 3, -2 };
+    p1.move(Direction2D::UpRight);
+    CHECK(p1 == Point2D{ 4, -1 });
+}
+
+TEST_CASE("[Point2D - move] Move point by a vector", "[Point2D, Point2D_move]")
+{
+    Point2D p1{ 3, -2 };
+    p1.move(Vector2D{ -1, 4 });
+    CHECK(p1 == Point2D{ 2, 2 });
 }
 
 TEST_CASE(
