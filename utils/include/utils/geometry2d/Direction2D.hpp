@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vector2D.hpp"
+#include <string>
 
 namespace utils::geometry2d {
 
@@ -35,28 +36,30 @@ public:
      *
      * @return     String representation of the object.
      */
-    constexpr const char* toString() const
+    std::string toString() const
     {
+        using namespace std::string_literals;
+
         switch (mValue) {
         case Value::Up:
-            return "up";
+            return "up"s;
         case Value::Left:
-            return "left";
+            return "left"s;
         case Value::Down:
-            return "down";
+            return "down"s;
         case Value::Right:
-            return "right";
+            return "right"s;
         case Value::UpLeft:
-            return "upleft";
+            return "upleft"s;
         case Value::DownLeft:
-            return "downleft";
+            return "downleft"s;
         case Value::DownRight:
-            return "downright";
+            return "downright"s;
         case Value::UpRight:
-            return "upright";
+            return "upright"s;
         default:
             /* Invalid value */
-            return "";
+            return ""s;
         }
     }
 
