@@ -5,6 +5,15 @@
 using namespace utils::geometry2d;
 
 TEST_CASE(
+    "[Vector2D - factory] Factory returns a valid instance",
+    "[Vector2D, Vector2D_factory]")
+{
+    auto vector2D{ Vector2D::create(2, 4) };
+    CHECK(vector2D.getX() == 2);
+    CHECK(vector2D.getY() == 4);
+}
+
+TEST_CASE(
     "[Vector2D - getters] Getters return correct values with default "
     "constructor",
     "[Vector2D, Vector2D_getters]")
@@ -77,13 +86,13 @@ TEST_CASE(
     "[Vector2D - getNormalized] getNormalized returns the correct values",
     "[Vector2D, Vector2D_getNormalized]")
 {
-    Vector2D v1;
+    const Vector2D v1;
     CHECK(v1.getNormalized() == Vector2D{ 0, 0 });
-    Vector2D v2{ 2, 3 };
+    const Vector2D v2{ 2, 3 };
     CHECK(v2.getNormalized() == Vector2D{ 1, 1 });
-    Vector2D v3{ -2, 1 };
+    const Vector2D v3{ -2, 1 };
     CHECK(v3.getNormalized() == Vector2D{ -1, 1 });
-    Vector2D v4{ -1, 0 };
+    const Vector2D v4{ -1, 0 };
     CHECK(v4.getNormalized() == Vector2D{ -1, 0 });
 }
 

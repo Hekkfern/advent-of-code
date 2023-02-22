@@ -7,6 +7,15 @@
 using namespace utils::geometry2d;
 
 TEST_CASE(
+    "[Point2D - factory] Factory returns a valid instance",
+    "[Point2D, Point2D_factory]")
+{
+    auto point2D{ Point2D::create(2U, 4U) };
+    CHECK(point2D.getX() == 2);
+    CHECK(point2D.getY() == 4);
+}
+
+TEST_CASE(
     "[Point2D - getters] Getters return correct values with default "
     "constructor",
     "[Point2D, Point2D_getters]")

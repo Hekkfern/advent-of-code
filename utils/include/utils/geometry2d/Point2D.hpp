@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
 #include <utility>
 
 namespace utils::geometry2d {
@@ -12,7 +13,7 @@ class Point2D {
 public:
     Point2D();
     Point2D(int32_t x, int32_t y);
-    Point2D(const std::pair<int32_t, int32_t>& coords);
+    explicit Point2D(const std::pair<int32_t, int32_t>& coords);
     void move(Direction2D direction);
     void move(const Vector2D& vector);
     std::pair<int32_t, int32_t> get() const;
@@ -29,6 +30,10 @@ public:
     Point2D operator+(const Point2D& other) const;
     Point2D operator-() const;
     Point2D operator-(const Point2D& other) const;
+    template <std::integral T> [[nodiscard]] static Point2D create(T x, T y)
+    {
+        return Point2D{ static_cast<int32_t>(x), static_cast<int32_t>(y) };
+    }
 
 private:
     int32_t mX = 0U;
