@@ -2,6 +2,8 @@
 
 #include <stdexcept>
 
+namespace aoc_2022_11 {
+
 Operation::Operation(const Operator op, const std::optional<WorryLevel> operand)
     : mOperator{ op }
     , mOperand{ operand }
@@ -20,12 +22,9 @@ WorryLevel Operation::operator()(const WorryLevel oldValue)
     }
 }
 
-bool operator==(const Operation& lhs, const Operation& rhs)
+bool Operation::operator==(const Operation& other)
 {
-    return (lhs.mOperator == rhs.mOperator) && (lhs.mOperand == rhs.mOperand);
+    return (mOperator == other.mOperator) && (mOperand == other.mOperand);
 }
 
-bool operator!=(const Operation& lhs, const Operation& rhs)
-{
-    return !(lhs == rhs);
-}
+} // namespace aoc_2022_11

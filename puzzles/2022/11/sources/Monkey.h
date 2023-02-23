@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include <vector>
 
+namespace aoc_2022_11 {
+
 using MonkeyId = uint8_t;
 
 class Monkey {
@@ -20,13 +22,16 @@ public:
     uint32_t inspectAndThrowAll(
         std::unordered_map<MonkeyId, Monkey>& monkeys,
         bool reliefEnabled);
+    /**
+     * @brief      Equality operator.
+     *
+     * @param[in]  other   Other instance to compare with.
+     *
+     * @return     The result of the equality.
+     */
+    bool operator==(const Monkey& other);
 
 private:
-    /**
-     * Friend relationship of the equality operator overload.
-     */
-    friend bool operator==(const Monkey& lhs, const Monkey& rhs);
-
     const MonkeyId mId;
     Operation mOperation;
     const WorryLevel mDivisor;
@@ -35,29 +40,11 @@ private:
     std::vector<WorryLevel> mItems{};
 };
 
-/**
- * @brief      Equality operator.
- *
- * @param[in]  lhs   The left hand side of the operation.
- * @param[in]  rhs   The right hand side of the operation.
- *
- * @return     The result of the equality.
- */
-bool operator==(const Monkey& lhs, const Monkey& rhs);
+} // namespace aoc_2022_11
 
-/**
- * @brief      Inequality operator.
- *
- * @param[in]  lhs   The left hand side of the operation.
- * @param[in]  rhs   The right hand side of the operation.
- *
- * @return     The result of the inequality.
- */
-bool operator!=(const Monkey& lhs, const Monkey& rhs);
-
-template <> struct std::hash<Monkey> {
-    std::size_t operator()(const Monkey& k) const
+template <> struct std::hash<aoc_2022_11::Monkey> {
+    std::size_t operator()(const aoc_2022_11::Monkey& k) const
     {
-        return (std::hash<MonkeyId>()(k.getId()));
+        return (std::hash<aoc_2022_11::MonkeyId>()(k.getId()));
     }
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 #include <memory>
 #include <utility>
 
@@ -51,3 +52,10 @@ Point2D operator+(const Point2D& point2d, const Vector2D& vector2d);
 Point2D operator+(const Vector2D& vector2d, const Point2D& point2d);
 
 } // namespace utils::geometry2d
+
+template <> struct std::hash<utils::geometry2d::Point2D> {
+    std::size_t operator()(const utils::geometry2d::Point2D& k) const
+    {
+        return std::hash<int32_t>()(k.getX()) ^ std::hash<int32_t>()(k.getY());
+    }
+};

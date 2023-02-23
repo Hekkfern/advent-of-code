@@ -1,5 +1,7 @@
 #include "Monkey.h"
 
+namespace aoc_2022_11 {
+
 Monkey::Monkey(
     MonkeyId id,
     Operation&& operation,
@@ -45,12 +47,11 @@ uint32_t Monkey::inspectAndThrowAll(
     return inspectionsCounter;
 }
 
-bool operator==(const Monkey& lhs, const Monkey& rhs)
+bool Monkey::operator==(const Monkey& other)
 {
-    return (lhs.mId == rhs.mId) && (lhs.mOperation == rhs.mOperation)
-        && (lhs.mDivisor == rhs.mDivisor)
-        && (lhs.mTargetTrue == rhs.mTargetTrue)
-        && (lhs.mTargetFalse == rhs.mTargetFalse) && (lhs.mItems == rhs.mItems);
+    return (mId == other.mId) && (mOperation == other.mOperation)
+        && (mDivisor == other.mDivisor) && (mTargetTrue == other.mTargetTrue)
+        && (mTargetFalse == other.mTargetFalse) && (mItems == other.mItems);
 }
 
-bool operator!=(const Monkey& lhs, const Monkey& rhs) { return !(lhs == rhs); }
+} // namespace aoc_2022_11

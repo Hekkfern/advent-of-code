@@ -45,3 +45,10 @@ Vector2D operator*(const Vector2D& vector2D, const int32_t real);
 Vector2D operator*(const int32_t real, const Vector2D& vector2D);
 
 } // namespace utils::geometry2d
+
+template <> struct std::hash<utils::geometry2d::Vector2D> {
+    std::size_t operator()(const utils::geometry2d::Vector2D& k) const
+    {
+        return std::hash<int32_t>()(k.getX()) ^ std::hash<int32_t>()(k.getY());
+    }
+};

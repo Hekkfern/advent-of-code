@@ -4,6 +4,7 @@
 #include <fstream>
 #include <range/v3/all.hpp>
 #include <vector>
+#include <queue>
 
 namespace aoc_2022_12 {
 
@@ -36,17 +37,24 @@ PositionMap parseInput(const std::string& filename)
     std::vector<std::vector<Position>> positionMap;
     std::ifstream fileStream{ filename };
     std::string line;
-    uint32_t rowCounter = 0U;
+    uint32_t rowCounter{ 0U };
     while (std::getline(fileStream, line)) {
         positionMap.emplace_back(); // add new row
-        uint32_t itemCounter = 0U;
+        uint32_t itemCounter{ 0U };
         for (const auto c : line) {
-            Point2D point2D{ itemCounter, rowCounter };
-
-            positionMap.at(rowCounter).emplace_back(point2D, parseHeight(c),parsePositionType(c) );
+            Point2D point2D{ static_cast<int32_t>(itemCounter),
+                             static_cast<int32_t>(rowCounter) };
+            positionMap.at(rowCounter)
+                .emplace_back(
+                    std::move(point2D), parseHeight(c), parsePositionType(c));
         }
     }
     ranges::reverse(positionMap);
+    return positionMap;
+}
+
+void climbHill(const PositionMap& positionMap){
+    std::queue<Position> queue;
 }
 
 // ---------- End of Private Methods ----------
@@ -55,8 +63,8 @@ PositionMap parseInput(const std::string& filename)
 
 std::string solvePart1(const std::string& filename)
 {
-    (void)filename;
-    return "";
+    auto positionMap{ parseInput(filename) };
+
 }
 
 std::string solvePart2(const std::string& filename)

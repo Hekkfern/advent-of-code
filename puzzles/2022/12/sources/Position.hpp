@@ -30,3 +30,10 @@ private:
 };
 
 } // namespace aoc_2022_12
+
+template <> struct std::hash<aoc_2022_12::Position> {
+    std::size_t operator()(const aoc_2022_12::Position& k) const
+    {
+        return std::hash<utils::geometry2d::Point2D>()(k.getPoint());
+    }
+};

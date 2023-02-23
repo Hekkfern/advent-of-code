@@ -30,7 +30,6 @@ public:
      * @brief      Bool conversion operator.
      */
     explicit operator bool() const = delete;
-
     /**
      * @brief      Returns a string representation of the object.
      *
@@ -62,7 +61,6 @@ public:
             return ""s;
         }
     }
-
     Vector2D toVector2D() const
     {
         int32_t coordX = 0;
@@ -99,6 +97,7 @@ public:
         }
         return Vector2D{ coordX, coordY };
     }
+    constexpr Value getValue() const { return mValue; }
 
 private:
     /**
@@ -108,3 +107,10 @@ private:
 };
 
 } // namespace utils::geometry2d
+
+template <> struct std::hash<utils::geometry2d::Direction2D> {
+    std::size_t operator()(const utils::geometry2d::Direction2D& k) const
+    {
+        return std::hash<utils::geometry2d::Direction2D::Value>()(k.getValue());
+    }
+};
