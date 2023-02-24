@@ -56,4 +56,5 @@ Position operator+(const Direction2D& direction2D, const Position& position)
 {
     return position + direction2D;
 }
+
 } // namespace aoc_2022_12

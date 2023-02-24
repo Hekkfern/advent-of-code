@@ -56,18 +56,12 @@ PositionMap parseInput(const std::string& filename)
     return positionMap;
 }
 
-uint32_t climbHill(const PositionMap& positionMap)
+uint32_t climbHill(PositionMap& positionMap)
 {
-    // Costs of paths
-    std::unordered_map<Position, uint32_t> costTable(
-        positionMap.size().first * positionMap.size().second);
-    for (auto& item : costTable) {
-        item.second = UINT32_MAX;
-    }
     // BFS initialization with the starting point
     std::queue<std::pair<Position, uint32_t>> queue;
     queue.emplace(positionMap.getOrigin(), 0U);
-    costTable.at(positionMap.getOrigin()) = 0U;
+    positionMap.setCost(positionMap.getOrigin(), 0U);
 
     while (!queue.empty()) {
         auto [enqueuedPosition, enqueuedPositionCost]{ queue.front() };
@@ -91,18 +85,19 @@ uint32_t climbHill(const PositionMap& positionMap)
             }
             // Check if the path due to this movement is not longer than the
             // shortest known path.
-            if ((enqueuedPositionCost + 1U) >= costTable.at(enqueuedPosition)) {
+            if ((enqueuedPositionCost + 1U)
+                >= positionMap.getCost(enqueuedPosition)) {
                 continue;
             }
 
             auto nextPosition{ enqueuedPosition + dir };
             queue.emplace(nextPosition, enqueuedPositionCost + 1U);
-            costTable.at(nextPosition) = enqueuedPositionCost + 1U;
+            positionMap.setCost(nextPosition, enqueuedPositionCost + 1U);
         }
     }
 
     // Return the shortest path cost.
-    return costTable.at(positionMap.getDestination());
+    return positionMap.getCost(positionMap.getDestination());
 }
 
 // ---------- End of Private Methods ----------

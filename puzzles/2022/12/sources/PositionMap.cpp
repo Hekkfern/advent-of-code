@@ -1,4 +1,5 @@
 #include "PositionMap.hpp"
+#include <range/v3/all.hpp>
 #include <utils/geometry2d/Direction2D.hpp>
 
 namespace aoc_2022_12 {
@@ -7,6 +8,7 @@ PositionMap::PositionMap(std::vector<std::vector<Position>>&& nodes)
     : mPositions{ std::move(nodes) }
 {
     lookForExtremes();
+    initializeCosts();
 }
 
 PositionMap::PositionMap(
@@ -17,6 +19,7 @@ PositionMap::PositionMap(
     , mOrigin{ &origin }
     , mDestination{ &destination }
 {
+    initializeCosts();
 }
 
 bool PositionMap::canMove(const Position& position, const Direction2D direction)
@@ -46,6 +49,7 @@ const Position& PositionMap::getPositionFromCoordinates(
     const auto positionY{ static_cast<size_t>(coords.getY()) };
     return mPositions.at(positionX).at(positionY);
 }
+
 bool PositionMap::isMovementOutOfBounds(
     const Position& position,
     const Direction2D direction) const
@@ -91,5 +95,26 @@ void PositionMap::lookForExtremes()
 const Position& PositionMap::getOrigin() const { return *mOrigin; }
 
 const Position& PositionMap::getDestination() const { return *mDestination; }
+
+void PositionMap::initializeCosts()
+{
+    for (auto rowCounter : ranges::views::iota(size().first, 0U)) {
+        for (auto colCounter : ranges::views::iota(size().second, 0U)) {
+            mCosts.at(rowCounter).at(colCounter) = UINT32_MAX;
+        }
+    }
+}
+
+void PositionMap::setCost(const Position& position, uint32_t newCost)
+{
+    const auto [coordX, coordY]{ position.getCoordinates() };
+    mCosts.at(coordX).at(coordY) = newCost;
+}
+
+uint32_t PositionMap::getCost(const Position& position)
+{
+    const auto [coordX, coordY]{ position.getCoordinates() };
+    return mCosts.at(coordX).at(coordY);
+}
 
 } // namespace aoc_2022_12
