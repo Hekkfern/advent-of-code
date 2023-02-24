@@ -15,8 +15,10 @@ public:
     Point2D();
     Point2D(int32_t x, int32_t y);
     explicit Point2D(const std::pair<int32_t, int32_t>& coords);
-    void move(Direction2D direction);
-    void move(const Vector2D& vector);
+    void move(Direction2D direction2D);
+    void move(const Vector2D& vector2D);
+    static Point2D move(const Point2D& point2d, const Vector2D& vector2d);
+    static Point2D move(const Point2D& point2d, const Direction2D& direction2D);
     std::pair<int32_t, int32_t> get() const;
     int32_t getX() const;
     int32_t getY() const;
@@ -50,6 +52,10 @@ private:
 Point2D operator+(const Point2D& point2d, const Vector2D& vector2d);
 
 Point2D operator+(const Vector2D& vector2d, const Point2D& point2d);
+
+Point2D operator+(const Point2D& point2d, const Direction2D& direction2D);
+
+Point2D operator+(const Direction2D& direction2D, const Point2D& point2d);
 
 } // namespace utils::geometry2d
 

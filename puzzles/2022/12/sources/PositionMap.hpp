@@ -12,8 +12,10 @@ public:
         std::vector<std::vector<Position>>&& nodes,
         const Position& origin,
         const Position& destination);
-    bool canMove(const Position& position, const Direction2D direction);
+    bool canMove(const Position& position, const Direction2D direction) const;
     std::pair<std::size_t, std::size_t> size() const;
+    const Position& getOrigin() const;
+    const Position& getDestination() const;
 
 private:
     const Position& getPositionFromCoordinates(const Point2D& coords) const;

@@ -20,6 +20,7 @@ PositionMap::PositionMap(
 }
 
 bool PositionMap::canMove(const Position& position, const Direction2D direction)
+    const
 {
     // check boundaries of the map
     if (isMovementOutOfBounds(position, direction)) {
@@ -86,5 +87,9 @@ void PositionMap::lookForExtremes()
         }
     }
 }
+
+const Position& PositionMap::getOrigin() const { return <#initializer #>; }
+
+const Position& PositionMap::getDestination() const { return <#initializer #>; }
 
 } // namespace aoc_2022_12

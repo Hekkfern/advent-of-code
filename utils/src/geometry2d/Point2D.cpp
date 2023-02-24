@@ -19,12 +19,12 @@ Point2D::Point2D(const std::pair<int32_t, int32_t>& coords)
 {
 }
 
-void Point2D::move(Direction2D direction) { move(direction.toVector2D()); }
+void Point2D::move(Direction2D direction2D) { move(direction2D.toVector2D()); }
 
-void Point2D::move(const Vector2D& vector)
+void Point2D::move(const Vector2D& vector2D)
 {
-    mX += vector.getX();
-    mY += vector.getY();
+    mX += vector2D.getX();
+    mY += vector2D.getY();
 }
 
 std::pair<int32_t, int32_t> Point2D::get() const
@@ -53,16 +53,35 @@ Point2D Point2D::operator-(const Point2D& other) const
 
 Point2D Point2D::operator-() const { return { -mX, -mY }; }
 
+Point2D Point2D::move(const Point2D& point2d, const Vector2D& vector2d)
+{
+    return Point2D{ point2d.mX + vector2d.getX(),
+                    point2d.mY + vector2d.getY() };
+}
+
+Point2D Point2D::move(const Point2D& point2d, const Direction2D& direction2D)
+{
+    return Point2D::move(point2d, direction2D.toVector2D());
+}
+
 Point2D operator+(const Point2D& point2d, const Vector2D& vector2d)
 {
-    Point2D newPoint{ point2d };
-    newPoint.move(vector2d);
-    return newPoint;
+    return Point2D::move(point2d, vector2d);
 }
 
 Point2D operator+(const Vector2D& vector2d, const Point2D& point2d)
 {
     return point2d + vector2d;
+}
+
+Point2D operator+(const Point2D& point2d, const Direction2D& direction2D)
+{
+    return Point2D::move(point2d, direction2D);
+}
+
+Point2D operator+(const Direction2D& direction2D, const Point2D& point2d)
+{
+    return point2d + direction2D;
 }
 
 } // namespace utils::geometry2d

@@ -37,4 +37,23 @@ bool Position::operator<=(const Position& other) const
 
 const Point2D& Position::getPoint() const { return mPoint2D; }
 
+Position Position::move(
+    const Position& position,
+    const Direction2D& direction2D)
+{
+    return Position(
+        position.getPoint() + direction2D,
+        position.getHeight(),
+        position.getType());
+}
+
+Position operator+(const Position& position, const Direction2D& direction2D)
+{
+    return Position::move(position, direction2D);
+}
+
+Position operator+(const Direction2D& direction2D, const Position& position)
+{
+    return position + direction2D;
+}
 } // namespace aoc_2022_12
