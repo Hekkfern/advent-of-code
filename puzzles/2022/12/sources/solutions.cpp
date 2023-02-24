@@ -4,7 +4,6 @@
 #include <fstream>
 #include <queue>
 #include <range/v3/all.hpp>
-#include <unordered_map>
 #include <utils/geometry2d/Direction2D.hpp>
 #include <vector>
 
@@ -49,6 +48,7 @@ PositionMap parseInput(const std::string& filename)
             positionMap.at(rowCounter)
                 .emplace_back(
                     std::move(point2D), parseHeight(c), parsePositionType(c));
+            ++itemCounter;
         }
         ++rowCounter;
     }
