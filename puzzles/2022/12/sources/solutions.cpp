@@ -4,8 +4,8 @@
 #include <fstream>
 #include <queue>
 #include <range/v3/all.hpp>
+#include <unordered_map>
 #include <utils/geometry2d/Direction2D.hpp>
-#include <vector>
 
 namespace aoc_2022_12 {
 
@@ -35,25 +35,26 @@ PositionType parsePositionType(const char c)
 
 PositionMap parseInput(const std::string& filename)
 {
-    std::vector<std::vector<Position>> positionMap;
+    std::unordered_map<Point2D, Position> map;
     std::ifstream fileStream{ filename };
     std::string line;
     uint32_t rowCounter{ 0U };
+    uint32_t colCounter{ 0U };
     while (std::getline(fileStream, line)) {
-        positionMap.emplace_back(); // add new row
-        uint32_t itemCounter{ 0U };
+        colCounter = 0U;
         for (const auto c : line) {
-            Point2D point2D{ static_cast<int32_t>(itemCounter),
+            Point2D point2D{ static_cast<int32_t>(colCounter),
                              static_cast<int32_t>(rowCounter) };
-            positionMap.at(rowCounter)
-                .emplace_back(
-                    std::move(point2D), parseHeight(c), parsePositionType(c));
-            ++itemCounter;
+            map.emplace(
+                point2D,
+                Position{
+                    std::move(point2D), parseHeight(c), parsePositionType(c) });
+            ++colCounter;
         }
         ++rowCounter;
     }
-    ranges::reverse(positionMap);
-    return positionMap;
+
+    return PositionMap{ std::move(map), rowCounter, colCounter };
 }
 
 uint32_t climbHill(PositionMap& positionMap)

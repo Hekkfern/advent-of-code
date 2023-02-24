@@ -5,18 +5,27 @@
 
 namespace aoc_2022_12 {
 
-PositionMap::PositionMap(std::vector<std::vector<Position>>&& nodes)
-    : mPositions{ std::move(nodes) }
+PositionMap::PositionMap(
+    std::unordered_map<Point2D, Position>&& positions,
+    size_t width,
+    size_t height)
+    : mPositions{ std::move(positions) }
+    , mWidth{ width }
+    , mHeight{ height }
 {
     lookForExtremes();
     initializeCosts();
 }
 
 PositionMap::PositionMap(
-    std::vector<std::vector<Position>>&& nodes,
+    std::unordered_map<Point2D, Position>&& positions,
+    size_t width,
+    size_t height,
     const Position& origin,
     const Position& destination)
-    : mPositions{ std::move(nodes) }
+    : mPositions{ std::move(positions) }
+    , mWidth{ width }
+    , mHeight{ height }
     , mOrigin{ &origin }
     , mDestination{ &destination }
 {
@@ -40,7 +49,7 @@ bool PositionMap::canMove(const Position& position, const Direction2D direction)
 
 std::pair<std::size_t, std::size_t> PositionMap::size() const
 {
-    return std::make_pair(mPositions.size(), mPositions[0].size());
+    return std::make_pair(mWidth, mWidth);
 }
 
 const Position& PositionMap::getPositionFromCoordinates(
@@ -99,11 +108,9 @@ const Position& PositionMap::getDestination() const { return *mDestination; }
 
 void PositionMap::initializeCosts()
 {
-    for (auto rowCounter : ranges::views::iota(size().first, 0U)) {
-        for (auto colCounter : ranges::views::iota(size().second, 0U)) {
-            mCosts.at(rowCounter).at(colCounter) = UINT32_MAX;
-        }
-    }
+    mCosts = std::vector<std::vector<uint32_t>>(
+        mPositions.size(),
+        std::vector<uint32_t>(mPositions[0].size(), UINT32_MAX));
 }
 
 void PositionMap::setCost(const Position& position, uint32_t newCost)
