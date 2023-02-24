@@ -88,8 +88,8 @@ void PositionMap::lookForExtremes()
     }
 }
 
-const Position& PositionMap::getOrigin() const { return <#initializer #>; }
+const Position& PositionMap::getOrigin() const { return *mOrigin; }
 
-const Position& PositionMap::getDestination() const { return <#initializer #>; }
+const Position& PositionMap::getDestination() const { return *mDestination; }
 
 } // namespace aoc_2022_12

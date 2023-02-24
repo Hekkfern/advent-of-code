@@ -50,6 +50,7 @@ PositionMap parseInput(const std::string& filename)
                 .emplace_back(
                     std::move(point2D), parseHeight(c), parsePositionType(c));
         }
+        ++rowCounter;
     }
     ranges::reverse(positionMap);
     return positionMap;
@@ -111,6 +112,7 @@ uint32_t climbHill(const PositionMap& positionMap)
 std::string solvePart1(const std::string& filename)
 {
     auto positionMap{ parseInput(filename) };
+    return std::to_string(climbHill(positionMap));
 }
 
 std::string solvePart2(const std::string& filename)
