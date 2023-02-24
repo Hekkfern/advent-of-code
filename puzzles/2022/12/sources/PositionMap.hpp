@@ -18,6 +18,7 @@ public:
     const Position& getDestination() const;
     void setCost(const Position& position, uint32_t newCost);
     uint32_t getCost(const Position& position);
+    const Position& move(const Position& position, const Direction2D direction) const;
 
 private:
     const Position& getPositionFromCoordinates(const Point2D& coords) const;

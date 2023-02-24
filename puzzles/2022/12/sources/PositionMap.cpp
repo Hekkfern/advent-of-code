@@ -1,4 +1,5 @@
 #include "PositionMap.hpp"
+
 #include <range/v3/all.hpp>
 #include <utils/geometry2d/Direction2D.hpp>
 
@@ -115,6 +116,14 @@ uint32_t PositionMap::getCost(const Position& position)
 {
     const auto [coordX, coordY]{ position.getCoordinates() };
     return mCosts.at(coordX).at(coordY);
+}
+
+const Position& PositionMap::move(
+    const Position& position,
+    const Direction2D direction) const
+{
+    auto coords{ position.getPoint() + direction };
+    return getPositionFromCoordinates(coords);
 }
 
 } // namespace aoc_2022_12

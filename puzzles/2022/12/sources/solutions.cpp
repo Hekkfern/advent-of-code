@@ -90,7 +90,7 @@ uint32_t climbHill(PositionMap& positionMap)
                 continue;
             }
 
-            auto nextPosition{ enqueuedPosition + dir };
+            auto nextPosition{ positionMap.move(enqueuedPosition, dir) };
             queue.emplace(nextPosition, enqueuedPositionCost + 1U);
             positionMap.setCost(nextPosition, enqueuedPositionCost + 1U);
         }
