@@ -20,11 +20,6 @@ public:
     Height getHeight() const;
     PositionType getType() const;
     bool operator==(const Position& other) const;
-    bool operator<(const Position& other) const;
-    bool operator<=(const Position& other) const;
-    static Position move(
-        const Position& position,
-        const Direction2D& direction2D);
 
 private:
     const Point2D mPoint2D;

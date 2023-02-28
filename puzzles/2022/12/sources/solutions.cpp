@@ -69,7 +69,7 @@ PositionMap parseInput(const std::string& filename)
     }
 
     return PositionMap{
-        std::move(map), rowCounter, colCounter, *origin, *destination
+        std::move(map), colCounter, rowCounter, *origin, *destination
     };
 }
 
@@ -105,12 +105,13 @@ uint32_t climbHill(PositionMap& positionMap)
             auto nextPosition{ positionMap.move(enqueuedPosition, dir) };
             // Check if the path due to this movement is not longer than the
             // shortest known path.
+            const auto nextCost{ enqueuedPositionCost + 1U };
             if ((enqueuedPositionCost + 1U)
                 >= positionMap.getCost(nextPosition)) {
                 continue;
             }
-            queue.emplace(nextPosition, enqueuedPositionCost + 1U);
-            positionMap.setCost(nextPosition, enqueuedPositionCost + 1U);
+            queue.emplace(nextPosition, nextCost);
+            positionMap.setCost(nextPosition, nextCost);
         }
     }
 

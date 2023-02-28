@@ -22,17 +22,8 @@ PositionType Position::getType() const { return mType; }
 
 bool Position::operator==(const Position& other) const
 {
-    return mHeight == other.mHeight;
-}
-
-bool Position::operator<(const Position& other) const
-{
-    return mHeight < other.mHeight;
-}
-
-bool Position::operator<=(const Position& other) const
-{
-    return (*this == other) || (*this < other);
+    return mPoint2D == other.mPoint2D && mHeight == other.mHeight
+        && mType == other.mType;
 }
 
 const Point2D& Position::getPoint() const { return mPoint2D; }

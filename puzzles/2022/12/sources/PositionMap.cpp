@@ -40,13 +40,18 @@ bool PositionMap::canMove(const Position& position, const Direction2D direction)
         return false;
     }
     // check height gap
-    const auto movement{ direction.toVector2D() };
-    Point2D newPoint{ position.getPoint() + movement };
-    newPoint.move(direction);
-    const auto newNode{ getPositionFromCoordinates(newPoint) };
-    return position <= newNode;
+    // valid: smaller, equal or 1 unit higher.
+    const Point2D newPoint{ position.getPoint() + direction };
+    const auto nextPosition{ getPositionFromCoordinates(newPoint) };
+    return nextPosition.getHeight() <= (position.getHeight() + 1U);
 }
 
+/**
+ * @brief Gets the size of the map.
+ *
+ * @return Returns a pair where the first item is the Width (number of columns or coordinate X) and
+ * the second item is the Height (number of rows or coordinate Y).
+ */
 std::pair<std::size_t, std::size_t> PositionMap::size() const
 {
     return std::make_pair(mWidth, mHeight);
