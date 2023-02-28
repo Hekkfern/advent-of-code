@@ -55,9 +55,7 @@ std::pair<std::size_t, std::size_t> PositionMap::size() const
 const Position& PositionMap::getPositionFromCoordinates(
     const Point2D& coords) const
 {
-    const auto positionX{ static_cast<size_t>(coords.getX()) };
-    const auto positionY{ static_cast<size_t>(coords.getY()) };
-    return mPositions.at(positionX).at(positionY);
+    return mPositions.at(coords);
 }
 
 bool PositionMap::isMovementOutOfBounds(
@@ -83,21 +81,19 @@ bool PositionMap::isMovementOutOfBounds(
 
 void PositionMap::lookForExtremes()
 {
-    bool originFound = false;
-    bool destFound = false;
-    for (const auto& row : mPositions) {
-        for (const auto& item : row) {
-            if (item.getType() == PositionType::Origin) {
-                mOrigin = &item;
-                originFound = true;
-            }
-            if (item.getType() == PositionType::Destination) {
-                mDestination = &item;
-                destFound = true;
-            }
-            if (originFound && destFound) {
-                return;
-            }
+    bool originFound{ false };
+    bool destFound{ false };
+    for (const auto& [point, item] : mPositions) {
+        if (item.getType() == PositionType::Origin) {
+            mOrigin = &item;
+            originFound = true;
+        }
+        if (item.getType() == PositionType::Destination) {
+            mDestination = &item;
+            destFound = true;
+        }
+        if (originFound && destFound) {
+            return;
         }
     }
 }
@@ -108,21 +104,20 @@ const Position& PositionMap::getDestination() const { return *mDestination; }
 
 void PositionMap::initializeCosts()
 {
-    mCosts = std::vector<std::vector<uint32_t>>(
-        mPositions.size(),
-        std::vector<uint32_t>(mPositions[0].size(), UINT32_MAX));
+    mCosts.reserve(size().first * size().second);
+    for (const auto& [point, item] : mPositions) {
+        mCosts.emplace(point, UINT32_MAX);
+    }
 }
 
 void PositionMap::setCost(const Position& position, uint32_t newCost)
 {
-    const auto [coordX, coordY]{ position.getCoordinates() };
-    mCosts.at(coordX).at(coordY) = newCost;
+    mCosts.at(position.getPoint()) = newCost;
 }
 
 uint32_t PositionMap::getCost(const Position& position)
 {
-    const auto [coordX, coordY]{ position.getCoordinates() };
-    return mCosts.at(coordX).at(coordY);
+    return mCosts.at(position.getPoint());
 }
 
 const Position& PositionMap::move(
