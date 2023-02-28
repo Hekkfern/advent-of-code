@@ -102,14 +102,13 @@ uint32_t climbHill(PositionMap& positionMap)
             if (!positionMap.canMove(enqueuedPosition, dir)) {
                 continue;
             }
+            auto nextPosition{ positionMap.move(enqueuedPosition, dir) };
             // Check if the path due to this movement is not longer than the
             // shortest known path.
             if ((enqueuedPositionCost + 1U)
-                >= positionMap.getCost(enqueuedPosition)) {
+                >= positionMap.getCost(nextPosition)) {
                 continue;
             }
-
-            auto nextPosition{ positionMap.move(enqueuedPosition, dir) };
             queue.emplace(nextPosition, enqueuedPositionCost + 1U);
             positionMap.setCost(nextPosition, enqueuedPositionCost + 1U);
         }
