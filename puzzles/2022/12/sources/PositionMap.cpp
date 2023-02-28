@@ -49,7 +49,7 @@ bool PositionMap::canMove(const Position& position, const Direction2D direction)
 
 std::pair<std::size_t, std::size_t> PositionMap::size() const
 {
-    return std::make_pair(mWidth, mWidth);
+    return std::make_pair(mWidth, mHeight);
 }
 
 const Position& PositionMap::getPositionFromCoordinates(

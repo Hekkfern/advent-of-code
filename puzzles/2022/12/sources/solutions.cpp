@@ -40,21 +40,37 @@ PositionMap parseInput(const std::string& filename)
     std::string line;
     uint32_t rowCounter{ 0U };
     uint32_t colCounter{ 0U };
+    Position* origin{ nullptr };
+    Position* destination{ nullptr };
     while (std::getline(fileStream, line)) {
         colCounter = 0U;
         for (const auto c : line) {
             Point2D point2D{ static_cast<int32_t>(colCounter),
                              static_cast<int32_t>(rowCounter) };
-            map.emplace(
-                point2D,
-                Position{
-                    std::move(point2D), parseHeight(c), parsePositionType(c) });
+            auto type{ parsePositionType(c) };
+            // insert
+            auto [insertedItem, isInserted] = map.emplace(
+                point2D, Position{ std::move(point2D), parseHeight(c), type });
+            // detect origin or destination
+            switch (type) {
+            case PositionType::Origin:
+                origin = &insertedItem->second;
+                break;
+            case PositionType::Destination:
+                destination = &insertedItem->second;
+                break;
+            default:
+                /* No statements */
+                break;
+            }
             ++colCounter;
         }
         ++rowCounter;
     }
 
-    return PositionMap{ std::move(map), rowCounter, colCounter };
+    return PositionMap{
+        std::move(map), rowCounter, colCounter, *origin, *destination
+    };
 }
 
 uint32_t climbHill(PositionMap& positionMap)
@@ -65,7 +81,9 @@ uint32_t climbHill(PositionMap& positionMap)
     positionMap.setCost(positionMap.getOrigin(), 0U);
 
     while (!queue.empty()) {
-        auto [enqueuedPosition, enqueuedPositionCost]{ queue.front() };
+        auto enqueuedItem{ queue.front() };
+        const auto& enqueuedPosition{ enqueuedItem.first };
+        const auto enqueuedPositionCost{ enqueuedItem.second };
         queue.pop();
 
         // Do not explore past end
