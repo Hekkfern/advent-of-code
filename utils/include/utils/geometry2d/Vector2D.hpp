@@ -14,9 +14,10 @@ public:
     Vector2D(int32_t x, int32_t y);
     Vector2D(const Point2D& origin, const Point2D& destination);
     explicit Vector2D(const std::pair<int32_t, int32_t>& coords);
-    std::pair<int32_t, int32_t> get() const;
+    std::pair<int32_t, int32_t> getCoordinates() const;
     int32_t getX() const;
     int32_t getY() const;
+    std::pair<size_t, size_t> size() const;
     uint32_t distance() const;
     /**
      * @brief Modifies 2D vector so it's length becomes one, keeping same
@@ -25,6 +26,8 @@ public:
     void normalize();
     Vector2D getNormalized() const;
     bool isZero() const;
+    bool isHorizontal() const;
+    bool isVertical() const;
     bool operator==(const Vector2D& other) const;
     Vector2D operator+(const Vector2D& other) const;
     Vector2D operator-() const;

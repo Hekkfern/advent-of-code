@@ -28,7 +28,7 @@ private:
                 return;
             }
 
-            const auto desiredMovement = vector2D.get();
+            const auto desiredMovement = vector2D.getCoordinates();
             const Vector2D movement{ std::clamp(desiredMovement.first, -1, 1),
                                      std::clamp(
                                          desiredMovement.second, -1, 1) };

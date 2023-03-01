@@ -23,7 +23,7 @@ TEST_CASE(
     const Point2D point2D;
     CHECK(point2D.getX() == 0);
     CHECK(point2D.getY() == 0);
-    const auto coords{ point2D.get() };
+    const auto coords{ point2D.getCoordinates() };
     CHECK(coords.first == 0);
     CHECK(coords.second == 0);
 }
@@ -36,7 +36,7 @@ TEST_CASE(
     const Point2D point2D{ 2, 3 };
     CHECK(point2D.getX() == 2);
     CHECK(point2D.getY() == 3);
-    const auto coords{ point2D.get() };
+    const auto coords{ point2D.getCoordinates() };
     CHECK(coords.first == 2);
     CHECK(coords.second == 3);
 }
@@ -49,7 +49,7 @@ TEST_CASE(
     const Point2D point2D{ std::make_pair(2, 3) };
     CHECK(point2D.getX() == 2);
     CHECK(point2D.getY() == 3);
-    const auto coords{ point2D.get() };
+    const auto coords{ point2D.getCoordinates() };
     CHECK(coords.first == 2);
     CHECK(coords.second == 3);
 }

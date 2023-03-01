@@ -21,7 +21,7 @@ TEST_CASE(
     const Vector2D vector2D;
     CHECK(vector2D.getX() == 0);
     CHECK(vector2D.getY() == 0);
-    const auto coords{ vector2D.get() };
+    const auto coords{ vector2D.getCoordinates() };
     CHECK(coords.first == 0);
     CHECK(coords.second == 0);
 }
@@ -34,7 +34,7 @@ TEST_CASE(
     const Vector2D vector2D{ 2, 3 };
     CHECK(vector2D.getX() == 2);
     CHECK(vector2D.getY() == 3);
-    const auto coords{ vector2D.get() };
+    const auto coords{ vector2D.getCoordinates() };
     CHECK(coords.first == 2);
     CHECK(coords.second == 3);
 }
@@ -47,7 +47,7 @@ TEST_CASE(
     const Vector2D vector2D{ std::make_pair(2, 3) };
     CHECK(vector2D.getX() == 2);
     CHECK(vector2D.getY() == 3);
-    const auto coords{ vector2D.get() };
+    const auto coords{ vector2D.getCoordinates() };
     CHECK(coords.first == 2);
     CHECK(coords.second == 3);
 }

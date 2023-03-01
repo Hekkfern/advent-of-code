@@ -26,7 +26,7 @@ Vector2D::Vector2D(const std::pair<int32_t, int32_t>& coords)
 {
 }
 
-std::pair<int32_t, int32_t> Vector2D::get() const
+std::pair<int32_t, int32_t> Vector2D::getCoordinates() const
 {
     return std::make_pair(mX, mY);
 }
@@ -72,6 +72,15 @@ Vector2D Vector2D::getNormalized() const
     Vector2D vector2D(*this);
     vector2D.normalize();
     return vector2D;
+}
+
+bool Vector2D::isHorizontal() const { return mY == 0; }
+
+bool Vector2D::isVertical() const { return mX == 0; }
+
+std::pair<size_t, size_t> Vector2D::size() const
+{
+    return std::make_pair(std::abs(mX), std::abs(mY));
 }
 
 Vector2D operator*(const Vector2D& vector2D, const int32_t n)

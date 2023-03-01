@@ -19,7 +19,7 @@ public:
     void move(const Vector2D& vector2D);
     static Point2D move(const Point2D& point2d, const Vector2D& vector2d);
     static Point2D move(const Point2D& point2d, const Direction2D& direction2D);
-    std::pair<int32_t, int32_t> get() const;
+    std::pair<int32_t, int32_t> getCoordinates() const;
     int32_t getX() const;
     int32_t getY() const;
     /**

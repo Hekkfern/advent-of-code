@@ -27,7 +27,7 @@ void Point2D::move(const Vector2D& vector2D)
     mY += vector2D.getY();
 }
 
-std::pair<int32_t, int32_t> Point2D::get() const
+std::pair<int32_t, int32_t> Point2D::getCoordinates() const
 {
     return std::make_pair(mX, mY);
 }
