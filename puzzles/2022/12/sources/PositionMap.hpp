@@ -5,6 +5,8 @@
 
 namespace aoc_2022_12 {
 
+enum class ClimbingDirection { Up, Down };
+
 class PositionMap {
 public:
     PositionMap(
@@ -17,7 +19,10 @@ public:
         size_t height,
         const Position& origin,
         const Position& destination);
-    bool canMove(const Position& position, const Direction2D direction) const;
+    bool canMove(
+        const Position& position,
+        const Direction2D direction,
+        ClimbingDirection climbingDirection) const;
     std::pair<std::size_t, std::size_t> size() const;
     const Position& getOrigin() const;
     const Position& getDestination() const;

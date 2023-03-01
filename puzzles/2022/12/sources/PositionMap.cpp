@@ -32,25 +32,33 @@ PositionMap::PositionMap(
     initializeCosts();
 }
 
-bool PositionMap::canMove(const Position& position, const Direction2D direction)
-    const
+bool PositionMap::canMove(
+    const Position& position,
+    const Direction2D direction,
+    ClimbingDirection climbingDirection) const
 {
     // check boundaries of the map
     if (isMovementOutOfBounds(position, direction)) {
         return false;
     }
     // check height gap
-    // valid: smaller, equal or 1 unit higher.
     const Point2D newPoint{ position.getPoint() + direction };
     const auto nextPosition{ getPositionFromCoordinates(newPoint) };
-    return nextPosition.getHeight() <= (position.getHeight() + 1U);
+    if (climbingDirection == ClimbingDirection::Down) {
+        // valid: higher, equal or 1 unit lower
+        return nextPosition.getHeight() >= (position.getHeight() - 1U);
+    } else {
+        // valid: lower, equal or 1 unit higher.
+        return nextPosition.getHeight() <= (position.getHeight() + 1U);
+    }
 }
 
 /**
  * @brief Gets the size of the map.
  *
- * @return Returns a pair where the first item is the Width (number of columns or coordinate X) and
- * the second item is the Height (number of rows or coordinate Y).
+ * @return Returns a pair where the first item is the Width (number of columns
+ * or coordinate X) and the second item is the Height (number of rows or
+ * coordinate Y).
  */
 std::pair<std::size_t, std::size_t> PositionMap::size() const
 {

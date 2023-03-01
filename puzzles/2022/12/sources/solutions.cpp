@@ -99,7 +99,8 @@ uint32_t climbHill(PositionMap& positionMap)
             Direction2D::Left
         };
         for (auto dir : directionsToCheck) {
-            if (!positionMap.canMove(enqueuedPosition, dir)) {
+            if (!positionMap.canMove(
+                    enqueuedPosition, dir, ClimbingDirection::Up)) {
                 continue;
             }
             auto nextPosition{ positionMap.move(enqueuedPosition, dir) };
@@ -119,6 +120,56 @@ uint32_t climbHill(PositionMap& positionMap)
     return positionMap.getCost(positionMap.getDestination());
 }
 
+uint32_t descendHill(PositionMap& positionMap)
+{
+    uint32_t bestCost{ UINT32_MAX };
+    // BFS initialization with the starting point
+    std::queue<std::pair<Position, uint32_t>> queue;
+    queue.emplace(positionMap.getDestination(), 0U);
+    positionMap.setCost(positionMap.getDestination(), 0U);
+
+    while (!queue.empty()) {
+        auto enqueuedItem{ queue.front() };
+        const auto& enqueuedPosition{ enqueuedItem.first };
+        const auto enqueuedPositionCost{ enqueuedItem.second };
+        queue.pop();
+
+        // Update best cost
+        if (enqueuedPosition.getHeight() == 0U) {
+            bestCost = std::min(bestCost, enqueuedPositionCost);
+            // This is the end of this path.
+            continue;
+        }
+
+        // Try to step in each direction:
+        static const std::vector<Direction2D> directionsToCheck{
+            Direction2D::Up,
+            Direction2D::Right,
+            Direction2D::Down,
+            Direction2D::Left
+        };
+        for (auto dir : directionsToCheck) {
+            if (!positionMap.canMove(
+                    enqueuedPosition, dir, ClimbingDirection::Down)) {
+                continue;
+            }
+            auto nextPosition{ positionMap.move(enqueuedPosition, dir) };
+            // Check if the path due to this movement is not longer than the
+            // shortest known path.
+            const auto nextCost{ enqueuedPositionCost + 1U };
+            if ((enqueuedPositionCost + 1U)
+                >= positionMap.getCost(nextPosition)) {
+                continue;
+            }
+            queue.emplace(nextPosition, nextCost);
+            positionMap.setCost(nextPosition, nextCost);
+        }
+    }
+
+    // Return the best path cost.
+    return bestCost;
+}
+
 // ---------- End of Private Methods ----------
 
 // ---------- Public Methods ----------
@@ -131,8 +182,8 @@ std::string solvePart1(const std::string& filename)
 
 std::string solvePart2(const std::string& filename)
 {
-    (void)filename;
-    return "";
+    auto positionMap{ parseInput(filename) };
+    return std::to_string(descendHill(positionMap));
 }
 
 // ---------- End of Public Methods ----------
