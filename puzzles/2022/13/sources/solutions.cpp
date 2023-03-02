@@ -8,10 +8,8 @@ namespace aoc_2022_13 {
 
 // ---------- Private Methods ----------
 
-Packet parsePacket(std::ifstream& fileStream)
+Packet parsePacket(const std::string& line)
 {
-    std::string line;
-    std::getline(fileStream, line);
     std::stringstream lineStream{ line };
     Packet packet;
     Item* currentItem{ &packet.getRootItem() };
@@ -47,6 +45,22 @@ Packet parsePacket(std::ifstream& fileStream)
 std::string solvePart1(const std::string& filename)
 {
     std::ifstream fileStream{ filename };
+    std::string line;
+    uint32_t index{ 1U };
+    uint32_t sum{ 0U };
+    while (std::getline(fileStream, line)) {
+        if (line.empty()) {
+            continue;
+        }
+        auto packet1{ parsePacket(line) };
+        std::getline(fileStream, line);
+        auto packet2{ parsePacket(line) };
+        if (packet1 < packet2) {
+            sum += index;
+        }
+        ++index;
+    }
+    return std::to_string(sum);
 }
 
 std::string solvePart2(const std::string& filename)

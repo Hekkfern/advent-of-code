@@ -8,7 +8,7 @@ class Packet {
 public:
     Packet();
     Item& getRootItem() const;
-    auto operator<=>(const Packet& other) const;
+    std::strong_ordering operator<=>(const Packet& other) const;
 
 private:
     std::unique_ptr<Item> mRootItem;

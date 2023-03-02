@@ -7,7 +7,7 @@ Packet::Packet()
 {
 }
 
-auto Packet::operator<=>(const Packet& other) const
+std::strong_ordering Packet::operator<=>(const Packet& other) const
 {
     return *mRootItem <=> *other.mRootItem;
 }
