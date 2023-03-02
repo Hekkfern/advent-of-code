@@ -8,35 +8,36 @@ namespace aoc_2022_13 {
 
 // ---------- Private Methods ----------
 
-std::pair<Packet, Packet> parsePacket(std::ifstream& fileStream)
+Packet parsePacket(std::ifstream& fileStream)
 {
     std::string line;
     std::getline(fileStream, line);
-    std::stringstream lineStream{line};
+    std::stringstream lineStream{ line };
+    Packet packet;
+    Item* currentItem{ &packet.getRootItem() };
     while (lineStream) {
-        // New value node
-        if (std::isdigit(lineStream.peek()) != 0) {
-            int value;
+        if (std::isdigit(lineStream.peek()) != 0) { // New value node
+            uint32_t value{ 0U };
             lineStream >> value;
-            signal.new_value_node(current, v);
-            // New list node
-        } else if (s.peek() == '[') {
-            s.get();
-            Node *next = signal.new_list_node(current);
-            if (current == nullptr) signal.root = next;
-            current = next;
-            // End of list node
-        } else if (s.peek() == ']') {
-            s.get();
-            current = current->parent;
+            currentItem->setInteger(value);
+        } else if (lineStream.peek() == '[') { // New list node
+            lineStream.get();
+            if (currentItem != nullptr) {
+                Item& nextItem{ currentItem->addItemToList() };
+                currentItem = &nextItem;
+            }
+        } else if (lineStream.peek() == ']') { // End of list node
+            lineStream.get();
+            currentItem = currentItem->getParent();
             // Closing bracket for the outer node == end of packet.
-            if (current == nullptr) return s;
-            // Whitespace
-        } else {
-            s.get();
+            if (currentItem == nullptr) {
+                return packet;
+            }
+        } else { // Whitespace
+            lineStream.get();
         }
     }
-
+    return packet;
 }
 
 // ---------- End of Private Methods ----------

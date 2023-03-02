@@ -11,9 +11,10 @@ enum class Type { Unknown, Integer, List };
 class Item {
 public:
     Item(Item* const parent = nullptr);
-    std::optional<std::reference_wrapper<Item>> addItemToList();
-    std::optional<uint32_t> setInteger(uint32_t value);
+    Item& addItemToList();
+    uint32_t setInteger(uint32_t value);
     std::strong_ordering operator<=>(const Item& other) const;
+    Item* getParent() const;
 
 private:
     std::strong_ordering compare(uint32_t value1, uint32_t value2) const;

@@ -91,24 +91,22 @@ std::strong_ordering Item::operator<=>(const Item& other) const
     }
 }
 
-std::optional<std::reference_wrapper<Item>> Item::addItemToList()
+Item& Item::addItemToList()
 {
-    if (mType == Type::Integer) {
-        return std::nullopt;
-    }
     mType = Type::List;
-    auto newItem{ mContent.emplace_back(*this) };
-    return std::make_optional(std::ref(newItem));
+    mValue = 0U; // clear
+    auto& newItem{ mContent.emplace_back(*this) };
+    return newItem;
 }
 
-std::optional<uint32_t> Item::setInteger(uint32_t value)
+uint32_t Item::setInteger(uint32_t value)
 {
-    if (mType == Type::List) {
-        return std::nullopt;
-    }
     mType = Type::Integer;
+    mContent.clear(); // clear
     mValue = std::make_optional(value);
-    return mValue;
+    return value;
 }
+
+Item* Item::getParent() const { return mParent; }
 
 } // namespace aoc_2022_13
