@@ -17,21 +17,21 @@ Packet parsePacket(const std::string& line)
         if (std::isdigit(lineStream.peek()) != 0) { // New value node
             uint32_t value{ 0U };
             lineStream >> value;
-            currentItem->setInteger(value);
+            currentItem->addIntegerItem(value);
         } else if (lineStream.peek() == '[') { // New list node
-            lineStream.get();
-            if (currentItem != nullptr) {
-                Item& nextItem{ currentItem->addItemToList() };
+            lineStream.get(); // get '[' char
+            if (currentItem->getParent() != nullptr) { // check for root Item
+                Item& nextItem{ currentItem->addListItem() };
                 currentItem = &nextItem;
             }
         } else if (lineStream.peek() == ']') { // End of list node
             lineStream.get();
             currentItem = currentItem->getParent();
             // Closing bracket for the outer node == end of packet.
-            if (currentItem == nullptr) {
+            if (currentItem->getParent() == nullptr) {
                 return packet;
             }
-        } else { // Whitespace
+        } else { // Whitespace or comma
             lineStream.get();
         }
     }

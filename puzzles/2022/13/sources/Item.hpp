@@ -6,17 +6,21 @@
 
 namespace aoc_2022_13 {
 
-enum class Type { Unknown, Integer, List };
+enum class Type { List, Integer };
 
 class Item {
 public:
-    Item(Item* const parent = nullptr);
-    Item& addItemToList();
-    uint32_t setInteger(uint32_t value);
-    std::strong_ordering operator<=>(const Item& other) const;
+    [[nodiscard]] static Item createIntegerItem(
+        Item* const parent,
+        uint32_t value);
+    [[nodiscard]] static Item createListItem(Item* const parent);
+    Item& addListItem();
+    Item& addIntegerItem(uint32_t value);
     Item* getParent() const;
+    std::strong_ordering operator<=>(const Item& other) const;
 
 private:
+    Item(Item* const parent);
     std::strong_ordering compare(uint32_t value1, uint32_t value2) const;
     std::strong_ordering compare(uint32_t value, const std::vector<Item>& list)
         const;
@@ -27,7 +31,7 @@ private:
         const std::vector<Item>& list2) const;
 
     Item* const mParent;
-    Type mType{ Type::Unknown };
+    Type mType{ Type::List };
     // Each node is either a list (!content.empty())
     std::vector<Item> mContent;
     // or a value (value != std::nullopt)

@@ -3,7 +3,7 @@
 namespace aoc_2022_13 {
 
 Packet::Packet()
-    : mRootItem{ std::make_unique<Item>(nullptr) }
+    : mRootItem{ std::make_unique<Item>(Item::createListItem(nullptr)) }
 {
 }
 

@@ -9,6 +9,25 @@ Item::Item(Item* const parent)
 {
 }
 
+Item& Item::addListItem()
+{
+    if (mType == Type::Integer) {
+        throw std::runtime_error(
+            "Unable to add an item to an Integer-type item");
+    }
+    auto& newItem{ mContent.emplace_back(createListItem(this)) };
+    return newItem;
+}
+
+Item& Item::addIntegerItem(uint32_t value)
+{
+    auto& newItem{ mContent.emplace_back(createIntegerItem(this, value)) };
+    newItem.mValue = std::make_optional(value);
+    return newItem;
+}
+
+Item* Item::getParent() const { return mParent; }
+
 std::strong_ordering Item::compare(uint32_t value1, uint32_t value2) const
 {
     return value1 <=> value2;
@@ -91,22 +110,19 @@ std::strong_ordering Item::operator<=>(const Item& other) const
     }
 }
 
-Item& Item::addItemToList()
+Item Item::createIntegerItem(Item* const parent, uint32_t value)
 {
-    mType = Type::List;
-    mValue = 0U; // clear
-    auto& newItem{ mContent.emplace_back(*this) };
-    return newItem;
+    auto instance{ Item{ parent } };
+    instance.mType = Type::Integer;
+    instance.mValue = std::make_optional(value);
+    return instance;
 }
 
-uint32_t Item::setInteger(uint32_t value)
+Item Item::createListItem(Item* const parent)
 {
-    mType = Type::Integer;
-    mContent.clear(); // clear
-    mValue = std::make_optional(value);
-    return value;
+    auto instance{ Item{ parent } };
+    instance.mType = Type::List;
+    return instance;
 }
-
-Item* Item::getParent() const { return mParent; }
 
 } // namespace aoc_2022_13
