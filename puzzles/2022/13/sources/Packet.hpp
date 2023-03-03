@@ -7,7 +7,8 @@ namespace aoc_2022_13 {
 class Packet {
 public:
     Packet();
-    Item& getRootItem() const;
+    void setRoot(std::unique_ptr<Item>&& item);
+    Item* getRoot() const;
     std::strong_ordering operator<=>(const Packet& other) const;
 
 private:

@@ -3,7 +3,7 @@
 namespace aoc_2022_13 {
 
 Packet::Packet()
-    : mRootItem{ std::make_unique<Item>(Item::createListItem(nullptr)) }
+    : mRootItem{ nullptr }
 {
 }
 
@@ -12,6 +12,11 @@ std::strong_ordering Packet::operator<=>(const Packet& other) const
     return *mRootItem <=> *other.mRootItem;
 }
 
-Item& Packet::getRootItem() const { return *mRootItem; }
+Item* Packet::getRoot() const { return mRootItem.get(); }
+
+void Packet::setRoot(std::unique_ptr<Item>&& item)
+{
+    mRootItem = std::move(item);
+}
 
 } // namespace aoc_2022_13

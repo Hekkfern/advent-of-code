@@ -12,7 +12,7 @@ Packet parsePacket(const std::string& line)
 {
     std::stringstream lineStream{ line };
     Packet packet;
-    Item* currentItem{ &packet.getRootItem() };
+    Item* currentItem{ nullptr };
     while (lineStream) {
         if (std::isdigit(lineStream.peek()) != 0) { // New value node
             uint32_t value{ 0U };
@@ -20,17 +20,21 @@ Packet parsePacket(const std::string& line)
             currentItem->addIntegerItem(value);
         } else if (lineStream.peek() == '[') { // New list node
             lineStream.get(); // get '[' char
-            if (currentItem->getParent() != nullptr) { // check for root Item
+            if (packet.getRoot() == nullptr) { // check for root Item
+                packet.setRoot(
+                    std::make_unique<Item>(Item::createListItem(nullptr)));
+                currentItem = packet.getRoot();
+            } else {
                 Item& nextItem{ currentItem->addListItem() };
                 currentItem = &nextItem;
             }
         } else if (lineStream.peek() == ']') { // End of list node
             lineStream.get();
-            currentItem = currentItem->getParent();
             // Closing bracket for the outer node == end of packet.
             if (currentItem->getParent() == nullptr) {
                 return packet;
             }
+            currentItem = currentItem->getParent();
         } else { // Whitespace or comma
             lineStream.get();
         }
