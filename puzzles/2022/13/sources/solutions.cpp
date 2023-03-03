@@ -2,6 +2,7 @@
 
 #include "Packet.hpp"
 #include <fstream>
+#include <range/v3/all.hpp>
 #include <sstream>
 
 namespace aoc_2022_13 {
@@ -42,6 +43,35 @@ Packet parsePacket(const std::string& line)
     return packet;
 }
 
+Packet createKeyPacket(uint32_t value)
+{
+    Packet packet;
+    packet.setRoot(std::make_unique<Item>(Item::createListItem(nullptr)));
+    auto currentItem = packet.getRoot();
+    currentItem = &currentItem->addListItem();
+    currentItem->addIntegerItem(value);
+    return packet;
+}
+
+uint32_t findDecoderKey(std::vector<Packet>& packets)
+{
+    ranges::sort(packets, std::less<>());
+
+    auto keyPacket1{ createKeyPacket(2U) };
+    auto keyPacket2{ createKeyPacket(6U) };
+
+    auto first{ ranges::lower_bound(packets, keyPacket1, std::less<>()) };
+    auto second{ ranges::upper_bound(packets, keyPacket2, std::less<>()) };
+
+    // lower_bound returns the first element not less than the lookup
+    // 1-based index
+    uint32_t key = ranges::distance(packets.begin(), first) + 1;
+    // upper_bound returns the first element greater than the lookup
+    // 1-based index and offset for Packet(2)
+    key *= ranges::distance(packets.begin(), second) + 2;
+    return key;
+}
+
 // ---------- End of Private Methods ----------
 
 // ---------- Public Methods ----------
@@ -69,8 +99,18 @@ std::string solvePart1(const std::string& filename)
 
 std::string solvePart2(const std::string& filename)
 {
-    (void)filename;
-    return "";
+    std::ifstream fileStream{ filename };
+    std::string line;
+    std::vector<Packet> packets;
+    while (std::getline(fileStream, line)) {
+        if (line.empty()) {
+            continue;
+        }
+        packets.emplace_back(parsePacket(line));
+        std::getline(fileStream, line);
+        packets.emplace_back(parsePacket(line));
+    }
+    return std::to_string(findDecoderKey(packets));
 }
 
 // ---------- End of Public Methods ----------
