@@ -3,22 +3,12 @@
 #include "SandMap.hpp"
 #include <fstream>
 #include <sstream>
-#include <utils/geometry2d/Direction2D.hpp>
-#include <utils/geometry2d/Vector2D.hpp>
 
 namespace aoc_2022_14 {
 
 using namespace utils::geometry2d;
 
 // ---------- Private Methods ----------
-
-const Vector2D sandFalling{ Direction2D{ Direction2D::Up }.toVector2D() };
-const Vector2D sandSlidingLeft{
-    Direction2D{ Direction2D::UpLeft }.toVector2D()
-};
-const Vector2D sandSlidingRight{
-    Direction2D{ Direction2D::UpRight }.toVector2D()
-};
 
 SandMap parseInput(const std::string& filename)
 {
@@ -29,7 +19,7 @@ SandMap parseInput(const std::string& filename)
         std::stringstream lineStream{ line };
         int32_t col{ 0 };
         int32_t row{ 0 };
-        char delim;
+        char delim{ 0 };
         lineStream >> col >> delim >> row;
         Point2D prevPoint{ col, row };
         Point2D newPoint{};

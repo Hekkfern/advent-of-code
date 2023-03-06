@@ -9,12 +9,12 @@ class Point2D;
 
 class BoundingBox2D {
 public:
-    void update(int32_t x, int32_t y);
     void update(const Point2D& point2D);
     int32_t getMinX() const;
     int32_t getMaxX() const;
     int32_t getMinY() const;
     int32_t getMaxY() const;
+    bool isOutside(const Point2D& point2D) const;
 
 private:
     int32_t mMinX{ std::numeric_limits<int32_t>::max() };

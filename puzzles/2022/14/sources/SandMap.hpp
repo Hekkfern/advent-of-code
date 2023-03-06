@@ -11,10 +11,22 @@ public:
     void addRockLine(
         const utils::geometry2d::Point2D& start,
         const utils::geometry2d::Point2D& end);
+    /**
+     * @brief      Adds a sand grain and moves across the map until it stays
+     *             steady or it falls down infinitely.
+     *
+     * @return     True if the grain stayed steady. False, otherwise.
+     */
     bool addSandGrain();
     uint32_t getNumberOfSandGrains() const;
 
 private:
+    std::optional<utils::geometry2d::Point2D> sandGoDown(
+        const utils::geometry2d::Point2D& position);
+    std::optional<utils::geometry2d::Point2D> sandSlide(
+        const utils::geometry2d::Point2D& position,
+        const utils::geometry2d::Direction2D& direction2D);
+
     utils::geometry2d::BoundingBox2D mBoundingBox;
     std::unordered_set<utils::geometry2d::Point2D> mRocks;
     std::unordered_set<utils::geometry2d::Point2D> mSand;
