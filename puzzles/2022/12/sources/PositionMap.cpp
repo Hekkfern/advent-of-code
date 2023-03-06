@@ -119,7 +119,7 @@ void PositionMap::initializeCosts()
 {
     mCosts.reserve(size().first * size().second);
     for (const auto& [point, item] : mPositions) {
-        mCosts.emplace(point, UINT32_MAX);
+        mCosts.emplace(point, std::numeric_limits<uint32_t>::max());
     }
 }
 

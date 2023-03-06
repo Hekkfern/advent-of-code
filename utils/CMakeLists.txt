@@ -15,7 +15,8 @@ add_library(
   src/Time.cpp
   src/geometry2d/Point2D.cpp
   src/geometry2d/Vector2D.cpp
-  src/geometry2d/Rectangle2D.cpp)
+  src/geometry2d/Rectangle2D.cpp
+  src/geometry2d/BoundingBox2D.cpp)
 set_cpp_standard(${_LIB_NAME})
 set_compiler_flags(${_LIB_NAME})
 set_vectorization_flags(${_LIB_NAME})
