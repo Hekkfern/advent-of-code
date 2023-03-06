@@ -20,6 +20,9 @@ void SandMap::addRockLine(const Point2D& start, const Point2D& end)
         // next
         nextPoint.move(vector2D);
     } while (nextPoint != end);
+    // add final rock in the line
+    mRocks.emplace(nextPoint);
+    mBoundingBox.update(nextPoint);
 }
 
 uint32_t SandMap::getNumberOfSandGrains() const { return mSand.size(); }
@@ -86,6 +89,7 @@ bool SandMap::addSandGrain()
             continue;
         }
         // the sand grain is steady
+        mSand.emplace(grainPosition);
         return true;
     }
 }

@@ -22,13 +22,14 @@ SandMap parseInput(const std::string& filename)
         char delim{ 0 };
         lineStream >> col >> delim >> row;
         Point2D prevPoint{ col, row };
+        lineStream >> delim >> delim; // process '->'
         Point2D newPoint{};
         while (lineStream >> col >> delim >> row) {
             newPoint = Point2D{ col, row };
             sandMap.addRockLine(prevPoint, newPoint);
+            prevPoint = newPoint;
+            lineStream >> delim >> delim; // process '->'
         }
-        prevPoint = newPoint;
-        lineStream >> delim >> delim; // process '->'
     }
     return sandMap;
 }
