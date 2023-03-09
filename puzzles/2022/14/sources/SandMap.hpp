@@ -18,8 +18,10 @@ public:
      *
      * @return     True if the grain stayed steady. False, otherwise.
      */
-    bool addSandGrain();
+    bool addSandGrainInConstrainedSpace();
+    bool addSandGrainInInfiniteSpace();
     uint32_t getNumberOfSandGrains() const;
+    void enableInfiniteFloor();
 
 private:
     std::optional<utils::geometry2d::Point2D> sandGoDown(
@@ -30,6 +32,8 @@ private:
     bool isOutside(const utils::geometry2d::Point2D& position) const;
 
     utils::geometry2d::BoundingBox2D mBoundingBox{};
+    int32_t mAssumedFloorHeight{ 2U };
+    bool mInfiniteFloorEnabled{ false };
     std::unordered_set<utils::geometry2d::Point2D> mRocks{};
     std::unordered_set<utils::geometry2d::Point2D> mSand{};
 };

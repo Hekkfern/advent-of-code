@@ -18,6 +18,9 @@ void SandMap::addRockLine(const Point2D& start, const Point2D& end)
         mRocks.emplace(nextPoint);
         // update bounding box
         mBoundingBox.update(nextPoint);
+        // update assumed floor
+        mAssumedFloorHeight = std::max(
+            mAssumedFloorHeight, nextPoint.getY() + 2);
         // next
         nextPoint.move(vector2D);
     } while (nextPoint != end);
@@ -42,6 +45,9 @@ std::optional<Point2D> SandMap::sandGoDown(const Point2D& position)
     if (mRocks.contains(nextPosition) || mSand.contains(nextPosition)) {
         return std::nullopt;
     }
+    if (mInfiniteFloorEnabled && nextPosition.getY() >= mAssumedFloorHeight) {
+        return std::nullopt;
+    }
     return std::make_optional(nextPosition);
 }
 
@@ -56,10 +62,13 @@ std::optional<Point2D> SandMap::sandSlide(
     if (mRocks.contains(nextPosition) || mSand.contains(nextPosition)) {
         return std::nullopt;
     }
+    if (mInfiniteFloorEnabled && nextPosition.getY() >= mAssumedFloorHeight) {
+        return std::nullopt;
+    }
     return std::make_optional(nextPosition);
 }
 
-bool SandMap::addSandGrain()
+bool SandMap::addSandGrainInConstrainedSpace()
 {
     Point2D grainPosition{ SandOrigin };
     while (true) {
@@ -101,5 +110,37 @@ bool SandMap::isOutside(const Point2D& position) const
         || mBoundingBox.isOutside(position, Direction2D::Up)
         || mBoundingBox.isOutside(position, Direction2D::Right);
 }
+
+bool SandMap::addSandGrainInInfiniteSpace()
+{
+    Point2D grainPosition{ SandOrigin };
+    while (true) {
+        std::optional<Point2D> candidatePosition;
+        // go down
+        if (candidatePosition = sandGoDown(grainPosition); candidatePosition) {
+            grainPosition = *candidatePosition;
+            continue;
+        }
+        // try to slide both sides
+        if (candidatePosition = sandSlide(grainPosition, SlidingLeftDirection);
+            candidatePosition) {
+            grainPosition = *candidatePosition;
+            continue;
+        }
+        if (candidatePosition = sandSlide(grainPosition, SlidingRightDirection);
+            candidatePosition) {
+            grainPosition = *candidatePosition;
+            continue;
+        }
+        // the sand grain is steady
+        if (grainPosition == SandOrigin) {
+            return false;
+        }
+        mSand.emplace(grainPosition);
+        return true;
+    }
+}
+
+void SandMap::enableInfiniteFloor() { mInfiniteFloorEnabled = true; }
 
 } // namespace aoc_2022_14

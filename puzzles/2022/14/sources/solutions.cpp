@@ -41,14 +41,16 @@ SandMap parseInput(const std::string& filename)
 std::string solvePart1(const std::string& filename)
 {
     SandMap sandMap{ parseInput(filename) };
-    while (sandMap.addSandGrain()) { }
+    while (sandMap.addSandGrainInConstrainedSpace()) { }
     return std::to_string(sandMap.getNumberOfSandGrains());
 }
 
 std::string solvePart2(const std::string& filename)
 {
-    (void)filename;
-    return "";
+    SandMap sandMap{ parseInput(filename) };
+    sandMap.enableInfiniteFloor();
+    while (sandMap.addSandGrainInInfiniteSpace()) { }
+    return std::to_string(sandMap.getNumberOfSandGrains() + 1U);
 }
 
 // ---------- End of Public Methods ----------
