@@ -6,6 +6,7 @@
 namespace utils::geometry2d {
 
 class Point2D;
+class Direction2D;
 
 class BoundingBox2D {
 public:
@@ -15,6 +16,7 @@ public:
     int32_t getMinY() const;
     int32_t getMaxY() const;
     bool isOutside(const Point2D& point2D) const;
+    bool isOutside(const Point2D& point2D, const Direction2D direction2D) const;
 
 private:
     int32_t mMinX{ std::numeric_limits<int32_t>::max() };

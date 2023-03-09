@@ -1,5 +1,6 @@
 #include "SandMap.hpp"
 
+#include <cassert>
 #include <utils/geometry2d/Direction2D.hpp>
 #include <utils/geometry2d/Vector2D.hpp>
 
@@ -25,7 +26,10 @@ void SandMap::addRockLine(const Point2D& start, const Point2D& end)
     mBoundingBox.update(nextPoint);
 }
 
-uint32_t SandMap::getNumberOfSandGrains() const { return mSand.size(); }
+uint32_t SandMap::getNumberOfSandGrains() const
+{
+    return static_cast<uint32_t>(mSand.size());
+}
 
 static const Point2D SandOrigin{ 500, 0 };
 constexpr Direction2D FallingDirection{ Direction2D::Up };
@@ -59,39 +63,43 @@ bool SandMap::addSandGrain()
 {
     Point2D grainPosition{ SandOrigin };
     while (true) {
+        std::optional<Point2D> candidatePosition;
         // go down
-        while (true) {
-            auto nextPosition{ sandGoDown(grainPosition) };
-            if (!nextPosition) {
-                break;
-            }
-            if (mBoundingBox.isOutside(*nextPosition)) {
+        if (candidatePosition = sandGoDown(grainPosition); candidatePosition) {
+            if (isOutside(*candidatePosition)) {
                 return false;
             }
-            grainPosition = *nextPosition;
-        }
-        // try to slide both sides
-        if (auto leftPosition{ sandSlide(grainPosition, SlidingLeftDirection) };
-            leftPosition) {
-            if (mBoundingBox.isOutside(*leftPosition)) {
-                return false;
-            }
-            grainPosition = *leftPosition;
+            grainPosition = *candidatePosition;
             continue;
         }
-        if (auto rightPosition{
-                sandSlide(grainPosition, SlidingRightDirection) };
-            rightPosition) {
-            if (mBoundingBox.isOutside(*rightPosition)) {
+        // try to slide both sides
+        if (candidatePosition = sandSlide(grainPosition, SlidingLeftDirection);
+            candidatePosition) {
+            if (isOutside(*candidatePosition)) {
                 return false;
             }
-            grainPosition = *rightPosition;
+            grainPosition = *candidatePosition;
+            continue;
+        }
+        if (candidatePosition = sandSlide(grainPosition, SlidingRightDirection);
+            candidatePosition) {
+            if (isOutside(*candidatePosition)) {
+                return false;
+            }
+            grainPosition = *candidatePosition;
             continue;
         }
         // the sand grain is steady
         mSand.emplace(grainPosition);
         return true;
     }
+}
+
+bool SandMap::isOutside(const Point2D& position) const
+{
+    return mBoundingBox.isOutside(position, Direction2D::Left)
+        || mBoundingBox.isOutside(position, Direction2D::Up)
+        || mBoundingBox.isOutside(position, Direction2D::Right);
 }
 
 } // namespace aoc_2022_14

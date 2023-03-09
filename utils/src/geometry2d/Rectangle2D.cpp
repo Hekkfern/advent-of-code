@@ -39,7 +39,10 @@ std::pair<size_t, size_t> Rectangle2D::size() const
     return std::make_pair(mWidth, mHeight);
 }
 
-uint32_t Rectangle2D::area() const { return mWidth * mHeight; }
+uint32_t Rectangle2D::area() const
+{
+    return static_cast<uint32_t>(mWidth * mHeight);
+}
 
 bool Rectangle2D::isOutside(const Point2D& other) const
 {

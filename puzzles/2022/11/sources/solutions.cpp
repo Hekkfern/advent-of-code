@@ -141,7 +141,7 @@ std::string solvePart1(const std::string& filename)
          ++roundCounter) {
         for (MonkeyId monkeyIndex = 0U; monkeyIndex < monkeys.size();
              ++monkeyIndex) {
-            uint32_t numInspections{
+            const uint32_t numInspections{
                 monkeys.at(monkeyIndex).inspectAndThrowAll(monkeys, true)
             };
             monkeyInspections.at(monkeyIndex) += numInspections;

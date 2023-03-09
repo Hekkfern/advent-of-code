@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include <unordered_set>
 #include <utils/geometry2d/BoundingBox2D.hpp>
 #include <utils/geometry2d/Point2D.hpp>
@@ -26,10 +27,11 @@ private:
     std::optional<utils::geometry2d::Point2D> sandSlide(
         const utils::geometry2d::Point2D& position,
         const utils::geometry2d::Direction2D& direction2D);
+    bool isOutside(const utils::geometry2d::Point2D& position) const;
 
-    utils::geometry2d::BoundingBox2D mBoundingBox;
-    std::unordered_set<utils::geometry2d::Point2D> mRocks;
-    std::unordered_set<utils::geometry2d::Point2D> mSand;
+    utils::geometry2d::BoundingBox2D mBoundingBox{};
+    std::unordered_set<utils::geometry2d::Point2D> mRocks{};
+    std::unordered_set<utils::geometry2d::Point2D> mSand{};
 };
 
 } // namespace aoc_2022_14
