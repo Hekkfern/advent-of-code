@@ -50,7 +50,7 @@ std::string solvePart2(const std::string& filename)
     SandMap sandMap{ parseInput(filename) };
     sandMap.enableInfiniteFloor();
     while (sandMap.addSandGrainInInfiniteSpace()) { }
-    return std::to_string(sandMap.getNumberOfSandGrains() + 1U);
+    return std::to_string(sandMap.getNumberOfSandGrains());
 }
 
 // ---------- End of Public Methods ----------

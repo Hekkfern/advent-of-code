@@ -133,11 +133,8 @@ bool SandMap::addSandGrainInInfiniteSpace()
             continue;
         }
         // the sand grain is steady
-        if (grainPosition == SandOrigin) {
-            return false;
-        }
         mSand.emplace(grainPosition);
-        return true;
+        return grainPosition != SandOrigin;
     }
 }
 
