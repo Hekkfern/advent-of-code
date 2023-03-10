@@ -18,6 +18,7 @@ public:
     int32_t getX() const;
     int32_t getY() const;
     std::pair<size_t, size_t> size() const;
+    uint32_t range() const;
     uint32_t distance() const;
     /**
      * @brief Modifies 2D vector so it's length becomes one, keeping same

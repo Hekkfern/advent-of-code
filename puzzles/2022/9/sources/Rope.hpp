@@ -24,7 +24,7 @@ private:
     {
         for (size_t i = 1U; i < mKnots.size(); ++i) {
             const Vector2D vector2D{ mKnots.at(i), mKnots.at(i - 1U) };
-            if (vector2D.distance() <= 1U) {
+            if (vector2D.range() <= 1U) {
                 return;
             }
 

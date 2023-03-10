@@ -35,7 +35,7 @@ int32_t Vector2D::getX() const { return mX; }
 
 int32_t Vector2D::getY() const { return mY; }
 
-uint32_t Vector2D::distance() const
+uint32_t Vector2D::range() const
 {
     return static_cast<uint32_t>(std::max(std::abs(mX), std::abs(mY)));
 }
@@ -81,6 +81,11 @@ bool Vector2D::isVertical() const { return mX == 0; }
 std::pair<size_t, size_t> Vector2D::size() const
 {
     return std::make_pair(std::abs(mX), std::abs(mY));
+}
+
+uint32_t Vector2D::distance() const
+{
+    return static_cast<uint32_t>(std::abs(mX) + std::abs(mY));
 }
 
 Vector2D operator*(const Vector2D& vector2D, const int32_t n)

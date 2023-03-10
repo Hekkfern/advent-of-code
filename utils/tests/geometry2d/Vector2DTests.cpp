@@ -53,15 +53,27 @@ TEST_CASE(
 }
 
 TEST_CASE(
+    "[Vector2D - range] range returns the correct values",
+    "[Vector2D, Vector2D_range]")
+{
+    const Vector2D v1;
+    CHECK(v1.range() == 0);
+    const Vector2D v2{ 2, 3 };
+    CHECK(v2.range() == 3);
+    const Vector2D v3{ -2, 1 };
+    CHECK(v3.range() == 2);
+}
+
+TEST_CASE(
     "[Vector2D - distance] distance returns the correct values",
     "[Vector2D, Vector2D_distance]")
 {
     const Vector2D v1;
     CHECK(v1.distance() == 0);
     const Vector2D v2{ 2, 3 };
-    CHECK(v2.distance() == 3);
+    CHECK(v2.distance() == 5);
     const Vector2D v3{ -2, 1 };
-    CHECK(v3.distance() == 2);
+    CHECK(v3.distance() == 3);
 }
 
 TEST_CASE(
