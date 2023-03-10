@@ -22,7 +22,7 @@ std::string join(const std::vector<std::string>& strings, std::string delim)
         return {};
     }
 
-    return std::accumulate(
+    return ranges::accumulate(
         strings.begin() + 1,
         strings.end(),
         strings[0],
