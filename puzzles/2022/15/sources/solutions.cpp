@@ -1,7 +1,7 @@
 #include "solutions.hpp"
 
-#include "Node.h"
-#include "PairInfo.h"
+#include "Node.hpp"
+#include "PairInfo.hpp"
 #include <fstream>
 #include <range/v3/all.hpp>
 #include <regex>
