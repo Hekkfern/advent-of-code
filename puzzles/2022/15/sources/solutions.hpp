@@ -13,6 +13,8 @@ namespace aoc_2022_15 {
 std::string solvePart1(
     const std::string& filename,
     std::unordered_map<std::string, std::any>&& extParams);
-std::string solvePart2(const std::string& filename);
+std::string solvePart2(
+    const std::string& filename,
+    std::unordered_map<std::string, std::any>&& extParams);
 
 } // namespace aoc_2022_15

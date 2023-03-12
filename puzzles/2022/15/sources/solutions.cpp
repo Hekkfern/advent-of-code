@@ -90,6 +90,11 @@ void fillNoBeaconList(
     }
 }
 
+uint32_t calculateTuningFrequency(int32_t x, int32_t y)
+{
+    return (4000000U * static_cast<uint32_t>(x)) + static_cast<uint32_t>(y);
+}
+
 // ---------- End of Private Methods ----------
 
 // ---------- Public Methods ----------
@@ -113,10 +118,18 @@ std::string solvePart1(
         }));
 }
 
-std::string solvePart2(const std::string& filename)
+std::string solvePart2(
+    const std::string& filename,
+    std::unordered_map<std::string, std::any>&& extParams)
 {
-    (void)filename;
-    return "";
+    const int32_t gridSize{ std::any_cast<int32_t>(
+        extParams.at("GridSize")) };
+    std::ifstream fileStream{ filename };
+    std::string line;
+    while (std::getline(fileStream, line)) {
+        auto pairInfo{ parseInputLine(line) };
+    }
+    return std::to_string(calculateTuningFrequency(1, 1));
 }
 
 // ---------- End of Public Methods ----------

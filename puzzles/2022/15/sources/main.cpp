@@ -19,10 +19,13 @@ int main()
         });
     utils::aoc::printPart1Solution(solution1, part1ExecTime);
 
+    constexpr int32_t GridSize{ 4000000 };
+
     std::string solution2;
     const auto part2ExecTime = utils::time::calculateExecutionTime(
-        [&solution2, &inputFile]() {
-            solution2 = aoc_2022_15::solvePart2(inputFile);
+        [&solution2, &inputFile, GridSize]() {
+            solution2 = aoc_2022_15::solvePart2(
+                inputFile, { { "GridSize", GridSize } });
         });
     utils::aoc::printPart2Solution(solution2, part2ExecTime);
 
