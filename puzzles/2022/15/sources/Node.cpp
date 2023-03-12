@@ -1,5 +1,4 @@
-
-#include "Node.h"
+#include "Node.hpp"
 
 namespace aoc_2022_15 {
 

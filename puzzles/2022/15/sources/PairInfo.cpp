@@ -1,4 +1,4 @@
-#include "PairInfo.h"
+#include "PairInfo.hpp"
 
 using namespace utils::geometry2d;
 
