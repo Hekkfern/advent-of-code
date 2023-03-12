@@ -9,11 +9,13 @@
 int main()
 {
     const std::string inputFile{ "input.txt" };
+    constexpr int32_t GoalCoordY{ 2000000 };
 
     std::string solution1;
     const auto part1ExecTime = utils::time::calculateExecutionTime(
-        [&solution1, &inputFile]() {
-            solution1 = aoc_2022_15::solvePart1(inputFile);
+        [&solution1, &inputFile, GoalCoordY]() {
+            solution1 = aoc_2022_15::solvePart1(
+                inputFile, { { "GoalCoordY", GoalCoordY } });
         });
     utils::aoc::printPart1Solution(solution1, part1ExecTime);
 

@@ -32,14 +32,13 @@ PairInfo parseInputLine(const std::string& line)
     };
 }
 
-constexpr int32_t GoalCoordY{ 10 };
-
 void addOccupiedPosition(
     std::unordered_map<int32_t, Node>& nodeList,
     const Point2D& position,
-    const NodeType type)
+    const NodeType type,
+    const int32_t goalCoordY)
 {
-    if (position.getY() == GoalCoordY) {
+    if (position.getY() == goalCoordY) {
         const int32_t sensorCoordX{ position.getX() };
         auto sensorIt{ nodeList.find(sensorCoordX) };
         if (sensorIt != std::end(nodeList)) {
@@ -57,19 +56,20 @@ void addOccupiedPosition(
  */
 void fillNoBeaconList(
     std::unordered_map<int32_t, Node>& nodeList,
-    const PairInfo& pairInfo)
+    const PairInfo& pairInfo,
+    const int32_t goalCoordY)
 {
     // add sensor and/or beacon if they are in the coordinate Y to analyze
     addOccupiedPosition(
-        nodeList, pairInfo.getSensorPosition(), NodeType::Sensor);
+        nodeList, pairInfo.getSensorPosition(), NodeType::Sensor, goalCoordY);
     addOccupiedPosition(
-        nodeList, pairInfo.getBeaconPosition(), NodeType::Beacon);
+        nodeList, pairInfo.getBeaconPosition(), NodeType::Beacon, goalCoordY);
 
     // add all the positions covered by the sensor in the coordinate Y to
     // analyze
     const int32_t distance{ static_cast<int32_t>(pairInfo.getDistance()) };
     const int32_t diffYAbs{ std::abs(
-        GoalCoordY - pairInfo.getSensorPosition().getY()) };
+        goalCoordY - pairInfo.getSensorPosition().getY()) };
     if (diffYAbs == distance) {
         // add just one node
         const int32_t coordX{ pairInfo.getSensorPosition().getX() };
@@ -94,14 +94,18 @@ void fillNoBeaconList(
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(const std::string& filename)
+std::string solvePart1(
+    const std::string& filename,
+    std::unordered_map<std::string, std::any>&& extParams)
 {
+    const int32_t goalCoordY{ std::any_cast<int32_t>(
+        extParams.at("GoalCoordY")) };
     std::ifstream fileStream{ filename };
     std::string line;
     std::unordered_map<int32_t, Node> nodeList;
     while (std::getline(fileStream, line)) {
         auto pairInfo{ parseInputLine(line) };
-        fillNoBeaconList(nodeList, pairInfo);
+        fillNoBeaconList(nodeList, pairInfo, goalCoordY);
     }
     return std::to_string(
         ranges::count_if(nodeList, [](const std::pair<int32_t, Node>& node) {

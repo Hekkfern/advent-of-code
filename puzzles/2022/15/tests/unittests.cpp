@@ -12,8 +12,10 @@ TEST_CASE(
     "[2022, 2022_15, part1, 2022_15_part1]")
 {
     constexpr auto InputFile{ "input_test.txt" };
+    constexpr int32_t GoalCoordY{ 10 };
 
-    std::string mySolution = aoc_2022_15::solvePart1(InputFile);
+    std::string mySolution = aoc_2022_15::solvePart1(
+        InputFile, { { "GoalCoordY", GoalCoordY } });
     std::string expectedSolution = utils::file::readFirstLine(
                                        "solution1_test.txt")
                                        .value();
@@ -40,10 +42,11 @@ TEST_CASE(
     "[2022, 2022_15, part1, 2022_15_part1]")
 {
     constexpr auto InputFile{ "input.txt" };
+    constexpr int32_t GoalCoordY{ 2000000 };
 
-    std::string mySolution = aoc_2022_15::solvePart1(InputFile);
-    std::string expectedSolution = utils::file::readFirstLine(
-                                       "solution1.txt")
+    std::string mySolution = aoc_2022_15::solvePart1(
+        InputFile, { { "GoalCoordY", GoalCoordY } });
+    std::string expectedSolution = utils::file::readFirstLine("solution1.txt")
                                        .value();
 
     REQUIRE(mySolution == expectedSolution);
@@ -56,8 +59,7 @@ TEST_CASE(
     constexpr auto InputFile{ "input.txt" };
 
     std::string mySolution = aoc_2022_15::solvePart2(InputFile);
-    std::string expectedSolution = utils::file::readFirstLine(
-                                       "solution2.txt")
+    std::string expectedSolution = utils::file::readFirstLine("solution2.txt")
                                        .value();
 
     REQUIRE(mySolution == expectedSolution);
