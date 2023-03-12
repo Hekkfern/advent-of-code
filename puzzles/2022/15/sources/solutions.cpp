@@ -78,9 +78,9 @@ void fillNoBeaconList(
         }
     } else if (diffYAbs < distance) {
         // add all the matching nodes
-        const int32_t firstPosition{ pairInfo.getBeaconPosition().getX()
+        const int32_t firstPosition{ pairInfo.getSensorPosition().getX()
                                      - (distance - diffYAbs) };
-        const int32_t lastPosition{ pairInfo.getBeaconPosition().getX()
+        const int32_t lastPosition{ pairInfo.getSensorPosition().getX()
                                     + (distance - diffYAbs) };
         for (int32_t coordX = firstPosition; coordX <= lastPosition; ++coordX) {
             if (!nodeList.contains(coordX)) {
