@@ -59,7 +59,8 @@ public:
      */
     std::optional<Interval> intersect(const Interval& other) const;
     /**
-     * @brief      Checks if other interval includes the range of this one.
+     * @brief      Checks if another interval includes completely the range of
+     *             this one.
      *
      * @param[in]  other  The other object.
      *
@@ -95,8 +96,14 @@ public:
     std::pair<int32_t, int32_t> get() const;
 
 private:
-    int32_t mMin;
-    int32_t mMax;
+    /**
+     * @brief      Minimum value.
+     */
+    const int32_t mMin;
+    /**
+     * @brief      Maximum value.
+     */
+    const int32_t mMax;
 };
 
 } // namespace utils::interval

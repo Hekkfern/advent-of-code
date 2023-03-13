@@ -8,6 +8,10 @@ Interval::Interval(int32_t min, int32_t max)
     : mMin{ min }
     , mMax{ max }
 {
+    if (mMin > mMax) {
+        throw std::runtime_error("The minimum value must be smaller or equal "
+                                 "than the maximum value.");
+    }
 }
 
 uint32_t Interval::length() const { return static_cast<uint32_t>(mMax - mMin); }
@@ -31,25 +35,20 @@ Interval Interval::operator+(const Interval& other) const
     return this->join(other);
 }
 
-std::optional<Interval> Interval::intersect(const Interval& other) const{
-    if (other.mMin >= mMin && other.mMin <= mMax)
-    {
-        return Interval{other.mMin, mMax};
-    }
-    else if (other.mMax >= mMin && other.mMax <= mMax)
-    {
-        return Interval{mMin, other.mMax};
-    }
-    else if (other.subsumes(*this)){
-        return std::make_optional(other);
-    }
-    else if (subsumes(other)){
+std::optional<Interval> Interval::intersect(const Interval& other) const
+{
+    if (other.mMin >= mMin && other.mMin <= mMax && other.mMax >= mMax) {
+        return Interval{ other.mMin, mMax };
+    } else if (other.mMin <= mMin && other.mMax >= mMin && other.mMax <= mMax ) {
+        return Interval{ mMin, other.mMax };
+    } else if (other.subsumes(*this)) {
         return std::make_optional(*this);
-    }
-    else {
+    } else if (subsumes(other)) {
+        return std::make_optional(other);
+    } else {
         return std::nullopt;
     }
- }
+}
 
 bool Interval::subsumes(const Interval& other) const
 {
