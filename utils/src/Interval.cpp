@@ -31,6 +31,26 @@ Interval Interval::operator+(const Interval& other) const
     return this->join(other);
 }
 
+std::optional<Interval> Interval::intersect(const Interval& other) const{
+    if (other.mMin >= mMin && other.mMin <= mMax)
+    {
+        return Interval{other.mMin, mMax};
+    }
+    else if (other.mMax >= mMin && other.mMax <= mMax)
+    {
+        return Interval{mMin, other.mMax};
+    }
+    else if (other.subsumes(*this)){
+        return std::make_optional(other);
+    }
+    else if (subsumes(other)){
+        return std::make_optional(*this);
+    }
+    else {
+        return std::nullopt;
+    }
+ }
+
 bool Interval::subsumes(const Interval& other) const
 {
     return other.mMin >= mMin && other.mMax <= mMax;
