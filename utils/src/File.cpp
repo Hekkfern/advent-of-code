@@ -79,8 +79,7 @@ std::optional<std::vector<std::vector<int64_t>>> readGroupsOfNumbers(
         if (utils::string::trim(line).empty()) {
             outList.emplace_back();
         } else {
-            outList.back().emplace_back(
-                utils::string::toNumber<int64_t>(line));
+            outList.back().emplace_back(utils::string::toNumber<int64_t>(line));
         }
     }
 

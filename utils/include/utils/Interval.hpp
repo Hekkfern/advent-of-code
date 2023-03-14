@@ -2,8 +2,8 @@
 
 #include <compare>
 #include <cstdint>
-#include <utility>
 #include <optional>
+#include <utility>
 
 namespace utils::interval {
 

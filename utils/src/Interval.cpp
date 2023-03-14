@@ -39,7 +39,7 @@ std::optional<Interval> Interval::intersect(const Interval& other) const
 {
     if (other.mMin >= mMin && other.mMin <= mMax && other.mMax >= mMax) {
         return Interval{ other.mMin, mMax };
-    } else if (other.mMin <= mMin && other.mMax >= mMin && other.mMax <= mMax ) {
+    } else if (other.mMin <= mMin && other.mMax >= mMin && other.mMax <= mMax) {
         return Interval{ mMin, other.mMax };
     } else if (other.subsumes(*this)) {
         return std::make_optional(*this);

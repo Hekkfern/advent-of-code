@@ -22,4 +22,4 @@ void printPart2Solution(
               << execTime.count() << " us" << std::endl;
 }
 
-} // namespace utils::AocUtils
+} // namespace utils::aoc

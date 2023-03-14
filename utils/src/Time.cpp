@@ -10,4 +10,4 @@ std::chrono::microseconds calculateExecutionTime(std::function<void()>&& action)
     return std::chrono::duration_cast<std::chrono::microseconds>(end - start);
 }
 
-} // namespace utils::TimeUtils
+} // namespace utils::time

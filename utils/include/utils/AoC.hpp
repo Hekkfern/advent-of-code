@@ -12,4 +12,4 @@ void printPart2Solution(
     std::string_view solution,
     std::chrono::microseconds execTime);
 
-} // namespace utils::AocUtils
+} // namespace utils::aoc
