@@ -40,27 +40,15 @@ std::string convertFrom(const std::vector<std::vector<char>>& input)
     return join(lines, "\n");
 }
 
-std::vector<std::string> split(
-    const std::string& str,
-    const std::string& separator)
+std::vector<std::string> split(std::string_view str, std::string_view separator)
 {
-    std::vector<std::string> resultList;
-    size_t begin = 0U;
-    size_t end = 0U;
-    while ((end = str.find(separator, begin)) != std::string::npos) {
-        resultList.push_back(str.substr(begin, end - begin));
-        begin = end + separator.size();
-    }
-    resultList.push_back(str.substr(begin));
-
-    if (separator.empty()) {
-        for (auto it = resultList.begin(); it != resultList.end(); ++it) {
-            if (it->empty()) {
-                resultList.erase(it--);
-            }
-        }
-    }
-    return resultList;
+    auto list{ str | ranges::views::split(separator)
+               | ranges::views::transform([](auto&& rng) {
+                     return std::string(
+                         &*rng.begin(),
+                         static_cast<std::size_t>(ranges::distance(rng)));
+                 }) };
+    return ranges::to<std::vector>(list);
 }
 
 } // namespace utils::string
