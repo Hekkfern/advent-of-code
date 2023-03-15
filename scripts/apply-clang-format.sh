@@ -5,6 +5,6 @@ function applyClangFormat {
 }
 
 paths="../utils/ ../puzzles/ "
-for path in $utilsPaths; do
+for path in $paths; do
 	applyClangFormat $path
 done

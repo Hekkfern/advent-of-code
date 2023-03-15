@@ -5,6 +5,6 @@ function applyCMakeFormat {
 }
 
 paths="../utils/ ../puzzles/ ../cmake/ "
-for path in $utilsPaths; do
+for path in $paths; do
 	applyCMakeFormat $path
 done

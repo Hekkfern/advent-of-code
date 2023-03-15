@@ -122,8 +122,7 @@ std::string solvePart2(
     const std::string& filename,
     std::unordered_map<std::string, std::any>&& extParams)
 {
-    const int32_t gridSize{ std::any_cast<int32_t>(
-        extParams.at("GridSize")) };
+    const int32_t gridSize{ std::any_cast<int32_t>(extParams.at("GridSize")) };
     std::ifstream fileStream{ filename };
     std::string line;
     while (std::getline(fileStream, line)) {

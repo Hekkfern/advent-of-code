@@ -10,7 +10,7 @@ add_library(
   ${_LIB_NAME} STATIC
   solutions.cpp
   solutions.hpp
-        IDirectory.h
+  IDirectory.h
   IFile.h
   Directory.cpp
   Directory.h

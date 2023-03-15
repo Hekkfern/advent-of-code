@@ -55,7 +55,8 @@ std::unordered_map<std::pair<char, char>, uint32_t, HashPair> PointsPerShapes{
 };
 
 /**
- * @brief Look-up table which links the opponent shape and the result of the match, to the shape that the player must use to reach the said result.
+ * @brief Look-up table which links the opponent shape and the result of the
+ * match, to the shape that the player must use to reach the said result.
  */
 std::unordered_map<std::pair<char, char>, char, HashPair> ResultConversion{
     { { OpponentRock, MatchLost }, PlayerScissors },

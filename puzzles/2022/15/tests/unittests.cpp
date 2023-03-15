@@ -61,7 +61,8 @@ TEST_CASE(
     constexpr auto InputFile{ "input.txt" };
     constexpr int32_t GridSize{ 4000000 };
 
-    std::string mySolution = aoc_2022_15::solvePart2(InputFile, { { "GridSize", GridSize } });
+    std::string mySolution = aoc_2022_15::solvePart2(
+        InputFile, { { "GridSize", GridSize } });
     std::string expectedSolution = utils::file::readFirstLine("solution2.txt")
                                        .value();
 
