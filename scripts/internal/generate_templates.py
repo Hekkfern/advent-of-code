@@ -11,7 +11,8 @@ from . import utils
 def __generate_file_from_template(root_dir: pathlib.Path, template_name: str, params: typing.Dict[str, any],
                                   file_path: pathlib.Path):
     # Get content template
-    environment = jinja2.Environment(loader=jinja2.FileSystemLoader(root_dir / "templates/"))
+    environment = jinja2.Environment(
+        loader=jinja2.FileSystemLoader(root_dir / "templates/"))
     file_template = environment.get_template(template_name)
     # Generate the content of the file
     content = file_template.render(
@@ -122,7 +123,8 @@ def create_solutions_for_tests(root_dir: pathlib.Path, year: int, day: int) -> N
 
 
 def create_inputtxt_for_tests(root_dir: pathlib.Path, year: int, day: int) -> None:
-    utils.create_empty_file(root_dir / f"puzzles/{year}/{day}/tests/input_test.txt")
+    utils.create_empty_file(
+        root_dir / f"puzzles/{year}/{day}/tests/input_test.txt")
 
 
 def create_cmakelists_for_tests(root_dir: pathlib.Path, year: int, day: int) -> None:

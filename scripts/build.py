@@ -24,7 +24,8 @@ def __get_root_project_path() -> pathlib.Path:
 
 def __check_min_python_version() -> bool:
     if sys.version_info[0] < 3 or sys.version_info[1] < 7:
-        utils.print_error_msg("This script requires Python version 3.7 or newer.")
+        utils.print_error_msg(
+            "This script requires Python version 3.7 or newer.")
         return False
     return True
 

@@ -98,13 +98,15 @@ def run_project(root_path: pathlib.Path, year: int, day: int) -> int:
             "Project has not been generated. Use \"generate\" subcommand first.")
         return 1
     # check if exe exists
-    exe_path = root_path / f"out/build/{preset}/puzzles/{year}/{day}/sources/aoc_{year}_{day}"
+    exe_path = root_path / \
+        f"out/build/{preset}/puzzles/{year}/{day}/sources/aoc_{year}_{day}"
     if not exe_path.is_file():
         utils.print_error_msg(
             "Project has not been either generated or compiled. Use \"build\" subcommand first.")
         return 1
     # run exe
-    cmd_code: int = utils.execute_program(str(exe_path.absolute()), exe_path.parent)
+    cmd_code: int = utils.execute_program(
+        str(exe_path.absolute()), exe_path.parent)
     print()  # add empty line in stdout
 
     return cmd_code
