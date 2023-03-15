@@ -6,6 +6,7 @@
 #include <range/v3/all.hpp>
 #include <regex>
 #include <unordered_map>
+#include <utils/Interval.hpp>
 #include <utils/String.hpp>
 #include <utils/geometry2d/Point2D.hpp>
 
@@ -32,38 +33,21 @@ PairInfo parseInputLine(const std::string& line)
     };
 }
 
-void addOccupiedPosition(
-    std::unordered_map<int32_t, Node>& nodeList,
-    const Point2D& position,
-    const NodeType type,
-    const int32_t goalCoordY)
-{
-    if (position.getY() == goalCoordY) {
-        const int32_t sensorCoordX{ position.getX() };
-        auto sensorIt{ nodeList.find(sensorCoordX) };
-        if (sensorIt != std::end(nodeList)) {
-            sensorIt->second.setType(type);
-        } else {
-            nodeList.emplace(sensorCoordX, Node(sensorCoordX, type));
-        }
-    }
-}
-
 /**
  * @brief
- * @param[in,out] nodeList
+ * @param[in,out] intervalList
  * @param[in] sensorBeaconPair
  */
-void fillNoBeaconList(
-    std::unordered_map<int32_t, Node>& nodeList,
+void fillNoBeaconIntervalList(
+    std::vector<utils::interval::Interval>& intervalList,
     const PairInfo& pairInfo,
     const int32_t goalCoordY)
 {
     // add sensor and/or beacon if they are in the coordinate Y to analyze
     addOccupiedPosition(
-        nodeList, pairInfo.getSensorPosition(), NodeType::Sensor, goalCoordY);
+        intervalList, pairInfo.getSensorPosition(), NodeType::Sensor, goalCoordY);
     addOccupiedPosition(
-        nodeList, pairInfo.getBeaconPosition(), NodeType::Beacon, goalCoordY);
+        intervalList, pairInfo.getBeaconPosition(), NodeType::Beacon, goalCoordY);
 
     // add all the positions covered by the sensor in the coordinate Y to
     // analyze
@@ -73,8 +57,8 @@ void fillNoBeaconList(
     if (diffYAbs == distance) {
         // add just one node
         const int32_t coordX{ pairInfo.getSensorPosition().getX() };
-        if (!nodeList.contains(coordX)) {
-            nodeList.emplace(coordX, Node{ coordX, NodeType::Empty });
+        if (!intervalList.contains(coordX)) {
+            intervalList.emplace(coordX, Node{ coordX, NodeType::Empty });
         }
     } else if (diffYAbs < distance) {
         // add all the matching nodes
@@ -83,8 +67,8 @@ void fillNoBeaconList(
         const int32_t lastPosition{ pairInfo.getSensorPosition().getX()
                                     + (distance - diffYAbs) };
         for (int32_t coordX = firstPosition; coordX <= lastPosition; ++coordX) {
-            if (!nodeList.contains(coordX)) {
-                nodeList.emplace(coordX, Node{ coordX, NodeType::Empty });
+            if (!intervalList.contains(coordX)) {
+                intervalList.emplace(coordX, Node{ coordX, NodeType::Empty });
             }
         }
     }
@@ -107,14 +91,16 @@ std::string solvePart1(
         extParams.at("GoalCoordY")) };
     std::ifstream fileStream{ filename };
     std::string line;
-    std::unordered_map<int32_t, Node> nodeList;
+    std::vector<utils::interval::Interval> intervalList;
     while (std::getline(fileStream, line)) {
         auto pairInfo{ parseInputLine(line) };
-        fillNoBeaconList(nodeList, pairInfo, goalCoordY);
+        fillNoBeaconIntervalList(intervalList, pairInfo, goalCoordY);
     }
-    return std::to_string(
-        ranges::count_if(nodeList, [](const std::pair<int32_t, Node>& node) {
-            return node.second.getType() == NodeType::Empty;
+    return std::to_string(ranges::accumulate(
+        intervalList,
+        0U,
+        [](uint32_t sum, const utils::interval::Interval& interval) {
+            return sum + interval.length();
         }));
 }
 
@@ -122,13 +108,16 @@ std::string solvePart2(
     const std::string& filename,
     std::unordered_map<std::string, std::any>&& extParams)
 {
-    const int32_t gridSize{ std::any_cast<int32_t>(extParams.at("GridSize")) };
-    std::ifstream fileStream{ filename };
-    std::string line;
-    while (std::getline(fileStream, line)) {
-        auto pairInfo{ parseInputLine(line) };
-    }
-    return std::to_string(calculateTuningFrequency(1, 1));
+    //    const int32_t gridSize{
+    //    std::any_cast<int32_t>(extParams.at("GridSize")) }; std::ifstream
+    //    fileStream{ filename }; std::string line; while
+    //    (std::getline(fileStream, line)) {
+    //        auto pairInfo{ parseInputLine(line) };
+    //    }
+    //    return std::to_string(calculateTuningFrequency(1, 1));
+    (void)filename;
+    (void)extParams;
+    return "";
 }
 
 // ---------- End of Public Methods ----------
