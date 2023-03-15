@@ -2,66 +2,30 @@
 
 #include <array>
 #include <fstream>
+#include <utils/Interval.hpp>
 #include <utils/String.hpp>
 
 namespace aoc_2022_4 {
 
-// ---------- Private Types and Constants ----------
-
-struct SectionRange {
-    uint32_t mFirst;
-    uint32_t mLast;
-};
+// ---------- Private Methods ----------
 
 constexpr uint32_t GroupSize{ 2U };
 
-// ---------- End of Private Types and Constants ----------
-
-// ---------- Private Methods ----------
-
-bool areSectionsOverlapped(
-    const SectionRange& sectionsElf1,
-    const SectionRange& sectionsElf2)
+std::vector<utils::interval::Interval> parseInputLine(const std::string& line)
 {
-    return ((sectionsElf1.mFirst >= sectionsElf2.mFirst)
-            && (sectionsElf1.mLast <= sectionsElf2.mLast))
-        || ((sectionsElf1.mFirst <= sectionsElf2.mFirst)
-            && (sectionsElf1.mLast >= sectionsElf2.mLast));
-}
+    constexpr auto ElfSeparator{ "," };
+    constexpr auto RangeSeparator{ "-" };
 
-bool areSectionsNotOverlapped(
-    const SectionRange& sectionsElf1,
-    const SectionRange& sectionsElf2)
-{
-    return (sectionsElf1.mLast < sectionsElf2.mFirst)
-        || (sectionsElf1.mFirst > sectionsElf2.mLast);
-}
-
-std::array<SectionRange, GroupSize> parseInputLine(const std::string& line)
-{
-    constexpr auto ElfSeparator{ ',' };
-    constexpr auto RangeSeparator{ '-' };
-
-    std::array<SectionRange, GroupSize> sections{};
+    std::vector<utils::interval::Interval> sections;
+    sections.reserve(GroupSize);
 
     // parse line of the input file
-    std::stringstream lineStream{ line };
-    std::string range;
-    uint32_t elfCounter = 0U;
-    while (std::getline(lineStream, range, ElfSeparator)) {
-        std::stringstream rangeStream{ range };
-        std::string rangeEdge;
-        uint32_t valueCounter = 0U;
-        while (std::getline(rangeStream, rangeEdge, RangeSeparator)) {
-            const auto value = utils::string::toNumber<uint32_t>(rangeEdge);
-            if (valueCounter == 0) {
-                sections.at(elfCounter).mFirst = value;
-            } else {
-                sections.at(elfCounter).mLast = value;
-            }
-            ++valueCounter;
-        }
-        ++elfCounter;
+    auto ranges{ utils::string::split(line, ElfSeparator) };
+    for (const auto& range : ranges) {
+        auto values{ utils::string::split(range, RangeSeparator) };
+        sections.emplace_back(
+            utils::string::toNumber<int32_t>(values[0]),
+            utils::string::toNumber<int32_t>(values[1]));
     }
 
     return sections;
@@ -75,11 +39,12 @@ std::string solvePart1(const std::string& filename)
 {
     std::ifstream fileStream{ filename };
     std::string line;
-    uint32_t totalOverlaps = 0U;
+    uint32_t totalOverlaps{ 0U };
 
     while (std::getline(fileStream, line)) {
-        std::array<SectionRange, GroupSize> sections = parseInputLine(line);
-        if (areSectionsOverlapped(sections[0], sections[1])) {
+        std::vector<utils::interval::Interval> sections{ parseInputLine(line) };
+        if (sections[0].subsumes(sections[1])
+            || sections[1].subsumes(sections[0])) {
             ++totalOverlaps;
         }
     }
@@ -91,11 +56,11 @@ std::string solvePart2(const std::string& filename)
 {
     std::ifstream fileStream{ filename };
     std::string line;
-    uint32_t totalNoOverlaps = 0U;
+    uint32_t totalNoOverlaps{ 0U };
 
     while (std::getline(fileStream, line)) {
-        std::array<SectionRange, GroupSize> sections = parseInputLine(line);
-        if (!areSectionsNotOverlapped(sections[0], sections[1])) {
+        std::vector<utils::interval::Interval> sections{ parseInputLine(line) };
+        if (sections[0].overlaps(sections[1])) {
             ++totalNoOverlaps;
         }
     }
