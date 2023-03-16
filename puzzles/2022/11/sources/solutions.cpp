@@ -7,6 +7,7 @@
 #include <regex>
 #include <unordered_map>
 #include <utils/String.hpp>
+#include <stdexcept>
 
 namespace aoc_2022_11 {
 

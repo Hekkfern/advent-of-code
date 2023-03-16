@@ -33,7 +33,7 @@ TreeHeightMatrix parseInput(const std::string& filename)
         TreeHeightLine heightRow;
         heightRow.reserve(line.size());
         for (const char c : line) {
-            heightRow.emplace_back(c - '0');
+            heightRow.emplace_back(static_cast<uint8_t>(c - '0'));
         }
         heightMatrix.push_back(std::move(heightRow));
     }

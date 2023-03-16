@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <utils/geometry2d/Direction2D.hpp>
 #include <utils/geometry2d/Point2D.hpp>
+#include <algorithm>
 #include <utils/geometry2d/Vector2D.hpp>
 
 namespace aoc_2022_9 {

@@ -1,6 +1,7 @@
 #include "Interval.hpp"
 
 #include <algorithm>
+#include <stdexcept>
 
 namespace utils::interval {
 

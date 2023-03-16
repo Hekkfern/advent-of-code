@@ -73,12 +73,12 @@ Features:
 
 Tested on:
 
-| Platform | OS                                       | Generator | Cmake version | Compiler                   |
-| -------- | ---------------------------------------- | --------- | ------------- | -------------------------- |
-| Windows  | Windows 10                               | Ninja     | X.X.X         | MSVC v143                  |
-| Linux    | Ubuntu 22.04                             | Ninja     | X.X.X         | GCC X.X.X                  |
-| Linux    | Manjaro 22                               | Ninja     | X.X.X         | GCC X.X.X                  |
-| Apple    | macOS Monterey 12.6.1  (Intel processor) | Ninja     | 3.25.1        | AppleClang 13.1.6.13160021 |
+| Platform | OS                                       | Generator        | Cmake version | Compiler                   |
+| -------- | ---------------------------------------- | ---------------- | ------------- | -------------------------- |
+| Windows  | Windows 10                               | VIsual Studio 17 | X.X.X         | MSVC v143                  |
+| Linux    | Ubuntu 22.04                             | Ninja            | X.X.X         | GCC X.X.X                  |
+| Linux    | Manjaro 22                               | Ninja            | X.X.X         | GCC X.X.X                  |
+| Apple    | macOS Monterey 12.6.1  (Intel processor) | Ninja            | 3.25.1        | AppleClang 13.1.6.13160021 |
 
 <!-- GETTING STARTED -->
 
