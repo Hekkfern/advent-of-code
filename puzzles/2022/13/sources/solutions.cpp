@@ -65,10 +65,13 @@ uint32_t findDecoderKey(std::vector<Packet>& packets)
 
     // lower_bound returns the first element not less than the lookup
     // 1-based index
-    uint32_t key = ranges::distance(packets.begin(), first) + 1;
+    uint32_t key{
+        static_cast<uint32_t>(ranges::distance(packets.begin(), first)) + 1U
+    };
     // upper_bound returns the first element greater than the lookup
     // 1-based index and offset for Packet(2)
-    key *= ranges::distance(packets.begin(), second) + 2;
+    key *= static_cast<uint32_t>(ranges::distance(packets.begin(), second))
+        + 2U;
     return key;
 }
 

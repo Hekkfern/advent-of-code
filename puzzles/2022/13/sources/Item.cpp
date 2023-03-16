@@ -1,6 +1,7 @@
 #include "Item.hpp"
 
 #include <compare>
+#include <stdexcept>
 
 namespace aoc_2022_13 {
 

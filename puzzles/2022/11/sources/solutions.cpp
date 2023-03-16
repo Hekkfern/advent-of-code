@@ -5,9 +5,9 @@
 #include <fstream>
 #include <range/v3/all.hpp>
 #include <regex>
+#include <stdexcept>
 #include <unordered_map>
 #include <utils/String.hpp>
-#include <stdexcept>
 
 namespace aoc_2022_11 {
 
@@ -32,7 +32,7 @@ Monkey parseMonkey(std::ifstream& fileStream)
         throw std::logic_error(
             "Regex failed in parsing the line 2 of a Monkey description");
     }
-    auto itemTexts{ utils::string::split(regexResult[1]) };
+    auto itemTexts{ utils::string::split(std::string{ regexResult[1] }) };
     auto monkeyItems = itemTexts
         | ranges::views::transform([](const std::string& s) {
                            return utils::string::toNumber<WorryLevel>(s);

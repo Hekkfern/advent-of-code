@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Item.hpp"
+#include <memory>
 
 namespace aoc_2022_13 {
 
