@@ -1,6 +1,5 @@
 #include "solutions.hpp"
 
-#include "Node.hpp"
 #include "PairInfo.hpp"
 #include <fstream>
 #include <range/v3/all.hpp>
@@ -43,12 +42,6 @@ void fillNoBeaconIntervalList(
     const PairInfo& pairInfo,
     const int32_t goalCoordY)
 {
-    // add sensor and/or beacon if they are in the coordinate Y to analyze
-    addOccupiedPosition(
-        intervalList, pairInfo.getSensorPosition(), NodeType::Sensor, goalCoordY);
-    addOccupiedPosition(
-        intervalList, pairInfo.getBeaconPosition(), NodeType::Beacon, goalCoordY);
-
     // add all the positions covered by the sensor in the coordinate Y to
     // analyze
     const int32_t distance{ static_cast<int32_t>(pairInfo.getDistance()) };
