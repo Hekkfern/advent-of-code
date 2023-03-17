@@ -6,6 +6,9 @@
 
 namespace utils::interval {
 
+/**
+ * @brief      This class describes an interval of continuous integer values.
+ */
 class Interval {
 public:
     /**
@@ -16,11 +19,17 @@ public:
      */
     Interval(int32_t min, int32_t max);
     /**
+     * @brief      Constructs a new instance.
      *
+     * @param[in]  values  A pair of values.
      */
     explicit Interval(const std::pair<int32_t, int32_t>& values);
     /**
+     * @brief      Assignment operator.
      *
+     * @param[in]  other  The other instance.
+     *
+     * @return     The result of the assignment.
      */
     Interval& operator=(const Interval& other);
     /**
@@ -94,7 +103,11 @@ public:
      */
     std::pair<int32_t, int32_t> get() const;
     /**
+     * @brief      Checks if the specified value is contained in the interval.
      *
+     * @param[in]  value  The value to check.
+     *
+     * @return     True if the interval contains the value. False, otherwise.
      */
     bool contains(int32_t value) const;
 

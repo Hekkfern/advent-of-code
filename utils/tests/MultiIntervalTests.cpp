@@ -11,8 +11,8 @@ TEST_CASE(
     const MultiInterval interval1{ { { 1, 3 }, { -1, 4 }, { 5, 7 } } };
     const auto result1{ interval1.get() };
     CHECK(result1.size() == 2U);
-    CHECK(result1[0] == std::make_pair(-1, 4));
-    CHECK(result1[1] == std::make_pair(5, 7));
+    CHECK(result1[0] == Interval{ -1, 4 });
+    CHECK(result1[1] == Interval{ 5, 7 });
 }
 
 TEST_CASE(
@@ -24,7 +24,7 @@ TEST_CASE(
     interval1.add({ 1, 2 });
     const auto result1{ interval1.get() };
     CHECK(result1.size() == 1U);
-    CHECK(result1[0] == std::make_pair(1, 5));
+    CHECK(result1[0] == Interval{ 1, 5 });
 }
 
 TEST_CASE(
@@ -35,7 +35,7 @@ TEST_CASE(
     interval1.add({ 4, 6 });
     const auto result1{ interval1.get() };
     CHECK(result1.size() == 1U);
-    CHECK(result1[0] == std::make_pair(1, 6));
+    CHECK(result1[0] == Interval{ 1, 6 });
 }
 
 TEST_CASE(
@@ -47,8 +47,8 @@ TEST_CASE(
     interval1.add({ 7, 9 });
     const auto result1{ interval1.get() };
     CHECK(result1.size() == 2U);
-    CHECK(result1[0] == std::make_pair(1, 5));
-    CHECK(result1[1] == std::make_pair(7, 9));
+    CHECK(result1[0] == Interval{ 1, 5 });
+    CHECK(result1[1] == Interval{ 7, 9 });
 }
 
 TEST_CASE(
@@ -60,5 +60,5 @@ TEST_CASE(
     interval1.add({ 4, 8 });
     const auto result1{ interval1.get() };
     CHECK(result1.size() == 1U);
-    CHECK(result1[0] == std::make_pair(1, 9));
+    CHECK(result1[0] == Interval{ 1, 9 });
 }

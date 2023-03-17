@@ -5,14 +5,41 @@
 
 namespace utils::interval {
 
+/**
+ * @brief      This class describes an interval of non-continuous integer values.
+ */
 class MultiInterval {
 public:
+    /**
+     * @brief      Default constructor
+     */
     MultiInterval() = default;
+    /**
+     * @brief      Constructs a new instance from some intervals
+     *
+     * @param[in]  intervals  The intervals.
+     */
     explicit MultiInterval(std::vector<Interval>&& intervals);
-    std::vector<std::pair<int32_t, int32_t>> get() const;
+    /**
+     * @brief      Gets the intervals.
+     *
+     * @return     The intervals.
+     */
+    const std::vector<Interval>& get() const;
+    /**
+     * @brief      Adds the specified interval.
+     *
+     * @param[in]  interval  The interval to add.
+     */
     void add(const Interval& interval);
-    MultiInterval join(const Interval& other) const;
-    std::optional<MultiInterval> intersect(const MultiInterval& other) const;
+    /**
+     * @brief      Merges both intervals.
+     *
+     * @param[in]  other  The other interval.
+     *
+     * @return     The result of merging both intervals.
+     */
+    MultiInterval join(const MultiInterval& other) const;
     /**
      * @brief      Checks if another interval includes completely the range of
      *             this one.
@@ -51,16 +78,20 @@ public:
     bool overlaps(const Interval& other) const;
 
 private:
+    /**
+     * @brief      Sorts the list of intervals, and merges contiguos intervals
+     *             to try to reduce the total of intervals in the list.
+     */
     void reduce();
 
     /**
-     * @brief List of intervals.
+     * @brief      List of intervals.
      *
-     * @note No interval is overlapped.
-     * @note All the intervals are sorted by ascending order of its minimal
-     * value.
-     * @note Two contiguous intervals mean that there is a gap between them of,
-     * at least, one value.
+     * @note       No interval is overlapped.
+     * @note       All the intervals are sorted by ascending order of its
+     *             minimal value.
+     * @note       Two contiguous intervals mean that there is a gap between
+     *             them of, at least, one value.
      */
     std::vector<Interval> mIntervals{};
 };

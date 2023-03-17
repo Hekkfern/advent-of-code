@@ -14,13 +14,7 @@ MultiInterval::MultiInterval(std::vector<Interval>&& intervals)
     reduce();
 }
 
-std::vector<std::pair<int32_t, int32_t>> MultiInterval::get() const
-{
-    return mIntervals | ranges::views::transform([](const Interval& interval) {
-               return interval.get();
-           })
-        | ranges::to<std::vector>;
-}
+const std::vector<Interval>& MultiInterval::get() const { return mIntervals; }
 
 void MultiInterval::add(const Interval& interval)
 {
@@ -29,15 +23,17 @@ void MultiInterval::add(const Interval& interval)
         return;
     }
 
-    if (overlaps(interval)) {
-        for (size_t i{ 0U }; i < mIntervals.size(); ++i) {
-            // TODO
-        }
-    } else {
-        mIntervals.emplace_back(interval);
-    }
-
+    mIntervals.emplace_back(interval);
     ranges::sort(mIntervals);
+    reduce();
+}
+
+MultiInterval MultiInterval::join(const MultiInterval& other) const
+{
+    std::vector<Interval> joinedIntervals{ mIntervals };
+    joinedIntervals.reserve(mIntervals.size() + other.mIntervals.size());
+    ranges::copy(other.mIntervals, std::back_inserter(joinedIntervals));
+    return MultiInterval{ std::move(joinedIntervals) };
 }
 
 bool MultiInterval::subsumes(const MultiInterval& other) const
