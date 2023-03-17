@@ -40,20 +40,14 @@ TEST_CASE(
     "[Interval - join] join() method returns correct values",
     "[Interval, Interval_join]")
 {
-    const Interval interval1{ 2, 3 };
+    const Interval interval1{ 2, 4 };
     const Interval interval2{ -3, 1 };
-    const Interval interval3{ interval1.join(interval2) };
-    CHECK(interval3.get() == std::make_pair(-3, 3));
-}
-
-TEST_CASE(
-    "[Interval - operator+] operator+() method returns correct values",
-    "[Interval, Interval_operator+]")
-{
-    const Interval interval1{ 2, 3 };
-    const Interval interval2{ -3, 1 };
-    const Interval interval3{ interval1 + interval2 };
-    CHECK(interval3.get() == std::make_pair(-3, 3));
+    const std::optional<Interval> result1{ interval1.join(interval2) };
+    CHECK_FALSE(result1);
+    const Interval interval3{ -3, 3 };
+    const std::optional<Interval> result2{ interval1.join(interval3) };
+    CHECK(result2);
+    CHECK(result2->get() == std::make_pair(-3, 4));
 }
 
 TEST_CASE(

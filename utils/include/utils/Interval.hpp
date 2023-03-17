@@ -17,6 +17,10 @@ public:
      */
     Interval(int32_t min, int32_t max);
     /**
+     *
+     */
+    explicit Interval(const std::pair<int32_t, int32_t>& values);
+    /**
      * @brief      Three-way comparison operator.
      *
      * @param[in]  other  The other object to compare to.
@@ -32,24 +36,16 @@ public:
      */
     uint32_t length() const;
     /**
-     * @brief      Addition operator which joins both intervals.
-     *
-     * @param[in]  other  The other object.
-     *
-     * @return     An interval which joins both original intervals.
-     */
-    Interval operator+(const Interval& other) const;
-    /**
      * @brief      Joins both intervals to create a new one with the highest
      *             length.
      *
      * @param[in]  other  The other object.
      *
-     * @return     Joined interval.
+     * @return     Joined interval if they overlap. std::nullopt, otherwise.
      */
-    Interval join(const Interval& other) const;
+    std::optional<Interval> join(const Interval& other) const;
     /**
-     * @brief      Creates an interval which contains the overlaping parts of
+     * @brief      Creates an interval which contains the overlapping parts of
      *             both provided intervals.
      *
      * @param[in]  other  The other object.
@@ -94,6 +90,10 @@ public:
      * @return     Pair with both the minimum and the maximum values.
      */
     std::pair<int32_t, int32_t> get() const;
+    /**
+     *
+     */
+    bool contains(int32_t value) const;
 
 private:
     /**

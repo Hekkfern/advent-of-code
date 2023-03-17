@@ -15,11 +15,18 @@ Interval::Interval(int32_t min, int32_t max)
     }
 }
 
+Interval::Interval(const std::pair<int32_t, int32_t>& values)
+    : Interval{ values.first, values.second }
+{
+}
+
 uint32_t Interval::length() const { return static_cast<uint32_t>(mMax - mMin); }
 
-Interval Interval::join(const Interval& other) const
+std::optional<Interval> Interval::join(const Interval& other) const
 {
-    return Interval{ std::min(other.mMin, mMin), std::max(other.mMax, mMax) };
+    return overlaps(other) ? std::make_optional<Interval>(
+               std::min(other.mMin, mMin), std::max(other.mMax, mMax))
+                           : std::nullopt;
 }
 
 int32_t Interval::getMin() const { return mMin; }
@@ -31,9 +38,9 @@ std::pair<int32_t, int32_t> Interval::get() const
     return std::make_pair(mMin, mMax);
 }
 
-Interval Interval::operator+(const Interval& other) const
+bool Interval::contains(const int32_t value) const
 {
-    return this->join(other);
+    return value >= mMin && value <= mMax;
 }
 
 std::optional<Interval> Interval::intersect(const Interval& other) const

@@ -10,14 +10,26 @@ set(_LIB_NAME "aoc_utils")
 add_library(
   ${_LIB_NAME} STATIC
   src/File.cpp
+  include/utils/File.hpp
   src/AoC.cpp
+  include/utils/AoC.hpp
   src/String.cpp
+  include/utils/String.hpp
   src/Time.cpp
+  include/utils/Time.hpp
+  include/utils/geometry2d/Direction2D.hpp
   src/geometry2d/Point2D.cpp
+  include/utils/geometry2d/Point2D.hpp
   src/geometry2d/Vector2D.cpp
+  include/utils/geometry2d/Vector2D.hpp
   src/geometry2d/Rectangle2D.cpp
+  include/utils/geometry2d/Rectangle2D.hpp
   src/geometry2d/BoundingBox2D.cpp
-  src/Interval.cpp)
+  include/utils/geometry2d/BoundingBox2D.hpp
+  src/Interval.cpp
+  include/utils/Interval.hpp
+  src/MultiInterval.cpp
+  include/utils/MultiInterval.hpp)
 set_cpp_standard(${_LIB_NAME})
 set_compiler_flags(${_LIB_NAME})
 set_vectorization_flags(${_LIB_NAME})
