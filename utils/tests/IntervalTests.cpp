@@ -103,3 +103,15 @@ TEST_CASE(
     CHECK(interval4.overlaps(interval1));
     CHECK(interval1.overlaps(interval4));
 }
+
+TEST_CASE(
+    "[Interval - contains] contains() method returns correct values",
+    "[Interval, Interval_contains]")
+{
+    const Interval interval1{ 2, 7 };
+    CHECK(interval1.contains(2));
+    CHECK(interval1.contains(5));
+    CHECK(interval1.contains(7));
+    CHECK_FALSE(interval1.contains(21));
+    CHECK_FALSE(interval1.contains(-2));
+}

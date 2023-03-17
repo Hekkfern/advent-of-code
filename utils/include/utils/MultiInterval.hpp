@@ -9,9 +9,9 @@ class MultiInterval {
 public:
     MultiInterval() = default;
     explicit MultiInterval(std::vector<Interval>&& intervals);
+    std::vector<std::pair<int32_t, int32_t>> get() const;
     void add(const Interval& interval);
     MultiInterval join(const Interval& other) const;
-    MultiInterval operator+(const Interval& other) const;
     std::optional<MultiInterval> intersect(const MultiInterval& other) const;
     /**
      * @brief      Checks if another interval includes completely the range of
@@ -51,6 +51,8 @@ public:
     bool overlaps(const Interval& other) const;
 
 private:
+    void reduce();
+
     /**
      * @brief List of intervals.
      *

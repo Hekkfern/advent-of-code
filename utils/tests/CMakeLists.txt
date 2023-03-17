@@ -15,7 +15,8 @@ add_executable(
   geometry2d/Vector2DTests.cpp
   geometry2d/Rectangle2DTests.cpp
   geometry2d/BoundingBox2DTests.cpp
-  IntervalTests.cpp)
+  IntervalTests.cpp
+  MultiIntervalTests.cpp)
 set_cpp_standard(${_EXEC_NAME})
 set_compiler_flags(${_EXEC_NAME})
 set_vectorization_flags(${_EXEC_NAME})

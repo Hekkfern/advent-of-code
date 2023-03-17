@@ -20,6 +20,15 @@ Interval::Interval(const std::pair<int32_t, int32_t>& values)
 {
 }
 
+Interval& Interval::operator=(const Interval& other)
+{
+    if (this != &other)
+        std::construct_at(
+            this,
+            other); // no destruction needed since trivially destructible
+    return *this;
+}
+
 uint32_t Interval::length() const { return static_cast<uint32_t>(mMax - mMin); }
 
 std::optional<Interval> Interval::join(const Interval& other) const

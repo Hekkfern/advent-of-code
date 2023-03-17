@@ -1,6 +1,5 @@
 #pragma once
 
-#include <compare>
 #include <cstdint>
 #include <optional>
 #include <utility>
@@ -20,6 +19,10 @@ public:
      *
      */
     explicit Interval(const std::pair<int32_t, int32_t>& values);
+    /**
+     *
+     */
+    Interval& operator=(const Interval& other);
     /**
      * @brief      Three-way comparison operator.
      *
