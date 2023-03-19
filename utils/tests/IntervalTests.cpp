@@ -159,3 +159,19 @@ TEST_CASE(
     const Interval interval2{ 3, 3 };
     CHECK(interval2.hasOneValue());
 }
+
+TEST_CASE(
+    "[Interval - areContiguous] areContiguous() method returns correct values",
+    "[Interval, Interval_areContiguous]")
+{
+    const Interval interval1{ 2, 7 };
+    const Interval interval2{ -1, 1 };
+    CHECK(interval1.areContiguous(interval2));
+    CHECK(interval2.areContiguous(interval1));
+    const Interval interval3{ 3, 3 };
+    CHECK_FALSE(interval1.areContiguous(interval3));
+    CHECK_FALSE(interval3.areContiguous(interval1));
+    const Interval interval4{ 8, 9 };
+    CHECK(interval1.areContiguous(interval4));
+    CHECK(interval4.areContiguous(interval1));
+}

@@ -7,7 +7,7 @@ namespace utils::interval {
 
 /**
  * @brief      This class describes an interval of non-continuous integer
- * values.
+ *             values.
  */
 class MultiInterval {
 public:
@@ -46,9 +46,9 @@ public:
      */
     void add(const int32_t value);
     /**
-     * @brief Removes the specified value, if it is contained.
+     * @brief      Removes the specified value, if it is contained.
      *
-     * @param value The value to remove.
+     * @param      value  The value to remove.
      */
     void remove(const int32_t value);
     /**

@@ -74,4 +74,9 @@ bool Interval::overlaps(const Interval& other) const
 
 bool Interval::hasOneValue() const { return mMin == mMax; }
 
+bool Interval::areContiguous(const Interval& other) const
+{
+    return (other.mMin - mMax) == 1 || (mMin - other.mMax) == 1;
+}
+
 } // namespace utils::interval

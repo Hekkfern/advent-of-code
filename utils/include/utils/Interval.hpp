@@ -103,12 +103,22 @@ public:
      */
     bool contains(int32_t value) const;
     /**
-     * @brief Checks if the interval has one single value, meaning the minimum
-     * value equals the maximum value.
+     * @brief      Checks if the interval has one single value, meaning the
+     *             minimum value equals the maximum value.
      *
-     * @return True if the interval has a single value. False, otherwise.
+     * @return     True if the interval has a single value. False, otherwise.
      */
     bool hasOneValue() const;
+    /**
+     * @brief      Checks if both intervals are contiguous, meaning that the
+     *             difference between the minimum value of one interval and the
+     *             maximum of the other interval is one, or vice-versa.
+     *
+     * @param[in]  other  The other object.
+     *
+     * @return     True if both intervals are contiguous. False, otherwise.
+     */
+    bool areContiguous(const Interval& other) const;
 
 private:
     /**
