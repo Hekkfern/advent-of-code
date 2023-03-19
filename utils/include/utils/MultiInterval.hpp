@@ -6,7 +6,8 @@
 namespace utils::interval {
 
 /**
- * @brief      This class describes an interval of non-continuous integer values.
+ * @brief      This class describes an interval of non-continuous integer
+ * values.
  */
 class MultiInterval {
 public:
@@ -32,6 +33,24 @@ public:
      * @param[in]  interval  The interval to add.
      */
     void add(const Interval& interval);
+    /**
+     * @brief      Adds the specified interval.
+     *
+     * @param[in]  interval  The interval to add.
+     */
+    void add(Interval&& interval);
+    /**
+     * @brief      Adds the specified value.
+     *
+     * @param[in]  value  The value to add.
+     */
+    void add(const int32_t value);
+    /**
+     * @brief Removes the specified value, if it is contained.
+     *
+     * @param value The value to remove.
+     */
+    void remove(const int32_t value);
     /**
      * @brief      Merges both intervals.
      *
@@ -76,6 +95,14 @@ public:
      * @return     True if they overlap in any way. False, otherwise.
      */
     bool overlaps(const Interval& other) const;
+    /**
+     * @brief      Checks if the specified value is contained in the interval.
+     *
+     * @param[in]  value  The value to check.
+     *
+     * @return     True if the interval contains the value. False, otherwise.
+     */
+    bool contains(int32_t value) const;
 
 private:
     /**

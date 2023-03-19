@@ -6,12 +6,14 @@
 #include <regex>
 #include <unordered_map>
 #include <utils/Interval.hpp>
+#include <utils/MultiInterval.hpp>
 #include <utils/String.hpp>
 #include <utils/geometry2d/Point2D.hpp>
 
 namespace aoc_2022_15 {
 
 using namespace utils::geometry2d;
+using namespace utils::interval;
 
 // ---------- Private Methods ----------
 
@@ -34,11 +36,11 @@ PairInfo parseInputLine(const std::string& line)
 
 /**
  * @brief
- * @param[in,out] intervalList
+ * @param[in,out] interval
  * @param[in] sensorBeaconPair
  */
-void fillNoBeaconIntervalList(
-    std::vector<utils::interval::Interval>& intervalList,
+void fillNoBeaconInterval(
+    utils::interval::MultiInterval& interval,
     const PairInfo& pairInfo,
     const int32_t goalCoordY)
 {
@@ -48,22 +50,16 @@ void fillNoBeaconIntervalList(
     const int32_t diffYAbs{ std::abs(
         goalCoordY - pairInfo.getSensorPosition().getY()) };
     if (diffYAbs == distance) {
-        // add just one node
+        // add just one value
         const int32_t coordX{ pairInfo.getSensorPosition().getX() };
-        if (!intervalList.contains(coordX)) {
-            intervalList.emplace(coordX, Node{ coordX, NodeType::Empty });
-        }
+        interval.add(coordX);
     } else if (diffYAbs < distance) {
         // add all the matching nodes
         const int32_t firstPosition{ pairInfo.getSensorPosition().getX()
                                      - (distance - diffYAbs) };
         const int32_t lastPosition{ pairInfo.getSensorPosition().getX()
                                     + (distance - diffYAbs) };
-        for (int32_t coordX = firstPosition; coordX <= lastPosition; ++coordX) {
-            if (!intervalList.contains(coordX)) {
-                intervalList.emplace(coordX, Node{ coordX, NodeType::Empty });
-            }
-        }
+        interval.add(Interval{ firstPosition, lastPosition });
     }
 }
 
@@ -84,13 +80,13 @@ std::string solvePart1(
         extParams.at("GoalCoordY")) };
     std::ifstream fileStream{ filename };
     std::string line;
-    std::vector<utils::interval::Interval> intervalList;
+    utils::interval::MultiInterval interval;
     while (std::getline(fileStream, line)) {
         auto pairInfo{ parseInputLine(line) };
-        fillNoBeaconIntervalList(intervalList, pairInfo, goalCoordY);
+        fillNoBeaconInterval(interval, pairInfo, goalCoordY);
     }
     return std::to_string(ranges::accumulate(
-        intervalList,
+        interval.get(),
         0U,
         [](uint32_t sum, const utils::interval::Interval& interval) {
             return sum + interval.length();

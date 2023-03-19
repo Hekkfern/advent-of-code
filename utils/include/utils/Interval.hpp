@@ -110,6 +110,12 @@ public:
      * @return     True if the interval contains the value. False, otherwise.
      */
     bool contains(int32_t value) const;
+    /**
+     * @brief Checks if the interval has one single value, meaning the minimum value equals the maximum value.
+     *
+     * @return True if the interval has a single value. False, otherwise.
+     */
+    bool hasOneValue() const;
 
 private:
     /**

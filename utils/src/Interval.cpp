@@ -22,10 +22,11 @@ Interval::Interval(const std::pair<int32_t, int32_t>& values)
 
 Interval& Interval::operator=(const Interval& other)
 {
-    if (this != &other)
+    if (this != &other) {
         std::construct_at(
             this,
             other); // no destruction needed since trivially destructible
+    }
     return *this;
 }
 
@@ -77,5 +78,7 @@ bool Interval::overlaps(const Interval& other) const
     return (other.mMin >= mMin && other.mMin <= mMax)
         || (other.mMax >= mMin && other.mMax <= mMax) || other.subsumes(*this);
 }
+
+bool Interval::hasOneValue() const { return mMin == mMax; }
 
 } // namespace utils::interval

@@ -8,9 +8,6 @@ namespace utils::interval {
 MultiInterval::MultiInterval(std::vector<Interval>&& intervals)
     : mIntervals{ std::move(intervals) }
 {
-    // order the intervals
-    ranges::sort(mIntervals);
-    // try to join intervals
     reduce();
 }
 
@@ -18,13 +15,19 @@ const std::vector<Interval>& MultiInterval::get() const { return mIntervals; }
 
 void MultiInterval::add(const Interval& interval)
 {
-    // if the interval is already contained, do nothing
-    if (subsumes(interval)) {
-        return;
-    }
-
     mIntervals.emplace_back(interval);
-    ranges::sort(mIntervals);
+    reduce();
+}
+
+void MultiInterval::add(Interval&& interval)
+{
+    mIntervals.emplace_back(std::move(interval));
+    reduce();
+}
+
+void MultiInterval::add(const int32_t value)
+{
+    mIntervals.emplace_back(value, value);
     reduce();
 }
 
@@ -61,13 +64,17 @@ bool MultiInterval::overlaps(const MultiInterval& other) const
 
 bool MultiInterval::overlaps(const Interval& other) const
 {
-    return ranges::any_of(mIntervals, [&other](const Interval& interval) {
-        return interval.overlaps(other);
-    });
+    return ranges::any_of(
+        mIntervals, [&other](const Interval& interval) -> bool {
+            return interval.overlaps(other);
+        });
 }
 
 void MultiInterval::reduce()
 {
+    // order the intervals
+    ranges::sort(mIntervals);
+    // try to join intervals
     std::vector<Interval> newIntervals{};
     Interval accumulatedInterval{ mIntervals[0] };
     for (size_t i{ 1U }; i < mIntervals.size(); ++i) {
@@ -80,8 +87,37 @@ void MultiInterval::reduce()
         }
     }
     newIntervals.emplace_back(accumulatedInterval);
-    assert(newIntervals.size() >= 1U);
+    assert(!newIntervals.empty());
     mIntervals = newIntervals;
+}
+
+bool MultiInterval::contains(int32_t value) const
+{
+    return ranges::any_of(
+        mIntervals, [value](const Interval& interval) -> bool {
+            return interval.contains(value);
+        });
+}
+
+void MultiInterval::remove(const int32_t value)
+{
+    for (size_t i{ 0U }; i < mIntervals.size(); ++i) {
+        if (mIntervals[i].contains(value)) {
+            if (!mIntervals[i].hasOneValue()) {
+                if (mIntervals[i].getMin() == value) {
+                    mIntervals.emplace_back(value + 1, mIntervals[i].getMax());
+                } else if (mIntervals[i].getMax() == value) {
+                    mIntervals.emplace_back(mIntervals[i].getMin(), value - 1);
+                } else {
+                    mIntervals.emplace_back(mIntervals[i].getMin(), value - 1);
+                    mIntervals.emplace_back(value + 1, mIntervals[i].getMax());
+                }
+            }
+            mIntervals.erase(std::begin(mIntervals) + static_cast<int64_t>(i));
+            reduce();
+            break;
+        }
+    }
 }
 
 } // namespace utils::interval
