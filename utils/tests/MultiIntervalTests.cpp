@@ -16,7 +16,7 @@ TEST_CASE(
 }
 
 TEST_CASE(
-    "[MultiInterval - add] add() method does nothing when the interval is "
+    "[MultiInterval - add] add() method doesn't add any interval when it is "
     "already contained",
     "[MultiInterval, MultiInterval_add]")
 {
@@ -61,4 +61,21 @@ TEST_CASE(
     const auto result1{ interval1.get() };
     CHECK(result1.size() == 1U);
     CHECK(result1[0] == Interval{ 1, 9 });
+}
+
+TEST_CASE(
+    "[MultiInterval - add] add() method adds a single value",
+    "[MultiInterval, MultiInterval_add]")
+{
+    MultiInterval interval1{ { { 1, 5 }, { 7, 9 } } };
+    interval1.add(4);
+    const auto result1{ interval1.get() };
+    CHECK(result1.size() == 2U);
+    CHECK(result1[0] == Interval{ 1, 5 });
+    CHECK(result1[1] == Interval{ 7, 9 });
+    MultiInterval interval2{ { { 1, 5 }, { 7, 9 } } };
+    interval2.add(6);
+    const auto result2{ interval2.get() };
+    CHECK(result2.size() == 1U);
+    CHECK(result2[0] == Interval{ 1, 9 });
 }

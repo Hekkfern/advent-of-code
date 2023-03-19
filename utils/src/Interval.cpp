@@ -20,23 +20,15 @@ Interval::Interval(const std::pair<int32_t, int32_t>& values)
 {
 }
 
-Interval& Interval::operator=(const Interval& other)
-{
-    if (this != &other) {
-        std::construct_at(
-            this,
-            other); // no destruction needed since trivially destructible
-    }
-    return *this;
-}
-
 uint32_t Interval::length() const { return static_cast<uint32_t>(mMax - mMin); }
 
 std::optional<Interval> Interval::join(const Interval& other) const
 {
-    return overlaps(other) ? std::make_optional<Interval>(
-               std::min(other.mMin, mMin), std::max(other.mMax, mMax))
-                           : std::nullopt;
+    return (overlaps(other) || std::abs(other.mMin - mMin) == 1
+            || std::abs(other.mMax - mMax) == 1)
+        ? std::make_optional<Interval>(
+            std::min(other.mMin, mMin), std::max(other.mMax, mMax))
+        : std::nullopt;
 }
 
 int32_t Interval::getMin() const { return mMin; }
@@ -76,7 +68,8 @@ bool Interval::subsumes(const Interval& other) const
 bool Interval::overlaps(const Interval& other) const
 {
     return (other.mMin >= mMin && other.mMin <= mMax)
-        || (other.mMax >= mMin && other.mMax <= mMax) || other.subsumes(*this);
+        || (other.mMax >= mMin && other.mMax <= mMax) || other.subsumes(*this)
+        || subsumes(other);
 }
 
 bool Interval::hasOneValue() const { return mMin == mMax; }

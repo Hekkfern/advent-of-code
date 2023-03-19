@@ -25,14 +25,6 @@ public:
      */
     explicit Interval(const std::pair<int32_t, int32_t>& values);
     /**
-     * @brief      Assignment operator.
-     *
-     * @param[in]  other  The other instance.
-     *
-     * @return     The result of the assignment.
-     */
-    Interval& operator=(const Interval& other);
-    /**
      * @brief      Three-way comparison operator.
      *
      * @param[in]  other  The other object to compare to.
@@ -111,7 +103,8 @@ public:
      */
     bool contains(int32_t value) const;
     /**
-     * @brief Checks if the interval has one single value, meaning the minimum value equals the maximum value.
+     * @brief Checks if the interval has one single value, meaning the minimum
+     * value equals the maximum value.
      *
      * @return True if the interval has a single value. False, otherwise.
      */
@@ -121,11 +114,11 @@ private:
     /**
      * @brief      Minimum value.
      */
-    const int32_t mMin;
+    int32_t mMin;
     /**
      * @brief      Maximum value.
      */
-    const int32_t mMax;
+    int32_t mMax;
 };
 
 } // namespace utils::interval

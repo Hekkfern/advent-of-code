@@ -37,17 +37,47 @@ TEST_CASE(
 }
 
 TEST_CASE(
-    "[Interval - join] join() method returns correct values",
+    "[Interval - join] join() method returns a valid interval when they "
+    "overlap",
     "[Interval, Interval_join]")
 {
     const Interval interval1{ 2, 4 };
     const Interval interval2{ -3, 1 };
     const std::optional<Interval> result1{ interval1.join(interval2) };
     CHECK_FALSE(result1);
-    const Interval interval3{ -3, 3 };
+}
+
+TEST_CASE(
+    "[Interval - join] join() method returns nothing when they don't overlap",
+    "[Interval, Interval_join]")
+{
+    const Interval interval1{ 2, 4 };
+    const Interval interval2{ -3, 3 };
+    const std::optional<Interval> result1{ interval1.join(interval2) };
+    CHECK(result1);
+    CHECK(result1->get() == std::make_pair(-3, 4));
+}
+
+TEST_CASE(
+    "[Interval - join] join() method works with single-value intervals",
+    "[Interval, Interval_join]")
+{
+    const Interval interval1{ 2, 4 };
+    const Interval interval2{ 2, 2 };
+    const std::optional<Interval> result1{ interval1.join(interval2) };
+    CHECK(result1);
+    CHECK(result1->get() == std::make_pair(2, 4));
+    const Interval interval3{ 1, 1 };
     const std::optional<Interval> result2{ interval1.join(interval3) };
     CHECK(result2);
-    CHECK(result2->get() == std::make_pair(-3, 4));
+    CHECK(result2->get() == std::make_pair(1, 4));
+    const Interval interval4{ 5, 5 };
+    const std::optional<Interval> result3{ interval1.join(interval4) };
+    CHECK(result3);
+    CHECK(result3->get() == std::make_pair(2, 5));
+    const Interval interval5{ 7, 7 };
+    const std::optional<Interval> result4{ interval1.join(interval5) };
+    CHECK_FALSE(result4);
 }
 
 TEST_CASE(
@@ -90,18 +120,22 @@ TEST_CASE(
     "[Interval - overlaps] overlaps() method returns correct values",
     "[Interval, Interval_overlaps]")
 {
-    const Interval interval1{ 2, 4 };
-    const Interval interval2{ -3, 1 };
-    const Interval interval3{ -1, 3 };
-    const Interval interval4{ 1, 2 };
-    CHECK_FALSE(interval1.overlaps(interval2));
-    CHECK_FALSE(interval2.overlaps(interval1));
+    const Interval interval1{ 2, 6 };
+    const Interval interval2{ 1, 3 };
+    CHECK(interval1.overlaps(interval2));
+    CHECK(interval2.overlaps(interval1));
+    const Interval interval3{ 5, 7 };
     CHECK(interval1.overlaps(interval3));
     CHECK(interval3.overlaps(interval1));
-    CHECK(interval2.overlaps(interval3));
-    CHECK(interval3.overlaps(interval2));
+    const Interval interval4{ 4, 5 };
     CHECK(interval4.overlaps(interval1));
     CHECK(interval1.overlaps(interval4));
+    const Interval interval5{ 1, 2 };
+    CHECK(interval1.overlaps(interval5));
+    CHECK(interval5.overlaps(interval1));
+    const Interval interval6{ 6, 7 };
+    CHECK(interval1.overlaps(interval6));
+    CHECK(interval6.overlaps(interval1));
 }
 
 TEST_CASE(
@@ -114,4 +148,14 @@ TEST_CASE(
     CHECK(interval1.contains(7));
     CHECK_FALSE(interval1.contains(21));
     CHECK_FALSE(interval1.contains(-2));
+}
+
+TEST_CASE(
+    "[Interval - hasOneValue] hasOneValue() method returns correct values",
+    "[Interval, Interval_hasOneValue]")
+{
+    const Interval interval1{ 2, 7 };
+    CHECK_FALSE(interval1.hasOneValue());
+    const Interval interval2{ 3, 3 };
+    CHECK(interval2.hasOneValue());
 }
