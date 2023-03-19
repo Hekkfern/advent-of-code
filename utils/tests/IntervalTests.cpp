@@ -44,7 +44,12 @@ TEST_CASE(
     const Interval interval1{ 2, 4 };
     const Interval interval2{ -3, 1 };
     const std::optional<Interval> result1{ interval1.join(interval2) };
-    CHECK_FALSE(result1);
+    CHECK(result1);
+    CHECK(result1->get() == std::make_pair(-3, 4));
+    const Interval interval3{ 3, 6 };
+    const std::optional<Interval> result2{ interval1.join(interval3) };
+    CHECK(result2);
+    CHECK(result2->get() == std::make_pair(2, 6));
 }
 
 TEST_CASE(

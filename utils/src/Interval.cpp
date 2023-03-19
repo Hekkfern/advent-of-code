@@ -24,8 +24,7 @@ uint32_t Interval::length() const { return static_cast<uint32_t>(mMax - mMin); }
 
 std::optional<Interval> Interval::join(const Interval& other) const
 {
-    return (overlaps(other) || std::abs(other.mMin - mMin) == 1
-            || std::abs(other.mMax - mMax) == 1)
+    return (overlaps(other) || areContiguous(other))
         ? std::make_optional<Interval>(
             std::min(other.mMin, mMin), std::max(other.mMax, mMax))
         : std::nullopt;
