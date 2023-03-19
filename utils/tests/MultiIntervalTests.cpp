@@ -5,14 +5,13 @@
 using namespace utils::interval;
 
 TEST_CASE(
-    "[MultiInterval - getters] Getters return correct values",
+    "[MultiInterval - constructor] Constructor reduces contiguous intervals",
     "[MultiInterval, MultiInterval_getters]")
 {
     const MultiInterval interval1{ { { 1, 3 }, { -1, 4 }, { 5, 7 } } };
-    const auto result1{ interval1.get() };
-    CHECK(result1.size() == 2U);
-    CHECK(result1[0] == Interval{ -1, 4 });
-    CHECK(result1[1] == Interval{ 5, 7 });
+    const auto& result1{ interval1.get() };
+    CHECK(result1.size() == 1U);
+    CHECK(result1[0] == Interval{ -1, 7 });
 }
 
 TEST_CASE(
