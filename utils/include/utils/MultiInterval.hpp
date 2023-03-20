@@ -52,6 +52,12 @@ public:
      */
     void remove(const int32_t value);
     /**
+     * @brief      Removes the specified interval.
+     *
+     * @param[in]  interval  The interval to remove.
+     */
+    void remove(const Interval& interval);
+    /**
      * @brief      Merges both intervals.
      *
      * @param[in]  other  The other interval.

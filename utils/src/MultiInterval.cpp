@@ -120,4 +120,29 @@ void MultiInterval::remove(const int32_t value)
     }
 }
 
+void MultiInterval::remove(const Interval& interval)
+{
+    for (size_t i{ 0U }; i < mIntervals.size(); ++i) {
+        if (mIntervals[i].getMin() > interval.getMax()) {
+            reduce();
+            break;
+        }
+        if (interval.subsumes(mIntervals[i])) {
+            mIntervals.erase(std::begin(mIntervals) + static_cast<int64_t>(i));
+        } else if (mIntervals[i].getMin() == interval.getMin()) {
+            mIntervals.emplace_back(
+                interval.getMax() + 1, mIntervals[i].getMax());
+        } else if (mIntervals[i].getMax() == interval.getMax()) {
+            mIntervals.emplace_back(
+                mIntervals[i].getMin(), interval.getMin() - 1);
+        } else {
+            mIntervals.emplace_back(
+                mIntervals[i].getMin(), interval.getMin() - 1);
+            mIntervals.emplace_back(
+                interval.getMax() + 1, mIntervals[i].getMax());
+        }
+        mIntervals.erase(std::begin(mIntervals) + static_cast<int64_t>(i));
+    }
+}
+
 } // namespace utils::interval
