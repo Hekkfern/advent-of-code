@@ -122,42 +122,33 @@ void MultiInterval::remove(const int32_t value)
 
 void MultiInterval::remove(const Interval& interval)
 {
+    std::vector<Interval> tempIntervals;
+    tempIntervals.reserve(mIntervals.size());
     for (size_t i{ 0U }; i < mIntervals.size(); ++i) {
         if (mIntervals[i].getMin() > interval.getMax()) {
-            reduce();
             break;
         }
-        if (interval.subsumes(mIntervals[i])) {
-            mIntervals.erase(std::begin(mIntervals) + static_cast<int64_t>(i));
-            mIntervals.erase(std::begin(mIntervals) + static_cast<int64_t>(i));
-        } else if (mIntervals[i].getMin() == interval.getMin()) {
-            mIntervals.emplace_back(
+        if (mIntervals[i].subsumes(interval)) {
+            // this interval is split in half because of the erase
+            tempIntervals.emplace_back(
+                mIntervals[i].getMin(), interval.getMin() - 1);
+            tempIntervals.emplace_back(
                 interval.getMax() + 1, mIntervals[i].getMax());
-            mIntervals.erase(std::begin(mIntervals) + static_cast<int64_t>(i));
-        } else if (mIntervals[i].getMax() == interval.getMax()) {
-            mIntervals.emplace_back(
-                mIntervals[i].getMin(), interval.getMin() - 1);
-            mIntervals.erase(std::begin(mIntervals) + static_cast<int64_t>(i));
         } else if (
-            mIntervals[i].getMin() < interval.getMin()
-            && mIntervals[i].getMax() > interval.getMax()) {
-            mIntervals.emplace_back(
-                mIntervals[i].getMin(), interval.getMin() - 1);
-            mIntervals.emplace_back(
-                interval.getMax() + 1, mIntervals[i].getMax());
-            mIntervals.erase(std::begin(mIntervals) + static_cast<int64_t>(i));
-        } else if (
-            mIntervals[i].getMin() < interval.getMin()
-            && mIntervals[i].getMax() < interval.getMax()) {
-            mIntervals.emplace_back(
+            interval.getMin() >= mIntervals[i].getMin()
+            && interval.getMin() <= mIntervals[i].getMax()) {
+            // this interval is not totally subsumed so it is deleted partially
+            tempIntervals.emplace_back(
                 mIntervals[i].getMin(), interval.getMin() - 1);
         } else if (
-            mIntervals[i].getMin() > interval.getMin()
-            && mIntervals[i].getMax() > interval.getMax()) {
-            mIntervals.emplace_back(
+            interval.getMax() >= mIntervals[i].getMin()
+            && interval.getMax() <= mIntervals[i].getMax()) {
+            // this interval is not totally subsumed so it is deleted partially
+            tempIntervals.emplace_back(
                 interval.getMax() + 1, mIntervals[i].getMax());
         }
     }
+    mIntervals = tempIntervals;
     reduce();
 }
 
