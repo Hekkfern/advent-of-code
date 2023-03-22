@@ -1,5 +1,6 @@
 include(${CMAKE_SOURCE_DIR}/cmake/compiler_flags.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/cpp_standard.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/code_coverage.cmake)
 
 cmake_minimum_required(VERSION 3.20)
 
@@ -20,6 +21,7 @@ add_executable(
 set_cpp_standard(${_EXEC_NAME})
 set_compiler_flags(${_EXEC_NAME})
 set_vectorization_flags(${_EXEC_NAME})
+append_coverage_compiler_flags_to_target(${_EXEC_NAME})
 include(CTest)
 include(Catch)
 catch_discover_tests(${_EXEC_NAME})
