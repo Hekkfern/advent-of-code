@@ -36,11 +36,11 @@ PairInfo parseInputLine(const std::string& line)
 
 /**
  * @brief
- * @param[in,out] interval
+ * @param[in,out] multiInterval
  * @param[in] sensorBeaconPair
  */
 void fillNoBeaconInterval(
-    utils::interval::MultiInterval& interval,
+    utils::interval::MultiInterval& multiInterval,
     const PairInfo& pairInfo,
     const int32_t goalCoordY)
 {
@@ -52,14 +52,14 @@ void fillNoBeaconInterval(
     if (diffYAbs == distance) {
         // add just one value
         const int32_t coordX{ pairInfo.getSensorPosition().getX() };
-        interval.add(coordX);
+        multiInterval.add(coordX);
     } else if (diffYAbs < distance) {
         // add all the matching nodes
         const int32_t firstPosition{ pairInfo.getSensorPosition().getX()
                                      - (distance - diffYAbs) };
         const int32_t lastPosition{ pairInfo.getSensorPosition().getX()
                                     + (distance - diffYAbs) };
-        interval.add(Interval{ firstPosition, lastPosition });
+        multiInterval.add(Interval{ firstPosition, lastPosition });
     }
 }
 
@@ -80,13 +80,13 @@ std::string solvePart1(
         extParams.at("GoalCoordY")) };
     std::ifstream fileStream{ filename };
     std::string line;
-    utils::interval::MultiInterval interval;
+    utils::interval::MultiInterval multiInterval;
     while (std::getline(fileStream, line)) {
         auto pairInfo{ parseInputLine(line) };
-        fillNoBeaconInterval(interval, pairInfo, goalCoordY);
+        fillNoBeaconInterval(multiInterval, pairInfo, goalCoordY);
     }
     return std::to_string(ranges::accumulate(
-        interval.get(),
+        multiInterval.get(),
         0U,
         [](uint32_t sum, const utils::interval::Interval& interval) {
             return sum + interval.length();

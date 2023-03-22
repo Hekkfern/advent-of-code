@@ -120,32 +120,32 @@ void MultiInterval::remove(const int32_t value)
     }
 }
 
-void MultiInterval::remove(const Interval& interval)
+void MultiInterval::remove(const Interval& eraseInterval)
 {
     std::vector<Interval> tempIntervals;
     tempIntervals.reserve(mIntervals.size());
-    for (size_t i{ 0U }; i < mIntervals.size(); ++i) {
-        if (mIntervals[i].getMin() > interval.getMax()) {
+    for (const auto& innerInterval : mIntervals) {
+        if (innerInterval.getMin() > eraseInterval.getMax()) {
             break;
         }
-        if (mIntervals[i].subsumes(interval)) {
+        if (innerInterval.subsumes(eraseInterval)) {
             // this interval is split in half because of the erase
             tempIntervals.emplace_back(
-                mIntervals[i].getMin(), interval.getMin() - 1);
+                innerInterval.getMin(), eraseInterval.getMin() - 1);
             tempIntervals.emplace_back(
-                interval.getMax() + 1, mIntervals[i].getMax());
+                eraseInterval.getMax() + 1, innerInterval.getMax());
         } else if (
-            interval.getMin() >= mIntervals[i].getMin()
-            && interval.getMin() <= mIntervals[i].getMax()) {
+            eraseInterval.getMin() >= innerInterval.getMin()
+            && eraseInterval.getMin() <= innerInterval.getMax()) {
             // this interval is not totally subsumed so it is deleted partially
             tempIntervals.emplace_back(
-                mIntervals[i].getMin(), interval.getMin() - 1);
+                innerInterval.getMin(), eraseInterval.getMin() - 1);
         } else if (
-            interval.getMax() >= mIntervals[i].getMin()
-            && interval.getMax() <= mIntervals[i].getMax()) {
+            eraseInterval.getMax() >= innerInterval.getMin()
+            && eraseInterval.getMax() <= innerInterval.getMax()) {
             // this interval is not totally subsumed so it is deleted partially
             tempIntervals.emplace_back(
-                interval.getMax() + 1, mIntervals[i].getMax());
+                eraseInterval.getMax() + 1, innerInterval.getMax());
         }
     }
     mIntervals = tempIntervals;

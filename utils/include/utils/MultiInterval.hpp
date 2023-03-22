@@ -54,9 +54,9 @@ public:
     /**
      * @brief      Removes the specified interval.
      *
-     * @param[in]  interval  The interval to remove.
+     * @param[in]  eraseInterval  The interval to remove.
      */
-    void remove(const Interval& interval);
+    void remove(const Interval& eraseInterval);
     /**
      * @brief      Merges both intervals.
      *
