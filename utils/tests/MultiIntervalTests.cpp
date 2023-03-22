@@ -161,6 +161,18 @@ TEST_CASE(
 }
 
 TEST_CASE(
+    "[MultiInterval - remove] remove() removes values in several intervals",
+    "[MultiInterval, MultiInterval_remove]")
+{
+    MultiInterval interval1{ { { 1, 3 }, { 5, 6 }, { 8, 10 } } };
+    interval1.remove({ 2, 8 });
+    const auto result1{ interval1.get() };
+    REQUIRE(result1.size() == 2U);
+    CHECK(result1[0] == Interval{ 1, 1 });
+    CHECK(result1[1] == Interval{ 9, 10 });
+}
+
+TEST_CASE(
     "[MultiInterval - remove] remove() works with single-value intervals",
     "[MultiInterval, MultiInterval_remove]")
 {
