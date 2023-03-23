@@ -152,4 +152,14 @@ void MultiInterval::remove(const Interval& eraseInterval)
     reduce();
 }
 
+uint32_t MultiInterval::count() const
+{
+    return ranges::accumulate(
+        mIntervals,
+        0U,
+        [](uint32_t sum, const utils::interval::Interval& interval) {
+            return sum + interval.length();
+        });
+}
+
 } // namespace utils::interval

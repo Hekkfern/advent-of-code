@@ -183,3 +183,19 @@ TEST_CASE(
     CHECK(result1[0] == Interval{ 1, 3 });
     CHECK(result1[1] == Interval{ 5, 5 });
 }
+
+TEST_CASE(
+    "[MultiInterval - count] count() works with single-value intervals",
+    "[MultiInterval, MultiInterval_count]")
+{
+    MultiInterval interval1{ { { 1, 1 } } };
+    CHECK(interval1.count() == 1U);
+}
+
+TEST_CASE(
+    "[MultiInterval - count] count() works with multiple intervals",
+    "[MultiInterval, MultiInterval_count]")
+{
+    MultiInterval interval1{ { { 1, 2 }, { 5, 7 } } };
+    CHECK(interval1.count() == 5U);
+}

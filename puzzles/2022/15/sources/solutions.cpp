@@ -5,6 +5,7 @@
 #include <range/v3/all.hpp>
 #include <regex>
 #include <unordered_map>
+#include <unordered_set>
 #include <utils/Interval.hpp>
 #include <utils/MultiInterval.hpp>
 #include <utils/String.hpp>
@@ -81,16 +82,21 @@ std::string solvePart1(
     std::ifstream fileStream{ filename };
     std::string line;
     utils::interval::MultiInterval multiInterval;
+    std::unordered_set<Point2D> busyPositions;
     while (std::getline(fileStream, line)) {
         auto pairInfo{ parseInputLine(line) };
+        if (pairInfo.getSensorPosition().getY() == goalCoordY) {
+            busyPositions.emplace(pairInfo.getSensorPosition());
+        }
+        if (pairInfo.getBeaconPosition().getY() == goalCoordY) {
+            busyPositions.emplace(pairInfo.getBeaconPosition());
+        }
         fillNoBeaconInterval(multiInterval, pairInfo, goalCoordY);
     }
-    return std::to_string(ranges::accumulate(
-        multiInterval.get(),
-        0U,
-        [](uint32_t sum, const utils::interval::Interval& interval) {
-            return sum + interval.length();
-        }));
+    for (const auto& busyPosition : busyPositions) {
+        multiInterval.remove(busyPosition.getX());
+    }
+    return std::to_string(multiInterval.count());
 }
 
 std::string solvePart2(

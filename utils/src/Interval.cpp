@@ -20,7 +20,10 @@ Interval::Interval(const std::pair<int32_t, int32_t>& values)
 {
 }
 
-uint32_t Interval::length() const { return static_cast<uint32_t>(mMax - mMin); }
+uint32_t Interval::length() const
+{
+    return static_cast<uint32_t>(mMax - mMin) + 1U;
+}
 
 std::optional<Interval> Interval::join(const Interval& other) const
 {

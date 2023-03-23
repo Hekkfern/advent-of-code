@@ -109,6 +109,12 @@ public:
      * @return     True if the interval contains the value. False, otherwise.
      */
     bool contains(int32_t value) const;
+    /**
+     * @brief Gets the number of contained items.
+     *
+     * @return Total number of items.
+     */
+    uint32_t count() const;
 
 private:
     /**
