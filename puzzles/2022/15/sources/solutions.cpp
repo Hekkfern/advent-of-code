@@ -103,16 +103,14 @@ std::string solvePart2(
     const std::string& filename,
     std::unordered_map<std::string, std::any>&& extParams)
 {
-    //    const int32_t gridSize{
-    //    std::any_cast<int32_t>(extParams.at("GridSize")) }; std::ifstream
-    //    fileStream{ filename }; std::string line; while
-    //    (std::getline(fileStream, line)) {
-    //        auto pairInfo{ parseInputLine(line) };
-    //    }
-    //    return std::to_string(calculateTuningFrequency(1, 1));
-    (void)filename;
-    (void)extParams;
-    return "";
+    const int32_t gridSize{ std::any_cast<int32_t>(extParams.at("GridSize")) };
+    std::ifstream fileStream{ filename };
+    std::string line;
+    while (std::getline(fileStream, line)) {
+        auto pairInfo{ parseInputLine(line) };
+
+    }
+    return std::to_string(calculateTuningFrequency(1, 1));
 }
 
 // ---------- End of Public Methods ----------
