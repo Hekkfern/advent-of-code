@@ -41,7 +41,7 @@ PairInfo parseInputLine(const std::string& line)
  * @param[in] sensorBeaconPair
  */
 void fillNoBeaconInterval(
-    utils::interval::MultiInterval& multiInterval,
+    MultiInterval& multiInterval,
     const PairInfo& pairInfo,
     const int32_t goalCoordY)
 {
@@ -64,9 +64,17 @@ void fillNoBeaconInterval(
     }
 }
 
-uint32_t calculateTuningFrequency(int32_t x, int32_t y)
+void fillInterval(
+    const PairInfo& pairInfo,
+    std::vector<MultiInterval>& rowIntervals)
 {
-    return (4000000U * static_cast<uint32_t>(x)) + static_cast<uint32_t>(y);
+    // TODO
+}
+
+uint32_t calculateTuningFrequency(const Point2D& point)
+{
+    return (4000000U * static_cast<uint32_t>(point.getX()))
+        + static_cast<uint32_t>(point.getY());
 }
 
 // ---------- End of Private Methods ----------
@@ -81,7 +89,7 @@ std::string solvePart1(
         extParams.at("GoalCoordY")) };
     std::ifstream fileStream{ filename };
     std::string line;
-    utils::interval::MultiInterval multiInterval;
+    MultiInterval multiInterval;
     std::unordered_set<Point2D> busyPositions;
     while (std::getline(fileStream, line)) {
         auto pairInfo{ parseInputLine(line) };
@@ -103,14 +111,26 @@ std::string solvePart2(
     const std::string& filename,
     std::unordered_map<std::string, std::any>&& extParams)
 {
-    const int32_t gridSize{ std::any_cast<int32_t>(extParams.at("GridSize")) };
+    const uint32_t gridSize{ std::any_cast<uint32_t>(
+        extParams.at("GridSize")) };
     std::ifstream fileStream{ filename };
     std::string line;
+    std::vector<MultiInterval> rowIntervals(gridSize);
     while (std::getline(fileStream, line)) {
         auto pairInfo{ parseInputLine(line) };
-
+        fillInterval(pairInfo, rowIntervals);
     }
-    return std::to_string(calculateTuningFrequency(1, 1));
+    // look for the empty spot
+    Point2D emptySpot;
+    for (auto& rowInterval : rowIntervals) {
+        rowInterval = rowInterval.extract(0, gridSize);
+        if (rowInterval.count() < gridSize) {
+            // empty spot found
+            emptySpot = Point2D{ rowInterval.get()[0].getMax() + 1,
+                                 rowInterval.get()[1].getMin() - 1 };
+        }
+    }
+    return std::to_string(calculateTuningFrequency(emptySpot));
 }
 
 // ---------- End of Public Methods ----------

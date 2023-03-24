@@ -19,7 +19,7 @@ int main()
         });
     utils::aoc::printPart1Solution(solution1, part1ExecTime);
 
-    constexpr int32_t GridSize{ 4000000 };
+    constexpr uint32_t GridSize{ 4000000U };
 
     std::string solution2;
     const auto part2ExecTime = utils::time::calculateExecutionTime(
