@@ -64,10 +64,22 @@ void fillNoBeaconInterval(
     }
 }
 
-void fillInterval(
-    const PairInfo& pairInfo,
-    std::vector<MultiInterval>& rowIntervals)
+void addToGrid(
+    MultiInterval& multiInterval,
+    const int32_t value,
+    const int32_t amplitude,
+    const int32_t maximum)
 {
+    multiInterval.add(Interval{ std::clamp(value - amplitude, 0, maximum),
+                                std::clamp(value + amplitude, 0, maximum) });
+}
+
+void fillGrid(
+    const PairInfo& pairInfo,
+    std::vector<MultiInterval>& rowIntervals,
+    const uint32_t gridSize)
+{
+    const int32_t maxX{ static_cast<int32_t>(gridSize) };
     const int32_t initialRowIndex{ pairInfo.getSensorPosition().getY()
                                    - static_cast<int32_t>(
                                        pairInfo.getDistance()) };
@@ -77,25 +89,41 @@ void fillInterval(
                                      pairInfo.getDistance()) };
     for (int32_t rowIndex{ initialRowIndex }; rowIndex <= middleRowIndex;
          ++rowIndex) {
+        if (rowIndex < 0) {
+            continue;
+        }
+        if (rowIndex > maxX) {
+            break;
+        }
         const int32_t amplitude{ rowIndex - initialRowIndex };
-        rowIntervals[rowIndex].add(
-            Interval{ pairInfo.getSensorPosition().getX() - amplitude,
-                      pairInfo.getSensorPosition().getX() + amplitude });
+        addToGrid(
+            rowIntervals[rowIndex],
+            pairInfo.getSensorPosition().getX(),
+            amplitude,
+            maxX);
     }
     for (int32_t rowIndex{ middleRowIndex + 1 }; rowIndex <= finalRowIndex;
          ++rowIndex) {
+        if (rowIndex < 0) {
+            continue;
+        }
+        if (rowIndex > maxX) {
+            break;
+        }
         const int32_t amplitude{ static_cast<int32_t>(pairInfo.getDistance())
                                  - (rowIndex - middleRowIndex) };
-        rowIntervals[rowIndex].add(
-            Interval{ pairInfo.getSensorPosition().getX() - amplitude,
-                      pairInfo.getSensorPosition().getX() + amplitude });
+        addToGrid(
+            rowIntervals[rowIndex],
+            pairInfo.getSensorPosition().getX(),
+            amplitude,
+            maxX);
     }
 }
 
-uint32_t calculateTuningFrequency(const Point2D& point)
+uint32_t calculateTuningFrequency(const std::pair<int32_t, int32_t>& coords)
 {
-    return (4000000U * static_cast<uint32_t>(point.getX()))
-        + static_cast<uint32_t>(point.getY());
+    return (4000000U * static_cast<uint32_t>(coords.first))
+        + static_cast<uint32_t>(coords.second);
 }
 
 // ---------- End of Private Methods ----------
@@ -136,22 +164,25 @@ std::string solvePart2(
         extParams.at("GridSize")) };
     std::ifstream fileStream{ filename };
     std::string line;
-    std::vector<MultiInterval> rowIntervals(gridSize);
+    std::vector<MultiInterval> rowIntervals(gridSize + 1);
     while (std::getline(fileStream, line)) {
         auto pairInfo{ parseInputLine(line) };
-        fillInterval(pairInfo, rowIntervals);
+        fillGrid(pairInfo, rowIntervals, gridSize);
     }
     // look for the empty spot
-    Point2D emptySpot;
-    for (auto& rowInterval : rowIntervals) {
-        rowInterval = rowInterval.extract(0, gridSize);
-        if (rowInterval.count() < gridSize) {
+    std::pair<int32_t, int32_t> emptySpotCoords;
+    for (uint32_t rowIndex{ 0U }; rowIndex < rowIntervals.size(); ++rowIndex) {
+        // look for the only row that has two intervals (which means there is a
+        // gap, i.e., the empty spot)
+        if (rowIntervals[rowIndex].get().size() > 1) {
             // empty spot found
-            emptySpot = Point2D{ rowInterval.get()[0].getMax() + 1,
-                                 rowInterval.get()[1].getMin() - 1 };
+            int32_t coordY{ static_cast<int32_t>(rowIndex) };
+            int32_t coordX{ rowIntervals[rowIndex].get().at(0).getMax() + 1 };
+            emptySpotCoords = std::make_pair(coordX, coordY);
+            break;
         }
     }
-    return std::to_string(calculateTuningFrequency(emptySpot));
+    return std::to_string(calculateTuningFrequency(emptySpotCoords));
 }
 
 // ---------- End of Public Methods ----------

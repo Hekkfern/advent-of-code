@@ -28,7 +28,7 @@ TEST_CASE(
     "[2022, 2022_15, part2, 2022_15_part2]")
 {
     constexpr auto InputFile{ "input_test.txt" };
-    constexpr int32_t GridSize{ 4000000 };
+    constexpr uint32_t GridSize{ 20U };
 
     std::string mySolution = aoc_2022_15::solvePart2(
         InputFile, { { "GridSize", GridSize } });
@@ -59,7 +59,7 @@ TEST_CASE(
     "[2022, 2022_15, part1, 2022_15_part2]")
 {
     constexpr auto InputFile{ "input.txt" };
-    constexpr int32_t GridSize{ 4000000 };
+    constexpr uint32_t GridSize{ 4000000U };
 
     std::string mySolution = aoc_2022_15::solvePart2(
         InputFile, { { "GridSize", GridSize } });
