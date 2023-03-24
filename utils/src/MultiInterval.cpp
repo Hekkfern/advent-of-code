@@ -141,9 +141,6 @@ void MultiInterval::remove(const Interval& eraseInterval)
     std::vector<Interval> tempIntervals;
     tempIntervals.reserve(mIntervals.size());
     for (const auto& innerInterval : mIntervals) {
-        if (innerInterval.getMin() > eraseInterval.getMax()) {
-            break;
-        }
         if (innerInterval.subsumes(eraseInterval)) {
             // this interval is split in half because of the erase
             tempIntervals.emplace_back(
@@ -162,6 +159,8 @@ void MultiInterval::remove(const Interval& eraseInterval)
             // this interval is not totally subsumed so it is deleted partially
             tempIntervals.emplace_back(
                 eraseInterval.getMax() + 1, innerInterval.getMax());
+        } else if (!eraseInterval.subsumes(innerInterval)){
+            tempIntervals.emplace_back(innerInterval);
         }
     }
     mIntervals = tempIntervals;

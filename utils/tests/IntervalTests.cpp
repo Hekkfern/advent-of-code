@@ -5,13 +5,21 @@
 using namespace utils::interval;
 
 TEST_CASE(
-    "[Interval - getters] Getters return correct values",
+    "[Interval - getters] Getters return correct values when the range "
+    "has positive values only",
     "[Interval, Interval_getters]")
 {
     const Interval interval1{ 2, 3 };
     CHECK(interval1.getMin() == 2);
     CHECK(interval1.getMax() == 3);
     CHECK(interval1.get() == std::make_pair(2, 3));
+}
+
+TEST_CASE(
+    "[Interval - getters] Getters return correct values when the range "
+    "has positive and negative values",
+    "[Interval, Interval_getters]")
+{
     const Interval interval2{ -3, 1 };
     CHECK(interval2.getMin() == -3);
     CHECK(interval2.getMax() == 1);
@@ -27,13 +35,21 @@ TEST_CASE(
 }
 
 TEST_CASE(
-    "[Interval - length] length() method returns correct values",
+    "[Interval - length] length() method returns correct values when the range "
+    "has positive values only",
     "[Interval, Interval_length]")
 {
     const Interval interval1{ 2, 3 };
-    CHECK(interval1.length() == 1U);
+    CHECK(interval1.length() == 2U);
+}
+
+TEST_CASE(
+    "[Interval - length] length() method returns correct values when the range "
+    "has positive and negative values",
+    "[Interval, Interval_length]")
+{
     const Interval interval2{ -3, 1 };
-    CHECK(interval2.length() == 4U);
+    CHECK(interval2.length() == 5U);
 }
 
 TEST_CASE(
