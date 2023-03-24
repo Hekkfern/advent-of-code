@@ -68,7 +68,28 @@ void fillInterval(
     const PairInfo& pairInfo,
     std::vector<MultiInterval>& rowIntervals)
 {
-    // TODO
+    const int32_t initialRowIndex{ pairInfo.getSensorPosition().getY()
+                                   - static_cast<int32_t>(
+                                       pairInfo.getDistance()) };
+    const int32_t middleRowIndex{ pairInfo.getSensorPosition().getY() };
+    const int32_t finalRowIndex{ pairInfo.getSensorPosition().getY()
+                                 + static_cast<int32_t>(
+                                     pairInfo.getDistance()) };
+    for (int32_t rowIndex{ initialRowIndex }; rowIndex <= middleRowIndex;
+         ++rowIndex) {
+        const int32_t amplitude{ rowIndex - initialRowIndex };
+        rowIntervals[rowIndex].add(
+            Interval{ pairInfo.getSensorPosition().getX() - amplitude,
+                      pairInfo.getSensorPosition().getX() + amplitude });
+    }
+    for (int32_t rowIndex{ middleRowIndex + 1 }; rowIndex <= finalRowIndex;
+         ++rowIndex) {
+        const int32_t amplitude{ static_cast<int32_t>(pairInfo.getDistance())
+                                 - (rowIndex - middleRowIndex) };
+        rowIntervals[rowIndex].add(
+            Interval{ pairInfo.getSensorPosition().getX() - amplitude,
+                      pairInfo.getSensorPosition().getX() + amplitude });
+    }
 }
 
 uint32_t calculateTuningFrequency(const Point2D& point)
