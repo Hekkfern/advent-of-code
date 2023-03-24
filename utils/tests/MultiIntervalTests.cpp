@@ -199,3 +199,15 @@ TEST_CASE(
     MultiInterval interval1{ { { 1, 2 }, { 5, 7 } } };
     CHECK(interval1.count() == 5U);
 }
+
+TEST_CASE(
+    "[MultiInterval - extract] extract() works with multiple intervals",
+    "[MultiInterval, MultiInterval_count]")
+{
+    MultiInterval interval1{ { { 1, 2 }, { 5, 7 } } };
+    MultiInterval interval2{ interval1.extract(2, 5) };
+    const auto result1{ interval2.get() };
+    REQUIRE(result1.size() == 2U);
+    CHECK(result1[0] == Interval{ 2, 2 });
+    CHECK(result1[1] == Interval{ 5, 5 });
+}

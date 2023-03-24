@@ -16,11 +16,17 @@ public:
      */
     MultiInterval() = default;
     /**
-     * @brief      Constructs a new instance from some intervals
+     * @brief      Move constructor
      *
      * @param[in]  intervals  The intervals.
      */
     explicit MultiInterval(std::vector<Interval>&& intervals);
+    /**
+     * @brief      Copy constructor
+     *
+     * @param[in]  intervals  The intervals.
+     */
+    explicit MultiInterval(const std::vector<Interval>& intervals);
     /**
      * @brief      Gets the intervals.
      *
@@ -110,11 +116,21 @@ public:
      */
     bool contains(int32_t value) const;
     /**
-     * @brief Gets the number of contained items.
+     * @brief      Gets the number of contained items.
      *
-     * @return Total number of items.
+     * @return     Total number of items.
      */
     uint32_t count() const;
+    /**
+     * @brief      Extracts a sub interval contained between the selected
+     *             values.
+     *
+     * @param[in]  min   The minimum value of the range to extract from.
+     * @param[in]  max   The maximum value of the range to extract from.
+     *
+     * @return     A sub interval.
+     */
+    MultiInterval extract(int32_t min, int32_t max) const;
 
 private:
     /**

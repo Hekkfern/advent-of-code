@@ -11,6 +11,12 @@ MultiInterval::MultiInterval(std::vector<Interval>&& intervals)
     reduce();
 }
 
+MultiInterval::MultiInterval(const std::vector<Interval>& intervals)
+    : mIntervals{ intervals }
+{
+    reduce();
+}
+
 const std::vector<Interval>& MultiInterval::get() const { return mIntervals; }
 
 void MultiInterval::add(const Interval& interval)
@@ -68,6 +74,16 @@ bool MultiInterval::overlaps(const Interval& other) const
         mIntervals, [&other](const Interval& interval) -> bool {
             return interval.overlaps(other);
         });
+}
+
+MultiInterval MultiInterval::extract(const int32_t min, const int32_t max) const
+{
+    MultiInterval resultInterval{ mIntervals };
+    resultInterval.remove(
+        Interval{ std::numeric_limits<int32_t>::min(), min - 1 });
+    resultInterval.remove(
+        Interval{ max + 1, std::numeric_limits<int32_t>::max() });
+    return resultInterval;
 }
 
 void MultiInterval::reduce()
@@ -157,7 +173,7 @@ uint32_t MultiInterval::count() const
     return ranges::accumulate(
         mIntervals,
         0U,
-        [](uint32_t sum, const utils::interval::Interval& interval) {
+        [](const uint32_t sum, const utils::interval::Interval& interval) {
             return sum + interval.length();
         });
 }
