@@ -185,6 +185,20 @@ TEST_CASE(
 }
 
 TEST_CASE(
+    "[MultiInterval - remove] remove() keeps intervals that are not contained "
+    "in the erase interval",
+    "[MultiInterval, MultiInterval_remove]")
+{
+    MultiInterval interval1{ { { 1, 5 }, { 7, 9 } } };
+    interval1.remove({ 4, 4 });
+    const auto result1{ interval1.get() };
+    REQUIRE(result1.size() == 3U);
+    CHECK(result1[0] == Interval{ 1, 3 });
+    CHECK(result1[1] == Interval{ 5, 5 });
+    CHECK(result1[2] == Interval{ 7, 9 });
+}
+
+TEST_CASE(
     "[MultiInterval - count] count() works with single-value intervals",
     "[MultiInterval, MultiInterval_count]")
 {
