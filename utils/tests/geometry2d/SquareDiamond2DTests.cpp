@@ -12,3 +12,33 @@ TEST_CASE(
     CHECK(shape.getCenter().getCoordinates() == std::make_pair(10, 10));
     CHECK(shape.getDistance() == 2);
 }
+
+TEST_CASE(
+    "[SquareDiamond2D - getVertexes] getVertexes() returns correct values",
+    "[SquareDiamond2D, SquareDiamond2D_getVertexes]")
+{
+    const SquareDiamond2D shape{ { 10, 10 }, 2 };
+    const auto vertexes{ shape.getVertexes() };
+    CHECK(vertexes[0] == (Point2D{ 10, 12 }));
+    CHECK(vertexes[1] == (Point2D{ 12, 10 }));
+    CHECK(vertexes[2] == (Point2D{ 10, 8 }));
+    CHECK(vertexes[3] == (Point2D{ 8, 10 }));
+}
+
+TEST_CASE(
+    "[SquareDiamond2D - isOutside] isOutside() returns true when the point is "
+    "outside",
+    "[SquareDiamond2D, SquareDiamond2D_isOutside]")
+{
+    const SquareDiamond2D shape{ { 10, 10 }, 2 };
+    CHECK(shape.isOutside(Point2D{ 2, 2 }));
+}
+
+TEST_CASE(
+    "[SquareDiamond2D - isOutside] isOutside() returns false when the point is "
+    "in the perimeter",
+    "[SquareDiamond2D, SquareDiamond2D_isOutside]")
+{
+    const SquareDiamond2D shape{ { 10, 10 }, 2 };
+    CHECK_FALSE(shape.isOutside(Point2D{ 8, 10 }));
+}

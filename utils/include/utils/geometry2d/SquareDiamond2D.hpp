@@ -14,7 +14,7 @@ public:
     static constexpr uint32_t NumberOfVertexes{ 4U };
 
     SquareDiamond2D(const Point2D& centerPoint, const Point2D& perimeterPoint);
-    SquareDiamond2D(const Point2D& centerPoint, const uint32_t distance);
+    SquareDiamond2D(const Point2D& centerPoint, uint32_t distance);
     const Point2D& getCenter() const;
     std::vector<Point2D> getVertexes() const override;
     uint32_t getDistance() const;
