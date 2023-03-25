@@ -9,14 +9,12 @@ Rectangle2D::Rectangle2D(
     const utils::geometry2d::Point2D& bottomLeft,
     size_t width,
     size_t height)
-    : mPoints{ { bottomLeft,
-                 Point2D{ bottomLeft }
-                     + Vector2D{ static_cast<int32_t>(width), 0 },
-                 Point2D{ bottomLeft }
-                     + Vector2D{ static_cast<int32_t>(width),
-                                 static_cast<int32_t>(height) },
-                 Point2D{ bottomLeft }
-                     + Vector2D{ 0, static_cast<int32_t>(height) } } }
+    : mVertexes{ { bottomLeft,
+                   bottomLeft + Vector2D{ static_cast<int32_t>(width), 0 },
+                   bottomLeft
+                       + Vector2D{ static_cast<int32_t>(width),
+                                   static_cast<int32_t>(height) },
+                   bottomLeft + Vector2D{ 0, static_cast<int32_t>(height) } } }
     , mWidth{ width }
     , mHeight{ height }
 {
@@ -44,31 +42,39 @@ uint32_t Rectangle2D::area() const
     return static_cast<uint32_t>(mWidth * mHeight);
 }
 
-bool Rectangle2D::isOutside(const Point2D& other) const
+bool Rectangle2D::isOutside(const Point2D& point) const
 {
-    return !isInside(other);
+    return !isInside(point);
 }
 
-bool Rectangle2D::isInPerimeter(const Point2D& other) const
+bool Rectangle2D::isInPerimeter(const Point2D& point) const
 {
-    const Vector2D v1{ getBottomLeftPoint(), other };
-    const Vector2D v2{ getTopRightPoint(), other };
+    const Vector2D v1{ getBottomLeftPoint(), point };
+    const Vector2D v2{ getTopRightPoint(), point };
     return v1.isVertical() || v1.isHorizontal() || v2.isVertical()
         || v2.isHorizontal();
 }
 
-bool Rectangle2D::isInside(const Point2D& other) const
+bool Rectangle2D::isInside(const Point2D& point) const
 {
     const auto& bottomLeft{ getBottomLeftPoint() };
     const auto& topRight{ getTopRightPoint() };
-    return (bottomLeft.getX() <= other.getX())
-        && (other.getX() <= topRight.getX())
-        && (bottomLeft.getY() <= other.getY())
-        && (other.getY() <= topRight.getY());
+    return (bottomLeft.getX() <= point.getX())
+        && (point.getX() <= topRight.getX())
+        && (bottomLeft.getY() <= point.getY())
+        && (point.getY() <= topRight.getY());
 }
 
-const Point2D& Rectangle2D::getBottomLeftPoint() const { return mPoints.at(0); }
+const Point2D& Rectangle2D::getBottomLeftPoint() const
+{
+    return mVertexes.at(0);
+}
 
-const Point2D& Rectangle2D::getTopRightPoint() const { return mPoints.at(2); }
+const Point2D& Rectangle2D::getTopRightPoint() const { return mVertexes.at(2); }
+
+std::vector<Point2D> Rectangle2D::getVertexes() const
+{
+    return { std::begin(mVertexes), std::end(mVertexes) };
+}
 
 } // namespace utils::geometry2d

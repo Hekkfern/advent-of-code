@@ -1,6 +1,6 @@
 #include "solutions.hpp"
 
-#include "PairInfo.hpp"
+#include "SensorInfo.hpp"
 #include <fstream>
 #include <range/v3/all.hpp>
 #include <regex>
@@ -18,7 +18,7 @@ using namespace utils::interval;
 
 // ---------- Private Methods ----------
 
-PairInfo parseInputLine(const std::string& line)
+SensorInfo parseInputLine(const std::string& line)
 {
     std::smatch regexResult;
     constexpr auto Pattern{
@@ -27,7 +27,7 @@ PairInfo parseInputLine(const std::string& line)
     if (!std::regex_match(line, regexResult, std::regex(Pattern))) {
         throw std::logic_error("Regex failed in parsing the line");
     }
-    return PairInfo{
+    return SensorInfo{
         Point2D{ utils::string::toNumber<int32_t>(regexResult[1]),
                  utils::string::toNumber<int32_t>(regexResult[2]) },
         Point2D{ utils::string::toNumber<int32_t>(regexResult[3]),
@@ -40,9 +40,9 @@ PairInfo parseInputLine(const std::string& line)
  * @param[in,out] multiInterval
  * @param[in] sensorBeaconPair
  */
-void fillNoBeaconInterval(
+void fillNoBeaconIntervalAtCoordY(
     MultiInterval& multiInterval,
-    const PairInfo& pairInfo,
+    const SensorInfo& pairInfo,
     const int32_t goalCoordY)
 {
     // add all the positions covered by the sensor in the coordinate Y to
@@ -64,66 +64,18 @@ void fillNoBeaconInterval(
     }
 }
 
-void addToGrid(
-    MultiInterval& multiInterval,
-    const int32_t value,
-    const int32_t amplitude,
-    const int32_t maximum)
+uint32_t calculateTuningFrequency(const int32_t x, const int32_t y)
 {
-    multiInterval.add(Interval{ std::clamp(value - amplitude, 0, maximum),
-                                std::clamp(value + amplitude, 0, maximum) });
+    return (4000000U * static_cast<uint32_t>(x)) + static_cast<uint32_t>(y);
 }
 
-void fillGrid(
-    const PairInfo& pairInfo,
-    std::vector<MultiInterval>& rowIntervals,
-    const uint32_t gridSize)
+bool isHavingBeaconPossible(
+    const std::vector<SensorInfo>& sensorList,
+    const Point2D& testPoint)
 {
-    const int32_t maxX{ static_cast<int32_t>(gridSize) };
-    const int32_t initialRowIndex{ pairInfo.getSensorPosition().getY()
-                                   - static_cast<int32_t>(
-                                       pairInfo.getDistance()) };
-    const int32_t middleRowIndex{ pairInfo.getSensorPosition().getY() };
-    const int32_t finalRowIndex{ pairInfo.getSensorPosition().getY()
-                                 + static_cast<int32_t>(
-                                     pairInfo.getDistance()) };
-    for (int32_t rowIndex{ initialRowIndex }; rowIndex <= middleRowIndex;
-         ++rowIndex) {
-        if (rowIndex < 0) {
-            continue;
-        }
-        if (rowIndex > maxX) {
-            break;
-        }
-        const int32_t amplitude{ rowIndex - initialRowIndex };
-        addToGrid(
-            rowIntervals[rowIndex],
-            pairInfo.getSensorPosition().getX(),
-            amplitude,
-            maxX);
-    }
-    for (int32_t rowIndex{ middleRowIndex + 1 }; rowIndex <= finalRowIndex;
-         ++rowIndex) {
-        if (rowIndex < 0) {
-            continue;
-        }
-        if (rowIndex > maxX) {
-            break;
-        }
-        const int32_t amplitude{ static_cast<int32_t>(pairInfo.getDistance())
-                                 - (rowIndex - middleRowIndex) };
-        addToGrid(
-            rowIntervals[rowIndex],
-            pairInfo.getSensorPosition().getX(),
-            amplitude,
-            maxX);
-    }
-}
-
-uint32_t calculateTuningFrequency(const std::pair<int32_t, int32_t>& coords)
-{
-    return (4000000U * static_cast<uint32_t>(coords.first))
-        + static_cast<uint32_t>(coords.second);
+    return ranges::any_of(sensorList, [&testPoint](const SensorInfo& sensor) {
+        return sensor.hasBeaconAt(testPoint) || sensor.isCovered(testPoint);
+    });
 }
 
 // ---------- End of Private Methods ----------
@@ -148,7 +100,7 @@ std::string solvePart1(
         if (pairInfo.getBeaconPosition().getY() == goalCoordY) {
             busyPositions.emplace(pairInfo.getBeaconPosition());
         }
-        fillNoBeaconInterval(multiInterval, pairInfo, goalCoordY);
+        fillNoBeaconIntervalAtCoordY(multiInterval, pairInfo, goalCoordY);
     }
     for (const auto& busyPosition : busyPositions) {
         multiInterval.remove(busyPosition.getX());
@@ -164,25 +116,14 @@ std::string solvePart2(
         extParams.at("GridSize")) };
     std::ifstream fileStream{ filename };
     std::string line;
-    std::vector<MultiInterval> rowIntervals(gridSize + 1);
+    std::pair<int32_t, int32_t> emptySpotCoords;
     while (std::getline(fileStream, line)) {
         auto pairInfo{ parseInputLine(line) };
-        fillGrid(pairInfo, rowIntervals, gridSize);
+
+        // TODO
     }
-    // look for the empty spot
-    std::pair<int32_t, int32_t> emptySpotCoords;
-    for (uint32_t rowIndex{ 0U }; rowIndex < rowIntervals.size(); ++rowIndex) {
-        // look for the only row that has two intervals (which means there is a
-        // gap, i.e., the empty spot)
-        if (rowIntervals[rowIndex].get().size() > 1) {
-            // empty spot found
-            int32_t coordY{ static_cast<int32_t>(rowIndex) };
-            int32_t coordX{ rowIntervals[rowIndex].get().at(0).getMax() + 1 };
-            emptySpotCoords = std::make_pair(coordX, coordY);
-            break;
-        }
-    }
-    return std::to_string(calculateTuningFrequency(emptySpotCoords));
+    return std::to_string(calculateTuningFrequency(
+        emptySpotCoords.first, emptySpotCoords.second));
 }
 
 // ---------- End of Public Methods ----------
