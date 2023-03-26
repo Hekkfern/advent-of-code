@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <optional>
 #include <utils/geometry2d/Point2D.hpp>
-#include <utils/geometry2d/Vector2D.hpp>
+#include <utils/geometry2d/SquareDiamond2D.hpp>
 
 namespace aoc_2022_15 {
 
@@ -24,7 +24,7 @@ private:
     const utils::geometry2d::Point2D mSensorPosition;
     const utils::geometry2d::Point2D mBeaconPosition;
     const uint32_t mDistance;
-    std::optional<utils::geometry2d::Point2D> mLastPerimeterPosition;
+    utils::geometry2d::SquareDiamond2D mSquareDiamond2D;
 };
 
 } // namespace aoc_2022_15

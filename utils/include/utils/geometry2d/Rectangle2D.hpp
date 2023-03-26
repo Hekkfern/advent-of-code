@@ -12,7 +12,6 @@ namespace utils::geometry2d {
 class Rectangle2D : public IShape2D {
 public:
     static constexpr uint32_t NumberOfVertexes{ 4U };
-    static constexpr uint32_t NumberOfEdges{ NumberOfVertexes };
 
     Rectangle2D(const Point2D& bottomLeft, const Point2D& topRight);
     explicit Rectangle2D(

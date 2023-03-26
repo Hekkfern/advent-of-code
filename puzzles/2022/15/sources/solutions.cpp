@@ -78,6 +78,31 @@ bool isHavingBeaconPossible(
     });
 }
 
+Point2D searchSpace(
+    const std::vector<SensorInfo>& sensorList,
+    const uint32_t gridSize)
+{
+    for (const auto& sensor : sensorList) {
+        auto currentPosition{ sensor.stepAroundPerimeter() };
+        while (currentPosition) {
+            const auto& [currentPositionCoordX, currentPositionCoordY]
+                = currentPosition->getCoordinates();
+            if ((currentPositionCoordX >= 0)
+                && (currentPositionCoordX <= static_cast<int32_t>(gridSize))
+                && (currentPositionCoordY >= 0)
+                && (currentPositionCoordY <= static_cast<int32_t>(gridSize))) {
+                if (!isHavingBeaconPossible(sensorList, *currentPosition)) {
+                    return *currentPosition;
+                }
+            }
+
+            currentPosition = sensor.stepAroundPerimeter();
+        }
+    }
+
+    return Point2D{};
+}
+
 // ---------- End of Private Methods ----------
 
 // ---------- Public Methods ----------
@@ -116,14 +141,13 @@ std::string solvePart2(
         extParams.at("GridSize")) };
     std::ifstream fileStream{ filename };
     std::string line;
-    std::pair<int32_t, int32_t> emptySpotCoords;
+    std::vector<SensorInfo> sensorList;
     while (std::getline(fileStream, line)) {
-        auto pairInfo{ parseInputLine(line) };
-
-        // TODO
+        sensorList.emplace_back(parseInputLine(line));
     }
-    return std::to_string(calculateTuningFrequency(
-        emptySpotCoords.first, emptySpotCoords.second));
+    const Point2D emptySpot{ searchSpace(sensorList, gridSize) };
+    return std::to_string(
+        calculateTuningFrequency(emptySpot.getX(), emptySpot.getY()));
 }
 
 // ---------- End of Public Methods ----------
