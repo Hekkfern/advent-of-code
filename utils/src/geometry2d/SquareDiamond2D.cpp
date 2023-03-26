@@ -94,7 +94,8 @@ std::vector<Point2D> SquareDiamond2D::getVertexes() const
 
 uint32_t SquareDiamond2D::area() const
 {
-    return (mDistance * mDistance / 2) + 1U;
+    const uint32_t diagonalLength{ 2 * mDistance + 1U };
+    return (diagonalLength * diagonalLength / 2) + 1U;
 }
 
 } // namespace utils::geometry2d
