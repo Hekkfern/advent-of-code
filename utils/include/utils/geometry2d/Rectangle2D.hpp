@@ -24,6 +24,8 @@ public:
     bool isInside(const Point2D& point) const override;
     bool isInPerimeter(const Point2D& point) const override;
     std::vector<Point2D> getVertexes() const override;
+    uint32_t getWidth() const;
+    uint32_t getHeight() const;
 
 private:
     const Point2D& getBottomLeftPoint() const;

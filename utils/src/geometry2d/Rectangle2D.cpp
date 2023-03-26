@@ -77,4 +77,8 @@ std::vector<Point2D> Rectangle2D::getVertexes() const
     return { std::begin(mVertexes), std::end(mVertexes) };
 }
 
+uint32_t Rectangle2D::getWidth() const { return mWidth; }
+
+uint32_t Rectangle2D::getHeight() const { return mHeight; }
+
 } // namespace utils::geometry2d
