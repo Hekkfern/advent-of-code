@@ -39,6 +39,8 @@ public:
     }
 
 private:
+    friend std::ostream& operator<<(std::ostream& os, const Point2D& point2d);
+
     int32_t mX = 0U;
     int32_t mY = 0U;
 };
@@ -56,6 +58,8 @@ Point2D operator+(const Vector2D& vector2d, const Point2D& point2d);
 Point2D operator+(const Point2D& point2d, const Direction2D& direction2D);
 
 Point2D operator+(const Direction2D& direction2D, const Point2D& point2d);
+
+std::ostream& operator<<(std::ostream& os, const Point2D& point2d);
 
 } // namespace utils::geometry2d
 

@@ -3,6 +3,7 @@
 #include "geometry2d/Point2D.hpp"
 #include <algorithm>
 #include <cstdlib>
+#include <iostream>
 
 namespace utils::geometry2d {
 
@@ -96,6 +97,12 @@ Vector2D operator*(const Vector2D& vector2D, const int32_t n)
 Vector2D operator*(const int32_t n, const Vector2D& vector2D)
 {
     return vector2D * n;
+}
+
+std::ostream& operator<<(std::ostream& os, const Vector2D& vector2D)
+{
+    os << '(' << vector2D.mX << ',' << vector2D.mY << ')';
+    return os;
 }
 
 } // namespace utils::geometry2d

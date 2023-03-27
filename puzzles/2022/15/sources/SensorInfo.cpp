@@ -22,7 +22,7 @@ const Point2D& SensorInfo::getSensorPosition() const { return mSensorPosition; }
 
 const Point2D& SensorInfo::getBeaconPosition() const { return mBeaconPosition; }
 
-std::optional<Point2D> SensorInfo::stepAroundOutside() const noexcept
+std::optional<Point2D> SensorInfo::stepAroundOutside()
 {
     return mSquareDiamond2D.stepAroundOutside();
 }

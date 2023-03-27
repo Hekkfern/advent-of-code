@@ -31,9 +31,9 @@ private:
     const Point2D& getBottomLeftPoint() const;
     const Point2D& getTopRightPoint() const;
 
-    const std::array<Point2D, NumberOfVertexes> mVertexes;
-    const uint32_t mWidth;
-    const uint32_t mHeight;
+    std::array<Point2D, NumberOfVertexes> mVertexes;
+    uint32_t mWidth;
+    uint32_t mHeight;
 };
 
 } // namespace utils::geometry2d

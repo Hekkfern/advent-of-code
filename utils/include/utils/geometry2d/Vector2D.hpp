@@ -40,6 +40,8 @@ public:
     }
 
 private:
+    friend std::ostream& operator<<(std::ostream& os, const Vector2D& vector2D);
+
     int32_t mX = 0;
     int32_t mY = 0;
 };
@@ -47,6 +49,8 @@ private:
 Vector2D operator*(const Vector2D& vector2D, const int32_t real);
 
 Vector2D operator*(const int32_t real, const Vector2D& vector2D);
+
+std::ostream& operator<<(std::ostream& os, const Vector2D& vector2D);
 
 } // namespace utils::geometry2d
 

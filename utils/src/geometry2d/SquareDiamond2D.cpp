@@ -29,48 +29,52 @@ uint32_t SquareDiamond2D::getDistance() const { return mDistance; }
 
 const Point2D& SquareDiamond2D::getCenter() const { return mCenter; }
 
-std::optional<Point2D> SquareDiamond2D::stepAroundOutside() const noexcept
+std::optional<Point2D> SquareDiamond2D::stepAroundOutside()
 {
+    std::optional<Point2D> nextPoint;
     const auto& [centerCoordX, centerCoordY] = mCenter.getCoordinates();
     if (!mLastPerimeterPosition) {
         // First step around the perimeter, start on top
-        return std::make_optional<Point2D>(
+        nextPoint = std::make_optional<Point2D>(
             centerCoordX, (centerCoordY + static_cast<int32_t>(mDistance) + 1));
-    }
-
-    const auto& [lastPositionCoordX, lastPositionCoordY]
-        = mLastPerimeterPosition->getCoordinates();
-    if ((lastPositionCoordY < centerCoordY)
-        && (lastPositionCoordX >= centerCoordX)) {
-        return std::make_optional<Point2D>(
-            lastPositionCoordX + 1,
-            lastPositionCoordY - 1); // upper right, downwards
-    } else if (
-        (lastPositionCoordY >= centerCoordY)
-        && (lastPositionCoordX > centerCoordX)) {
-        return std::make_optional<Point2D>(
-            lastPositionCoordX - 1,
-            lastPositionCoordY - 1); // lower right, downwards
-    } else if (
-        (lastPositionCoordY > centerCoordY)
-        && (lastPositionCoordX <= centerCoordX)) {
-        return std::make_optional<Point2D>(
-            lastPositionCoordX - 1,
-            lastPositionCoordY + 1); // lower left, upwards
-    } else if (
-        (lastPositionCoordY <= centerCoordY)
-        && (lastPositionCoordX < centerCoordX)) {
-        if ((lastPositionCoordX + 1) == centerCoordX) {
-            return std::nullopt; // circumference completed
-        } else {
-            return std::make_optional<Point2D>(
-                lastPositionCoordX + 1,
-                lastPositionCoordY + 1); // upper left, upwards
-        }
     } else {
-        assert(false);
-        return std::nullopt;
+        const auto& [lastPositionCoordX, lastPositionCoordY]
+            = mLastPerimeterPosition->getCoordinates();
+        if ((lastPositionCoordY > centerCoordY)
+            && (lastPositionCoordX >= centerCoordX)) {
+            // upper right quadrant. go downwards
+            nextPoint = std::make_optional<Point2D>(
+                lastPositionCoordX + 1, lastPositionCoordY - 1);
+        } else if (
+            (lastPositionCoordY <= centerCoordY)
+            && (lastPositionCoordX > centerCoordX)) {
+            // lower right quadrant. go downwards
+            nextPoint = std::make_optional<Point2D>(
+                lastPositionCoordX - 1, lastPositionCoordY - 1);
+        } else if (
+            (lastPositionCoordY < centerCoordY)
+            && (lastPositionCoordX <= centerCoordX)) {
+            // lower left quadrant. go upwards
+            nextPoint = std::make_optional<Point2D>(
+                lastPositionCoordX - 1, lastPositionCoordY + 1);
+        } else if (
+            (lastPositionCoordY >= centerCoordY)
+            && (lastPositionCoordX < centerCoordX)) {
+            if ((lastPositionCoordX + 1) == centerCoordX) {
+                // circumference completed
+                nextPoint = std::nullopt;
+            } else {
+                // upper left quadrant. go upwards
+                nextPoint = std::make_optional<Point2D>(
+                    lastPositionCoordX + 1, lastPositionCoordY + 1);
+            }
+        } else {
+            assert(false);
+            return std::nullopt;
+        }
     }
+    mLastPerimeterPosition = nextPoint;
+    return nextPoint;
 }
 
 bool SquareDiamond2D::isOutside(const Point2D& point) const

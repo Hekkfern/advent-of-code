@@ -2,6 +2,7 @@
 
 #include "geometry2d/Direction2D.hpp"
 #include "geometry2d/Vector2D.hpp"
+#include <iostream>
 
 namespace utils::geometry2d {
 
@@ -82,6 +83,12 @@ Point2D operator+(const Point2D& point2d, const Direction2D& direction2D)
 Point2D operator+(const Direction2D& direction2D, const Point2D& point2d)
 {
     return point2d + direction2D;
+}
+
+std::ostream& operator<<(std::ostream& os, const Point2D& point2d)
+{
+    os << '(' << point2d.mX << ',' << point2d.mY << ')';
+    return os;
 }
 
 } // namespace utils::geometry2d

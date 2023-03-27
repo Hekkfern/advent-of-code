@@ -113,3 +113,42 @@ TEST_CASE(
     const SquareDiamond2D shape{ { 10, 10 }, 2 };
     CHECK(shape.area() == 13U);
 }
+
+TEST_CASE(
+    "[SquareDiamond2D - stepAroundOutside] stepAroundOutside() returns the "
+    "correct value",
+    "[SquareDiamond2D, SquareDiamond2D_stepAroundOutside]")
+{
+    SquareDiamond2D shape{ { 10, 10 }, 2 };
+    // start from top
+    auto point{ shape.stepAroundOutside() };
+    REQUIRE(*point == Point2D{ 10, 13 });
+    // from top to right
+    point = shape.stepAroundOutside();
+    REQUIRE(*point == Point2D{ 11, 12 });
+    point = shape.stepAroundOutside();
+    REQUIRE(*point == Point2D{ 12, 11 });
+    point = shape.stepAroundOutside();
+    REQUIRE(*point == Point2D{ 13, 10 });
+    // from right to bottom
+    point = shape.stepAroundOutside();
+    REQUIRE(*point == Point2D{ 12, 9 });
+    point = shape.stepAroundOutside();
+    REQUIRE(*point == Point2D{ 11, 8 });
+    point = shape.stepAroundOutside();
+    REQUIRE(*point == Point2D{ 10, 7 });
+    // from bottom to left
+    point = shape.stepAroundOutside();
+    REQUIRE(*point == Point2D{ 9, 8 });
+    point = shape.stepAroundOutside();
+    REQUIRE(*point == Point2D{ 8, 9 });
+    point = shape.stepAroundOutside();
+    REQUIRE(*point == Point2D{ 7, 10 });
+    // from right to top
+    point = shape.stepAroundOutside();
+    REQUIRE(*point == Point2D{ 8, 11 });
+    point = shape.stepAroundOutside();
+    REQUIRE(*point == Point2D{ 9, 12 });
+    point = shape.stepAroundOutside();
+    REQUIRE_FALSE(point);
+}

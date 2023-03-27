@@ -18,15 +18,15 @@ public:
     const Point2D& getCenter() const;
     std::vector<Point2D> getVertexes() const override;
     uint32_t getDistance() const;
-    std::optional<Point2D> stepAroundOutside() const noexcept;
+    std::optional<Point2D> stepAroundOutside();
     bool isOutside(const Point2D& point) const override;
     bool isInside(const Point2D& point) const override;
     bool isInPerimeter(const Point2D& point) const override;
     uint32_t area() const override;
 
 private:
-    const Point2D mCenter;
-    const uint32_t mDistance;
+    Point2D mCenter;
+    uint32_t mDistance;
     std::array<Point2D, NumberOfVertexes> mVertexes;
     std::optional<Point2D> mLastPerimeterPosition{};
 };
