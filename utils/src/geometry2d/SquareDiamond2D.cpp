@@ -29,13 +29,13 @@ uint32_t SquareDiamond2D::getDistance() const { return mDistance; }
 
 const Point2D& SquareDiamond2D::getCenter() const { return mCenter; }
 
-std::optional<Point2D> SquareDiamond2D::stepAroundPerimeter() const noexcept
+std::optional<Point2D> SquareDiamond2D::stepAroundOutside() const noexcept
 {
     const auto& [centerCoordX, centerCoordY] = mCenter.getCoordinates();
     if (!mLastPerimeterPosition) {
         // First step around the perimeter, start on top
         return std::make_optional<Point2D>(
-            centerCoordX, (centerCoordY - static_cast<int32_t>(mDistance) - 1));
+            centerCoordX, (centerCoordY + static_cast<int32_t>(mDistance) + 1));
     }
 
     const auto& [lastPositionCoordX, lastPositionCoordY]
@@ -44,19 +44,19 @@ std::optional<Point2D> SquareDiamond2D::stepAroundPerimeter() const noexcept
         && (lastPositionCoordX >= centerCoordX)) {
         return std::make_optional<Point2D>(
             lastPositionCoordX + 1,
-            lastPositionCoordY + 1); // upper right, downwards
+            lastPositionCoordY - 1); // upper right, downwards
     } else if (
         (lastPositionCoordY >= centerCoordY)
         && (lastPositionCoordX > centerCoordX)) {
         return std::make_optional<Point2D>(
             lastPositionCoordX - 1,
-            lastPositionCoordY + 1); // lower right, downwards
+            lastPositionCoordY - 1); // lower right, downwards
     } else if (
         (lastPositionCoordY > centerCoordY)
         && (lastPositionCoordX <= centerCoordX)) {
         return std::make_optional<Point2D>(
             lastPositionCoordX - 1,
-            lastPositionCoordY - 1); // lower left, upwards
+            lastPositionCoordY + 1); // lower left, upwards
     } else if (
         (lastPositionCoordY <= centerCoordY)
         && (lastPositionCoordX < centerCoordX)) {
@@ -65,7 +65,7 @@ std::optional<Point2D> SquareDiamond2D::stepAroundPerimeter() const noexcept
         } else {
             return std::make_optional<Point2D>(
                 lastPositionCoordX + 1,
-                lastPositionCoordY - 1); // upper left, upwards
+                lastPositionCoordY + 1); // upper left, upwards
         }
     } else {
         assert(false);

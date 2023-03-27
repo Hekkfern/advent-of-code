@@ -71,10 +71,10 @@ uint32_t calculateTuningFrequency(const int32_t x, const int32_t y)
 
 bool isHavingBeaconPossible(
     const std::vector<SensorInfo>& sensorList,
-    const Point2D& testPoint)
+    const Point2D& point)
 {
-    return ranges::any_of(sensorList, [&testPoint](const SensorInfo& sensor) {
-        return sensor.hasBeaconAt(testPoint) || sensor.isCovered(testPoint);
+    return ranges::any_of(sensorList, [&point](const SensorInfo& sensor) {
+        return sensor.hasBeaconAt(point) || sensor.isCovered(point);
     });
 }
 
@@ -83,7 +83,7 @@ Point2D searchSpace(
     const uint32_t gridSize)
 {
     for (const auto& sensor : sensorList) {
-        auto currentPosition{ sensor.stepAroundPerimeter() };
+        auto currentPosition{ sensor.stepAroundOutside() };
         while (currentPosition) {
             const auto& [currentPositionCoordX, currentPositionCoordY]
                 = currentPosition->getCoordinates();
@@ -96,7 +96,7 @@ Point2D searchSpace(
                 }
             }
 
-            currentPosition = sensor.stepAroundPerimeter();
+            currentPosition = sensor.stepAroundOutside();
         }
     }
 

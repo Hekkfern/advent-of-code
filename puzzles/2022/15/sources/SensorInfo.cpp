@@ -22,9 +22,9 @@ const Point2D& SensorInfo::getSensorPosition() const { return mSensorPosition; }
 
 const Point2D& SensorInfo::getBeaconPosition() const { return mBeaconPosition; }
 
-std::optional<Point2D> SensorInfo::stepAroundPerimeter() const noexcept
+std::optional<Point2D> SensorInfo::stepAroundOutside() const noexcept
 {
-    return mSquareDiamond2D.stepAroundPerimeter();
+    return mSquareDiamond2D.stepAroundOutside();
 }
 
 bool SensorInfo::isCovered(const Point2D& testPoint) const

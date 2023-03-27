@@ -15,15 +15,15 @@ public:
     const utils::geometry2d::Point2D& getSensorPosition() const;
     const utils::geometry2d::Point2D& getBeaconPosition() const;
     uint32_t getDistance() const;
-    std::optional<utils::geometry2d::Point2D> stepAroundPerimeter()
+    std::optional<utils::geometry2d::Point2D> stepAroundOutside()
         const noexcept;
     bool isCovered(const utils::geometry2d::Point2D& testPoint) const;
     bool hasBeaconAt(const utils::geometry2d::Point2D& testPoint) const;
 
 private:
-    const utils::geometry2d::Point2D mSensorPosition;
-    const utils::geometry2d::Point2D mBeaconPosition;
-    const uint32_t mDistance;
+    utils::geometry2d::Point2D mSensorPosition;
+    utils::geometry2d::Point2D mBeaconPosition;
+    uint32_t mDistance;
     utils::geometry2d::SquareDiamond2D mSquareDiamond2D;
 };
 

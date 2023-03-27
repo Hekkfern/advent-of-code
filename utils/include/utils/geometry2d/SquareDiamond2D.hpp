@@ -18,7 +18,7 @@ public:
     const Point2D& getCenter() const;
     std::vector<Point2D> getVertexes() const override;
     uint32_t getDistance() const;
-    std::optional<Point2D> stepAroundPerimeter() const noexcept;
+    std::optional<Point2D> stepAroundOutside() const noexcept;
     bool isOutside(const Point2D& point) const override;
     bool isInside(const Point2D& point) const override;
     bool isInPerimeter(const Point2D& point) const override;
