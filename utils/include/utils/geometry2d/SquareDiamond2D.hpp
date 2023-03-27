@@ -28,7 +28,7 @@ private:
     const Point2D mCenter;
     const uint32_t mDistance;
     std::array<Point2D, NumberOfVertexes> mVertexes;
-    std::optional<Point2D> mLastPerimeterPosition;
+    std::optional<Point2D> mLastPerimeterPosition{};
 };
 
 } // namespace utils::geometry2d

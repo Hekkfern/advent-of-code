@@ -17,7 +17,7 @@ public:
     explicit Rectangle2D(
         const utils::geometry2d::Point2D& bottomLeft,
         const Vector2D& diagonal);
-    Rectangle2D(const Point2D& bottomLeft, size_t width, size_t height);
+    Rectangle2D(const Point2D& bottomLeft, uint32_t width, uint32_t height);
     std::pair<size_t, size_t> size() const;
     uint32_t area() const override;
     bool isOutside(const Point2D& point) const override;
@@ -32,8 +32,8 @@ private:
     const Point2D& getTopRightPoint() const;
 
     const std::array<Point2D, NumberOfVertexes> mVertexes;
-    const size_t mWidth;
-    const size_t mHeight;
+    const uint32_t mWidth;
+    const uint32_t mHeight;
 };
 
 } // namespace utils::geometry2d

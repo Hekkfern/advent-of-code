@@ -7,8 +7,8 @@ namespace utils::geometry2d {
 
 Rectangle2D::Rectangle2D(
     const utils::geometry2d::Point2D& bottomLeft,
-    size_t width,
-    size_t height)
+    uint32_t width,
+    uint32_t height)
     : mVertexes{ { bottomLeft,
                    bottomLeft + Vector2D{ static_cast<int32_t>(width), 0 },
                    bottomLeft
@@ -23,7 +23,9 @@ Rectangle2D::Rectangle2D(
 Rectangle2D::Rectangle2D(
     const utils::geometry2d::Point2D& bottomLeft,
     const Vector2D& diagonal)
-    : Rectangle2D{ bottomLeft, diagonal.size().first, diagonal.size().second }
+    : Rectangle2D{ bottomLeft,
+                   static_cast<uint32_t>(diagonal.size().first),
+                   static_cast<uint32_t>(diagonal.size().second) }
 {
 }
 

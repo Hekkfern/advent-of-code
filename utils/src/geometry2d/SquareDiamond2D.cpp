@@ -1,6 +1,7 @@
 #include "geometry2d/SquareDiamond2D.hpp"
 
 #include "geometry2d/Vector2D.hpp"
+#include <cassert>
 
 namespace utils::geometry2d {
 
