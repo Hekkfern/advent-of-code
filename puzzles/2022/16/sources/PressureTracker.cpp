@@ -13,4 +13,14 @@ uint32_t PressureTracker::getReleasedPressure() const
     return mReleasedPressure;
 }
 
+bool PressureTracker::operator==(const PressureTracker& other) const
+{
+    return mReleasedPressure == other.mReleasedPressure;
+}
+
+bool PressureTracker::operator<(const PressureTracker& other) const
+{
+    return mReleasedPressure < other.mReleasedPressure;
+}
+
 } // namespace aoc_2022_16

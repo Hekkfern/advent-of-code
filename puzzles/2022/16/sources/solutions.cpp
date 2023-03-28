@@ -10,7 +10,16 @@ namespace aoc_2022_16 {
 
 // ---------- Private Methods ----------
 
-Valve parseInputLine(const std::string& line)
+static constexpr uint32_t TimeToOpenAValve{ 1U };
+static constexpr uint32_t TimeToMoveToNextValve{ 1U };
+
+struct ParsedValve {
+    std::string mName;
+    uint32_t mFlowRate;
+    std::vector<std::string> mNeighborNames;
+};
+
+ParsedValve parseInputLine(const std::string& line)
 {
     std::smatch regexResult;
     constexpr auto Pattern{
@@ -19,18 +28,35 @@ Valve parseInputLine(const std::string& line)
     if (!std::regex_match(line, regexResult, std::regex(Pattern))) {
         throw std::logic_error("Regex failed in parsing the line");
     }
-    return Valve{ std::string{ regexResult[1] },
-                  utils::string::toNumber<uint32_t>(regexResult[2]),
-                  std::vector<std::string>{ { regexResult[3] } } };
+    return ParsedValve{ std::string{ regexResult[1] },
+                        utils::string::toNumber<uint32_t>(regexResult[2]),
+                        std::vector<std::string>{ { regexResult[3] } } };
 }
 
 PipeSystem parseInput(std::ifstream& fileStream)
 {
     std::string line;
-    PipeSystem pipeSystem;
+    std::vector<ParsedValve> parsedValves;
     while (std::getline(fileStream, line)) {
-        pipeSystem.addValve(parseInputLine(line));
+        parsedValves.emplace_back(parseInputLine(line));
     }
+    PipeSystem pipeSystem;
+    // add valves
+    for (auto& parsedValve : parsedValves) {
+        if (parsedValve.mFlowRate > 0) {
+            pipeSystem.addValve(
+                Valve{ parsedValve.mName, parsedValve.mFlowRate });
+        }
+    }
+    // connect valves
+    for (auto& parsedValve : parsedValves) {
+        for (auto& neighborName : parsedValve.mNeighborNames) {
+            auto& thisValve{ pipeSystem.getValve(parsedValve.mName) };
+            auto& neighborValve{ pipeSystem.getValve(neighborName) };
+            thisValve.addNeighbor(neighborValve, 1U);
+        }
+    }
+
     return pipeSystem;
 }
 
@@ -40,8 +66,11 @@ PipeSystem parseInput(std::ifstream& fileStream)
 
 std::string solvePart1(const std::string& filename)
 {
-    (void)filename;
-    return "";
+    std::ifstream fileStream{ filename };
+    auto pipeSystem{ parseInput(fileStream) };
+    uint32_t timeCounter{ 0U };
+
+    return std::to_string(1);
 }
 
 std::string solvePart2(const std::string& filename)

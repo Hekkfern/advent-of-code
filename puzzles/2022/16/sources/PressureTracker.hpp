@@ -11,6 +11,8 @@ public:
      */
     void openValve(uint32_t flowRate, uint32_t time);
     uint32_t getReleasedPressure() const;
+    bool operator==(const PressureTracker& other) const;
+    bool operator<(const PressureTracker& other) const;
 
 private:
     uint32_t mReleasedPressure{ 0U };
