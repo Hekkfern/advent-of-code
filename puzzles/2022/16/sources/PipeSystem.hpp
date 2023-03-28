@@ -9,7 +9,7 @@ namespace aoc_2022_16 {
 class PipeSystem {
 public:
     void addValve(Valve&& valve);
-    Valve& getValve(std::string_view valveName);
+    Valve& getValve(const std::string& valveName);
 
 private:
     std::unordered_map<std::string, Valve> mValves;
