@@ -159,7 +159,7 @@ void MultiInterval::remove(const Interval& eraseInterval)
             // this interval is not totally subsumed so it is deleted partially
             tempIntervals.emplace_back(
                 eraseInterval.getMax() + 1, innerInterval.getMax());
-        } else if (!eraseInterval.subsumes(innerInterval)){
+        } else if (!eraseInterval.subsumes(innerInterval)) {
             tempIntervals.emplace_back(innerInterval);
         }
     }
