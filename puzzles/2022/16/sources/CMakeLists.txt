@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.20)
 
 # aoc_2022_16_solutions
 set(_LIB_NAME "aoc_2022_16_solutions")
-add_library(${_LIB_NAME} STATIC solutions.cpp solutions.hpp)
+add_library(${_LIB_NAME} STATIC solutions.cpp solutions.hpp Valve.cpp Valve.hpp PipeSystem.cpp PipeSystem.hpp)
 setup_puzzle(${_LIB_NAME})
 target_link_libraries(${_LIB_NAME} PRIVATE aoc_utils)
 
