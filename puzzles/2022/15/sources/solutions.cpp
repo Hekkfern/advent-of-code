@@ -18,6 +18,13 @@ using namespace utils::interval;
 
 // ---------- Private Methods ----------
 
+/**
+ * @brief      { function_description }
+ *
+ * @param[in]  line  The line
+ *
+ * @return     The sensor information.
+ */
 SensorInfo parseInputLine(const std::string& line)
 {
     std::smatch regexResult;
@@ -36,9 +43,11 @@ SensorInfo parseInputLine(const std::string& line)
 }
 
 /**
- * @brief
- * @param[in,out] multiInterval
- * @param[in] sensorBeaconPair
+ * @brief         { function_description }
+ *
+ * @param[in,out] multiInterval  The multi interval
+ * @param[in]     pairInfo       The pair information
+ * @param[in]     goalCoordY     The goal coordinate y
  */
 void fillNoBeaconIntervalAtCoordY(
     MultiInterval& multiInterval,
@@ -64,11 +73,27 @@ void fillNoBeaconIntervalAtCoordY(
     }
 }
 
-uint32_t calculateTuningFrequency(const int32_t x, const int32_t y)
+/**
+ * @brief      Calculates the tuning frequency.
+ *
+ * @param[in]  x     { parameter_description }
+ * @param[in]  y     { parameter_description }
+ *
+ * @return     The tuning frequency.
+ */
+uint64_t calculateTuningFrequency(const int32_t x, const int32_t y)
 {
-    return (4000000U * static_cast<uint32_t>(x)) + static_cast<uint32_t>(y);
+    return (4000000U * static_cast<uint64_t>(x)) + static_cast<uint64_t>(y);
 }
 
+/**
+ * @brief      Determines if having beacon possible.
+ *
+ * @param[in]  sensorList  The sensor list
+ * @param[in]  point       The point
+ *
+ * @return     True if having beacon possible, False otherwise.
+ */
 bool isHavingBeaconPossible(
     const std::vector<SensorInfo>& sensorList,
     const Point2D& point)
@@ -78,19 +103,27 @@ bool isHavingBeaconPossible(
     });
 }
 
+/**
+ * @brief      { function_description }
+ *
+ * @param[in]  sensorList  The sensor list
+ * @param[in]  gridSize    The grid size
+ *
+ * @return     { description_of_the_return_value }
+ */
 Point2D searchSpace(
-    const std::vector<SensorInfo>& sensorList,
+    std::vector<SensorInfo>& sensorList,
     const uint32_t gridSize)
 {
-    for (const auto& sensor : sensorList) {
+    for (auto& sensor : sensorList) {
         auto currentPosition{ sensor.stepAroundOutside() };
         while (currentPosition) {
             const auto& [currentPositionCoordX, currentPositionCoordY]
                 = currentPosition->getCoordinates();
-            if ((currentPositionCoordX >= 0)
-                && (currentPositionCoordX <= static_cast<int32_t>(gridSize))
-                && (currentPositionCoordY >= 0)
-                && (currentPositionCoordY <= static_cast<int32_t>(gridSize))) {
+            if (currentPositionCoordX >= 0
+                && currentPositionCoordX <= static_cast<int32_t>(gridSize)
+                && currentPositionCoordY >= 0
+                && currentPositionCoordY <= static_cast<int32_t>(gridSize)) {
                 if (!isHavingBeaconPossible(sensorList, *currentPosition)) {
                     return *currentPosition;
                 }
