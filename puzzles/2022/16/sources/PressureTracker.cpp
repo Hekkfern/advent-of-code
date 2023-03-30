@@ -4,7 +4,7 @@ namespace aoc_2022_16 {
 
 void PressureTracker::openValve(const uint32_t flowRate, const uint32_t time)
 {
-    constexpr uint32_t TotalTime{ 30U };
+    static constexpr uint32_t TotalTime{ 30U };
     mReleasedPressure += flowRate * (TotalTime - time);
 }
 
