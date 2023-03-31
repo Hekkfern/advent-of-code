@@ -36,6 +36,7 @@ public:
         const W weight)
     {
         // TODO
+        return true;
     }
     size_t getNumberOfVertices() const { return mVertices.size(); }
 

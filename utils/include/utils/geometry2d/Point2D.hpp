@@ -33,9 +33,10 @@ public:
     Point2D operator+(const Point2D& other) const;
     Point2D operator-() const;
     Point2D operator-(const Point2D& other) const;
-    template <std::integral T> [[nodiscard]] static Point2D create(T x, T y)
+    template <std::integral T>
+    [[nodiscard]] static Point2D create(T x, T y)
     {
-        return Point2D{ static_cast<int32_t>(x), static_cast<int32_t>(y) };
+        return Point2D{static_cast<int32_t>(x), static_cast<int32_t>(y)};
     }
 
 private:
@@ -63,8 +64,9 @@ std::ostream& operator<<(std::ostream& os, const Point2D& point2d);
 
 } // namespace utils::geometry2d
 
-template <> struct std::hash<utils::geometry2d::Point2D> {
-    std::size_t operator()(const utils::geometry2d::Point2D& k) const
+template <>
+struct std::hash<utils::geometry2d::Point2D> {
+    std::size_t operator()(const utils::geometry2d::Point2D& k) const noexcept
     {
         return std::hash<int32_t>()(k.getX()) ^ std::hash<int32_t>()(k.getY());
     }

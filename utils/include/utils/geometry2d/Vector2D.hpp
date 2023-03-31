@@ -55,7 +55,7 @@ std::ostream& operator<<(std::ostream& os, const Vector2D& vector2D);
 } // namespace utils::geometry2d
 
 template <> struct std::hash<utils::geometry2d::Vector2D> {
-    std::size_t operator()(const utils::geometry2d::Vector2D& k) const
+    std::size_t operator()(const utils::geometry2d::Vector2D& k) const noexcept
     {
         return std::hash<int32_t>()(k.getX()) ^ std::hash<int32_t>()(k.getY());
     }

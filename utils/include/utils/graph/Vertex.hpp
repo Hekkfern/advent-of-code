@@ -78,3 +78,11 @@ private:
 };
 
 } // namespace utils::graph
+
+template <typename T, typename W>
+struct std::hash<utils::graph::Vertex<T, W>> {
+    std::size_t operator()(const utils::graph::Vertex<T, W>& k) const noexcept
+    {
+        return std::hash<std::string>()(k.mId);
+    }
+};
