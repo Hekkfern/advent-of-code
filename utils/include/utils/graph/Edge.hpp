@@ -1,35 +1,44 @@
 #pragma once
 
+#include <concepts>
+
 namespace utils::graph {
 
-template <class T>
+template <typename T, typename W>
 class Vertex;
-template <class T>
-class Graph;
 
 /**
  * @brief      It describes the link or path between two vertices.
  *
- * @tparam     T     { description }
+ * @tparam     T     Type of the attached information.
+ * @tparam     W     Type of the weight value.
  */
-template <typename T>
+template <typename T, typename W>
+    requires(std::integral<W> || std::floating_point<W>)
+    && std::equality_comparable<T>
 class Edge {
 public:
-    Edge(const Vertex<T>& d, const double weight);
-    friend class Graph<T>;
-    friend class Vertex<T>;
+    Edge(const Vertex<T, W>& destinationVertex, W weight)
+        : mDestinationVertex(destinationVertex)
+        , mWeight(weight)
+    {
+    }
+    /**
+     * @brief      Equality operator.
+     *
+     * @param[in]  other   The other object.
+     *
+     * @return     The result of the equality.
+     */
+    bool operator==(const Edge& other) const
+    {
+        return mDestinationVertex == other.mDestinationVertex
+            && mWeight == other.mWeight;
+    }
 
 private:
-    Vertex<T>& dest;
-    double mWeight;
-    bool mVisited{false};
+    Vertex<T, W>& mDestinationVertex;
+    W mWeight;
 };
-
-template <typename T>
-Edge<T>::Edge(const Vertex<T>& d, const double weight)
-    : dest(d)
-    , mWeight(weight)
-{
-}
 
 } // namespace utils::graph
