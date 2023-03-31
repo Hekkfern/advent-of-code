@@ -2,6 +2,12 @@ include(${CMAKE_SOURCE_DIR}/cmake/aoc_puzzles.cmake)
 
 cmake_minimum_required(VERSION 3.20)
 
+find_package(Boost COMPONENTS graph REQUIRED)
+if (Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIRS})
+    link_directories(${Boost_LIBRARY_DIRS})
+endif ()
+
 # aoc_2022_16_solutions
 set(_LIB_NAME "aoc_2022_16_solutions")
 add_library(
@@ -16,6 +22,7 @@ add_library(
   PressureTracker.hpp)
 setup_puzzle(${_LIB_NAME})
 target_link_libraries(${_LIB_NAME} PRIVATE aoc_utils)
+target_link_libraries(${_LIB_NAME} PRIVATE ${Boost_LIBRARIES})
 
 # aoc_2022_16
 if(GENERATE_PROJECTS STREQUAL "ALL" OR GENERATE_PROJECTS STREQUAL "EXES")
