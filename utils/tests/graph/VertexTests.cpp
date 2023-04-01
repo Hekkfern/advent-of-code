@@ -4,35 +4,73 @@
 
 using namespace utils::graph;
 
-TEST_CASE(
-    "[Vertex - constructor] Constructor for integer information",
-    "[Vertex, Vertex_constructor]")
+class CustomInfo {
+public:
+    CustomInfo(uint32_t value)
+        : mValue{value}
+    {
+    }
+    bool operator==(const CustomInfo& other) const
+    {
+        return mValue == other.mValue;
+    }
+
+private:
+    uint32_t mValue;
+};
+
+TEST_CASE("[Vertex] Constructor", "[Vertex, Vertex_constructor]")
 {
-    const auto vertex{Vertex<uint32_t, uint32_t>{"vertex1", 24U}};
-    CHECK(vertex.getName() == "vertex1");
-    CHECK(vertex.getInfo() == 24U);
+    SECTION("With integer-type information")
+    {
+        const auto vertex{Vertex<uint32_t, uint32_t>{"vertex1", 24U}};
+        CHECK(vertex.getName() == "vertex1");
+        CHECK(vertex.getInfo() == 24U);
+    }
+    SECTION("With custom-class-type information")
+    {
+        const auto vertex{
+            Vertex<CustomInfo, uint32_t>{"vertex1", CustomInfo{12343}}};
+        CHECK(vertex.getName() == "vertex1");
+        CHECK(vertex.getInfo() == CustomInfo{12343});
+    }
 }
 
-TEST_CASE(
-    "[Vertex - constructor] Constructor for custom class information",
-    "[Vertex, Vertex_constructor]")
+TEST_CASE("[Vertex] Equality operator", "[Vertex, Vertex_equality]")
 {
-    class CustomInfo {
-    public:
-        CustomInfo(uint32_t value)
-            : mValue{value}
+    SECTION("With integer-type information")
+    {
+        const auto vertex1{Vertex<uint32_t, uint32_t>{"vertex", 24U}};
+        SECTION("Equal")
         {
+            const auto vertex2{Vertex<uint32_t, uint32_t>{"vertex", 12U}};
+            CHECK(vertex1 == vertex2);
+            CHECK_FALSE(vertex1 != vertex2);
         }
-        bool operator==(const CustomInfo& other) const
+        SECTION("Different")
         {
-            return mValue == other.mValue;
+            const auto vertex2{Vertex<uint32_t, uint32_t>{"vertexAAAA", 12U}};
+            CHECK_FALSE(vertex1 == vertex2);
+            CHECK(vertex1 != vertex2);
         }
-
-    private:
-        uint32_t mValue;
-    };
-    const auto vertex{
-        Vertex<CustomInfo, uint32_t>{"vertex1", CustomInfo{12343}}};
-    CHECK(vertex.getName() == "vertex1");
-    CHECK(vertex.getInfo() == CustomInfo{12343});
+    }
+    SECTION("With custom-class-type information")
+    {
+        const auto vertex1{
+            Vertex<CustomInfo, uint32_t>{"vertex1", CustomInfo{12343}}};
+        SECTION("Equal")
+        {
+            const auto vertex2{
+                Vertex<CustomInfo, uint32_t>{"vertex1", CustomInfo{12343}}};
+            CHECK(vertex1 == vertex2);
+            CHECK_FALSE(vertex1 != vertex2);
+        }
+        SECTION("Different")
+        {
+            const auto vertex2{
+                Vertex<CustomInfo, uint32_t>{"vertexAAAA", CustomInfo{54343}}};
+            CHECK_FALSE(vertex1 == vertex2);
+            CHECK(vertex1 != vertex2);
+        }
+    }
 }

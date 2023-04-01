@@ -63,11 +63,11 @@ public:
      * @param[in]  name    Unique identifier for this node.
      */
     Vertex(std::string&& name, T&& info)
-        : mId{std::move(name)}
+        : mName{std::move(name)}
         , mInfo(std::move(info))
     {
     }
-    std::string_view getName() const { return mId; }
+    std::string_view getName() const { return mName; }
     /**
      * @brief      Gets the information attached to this node.
      *
@@ -83,7 +83,7 @@ public:
      */
     bool operator==(const Vertex& other) const
     {
-        return mId == other.mId && mInfo == other.mInfo;
+        return mName == other.mName;
     }
     /**
      * @brief         Adds an edge between this vertex and another one.
@@ -100,7 +100,7 @@ private:
     /**
      * Unique identifier.
      */
-    std::string mId;
+    std::string mName;
     /**
      * Information attached to this node.
      */
@@ -118,6 +118,6 @@ template <std::equality_comparable T, NumericType W>
 struct std::hash<utils::graph::Vertex<T, W>> {
     std::size_t operator()(const utils::graph::Vertex<T, W>& k) const noexcept
     {
-        return std::hash<std::string>()(k.mId);
+        return std::hash<std::string>()(k.mName);
     }
 };
