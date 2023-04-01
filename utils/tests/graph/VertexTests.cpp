@@ -17,12 +17,19 @@ TEST_CASE(
     "[Vertex - constructor] Constructor for custom class information",
     "[Vertex, Vertex_constructor]")
 {
-    struct CustomInfo {
-        uint32_t mValue;
+    class CustomInfo {
+    public:
+        CustomInfo(uint32_t value)
+            : mValue{value}
+        {
+        }
         bool operator==(const CustomInfo& other) const
         {
             return mValue == other.mValue;
         }
+
+    private:
+        uint32_t mValue;
     };
     const auto vertex{
         Vertex<CustomInfo, uint32_t>{"vertex1", CustomInfo{12343}}};
