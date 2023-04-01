@@ -23,6 +23,8 @@ public:
         , mWeight(weight)
     {
     }
+    W getWeight() const { return mWeight; }
+    Vertex<W, T>& getDestinationVertex() const { return mDestinationVertex; }
     /**
      * @brief      Equality operator.
      *

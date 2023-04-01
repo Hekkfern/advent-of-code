@@ -27,7 +27,7 @@ public:
      * @param[in]  info    Information to attach to this node.
      * @param[in]  name    Unique identifier for this node.
      */
-    explicit Vertex(std::string&& name, T&& info)
+    Vertex(std::string&& name, T&& info)
         : mId{std::move(name)}
         , mInfo(std::move(info))
     {
@@ -58,7 +58,7 @@ public:
      */
     void addEdge(const Vertex& other, const W weight)
     {
-        mAdjacentNodes.emplace_back(other, weight);
+        mEdges.emplace_back(other, weight);
     }
 
 private:
@@ -74,7 +74,7 @@ private:
      * List of Adjacent Nodes, i.e. nodes which are connected to this one by an
      * edge.
      */
-    std::vector<Edge<T, W>> mAdjacentNodes;
+    std::vector<Edge<T, W>> mEdges{};
 };
 
 } // namespace utils::graph
