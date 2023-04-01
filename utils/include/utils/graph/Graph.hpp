@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Edge.hpp"
 #include "Vertex.hpp"
 #include <range/v3/all.hpp>
 #include <unordered_map>
@@ -13,9 +12,7 @@ namespace utils::graph {
  *
  * @tparam     T     { description }
  */
-template <typename T, typename W>
-    requires(std::integral<W> || std::floating_point<W>)
-    && std::equality_comparable<T>
+template <std::equality_comparable T, NumericType W>
 class Graph {
 public:
     bool addVertex(std::string&& name, T&& info)
@@ -31,7 +28,7 @@ public:
         const std::string& vertexName2,
         const W weight)
     {
-        if (!containsEdge(containsEdge(vertexName1, vertexName2))){
+        if (!containsEdge(containsEdge(vertexName1, vertexName2))) {
             return false;
         }
         // TODO
@@ -62,7 +59,7 @@ private:
                     return std::find_if(
                                edges,
                                [vertexName2](const Edge<T, W>& edge) {
-                                   return edge.getDestinationVertex().getId()
+                                   return edge.getDestinationVertex().getName()
                                        == vertexName2;
                                })
                         != std::end(edges);

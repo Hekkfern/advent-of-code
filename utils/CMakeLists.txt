@@ -19,7 +19,8 @@ set(_SOURCES_UTILS
     src/Interval.cpp
     include/utils/Interval.hpp
     src/MultiInterval.cpp
-    include/utils/MultiInterval.hpp)
+    include/utils/MultiInterval.hpp
+    include/utils/Concepts.hpp)
 set(_SOURCES_UTILS_GEOMETRY2D
     include/utils/geometry2d/Direction2D.hpp
     src/geometry2d/Point2D.cpp
@@ -33,11 +34,10 @@ set(_SOURCES_UTILS_GEOMETRY2D
     src/geometry2d/SquareDiamond2D.cpp
     include/utils/geometry2d/SquareDiamond2D.hpp
     include/utils/geometry2d/IShape2D.hpp)
-set(_SOURCES_UTILS_GRAPH
-    include/utils/graph/Edge.hpp
-    include/utils/graph/Graph.hpp
-    include/utils/graph/Vertex.hpp)
-add_library(${_LIB_NAME} STATIC ${_SOURCES_UTILS} ${_SOURCES_UTILS_GEOMETRY2D} ${_SOURCES_UTILS_GRAPH})
+set(_SOURCES_UTILS_GRAPH include/utils/graph/Graph.hpp
+                         include/utils/graph/Vertex.hpp)
+add_library(${_LIB_NAME} STATIC ${_SOURCES_UTILS} ${_SOURCES_UTILS_GEOMETRY2D}
+                                ${_SOURCES_UTILS_GRAPH})
 set_cpp_standard(${_LIB_NAME})
 set_compiler_flags(${_LIB_NAME})
 set_vectorization_flags(${_LIB_NAME})

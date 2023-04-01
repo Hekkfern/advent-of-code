@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Concepts.hpp"
 #include <concepts>
 #include <string>
 #include <string_view>
@@ -7,8 +8,44 @@
 
 namespace utils::graph {
 
-template <typename T, typename W>
+template <std::equality_comparable T, NumericType W>
 class Edge;
+template <std::equality_comparable T, NumericType W>
+class Vertex;
+
+/**
+ * @brief      It describes the link or path between two vertices.
+ *
+ * @tparam     T     Type of the attached information.
+ * @tparam     W     Type of the weight value.
+ */
+template <std::equality_comparable T, NumericType W>
+class Edge {
+public:
+    Edge(const Vertex<T, W>& destinationVertex, W weight)
+        : mDestinationVertex(destinationVertex)
+        , mWeight(weight)
+    {
+    }
+    W getWeight() const { return mWeight; }
+    Vertex<W, T>& getDestinationVertex() const { return mDestinationVertex; }
+    /**
+     * @brief      Equality operator.
+     *
+     * @param[in]  other   The other object.
+     *
+     * @return     The result of the equality.
+     */
+    bool operator==(const Edge& other) const
+    {
+        return mDestinationVertex == other.mDestinationVertex
+            && mWeight == other.mWeight;
+    }
+
+private:
+    Vertex<T, W>& mDestinationVertex;
+    W mWeight;
+};
 
 /**
  * @brief      It describes each node of the graph.
@@ -16,9 +53,7 @@ class Edge;
  * @tparam     T     Type of the attached information.
  * @tparam     W     Type of the weight value.
  */
-template <typename T, typename W>
-    requires(std::integral<W> || std::floating_point<W>)
-    && std::equality_comparable<T>
+template <std::equality_comparable T, NumericType W>
 class Vertex {
 public:
     /**
@@ -32,13 +67,13 @@ public:
         , mInfo(std::move(info))
     {
     }
-    std::string_view getId() const { return mId; }
+    std::string_view getName() const { return mId; }
     /**
      * @brief      Gets the information attached to this node.
      *
      * @return     The attached information.
      */
-    T& getInfo() const { return mInfo; }
+    const T& getInfo() const { return mInfo; }
     /**
      * @brief      Equality operator.
      *
@@ -79,7 +114,7 @@ private:
 
 } // namespace utils::graph
 
-template <typename T, typename W>
+template <std::equality_comparable T, NumericType W>
 struct std::hash<utils::graph::Vertex<T, W>> {
     std::size_t operator()(const utils::graph::Vertex<T, W>& k) const noexcept
     {
