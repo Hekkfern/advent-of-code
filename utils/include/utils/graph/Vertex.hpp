@@ -28,7 +28,7 @@ public:
     {
     }
     W getWeight() const { return mWeight; }
-    Vertex<W, T>& getDestinationVertex() const { return mDestinationVertex; }
+    Vertex<T, W>& getDestinationVertex() const { return mDestinationVertex; }
     /**
      * @brief      Equality operator.
      *
