@@ -19,7 +19,7 @@ private:
     uint32_t mValue;
 };
 
-TEST_CASE("[Vertex] Constructor", "[Vertex, Vertex_constructor]")
+TEST_CASE("[Vertex] Constructor", "[utils][graph][Vertex]")
 {
     SECTION("With integer-type information")
     {
@@ -36,7 +36,7 @@ TEST_CASE("[Vertex] Constructor", "[Vertex, Vertex_constructor]")
     }
 }
 
-TEST_CASE("[Vertex] Equality operator", "[Vertex, Vertex_equality]")
+TEST_CASE("[Vertex] Equality operator", "[utils][graph][Vertex]")
 {
     SECTION("With integer-type information")
     {
@@ -72,5 +72,15 @@ TEST_CASE("[Vertex] Equality operator", "[Vertex, Vertex_equality]")
             CHECK_FALSE(vertex1 == vertex2);
             CHECK(vertex1 != vertex2);
         }
+    }
+}
+
+TEST_CASE("[Vertex] addEdge method", "[utils][graph][Vertex]")
+{
+    SECTION("With integer-type information") {
+
+    }
+    SECTION("With custom-class-type information") {
+
     }
 }
