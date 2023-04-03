@@ -22,9 +22,9 @@ class Vertex;
 template <std::equality_comparable T, NumericType W>
 class Edge {
 public:
-    Edge(const Vertex<T, W>& destinationVertex, W weight)
-        : mDestinationVertex(destinationVertex)
-        , mWeight(weight)
+    Edge(Vertex<T, W>& destinationVertex, W weight)
+        : mDestinationVertex{destinationVertex}
+        , mWeight{weight}
     {
     }
     W getWeight() const { return mWeight; }
@@ -81,20 +81,18 @@ public:
      *
      * @return     The result of the equality.
      */
-    bool operator==(const Vertex& other) const
-    {
-        return mName == other.mName;
-    }
+    bool operator==(const Vertex& other) const { return mName == other.mName; }
     /**
      * @brief         Adds an edge between this vertex and another one.
      *
-     * @param[in,out] other  The other node to be connected to.
+     * @param[in] other  The other node to be connected to.
      * @param[in]     weight     Weight value of this path.
      */
-    void addEdge(const Vertex& other, const W weight)
+    void addEdge(Vertex<T, W>& other, const W weight)
     {
         mEdges.emplace_back(other, weight);
     }
+    std::vector<Edge<T, W>> getEdges() { return mEdges; }
 
 private:
     /**
