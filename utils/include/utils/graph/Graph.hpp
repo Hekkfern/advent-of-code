@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Vertex.hpp"
-#include <range/v3/all.hpp>
 #include <unordered_map>
 
 namespace utils::graph {
@@ -37,9 +36,9 @@ public:
             .addEdge(mVertices.at(vertexName2), weight);
     }
     size_t getNumberOfVertices() const { return mVertices.size(); }
-    Vertex<T, W>& getVertex(const std::string& vertexId)
+    Vertex<T, W>& getVertex(const std::string& vertexName)
     {
-        return mVertices.at(vertexId);
+        return mVertices.at(vertexName);
     }
 
 private:

@@ -10,8 +10,6 @@ add_library(
   solutions.hpp
   Valve.cpp
   Valve.hpp
-  PipeSystem.cpp
-  PipeSystem.hpp
   PressureTracker.cpp
   PressureTracker.hpp)
 setup_puzzle(${_LIB_NAME})
