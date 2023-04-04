@@ -8,9 +8,9 @@
 
 namespace utils::graph {
 
-template <std::equality_comparable T, NumericType W>
+template <std::equality_comparable T, UnsignedNumericType W>
 class Edge;
-template <std::equality_comparable T, NumericType W>
+template <std::equality_comparable T, UnsignedNumericType W>
 class Vertex;
 
 /**
@@ -19,7 +19,7 @@ class Vertex;
  * @tparam     T     Type of the attached information.
  * @tparam     W     Type of the weight value.
  */
-template <std::equality_comparable T, NumericType W>
+template <std::equality_comparable T, UnsignedNumericType W>
 class Edge {
 public:
     Edge(Vertex<T, W>& destinationVertex, W weight)
@@ -53,7 +53,7 @@ private:
  * @tparam     T     Type of the attached information.
  * @tparam     W     Type of the weight value.
  */
-template <std::equality_comparable T, NumericType W>
+template <std::equality_comparable T, UnsignedNumericType W>
 class Vertex {
 public:
     /**
@@ -112,7 +112,7 @@ private:
 
 } // namespace utils::graph
 
-template <std::equality_comparable T, NumericType W>
+template <std::equality_comparable T, UnsignedNumericType W>
 struct std::hash<utils::graph::Vertex<T, W>> {
     std::size_t operator()(const utils::graph::Vertex<T, W>& k) const noexcept
     {

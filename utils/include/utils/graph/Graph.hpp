@@ -12,7 +12,7 @@ namespace utils::graph {
  *
  * @tparam     T     { description }
  */
-template <std::equality_comparable T, NumericType W>
+template <std::equality_comparable T, UnsignedNumericType W>
 class Graph {
 public:
     bool addVertex(std::string&& name, T&& info)
