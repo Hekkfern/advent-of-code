@@ -46,7 +46,7 @@ std::vector<ParsedValve> parseInput(std::ifstream& fileStream)
     return parsedValves;
 }
 
-Graph<Valve, uint32_t> build_graph(std::vector<ParsedValve>&& parsedValves)
+Graph<Valve, uint32_t> buildGraph(std::vector<ParsedValve>&& parsedValves)
 {
     Graph<Valve, uint32_t> graph;
     // add vertices
@@ -71,7 +71,7 @@ Graph<Valve, uint32_t> build_graph(std::vector<ParsedValve>&& parsedValves)
 std::string solvePart1(const std::string& filename)
 {
     std::ifstream fileStream{filename};
-    auto graph{build_graph(parseInput(fileStream))};
+    auto graph{buildGraph(parseInput(fileStream))};
     uint32_t timeCounter{0U};
     auto startingValve{graph.getVertex("AA")};
 
