@@ -17,58 +17,29 @@ class Graph {
 public:
     bool addVertex(std::string&& name, T&& info)
     {
-        if (containsVertex(name)) {
-            return false;
-        }
-        mVertices.emplace(std::move(name), std::move(info));
-        return true;
+        auto [insertedItem, isInserted]{
+            mVertices.emplace(std::move(name), std::move(info))};
+        return isInserted;
     }
     bool addEdge(
         const std::string& vertexName1,
         const std::string& vertexName2,
         const W weight)
     {
-        if (!containsEdge(containsEdge(vertexName1, vertexName2))) {
+        if (!mVertices.contains(vertexName1)
+            && !mVertices.contains(vertexName2)) {
             return false;
         }
-        // TODO
-        return true;
+        return mVertices.at(vertexName1)
+            .addEdge(mVertices.at(vertexName2), weight);
     }
     size_t getNumberOfVertices() const { return mVertices.size(); }
-
-private:
     Vertex<T, W>& getVertex(const std::string& vertexId)
     {
         return mVertices.at(vertexId);
     }
-    bool containsVertex(std::string_view vertexId) const
-    {
-        return mVertices.contains(vertexId);
-    }
-    bool
-    containsEdge(const std::string& vertexName1, const std::string& vertexName2)
-    {
-        if (!containsVertex(vertexName1) && !containsVertex(vertexName2)) {
-            return false;
-        }
-        if (std::find_if(
-                mVertices,
-                [vertexName2](
-                    const std::pair<std::string, Vertex<T, W>>& item) {
-                    auto& edges{item.second.mEdges};
-                    return std::find_if(
-                               edges,
-                               [vertexName2](const Edge<T, W>& edge) {
-                                   return edge.getDestinationVertex().getName()
-                                       == vertexName2;
-                               })
-                        != std::end(edges);
-                })
-            != std::end(mVertices)) {
-            return true;
-        }
-        return false;
-    }
+
+private:
     /**
      * List of vertices contained in this graph.
      */

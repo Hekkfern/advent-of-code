@@ -4,7 +4,7 @@
 #include <concepts>
 #include <string>
 #include <string_view>
-#include <vector>
+#include <unordered_map>
 
 namespace utils::graph {
 
@@ -87,12 +87,16 @@ public:
      *
      * @param[in] other  The other node to be connected to.
      * @param[in]     weight     Weight value of this path.
+     *
+     * @return True if a new edge was added. False, otherwise.
      */
-    void addEdge(Vertex<T, W>& other, const W weight)
+    bool addEdge(Vertex<T, W>& other, const W weight)
     {
-        mEdges.emplace_back(other, weight);
+        auto [insertedItem, isInserted]{
+            mEdges.emplace(std::string{other.getName()}, Edge{other, weight})};
+        return isInserted;
     }
-    std::vector<Edge<T, W>> getEdges() { return mEdges; }
+    std::unordered_map<std::string, Edge<T, W>>& getEdges() { return mEdges; }
 
 private:
     /**
@@ -107,7 +111,7 @@ private:
      * List of Adjacent Nodes, i.e. nodes which are connected to this one by an
      * edge.
      */
-    std::vector<Edge<T, W>> mEdges{};
+    std::unordered_map<std::string, Edge<T, W>> mEdges{};
 };
 
 } // namespace utils::graph
@@ -117,5 +121,14 @@ struct std::hash<utils::graph::Vertex<T, W>> {
     std::size_t operator()(const utils::graph::Vertex<T, W>& k) const noexcept
     {
         return std::hash<std::string>()(k.mName);
+    }
+};
+
+template <std::equality_comparable T, UnsignedNumericType W>
+struct std::hash<utils::graph::Edge<T, W>> {
+    std::size_t operator()(const utils::graph::Edge<T, W>& k) const noexcept
+    {
+        return std::hash<std::string>()(k.getDestinationVertex().getName())
+            ^ std::hash<W>()(k.getWeight());
     }
 };
