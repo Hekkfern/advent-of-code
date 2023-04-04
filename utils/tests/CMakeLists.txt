@@ -18,7 +18,8 @@ add_executable(
   IntervalTests.cpp
   MultiIntervalTests.cpp
   geometry2d/SquareDiamond2DTests.cpp
-  graph/VertexTests.cpp)
+  graph/VertexTests.cpp
+  graph/GraphTests.cpp)
 set_cpp_standard(${_EXEC_NAME})
 set_compiler_flags(${_EXEC_NAME})
 set_vectorization_flags(${_EXEC_NAME})

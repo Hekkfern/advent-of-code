@@ -6,7 +6,7 @@ using namespace utils::graph;
 
 class CustomInfo {
 public:
-    CustomInfo(uint32_t value)
+    explicit CustomInfo(uint32_t value)
         : mValue{value}
     {
     }
@@ -110,7 +110,7 @@ TEST_CASE("[Vertex] addEdge method", "[utils][graph][Vertex]")
         auto& destinationVertex{
             vertex1.getEdges().at("vertex2").getDestinationVertex()};
         CHECK(destinationVertex.getName() == "vertex2");
-        CHECK(destinationVertex.getInfo() == 454U);
+        CHECK(destinationVertex.getInfo() == CustomInfo{454U});
     }
 }
 
