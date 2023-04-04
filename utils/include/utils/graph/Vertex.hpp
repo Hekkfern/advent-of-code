@@ -63,8 +63,8 @@ public:
      * @param[in]  name    Unique identifier for this node.
      */
     Vertex(std::string&& name, T&& info)
-        : mName{std::move(name)}
-        , mInfo(std::move(info))
+        : mName{std::forward<std::string>(name)}
+        , mInfo(std::forward<T>(info))
     {
     }
     std::string_view getName() const { return mName; }

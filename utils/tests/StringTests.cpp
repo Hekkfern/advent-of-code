@@ -2,9 +2,7 @@
 #include <catch.hpp>
 #include <utils/String.hpp>
 
-TEST_CASE(
-    "[String - toNumber] Works OK with all integer types",
-    "[String, String_toNumber]")
+TEST_CASE("[String] toNumber method", "[utils][String]")
 {
     CHECK(utils::string::toNumber<uint8_t>("6") == 6U);
     CHECK(utils::string::toNumber<uint32_t>("6") == 6U);
@@ -17,12 +15,18 @@ TEST_CASE(
     CHECK(utils::string::toNumber<int64_t>("-4") == -4LL);
 }
 
-TEST_CASE("[String - split] Works OK", "[String, String_split]")
+TEST_CASE("[String] split method", "[utils][String]")
 {
-    const auto result1{ utils::string::split("12,3", ",") };
-    CHECK(result1[0] == "12");
-    CHECK(result1[1] == "3");
-    const auto result2{ utils::string::split("-12..aa", "..") };
-    CHECK(result2[0] == "-12");
-    CHECK(result2[1] == "aa");
+    SECTION("Comma-separated number")
+    {
+        const auto result1{utils::string::split("12,3", ",")};
+        CHECK(result1[0] == "12");
+        CHECK(result1[1] == "3");
+    }
+    SECTION("Numbers and text")
+    {
+        const auto result2{utils::string::split("-12..aa", "..")};
+        CHECK(result2[0] == "-12");
+        CHECK(result2[1] == "aa");
+    }
 }

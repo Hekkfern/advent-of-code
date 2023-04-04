@@ -39,7 +39,7 @@ TEST_CASE("[Graph] addVertex method", "[utils][graph][Graph]")
     {
         Graph<uint32_t, uint32_t> graph;
         CHECK(graph.getNumberOfVertices() == 0U);
-        auto result{graph.addVertex("vertex1", 32U)};
+        const bool result{graph.addVertex("vertex1", 32U)};
         CHECK(result);
         CHECK(graph.getNumberOfVertices() == 1U);
         CHECK(graph.getVertex("vertex1").getInfo() == 32U);
@@ -48,7 +48,7 @@ TEST_CASE("[Graph] addVertex method", "[utils][graph][Graph]")
     {
         Graph<CustomInfo, uint32_t> graph;
         CHECK(graph.getNumberOfVertices() == 0U);
-        auto result{graph.addVertex("vertex1", CustomInfo{32U})};
+        const bool result{graph.addVertex("vertex1", CustomInfo{32U})};
         CHECK(result);
         CHECK(graph.getNumberOfVertices() == 1U);
         CHECK(graph.getVertex("vertex1").getInfo() == CustomInfo{32U});

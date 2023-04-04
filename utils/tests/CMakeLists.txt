@@ -7,19 +7,23 @@ find_package(Catch2 3 CONFIG REQUIRED)
 
 # aoc_utils_tests
 set(_EXEC_NAME "aoc_utils_tests")
+set(_TESTFILES
+        IntervalTests.cpp
+        MultiIntervalTests.cpp
+        StringTests.cpp)
+set(_TESTFILES_GEOMETRY2D
+        geometry2d/BoundingBox2DTests.cpp
+        geometry2d/Direction2DTests.cpp
+        geometry2d/Point2DTests.cpp
+        geometry2d/Rectangle2DTests.cpp
+        geometry2d/SquareDiamond2DTests.cpp
+        geometry2d/Vector2DTests.cpp)
+set(_TESTFILES_GRAPH
+        graph/GraphTests.cpp
+        graph/VertexTests.cpp)
 add_executable(
-  ${_EXEC_NAME}
-  StringTests.cpp
-  geometry2d/Point2DTests.cpp
-  geometry2d/Direction2DTests.cpp
-  geometry2d/Vector2DTests.cpp
-  geometry2d/Rectangle2DTests.cpp
-  geometry2d/BoundingBox2DTests.cpp
-  IntervalTests.cpp
-  MultiIntervalTests.cpp
-  geometry2d/SquareDiamond2DTests.cpp
-  graph/VertexTests.cpp
-  graph/GraphTests.cpp)
+        ${_EXEC_NAME}
+        ${_TESTFILES} ${_TESTFILES_GEOMETRY2D} ${_TESTFILES_GRAPH})
 set_cpp_standard(${_EXEC_NAME})
 set_compiler_flags(${_EXEC_NAME})
 set_vectorization_flags(${_EXEC_NAME})

@@ -17,8 +17,11 @@ class Graph {
 public:
     bool addVertex(std::string&& name, T&& info)
     {
-        auto [insertedItem, isInserted]{
-            mVertices.emplace(std::move(name), std::move(info))};
+        std::string key{name};
+        auto [insertedItem, isInserted]{mVertices.emplace(
+            key,
+            Vertex<T, W>{
+                std::forward<std::string>(name), std::forward<T>(info)})};
         return isInserted;
     }
     bool addEdge(
@@ -43,7 +46,7 @@ private:
     /**
      * List of vertices contained in this graph.
      */
-    std::unordered_map<std::string, Vertex<T, W>> mVertices;
+    std::unordered_map<std::string, Vertex<T, W>> mVertices{};
 };
 
 } // namespace utils::graph
