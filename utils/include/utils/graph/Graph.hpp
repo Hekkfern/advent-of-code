@@ -23,17 +23,31 @@ public:
                 std::forward<std::string>(name), std::forward<T>(info)})};
         return isInserted;
     }
-    bool addEdge(
+    bool addDirectedEdge(
         const std::string& vertexName1,
         const std::string& vertexName2,
         const W weight)
     {
         if (!mVertices.contains(vertexName1)
-            && !mVertices.contains(vertexName2)) {
+            || !mVertices.contains(vertexName2)) {
             return false;
         }
         return mVertices.at(vertexName1)
             .addEdge(mVertices.at(vertexName2), weight);
+    }
+    bool addUndirectedEdge(
+        const std::string& vertexName1,
+        const std::string& vertexName2,
+        const W weight)
+    {
+        if (!mVertices.contains(vertexName1)
+            || !mVertices.contains(vertexName2)) {
+            return false;
+        }
+        return mVertices.at(vertexName1)
+                   .addEdge(mVertices.at(vertexName2), weight)
+            && mVertices.at(vertexName2)
+                   .addEdge(mVertices.at(vertexName1), weight);
     }
     size_t getNumberOfVertices() const { return mVertices.size(); }
     Vertex<T, W>& getVertex(const std::string& vertexName)
