@@ -67,10 +67,10 @@ TEST_CASE("[Graph] addDirectedEdge() method", "[utils][graph][Graph]")
             CHECK(graph.getNumberOfVertices() == 2U);
             auto result{graph.addDirectedEdge("vertex1", "vertex2", 3U)};
             CHECK(result);
-            auto& vertex1Edges{graph.getVertex("vertex1").getEdges()};
+            const auto& vertex1Edges{graph.getVertex("vertex1").getEdges()};
             CHECK(vertex1Edges.size() == 1U);
             CHECK(vertex1Edges.at("vertex2").getWeight() == 3U);
-            auto& vertex2Edges{graph.getVertex("vertex2").getEdges()};
+            const auto& vertex2Edges{graph.getVertex("vertex2").getEdges()};
             CHECK(vertex2Edges.empty());
         }
         SECTION("Vertex1 doesn't exist")
@@ -100,10 +100,10 @@ TEST_CASE("[Graph] addDirectedEdge() method", "[utils][graph][Graph]")
             CHECK(graph.getNumberOfVertices() == 2U);
             auto result{graph.addDirectedEdge("vertex1", "vertex2", 3U)};
             CHECK(result);
-            auto& vertex1Edges{graph.getVertex("vertex1").getEdges()};
+            const auto& vertex1Edges{graph.getVertex("vertex1").getEdges()};
             CHECK(vertex1Edges.size() == 1U);
             CHECK(vertex1Edges.at("vertex2").getWeight() == 3U);
-            auto& vertex2Edges{graph.getVertex("vertex2").getEdges()};
+            const auto& vertex2Edges{graph.getVertex("vertex2").getEdges()};
             CHECK(vertex2Edges.empty());
         }
         SECTION("Vertex1 doesn't exist")
@@ -137,10 +137,10 @@ TEST_CASE("[Graph] addUndirectedEdge() method", "[utils][graph][Graph]")
             CHECK(graph.getNumberOfVertices() == 2U);
             auto result{graph.addUndirectedEdge("vertex1", "vertex2", 3U)};
             CHECK(result);
-            auto& vertex1Edges{graph.getVertex("vertex1").getEdges()};
+            const auto& vertex1Edges{graph.getVertex("vertex1").getEdges()};
             CHECK(vertex1Edges.size() == 1U);
             CHECK(vertex1Edges.at("vertex2").getWeight() == 3U);
-            auto& vertex2Edges{graph.getVertex("vertex2").getEdges()};
+            const auto& vertex2Edges{graph.getVertex("vertex2").getEdges()};
             CHECK(vertex2Edges.size() == 1U);
             CHECK(vertex2Edges.at("vertex1").getWeight() == 3U);
         }
@@ -171,10 +171,10 @@ TEST_CASE("[Graph] addUndirectedEdge() method", "[utils][graph][Graph]")
             CHECK(graph.getNumberOfVertices() == 2U);
             auto result{graph.addUndirectedEdge("vertex1", "vertex2", 3U)};
             CHECK(result);
-            auto& vertex1Edges{graph.getVertex("vertex1").getEdges()};
+            const auto& vertex1Edges{graph.getVertex("vertex1").getEdges()};
             CHECK(vertex1Edges.size() == 1U);
             CHECK(vertex1Edges.at("vertex2").getWeight() == 3U);
-            auto& vertex2Edges{graph.getVertex("vertex2").getEdges()};
+            const auto& vertex2Edges{graph.getVertex("vertex2").getEdges()};
             CHECK(vertex2Edges.size() == 1U);
             CHECK(vertex2Edges.at("vertex1").getWeight() == 3U);
         }

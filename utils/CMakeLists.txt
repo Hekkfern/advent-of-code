@@ -35,7 +35,7 @@ set(_SOURCES_UTILS_GEOMETRY2D
     include/utils/geometry2d/SquareDiamond2D.hpp
     include/utils/geometry2d/IShape2D.hpp)
 set(_SOURCES_UTILS_GRAPH include/utils/graph/Graph.hpp
-                         include/utils/graph/Vertex.hpp)
+                         include/utils/graph/Vertex.hpp include/utils/graph/Algorithms.hpp)
 add_library(${_LIB_NAME} STATIC ${_SOURCES_UTILS} ${_SOURCES_UTILS_GEOMETRY2D}
                                 ${_SOURCES_UTILS_GRAPH})
 set_cpp_standard(${_LIB_NAME})

@@ -50,12 +50,14 @@ public:
                    .addEdge(mVertices.at(vertexName1), weight);
     }
     size_t getNumberOfVertices() const { return mVertices.size(); }
-    Vertex<T, W>& getVertex(const std::string& vertexName)
+    const Vertex<T, W>& getVertex(const std::string& vertexName) const
     {
         return mVertices.at(vertexName);
     }
 
 private:
+    friend Graph<T, W> applyFloydWarshall(const Graph<T, W>& graph);
+
     /**
      * List of vertices contained in this graph.
      */

@@ -96,7 +96,10 @@ public:
             mEdges.emplace(std::string{other.getName()}, Edge{other, weight})};
         return isInserted;
     }
-    std::unordered_map<std::string, Edge<T, W>>& getEdges() { return mEdges; }
+    const std::unordered_map<std::string, Edge<T, W>>& getEdges() const
+    {
+        return mEdges;
+    }
 
 private:
     /**

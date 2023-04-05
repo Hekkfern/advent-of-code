@@ -20,7 +20,7 @@ set(_TESTFILES_GEOMETRY2D
         geometry2d/Vector2DTests.cpp)
 set(_TESTFILES_GRAPH
         graph/GraphTests.cpp
-        graph/VertexTests.cpp)
+        graph/VertexTests.cpp graph/AlgorithmsTests.cpp)
 add_executable(
         ${_EXEC_NAME}
         ${_TESTFILES} ${_TESTFILES_GEOMETRY2D} ${_TESTFILES_GRAPH})
