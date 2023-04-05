@@ -57,8 +57,8 @@ Graph<Valve, uint32_t> buildGraph(std::vector<ParsedValve>&& parsedValves)
     }
     // add edges
     for (const auto& parsedValve : parsedValves) {
-        for (const auto& neighbourName : parsedValve.mNeighborNames) {
-            graph.addDirectedEdge(parsedValve.mName, neighbourName, 1U);
+        for (const auto& neighborName : parsedValve.mNeighborNames) {
+            graph.addUndirectedEdge(parsedValve.mName, neighborName, 1U);
         }
     }
     return graph;
