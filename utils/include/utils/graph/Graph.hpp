@@ -14,6 +14,18 @@ namespace utils::graph {
 template <std::equality_comparable T, UnsignedNumericType W>
 class Graph {
 public:
+    bool addVertex(const std::string& name, const T& info)
+    {
+        auto [insertedItem, isInserted]{
+            mVertices.emplace(name, Vertex<T, W>{name, info})};
+        return isInserted;
+    }
+    bool addVertex(const std::string_view name, const T& info)
+    {
+        auto [insertedItem, isInserted]{
+            mVertices.emplace(name, Vertex<T, W>{name, info})};
+        return isInserted;
+    }
     bool addVertex(std::string&& name, T&& info)
     {
         std::string key{name};
@@ -21,6 +33,13 @@ public:
             key,
             Vertex<T, W>{
                 std::forward<std::string>(name), std::forward<T>(info)})};
+        return isInserted;
+    }
+    bool addVertex(const Vertex<T, W>& vertex)
+    {
+        auto [insertedItem, isInserted]{mVertices.emplace(
+            vertex.getName(),
+            Vertex<T, W>{vertex.getName(), vertex.getInfo()})};
         return isInserted;
     }
     bool addDirectedEdge(

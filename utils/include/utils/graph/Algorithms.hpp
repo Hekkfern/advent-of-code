@@ -43,7 +43,9 @@ applyFloydWarshall(const Graph<uint32_t, uint32_t>& graph)
 
     Graph<uint32_t, uint32_t> resultGraph;
     // copy vertexes
-
+    for (const auto& [vertexName, vertexItem] : graph.mVertices) {
+        resultGraph.addVertex(vertexItem);
+    }
     // add other paths
     // TODO
     return resultGraph;
