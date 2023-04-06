@@ -7,7 +7,7 @@ using namespace utils::graph;
 TEST_CASE(
     "[Algorithms] applyFloydWarshall() function", "[utils][graph][Algorithms]")
 {
-    SECTION("Start graph")
+    SECTION("Star graph")
     {
         SECTION("Undirected paths")
         {
