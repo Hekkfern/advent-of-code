@@ -91,7 +91,9 @@ uint32_t analyzeValve(
     uint32_t currentPressure,
     std::unordered_set<std::string>& openValves)
 {
-    uint32_t maxTotalPressure{};
+    // If we do nothing, the maximum is:
+    // current total + (flow from all opened valves * remaining time)
+    uint32_t maxTotalPressure{currentPressure+};
 
     // try to open more valves
     for (auto& next : graph.getVertices()) {
