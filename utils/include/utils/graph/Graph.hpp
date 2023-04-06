@@ -42,6 +42,10 @@ public:
             Vertex<T, W>{vertex.getName(), vertex.getInfo()})};
         return isInserted;
     }
+    bool removeVertex(const std::string& name)
+    {
+        return mVertices.erase(name) == 1U;
+    }
     bool addDirectedEdge(
         const std::string& vertexName1,
         const std::string& vertexName2,

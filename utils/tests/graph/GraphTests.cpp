@@ -35,23 +35,101 @@ TEST_CASE("[Graph] Constructor", "[utils][graph][Graph]")
 
 TEST_CASE("[Graph] addVertex() method", "[utils][graph][Graph]")
 {
-    SECTION("With integer-type information")
+    SECTION("Vertex doesn't exist")
     {
-        Graph<uint32_t, uint32_t> graph;
-        CHECK(graph.getNumberOfVertices() == 0U);
-        const bool result{graph.addVertex("vertex1", 32U)};
-        CHECK(result);
-        CHECK(graph.getNumberOfVertices() == 1U);
-        CHECK(graph.getVertex("vertex1").getInfo() == 32U);
+        SECTION("With integer-type information")
+        {
+            Graph<uint32_t, uint32_t> graph;
+            CHECK(graph.getNumberOfVertices() == 0U);
+            const bool result{graph.addVertex("vertex1", 32U)};
+            CHECK(result);
+            CHECK(graph.getNumberOfVertices() == 1U);
+            CHECK(graph.getVertex("vertex1").getInfo() == 32U);
+        }
+        SECTION("With custom-class-type information")
+        {
+            Graph<CustomInfo, uint32_t> graph;
+            CHECK(graph.getNumberOfVertices() == 0U);
+            const bool result{graph.addVertex("vertex1", CustomInfo{32U})};
+            CHECK(result);
+            CHECK(graph.getNumberOfVertices() == 1U);
+            CHECK(graph.getVertex("vertex1").getInfo() == CustomInfo{32U});
+        }
     }
-    SECTION("With custom-class-type information")
+    SECTION("Vertex already exists")
     {
-        Graph<CustomInfo, uint32_t> graph;
-        CHECK(graph.getNumberOfVertices() == 0U);
-        const bool result{graph.addVertex("vertex1", CustomInfo{32U})};
-        CHECK(result);
-        CHECK(graph.getNumberOfVertices() == 1U);
-        CHECK(graph.getVertex("vertex1").getInfo() == CustomInfo{32U});
+        SECTION("With integer-type information")
+        {
+            Graph<uint32_t, uint32_t> graph;
+            CHECK(graph.getNumberOfVertices() == 0U);
+            const bool result{graph.addVertex("vertex1", 32U)};
+            CHECK(result);
+            CHECK(graph.getNumberOfVertices() == 1U);
+            CHECK(graph.getVertex("vertex1").getInfo() == 32U);
+            const bool result2{graph.addVertex("vertex1", 32U)};
+            CHECK_FALSE(result2);
+            CHECK(graph.getNumberOfVertices() == 1U);
+            CHECK(graph.getVertex("vertex1").getInfo() == 32U);
+        }
+        SECTION("With custom-class-type information")
+        {
+            Graph<CustomInfo, uint32_t> graph;
+            CHECK(graph.getNumberOfVertices() == 0U);
+            const bool result{graph.addVertex("vertex1", CustomInfo{32U})};
+            CHECK(result);
+            CHECK(graph.getNumberOfVertices() == 1U);
+            CHECK(graph.getVertex("vertex1").getInfo() == CustomInfo{32U});
+            const bool result2{graph.addVertex("vertex1", CustomInfo{32U})};
+            CHECK_FALSE(result2);
+            CHECK(graph.getNumberOfVertices() == 1U);
+            CHECK(graph.getVertex("vertex1").getInfo() == CustomInfo{32U});
+        }
+    }
+}
+
+TEST_CASE("[Graph] removeVertex() method", "[utils][graph][Graph]")
+{
+    SECTION("Vertex exists")
+    {
+        SECTION("With integer-type information")
+        {
+            Graph<uint32_t, uint32_t> graph;
+            CHECK(graph.getNumberOfVertices() == 0U);
+            graph.addVertex("vertex1", 32U);
+            CHECK(graph.getNumberOfVertices() == 1U);
+            const bool result{graph.removeVertex("vertex1")};
+            CHECK(result);
+            CHECK(graph.getNumberOfVertices() == 0U);
+        }
+        SECTION("With custom-class-type information")
+        {
+            Graph<CustomInfo, uint32_t> graph;
+            CHECK(graph.getNumberOfVertices() == 0U);
+            graph.addVertex("vertex1", CustomInfo{32U});
+            CHECK(graph.getNumberOfVertices() == 1U);
+            const bool result{graph.removeVertex("vertex1")};
+            CHECK(result);
+            CHECK(graph.getNumberOfVertices() == 0U);
+        }
+    }
+    SECTION("Vertex doesn't exist")
+    {
+        SECTION("With integer-type information")
+        {
+            Graph<uint32_t, uint32_t> graph;
+            CHECK(graph.getNumberOfVertices() == 0U);
+            const bool result{graph.removeVertex("vertex1")};
+            CHECK_FALSE(result);
+            CHECK(graph.getNumberOfVertices() == 0U);
+        }
+        SECTION("With custom-class-type information")
+        {
+            Graph<CustomInfo, uint32_t> graph;
+            CHECK(graph.getNumberOfVertices() == 0U);
+            const bool result{graph.removeVertex("vertex1")};
+            CHECK_FALSE(result);
+            CHECK(graph.getNumberOfVertices() == 0U);
+        }
     }
 }
 
