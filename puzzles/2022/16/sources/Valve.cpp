@@ -8,10 +8,6 @@ Valve::Valve(const std::string_view name, const uint32_t flowRate)
 {
 }
 
-bool Valve::isOpen() const { return mIsOpen; }
-
-void Valve::open() { mIsOpen = true; }
-
 uint32_t Valve::getFlowRate() const { return mFlowRate; }
 
 const std::string& Valve::getName() const { return mName; }

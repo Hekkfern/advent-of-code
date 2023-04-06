@@ -9,9 +9,7 @@ add_library(
   solutions.cpp
   solutions.hpp
   Valve.cpp
-  Valve.hpp
-  PressureTracker.cpp
-  PressureTracker.hpp)
+  Valve.hpp)
 setup_puzzle(${_LIB_NAME})
 target_link_libraries(${_LIB_NAME} PRIVATE aoc_utils)
 

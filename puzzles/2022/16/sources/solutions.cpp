@@ -3,6 +3,7 @@
 #include "Valve.hpp"
 #include <fstream>
 #include <regex>
+#include <unordered_set>
 #include <utils/String.hpp>
 #include <utils/graph/Algorithms.hpp>
 #include <utils/graph/Graph.hpp>
@@ -13,8 +14,9 @@ namespace aoc_2022_16 {
 
 // ---------- Private Methods ----------
 
-static constexpr uint32_t TimeToOpenAValve{1U};
-static constexpr uint32_t TimeToMoveToNextValve{1U};
+constexpr uint32_t TimeToOpenAValve{1U};
+constexpr uint32_t TimeToMoveToNextValve{1U};
+constexpr uint32_t TotalTime{30U};
 
 struct ParsedValve {
     std::string mName;
@@ -59,10 +61,43 @@ Graph<Valve, uint32_t> buildGraph(std::vector<ParsedValve>&& parsedValves)
     // add edges
     for (const auto& parsedValve : parsedValves) {
         for (const auto& neighborName : parsedValve.mNeighborNames) {
-            graph.addUndirectedEdge(parsedValve.mName, neighborName, TimeToMoveToNextValve);
+            graph.addUndirectedEdge(
+                parsedValve.mName, neighborName, TimeToMoveToNextValve);
+        }
+    }
+    // look for shortest paths between vertices
+    graph = applyFloydWarshall(graph);
+    // delete all the vertex with zero flowrate (except "AA")
+    for (auto& [vertexName, vertexItem] : graph.getVertices()) {
+        if (vertexName != "AA" && vertexItem.getInfo().getFlowRate() == 0U) {
+            graph.removeVertex(vertexName);
         }
     }
     return graph;
+}
+
+uint32_t calculateNewPressureWhenValveOpens(
+    const uint32_t currentPressure,
+    const uint32_t flowRate,
+    const uint32_t time)
+{
+    return currentPressure + flowRate * (TotalTime - time);
+}
+
+uint32_t analyzeValve(
+    const Vertex<Valve, uint32_t>& valve,
+    uint32_t currentTime,
+    uint32_t currentPressure,
+    std::unordered_set<std::string>& openValves)
+{
+    //TODO
+}
+
+uint32_t searchMaximumFlowPath(const Graph<Valve, uint32_t>& graph)
+{
+    std::unordered_set<std::string> openValves;
+    auto& startingValve{graph.getVertex("AA")};
+    return analyzeValve(startingValve, 0U, 0U, openValves);
 }
 
 // ---------- End of Private Methods ----------
@@ -72,17 +107,9 @@ Graph<Valve, uint32_t> buildGraph(std::vector<ParsedValve>&& parsedValves)
 std::string solvePart1(const std::string& filename)
 {
     std::ifstream fileStream{filename};
-    auto globalGraph{applyFloydWarshall(buildGraph(parseInput(fileStream)))};
-    // delete all the vertex with no flowrate (except "AA")
-    for (auto& [vertexName, vertexItem] : globalGraph.getVertices()) {
-        if (vertexName != "AA" && vertexItem.getInfo().getFlowRate() == 0U) {
-            globalGraph.removeVertex(vertexName);
-        }
-    }
-    uint32_t timeCounter{0U};
-    auto startingValve{globalGraph.getVertex("AA")};
-
-    return std::to_string(1);
+    const auto globalGraph{buildGraph(parseInput(fileStream))};
+    const auto pressure{searchMaximumFlowPath(globalGraph)};
+    return std::to_string(pressure);
 }
 
 std::string solvePart2(const std::string& filename)

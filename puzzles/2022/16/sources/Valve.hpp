@@ -8,8 +8,6 @@ namespace aoc_2022_16 {
 class Valve {
 public:
     Valve(std::string_view name, uint32_t flowRate);
-    bool isOpen() const;
-    void open();
     uint32_t getFlowRate() const;
     const std::string& getName() const;
     bool operator==(const Valve& other) const;
@@ -17,7 +15,6 @@ public:
 private:
     std::string mName;
     uint32_t mFlowRate;
-    bool mIsOpen{false};
 };
 
 } // namespace aoc_2022_16
