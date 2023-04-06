@@ -32,3 +32,7 @@ include(Catch)
 catch_discover_tests(${_EXEC_NAME})
 target_link_libraries(${_EXEC_NAME} PRIVATE aoc_utils)
 target_link_libraries(${_EXEC_NAME} PRIVATE Catch2::Catch2WithMain)
+
+source_group("Source Files" FILES ${_TESTFILES})
+source_group("Source Files/geometry2d" FILES ${_TESTFILES_GEOMETRY2D})
+source_group("Source Files/graph" FILES ${_TESTFILES_GRAPH})
