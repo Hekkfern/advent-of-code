@@ -5,9 +5,8 @@
 
 namespace utils::graph {
 
-// template <std::equality_comparable T, UnsignedNumericType W>
-Graph<uint32_t, uint32_t>
-applyFloydWarshall(const Graph<uint32_t, uint32_t>& graph)
+template <std::equality_comparable T, UnsignedNumericType W>
+Graph<T, W> applyFloydWarshall(const Graph<T, W>& graph)
 {
     std::unordered_map<std::string, std::unordered_map<std::string, uint64_t>>
         distances;
@@ -23,8 +22,7 @@ applyFloydWarshall(const Graph<uint32_t, uint32_t>& graph)
                           .at(toName)
                           .getWeight();
             } else {
-                distances[fromName][toName] = std::numeric_limits<
-                    uint32_t>::max();
+                distances[fromName][toName] = std::numeric_limits<W>::max();
             }
         }
     }
@@ -41,13 +39,19 @@ applyFloydWarshall(const Graph<uint32_t, uint32_t>& graph)
         }
     }
 
-    Graph<uint32_t, uint32_t> resultGraph;
+    Graph<T, W> resultGraph;
     // copy vertexes
     for (const auto& [vertexName, vertexItem] : graph.mVertices) {
         resultGraph.addVertex(vertexItem);
     }
-    // add other paths
-    // TODO
+    // add all paths
+    for (const auto& [fromName, fromPaths] : distances) {
+        for (auto [toName, weight] : fromPaths) {
+            resultGraph.addDirectedEdge(
+                fromName, toName, static_cast<W>(weight));
+        }
+    }
+
     return resultGraph;
 }
 
