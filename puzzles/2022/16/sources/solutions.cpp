@@ -4,6 +4,7 @@
 #include <fstream>
 #include <regex>
 #include <utils/String.hpp>
+#include <utils/graph/Algorithms.hpp>
 #include <utils/graph/Graph.hpp>
 
 using namespace utils::graph;
@@ -71,9 +72,15 @@ Graph<Valve, uint32_t> buildGraph(std::vector<ParsedValve>&& parsedValves)
 std::string solvePart1(const std::string& filename)
 {
     std::ifstream fileStream{filename};
-    auto graph{buildGraph(parseInput(fileStream))};
+    auto globalGraph{applyFloydWarshall(buildGraph(parseInput(fileStream)))};
+    // delete all the vertex with no flowrate (except "AA")
+    for (auto& [vertexName, vertexItem] : globalGraph.getVertices()) {
+        if (vertexName != "AA" && vertexItem.getInfo().getFlowRate() == 0U) {
+            globalGraph.removeVertex(vertexName);
+        }
+    }
     uint32_t timeCounter{0U};
-    auto startingValve{graph.getVertex("AA")};
+    auto startingValve{globalGraph.getVertex("AA")};
 
     return std::to_string(1);
 }

@@ -72,7 +72,10 @@ public:
             && mVertices.at(vertexName2)
                    .addEdge(mVertices.at(vertexName1), weight);
     }
-    size_t getNumberOfVertices() const { return mVertices.size(); }
+    const std::unordered_map<std::string, Vertex<T, W>>& getVertices() const
+    {
+        return mVertices;
+    }
     const Vertex<T, W>& getVertex(const std::string& vertexName) const
     {
         return mVertices.at(vertexName);
