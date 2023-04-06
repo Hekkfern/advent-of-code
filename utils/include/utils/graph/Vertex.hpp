@@ -3,7 +3,6 @@
 #include "../Concepts.hpp"
 #include <concepts>
 #include <string>
-#include <string_view>
 #include <unordered_map>
 
 namespace utils::graph {
@@ -77,7 +76,7 @@ public:
         , mInfo{info}
     {
     }
-    std::string_view getName() const { return mName; }
+    const std::string& getName() const { return mName; }
     /**
      * @brief      Gets the information attached to this node.
      *

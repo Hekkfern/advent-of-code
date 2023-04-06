@@ -76,7 +76,7 @@ Graph<Valve, uint32_t> buildGraph(std::vector<ParsedValve>&& parsedValves)
     return graph;
 }
 
-uint32_t calculateNewPressureWhenValveOpens(
+uint32_t calculateTotalPressureWhenValveOpens(
     const uint32_t currentPressure,
     const uint32_t flowRate,
     const uint32_t time)
@@ -85,19 +85,42 @@ uint32_t calculateNewPressureWhenValveOpens(
 }
 
 uint32_t analyzeValve(
+    const Graph<Valve, uint32_t>& graph,
     const Vertex<Valve, uint32_t>& valve,
     uint32_t currentTime,
     uint32_t currentPressure,
     std::unordered_set<std::string>& openValves)
 {
-    //TODO
+    uint32_t maxTotalPressure{};
+
+    // try to open more valves
+    for (auto& next : graph.getVertices()) {
+        // moving to this valve is useless, as it is already open
+        if (openValves.contains(valve.getName())) {
+            continue;
+        }
+        uint32_t timeToGoToNextValve{valve.getEdges(). + 1};
+        // moving to this valve and opening it would take
+        // more time than we have
+        if (currentTime + timeToGoToNextValve >= TotalTime) {
+            continue;
+        }
+        // the flow as we move to the next valve and open it
+        int64_t new_total = total + time_delta * get_flow(open);
+        open.insert(next);
+        // recurse with this valve open, if it is an improvement, remember
+        int64_t value = dfs(next, time + time_delta, new_total, open);
+        maxTotalPressure = std::max(maxTotalPressure, value);
+        open.erase(next);
+    }
+    return maxTotalPressure;
 }
 
 uint32_t searchMaximumFlowPath(const Graph<Valve, uint32_t>& graph)
 {
     std::unordered_set<std::string> openValves;
     auto& startingValve{graph.getVertex("AA")};
-    return analyzeValve(startingValve, 0U, 0U, openValves);
+    return analyzeValve(graph, startingValve, 0U, 0U, openValves);
 }
 
 // ---------- End of Private Methods ----------
