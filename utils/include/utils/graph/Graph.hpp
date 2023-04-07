@@ -82,9 +82,6 @@ public:
     }
 
 private:
-    template <std::equality_comparable T, UnsignedNumericType W>
-    friend Graph<T, W> applyFloydWarshall(const Graph<T, W>& graph);
-
     /**
      * List of vertices contained in this graph.
      */

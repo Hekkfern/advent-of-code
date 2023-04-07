@@ -20,7 +20,7 @@ TEST_CASE(
             graph.addUndirectedEdge("BB", "CC", 3U);
             graph.addUndirectedEdge("BB", "DD", 4U);
             const auto graph2{applyFloydWarshall<uint32_t, uint32_t>(graph)};
-            CHECK(graph2.getNumberOfVertices() == 4U);
+            CHECK(graph2.getVertices().size() == 4U);
             CHECK(graph2.getVertex("AA").getEdges().at("AA").getWeight() == 0U);
             CHECK(graph2.getVertex("AA").getEdges().at("BB").getWeight() == 2U);
             CHECK(graph2.getVertex("AA").getEdges().at("CC").getWeight() == 5U);
@@ -40,7 +40,7 @@ TEST_CASE(
             graph.addDirectedEdge("BB", "CC", 3U);
             graph.addDirectedEdge("BB", "DD", 4U);
             const auto graph2{applyFloydWarshall<uint32_t, uint32_t>(graph)};
-            CHECK(graph2.getNumberOfVertices() == 4U);
+            CHECK(graph2.getVertices().size() == 4U);
             CHECK(graph2.getVertex("AA").getEdges().at("AA").getWeight() == 0U);
             CHECK(graph2.getVertex("AA").getEdges().at("BB").getWeight() == 2U);
             CHECK(graph2.getVertex("AA").getEdges().at("CC").getWeight() == 5U);
@@ -67,7 +67,7 @@ TEST_CASE(
             graph.addUndirectedEdge("BB", "CC", 3U);
             graph.addUndirectedEdge("CC", "DD", 4U);
             const auto graph2{applyFloydWarshall<uint32_t, uint32_t>(graph)};
-            CHECK(graph2.getNumberOfVertices() == 4U);
+            CHECK(graph2.getVertices().size() == 4U);
             CHECK(graph2.getVertex("AA").getEdges().at("AA").getWeight() == 0U);
             CHECK(graph2.getVertex("AA").getEdges().at("BB").getWeight() == 2U);
             CHECK(graph2.getVertex("AA").getEdges().at("CC").getWeight() == 5U);
@@ -87,7 +87,7 @@ TEST_CASE(
             graph.addDirectedEdge("BB", "CC", 3U);
             graph.addDirectedEdge("CC", "DD", 4U);
             const auto graph2{applyFloydWarshall<uint32_t, uint32_t>(graph)};
-            CHECK(graph2.getNumberOfVertices() == 4U);
+            CHECK(graph2.getVertices().size() == 4U);
             CHECK(graph2.getVertex("AA").getEdges().at("AA").getWeight() == 0U);
             CHECK(graph2.getVertex("AA").getEdges().at("BB").getWeight() == 2U);
             CHECK(graph2.getVertex("AA").getEdges().at("CC").getWeight() == 5U);

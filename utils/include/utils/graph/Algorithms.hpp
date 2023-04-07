@@ -11,13 +11,14 @@ Graph<T, W> applyFloydWarshall(const Graph<T, W>& graph)
     std::unordered_map<std::string, std::unordered_map<std::string, uint64_t>>
         distances;
     // initialize all the paths with the known distance, or maximum distance
-    for (auto& [fromName, fromVertex] : graph.mVertices) {
-        for (auto& [toName, toVertex] : graph.mVertices) {
+    for (auto& [fromName, fromVertex] : graph.getVertices()) {
+        for (auto& [toName, toVertex] : graph.getVertices()) {
             if (fromName == toName) {
                 distances[fromName][fromName] = 0U;
             } else if (fromVertex.getEdges().contains(toName)) {
                 distances[fromName][toName]
-                    = graph.mVertices.at(fromName)
+                    = graph.getVertices()
+                          .at(fromName)
                           .getEdges()
                           .at(toName)
                           .getWeight();
@@ -27,9 +28,9 @@ Graph<T, W> applyFloydWarshall(const Graph<T, W>& graph)
         }
     }
     // paths that go via another node
-    for (auto& [viaName, viaVertex] : graph.mVertices) {
-        for (auto& [fromName, fromVertex] : graph.mVertices) {
-            for (auto& [toName, toVertex] : graph.mVertices) {
+    for (auto& [viaName, viaVertex] : graph.getVertices()) {
+        for (auto& [fromName, fromVertex] : graph.getVertices()) {
+            for (auto& [toName, toVertex] : graph.getVertices()) {
                 const auto viaDistance{
                     distances[fromName][viaName] + distances[viaName][toName]};
                 if (distances[fromName][toName] > viaDistance) {
@@ -41,7 +42,7 @@ Graph<T, W> applyFloydWarshall(const Graph<T, W>& graph)
 
     Graph<T, W> resultGraph;
     // copy vertexes
-    for (const auto& [vertexName, vertexItem] : graph.mVertices) {
+    for (const auto& [vertexName, vertexItem] : graph.getVertices()) {
         resultGraph.addVertex(vertexItem);
     }
     // add all paths

@@ -2,6 +2,8 @@ include(${CMAKE_SOURCE_DIR}/cmake/aoc_puzzles.cmake)
 
 cmake_minimum_required(VERSION 3.20)
 
+find_package(range-v3 CONFIG REQUIRED)
+
 # aoc_2022_16_solutions
 set(_LIB_NAME "aoc_2022_16_solutions")
 add_library(
@@ -12,6 +14,7 @@ add_library(
   Valve.hpp)
 setup_puzzle(${_LIB_NAME})
 target_link_libraries(${_LIB_NAME} PRIVATE aoc_utils)
+target_link_libraries(${_LIB_NAME} PRIVATE range-v3)
 
 # aoc_2022_16
 if(GENERATE_PROJECTS STREQUAL "ALL" OR GENERATE_PROJECTS STREQUAL "EXES")

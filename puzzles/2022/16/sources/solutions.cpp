@@ -2,6 +2,7 @@
 
 #include "Valve.hpp"
 #include <fstream>
+#include <range/v3/all.hpp>
 #include <regex>
 #include <unordered_set>
 #include <utils/String.hpp>
@@ -76,7 +77,7 @@ Graph<Valve, uint32_t> buildGraph(std::vector<ParsedValve>&& parsedValves)
     return graph;
 }
 
-uint32_t calculateTotalPressureWhenValveOpens(
+uint32_t calculateEventualPressureRelease(
     const uint32_t currentPressure,
     const uint32_t flowRate,
     const uint32_t time)
@@ -84,37 +85,57 @@ uint32_t calculateTotalPressureWhenValveOpens(
     return currentPressure + flowRate * (TotalTime - time);
 }
 
+uint32_t calculateCombinedFlowRateForOpenValves(
+    const Graph<Valve, uint32_t>& graph,
+    const std::unordered_set<std::string>& openValves)
+{
+    return ranges::accumulate(
+        openValves, 0U, [&graph](uint32_t acc, auto& valveName) {
+            return acc + graph.getVertex(valveName).getInfo().getFlowRate();
+        });
+}
+
 uint32_t analyzeValve(
     const Graph<Valve, uint32_t>& graph,
-    const Vertex<Valve, uint32_t>& valve,
-    uint32_t currentTime,
-    uint32_t currentPressure,
+    const Vertex<Valve, uint32_t>& thisVertex,
+    const uint32_t time,
+    const uint32_t totalPressure,
     std::unordered_set<std::string>& openValves)
 {
-    // If we do nothing, the maximum is:
-    // current total + (flow from all opened valves * remaining time)
-    uint32_t maxTotalPressure{currentPressure+};
+    uint32_t maxTotalPressure{totalPressure};
+    uint32_t newTime{time};
+    // open valve
+    if (thisVertex.getInfo().getFlowRate() != 0U) {
+        maxTotalPressure = totalPressure
+            + (thisVertex.getInfo().getFlowRate() * ((TotalTime - time)));
+        newTime += TimeToOpenAValve;
+    }
+    openValves.emplace(thisVertex.getName());
 
     // try to open more valves
-    for (auto& next : graph.getVertices()) {
+    for (auto& [nextVertexName, nextVertex] : graph.getVertices()) {
         // moving to this valve is useless, as it is already open
-        if (openValves.contains(valve.getName())) {
+        if (openValves.contains(nextVertexName)) {
             continue;
         }
-        uint32_t timeToGoToNextValve{valve.getEdges(). + 1};
+        // calculate time to move to this valve
+        const uint32_t timeToGoToNextValve{
+            thisVertex.getEdges().at(nextVertexName).getWeight()};
         // moving to this valve and opening it would take
         // more time than we have
-        if (currentTime + timeToGoToNextValve >= TotalTime) {
+        if (newTime + timeToGoToNextValve >= TotalTime) {
             continue;
         }
-        // the flow as we move to the next valve and open it
-        int64_t new_total = total + time_delta * get_flow(open);
-        open.insert(next);
-        // recurse with this valve open, if it is an improvement, remember
-        int64_t value = dfs(next, time + time_delta, new_total, open);
-        maxTotalPressure = std::max(maxTotalPressure, value);
-        open.erase(next);
+        // recurse with this valve open. if it is an improvement, remember
+        const uint32_t candidateTotalPressure{analyzeValve(
+            graph,
+            nextVertex,
+            time + timeToGoToNextValve,
+            maxTotalPressure,
+            openValves)};
+        maxTotalPressure = std::max(maxTotalPressure, candidateTotalPressure);
     }
+    openValves.erase(thisVertex.getName());
     return maxTotalPressure;
 }
 
