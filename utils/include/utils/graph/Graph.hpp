@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vertex.hpp"
+#include <range/v3/all.hpp>
 #include <unordered_map>
 
 namespace utils::graph {
@@ -42,9 +43,18 @@ public:
             Vertex<T, W>{vertex.getName(), vertex.getInfo()})};
         return isInserted;
     }
-    bool removeVertex(const std::string& name)
+    bool removeVertex(const std::string& vertexName)
     {
-        return mVertices.erase(name) == 1U;
+        return mVertices.erase(vertexName) == 1U;
+    }
+    void
+    removeVertexIf(std::function<bool(const Vertex<T, W>& vertex)> condition)
+    {
+        // TODO
+        std::erase_if(mVertices, [&condition](const auto& item) -> bool {
+            auto const& [key, value] = item;
+            return condition(value);
+        });
     }
     bool addDirectedEdge(
         const std::string& vertexName1,
@@ -71,6 +81,26 @@ public:
                    .addEdge(mVertices.at(vertexName2), weight)
             && mVertices.at(vertexName2)
                    .addEdge(mVertices.at(vertexName1), weight);
+    }
+    bool removeDirectedEdge(
+        const std::string& vertexName1, const std::string& vertexName2)
+    {
+        if (!mVertices.contains(vertexName1)
+            || !mVertices.contains(vertexName2)) {
+            return false;
+        }
+        return mVertices.at(vertexName1).removeEdge(vertexName2);
+    }
+    bool removeAllEdges(
+        const std::string& vertexName1, const std::string& vertexName2)
+    {
+        if (!mVertices.contains(vertexName1)
+            || !mVertices.contains(vertexName2)) {
+            return false;
+        }
+        mVertices.at(vertexName1).removeEdge(vertexName2);
+        mVertices.at(vertexName2).removeEdge(vertexName1);
+        return true;
     }
     const std::unordered_map<std::string, Vertex<T, W>>& getVertices() const
     {

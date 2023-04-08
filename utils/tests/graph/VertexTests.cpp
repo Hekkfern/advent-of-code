@@ -91,7 +91,8 @@ TEST_CASE("[Vertex] addEdge method", "[utils][graph][Vertex]")
     {
         auto vertex1{Vertex<uint32_t, uint32_t>{"vertex1", 24U}};
         auto vertex2{Vertex<uint32_t, uint32_t>{"vertex2", 322U}};
-        vertex1.addEdge(vertex2, 2U);
+        const bool result{vertex1.addEdge(vertex2, 2U)};
+        CHECK(result);
         CHECK(vertex1.getEdges().size() == 1U);
         CHECK(vertex1.getEdges().at("vertex2").getWeight() == 2U);
         auto& destinationVertex{
@@ -104,13 +105,42 @@ TEST_CASE("[Vertex] addEdge method", "[utils][graph][Vertex]")
         auto vertex1{
             Vertex<CustomInfo, uint32_t>{"vertex1", CustomInfo{12343U}}};
         auto vertex2{Vertex<CustomInfo, uint32_t>{"vertex2", CustomInfo{454U}}};
-        vertex1.addEdge(vertex2, 2U);
+        const bool result{vertex1.addEdge(vertex2, 2U)};
+        CHECK(result);
         CHECK(vertex1.getEdges().size() == 1U);
         CHECK(vertex1.getEdges().at("vertex2").getWeight() == 2U);
         auto& destinationVertex{
             vertex1.getEdges().at("vertex2").getDestinationVertex()};
         CHECK(destinationVertex.getName() == "vertex2");
         CHECK(destinationVertex.getInfo() == CustomInfo{454U});
+    }
+}
+
+TEST_CASE("[Vertex] removeEdge method", "[utils][graph][Vertex]")
+{
+    SECTION("With integer-type information")
+    {
+        auto vertex1{Vertex<uint32_t, uint32_t>{"vertex1", 24U}};
+        auto vertex2{Vertex<uint32_t, uint32_t>{"vertex2", 322U}};
+        auto vertex3{Vertex<uint32_t, uint32_t>{"vertex3", 2U}};
+        vertex1.addEdge(vertex2, 2U);
+        vertex1.addEdge(vertex3, 3U);
+        const bool result{vertex1.removeEdge("vertex2")};
+        CHECK(result);
+        CHECK(vertex1.getEdges().size() == 1U);
+        CHECK(vertex2.getEdges().empty());
+    }
+    SECTION("With custom-class-type information")
+    {
+        auto vertex1{Vertex<CustomInfo, uint32_t>{"vertex1", CustomInfo{24U}}};
+        auto vertex2{Vertex<CustomInfo, uint32_t>{"vertex2", CustomInfo{322U}}};
+        auto vertex3{Vertex<CustomInfo, uint32_t>{"vertex3", CustomInfo{2U}}};
+        vertex1.addEdge(vertex2, 2U);
+        vertex1.addEdge(vertex3, 3U);
+        const bool result{vertex1.removeEdge("vertex2")};
+        CHECK(result);
+        CHECK(vertex1.getEdges().size() == 1U);
+        CHECK(vertex2.getEdges().empty());
     }
 }
 

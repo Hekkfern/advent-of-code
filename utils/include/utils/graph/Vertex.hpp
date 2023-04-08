@@ -105,6 +105,10 @@ public:
             mEdges.emplace(std::string{other.getName()}, Edge{other, weight})};
         return isInserted;
     }
+    bool removeEdge(const std::string& vertexName)
+    {
+        return mEdges.erase(vertexName) == 1U;
+    }
     const std::unordered_map<std::string, Edge<T, W>>& getEdges() const
     {
         return mEdges;

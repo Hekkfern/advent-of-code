@@ -8,6 +8,7 @@
 #include <utils/String.hpp>
 #include <utils/graph/Algorithms.hpp>
 #include <utils/graph/Graph.hpp>
+#include <vector>
 
 using namespace utils::graph;
 
@@ -80,11 +81,9 @@ Graph<Valve, uint32_t> buildGraph(std::vector<ParsedValve>&& parsedValves)
     // look for shortest paths between vertices
     graph = applyFloydWarshall(graph);
     // delete all the vertex with zero flowrate (except "AA")
-    for (auto& [vertexName, vertexItem] : graph.getVertices()) {
-        if (vertexName != "AA" && vertexItem.getInfo().getFlowRate() == 0U) {
-            graph.removeVertex(vertexName);
-        }
-    }
+    graph.removeVertexIf([](const Vertex<Valve, uint32_t>& vertex) -> bool {
+        return vertex.getName() != "AA" && vertex.getInfo().getFlowRate() == 0U;
+    });
     return graph;
 }
 
