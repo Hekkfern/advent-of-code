@@ -50,11 +50,29 @@ public:
     void
     removeVertexIf(std::function<bool(const Vertex<T, W>& vertex)> condition)
     {
-        // TODO
-        std::erase_if(mVertices, [&condition](const auto& item) -> bool {
-            auto const& [key, value] = item;
-            return condition(value);
+        std::vector<std::string> erasableVertices{
+            mVertices
+            | ranges::views::filter([&condition](const auto& item) -> bool {
+                  auto const& [key, value] = item;
+                  return condition(value);
+              })
+            | ranges::views::transform([](const auto& item) {
+                  auto const& [key, value] = item;
+                  return key;
+              })
+            | ranges::to<std::vector>};
+        // delete edges
+        ranges::for_each(mVertices, [&erasableVertices](auto& item) {
+            ranges::for_each(
+                erasableVertices, [&item](const std::string& vertexName) {
+                    item.second.removeEdge(vertexName);
+                });
         });
+        // delete vertices
+        ranges::for_each(
+            erasableVertices, [this](const std::string& vertexName) {
+                mVertices.erase(vertexName);
+            });
     }
     bool addDirectedEdge(
         const std::string& vertexName1,
