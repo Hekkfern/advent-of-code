@@ -29,7 +29,7 @@ ParsedValve parseInputLine(const std::string& line)
 {
     std::smatch regexResult;
     constexpr auto Pattern{
-        R"(Valve ([A-Z]{2} has flow rate=([0-9]+); tunnel(?:s?) lead(?:s?) to valve(?:s?) ([A-Z, ]+)))"};
+        R"(Valve ([A-Z]{2}) has flow rate=([0-9]+); tunnel(?:s?) lead(?:s?) to valve(?:s?) ([A-Z, ]+))"};
     if (!std::regex_match(line, regexResult, std::regex(Pattern))) {
         throw std::logic_error("Regex failed in parsing the line");
     }
