@@ -27,16 +27,27 @@ struct ParsedValve {
 
 ParsedValve parseInputLine(const std::string& line)
 {
-    std::smatch regexResult;
-    constexpr auto Pattern{
+    // parse line
+    std::smatch lineRegexResult;
+    const std::regex LinePattern{
         R"(Valve ([A-Z]{2}) has flow rate=([0-9]+); tunnel(?:s?) lead(?:s?) to valve(?:s?) ([A-Z, ]+))"};
-    if (!std::regex_match(line, regexResult, std::regex(Pattern))) {
+    if (!std::regex_match(line, lineRegexResult, LinePattern)) {
         throw std::logic_error("Regex failed in parsing the line");
     }
+    // parse neighbors inside line
+    std::regex_token_iterator<std::string::iterator> rend;
+    const std::regex NeighborPattern{R"([A-Z]{2})"};
+    std::string neighborString{lineRegexResult[3]};
+    std::regex_token_iterator<std::string::iterator> matchIt{
+        std::begin(neighborString), std::end(neighborString), NeighborPattern};
+    std::vector<std::string> neighborNames;
+    while (matchIt != rend) {
+        neighborNames.emplace_back(*matchIt++);
+    }
     return ParsedValve{
-        std::string{regexResult[1]},
-        utils::string::toNumber<uint32_t>(regexResult[2]),
-        std::vector<std::string>{{regexResult[3]}}};
+        std::string{lineRegexResult[1]},
+        utils::string::toNumber<uint32_t>(lineRegexResult[2]),
+        std::move(neighborNames)};
 }
 
 std::vector<ParsedValve> parseInput(std::ifstream& fileStream)
