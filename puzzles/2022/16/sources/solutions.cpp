@@ -130,7 +130,7 @@ uint32_t analyzeValve(
         const uint32_t candidateTotalPressure{analyzeValve(
             graph,
             nextVertex,
-            time + timeToGoToNextValve,
+            newTime + timeToGoToNextValve,
             maxTotalPressure,
             openValves)};
         maxTotalPressure = std::max(maxTotalPressure, candidateTotalPressure);
