@@ -102,17 +102,18 @@ uint32_t analyzeValve(
     const uint32_t totalPressure,
     std::unordered_set<std::string>& openValves)
 {
-    uint32_t maxTotalPressure{totalPressure};
+    uint32_t newTotalPressure{totalPressure};
     uint32_t newTime{time};
     // open valve
     if (thisVertex.getInfo().getFlowRate() != 0U) {
         newTime += TimeToOpenAValve;
-        maxTotalPressure = calculateEventualPressureRelease(
+        newTotalPressure = calculateEventualPressureRelease(
             totalPressure, thisVertex.getInfo().getFlowRate(), newTime);
     }
     openValves.emplace(thisVertex.getName());
 
     // try to open more valves
+    uint32_t maxTotalPressure{newTotalPressure};
     for (auto& [nextVertexName, nextVertex] : graph.getVertices()) {
         // moving to this valve is useless, as it is already open
         if (openValves.contains(nextVertexName)) {
@@ -131,7 +132,7 @@ uint32_t analyzeValve(
             graph,
             nextVertex,
             newTime + timeToGoToNextValve,
-            maxTotalPressure,
+            newTotalPressure,
             openValves)};
         maxTotalPressure = std::max(maxTotalPressure, candidateTotalPressure);
     }
