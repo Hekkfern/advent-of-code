@@ -106,9 +106,9 @@ uint32_t analyzeValve(
     uint32_t newTime{time};
     // open valve
     if (thisVertex.getInfo().getFlowRate() != 0U) {
-        maxTotalPressure = calculateEventualPressureRelease(
-            totalPressure, thisVertex.getInfo().getFlowRate(), time);
         newTime += TimeToOpenAValve;
+        maxTotalPressure = calculateEventualPressureRelease(
+            totalPressure, thisVertex.getInfo().getFlowRate(), newTime);
     }
     openValves.emplace(thisVertex.getName());
 
