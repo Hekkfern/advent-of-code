@@ -17,7 +17,8 @@ namespace aoc_2022_16 {
 
 constexpr uint32_t TimeToOpenAValve{1U};
 constexpr uint32_t TimeToMoveToNextValve{1U};
-constexpr uint32_t TotalTime{30U};
+constexpr uint32_t TotalTimeWithoutElephant{30U};
+constexpr uint32_t TotalTimeWithElephant{TotalTimeWithoutElephant - 4U};
 
 struct ParsedValve {
     std::string mName;
@@ -91,10 +92,10 @@ uint32_t calculateEventualPressureRelease(
     const uint32_t flowRate,
     const uint32_t time)
 {
-    return currentPressure + flowRate * (TotalTime - time);
+    return currentPressure + flowRate * (TotalTimeWithoutElephant - time);
 }
 
-uint32_t analyzeValve(
+uint32_t analyzeValveAlone(
     const Graph<Valve, uint32_t>& graph,
     const Vertex<Valve, uint32_t>& thisVertex,
     const uint32_t time,
@@ -123,11 +124,11 @@ uint32_t analyzeValve(
             thisVertex.getEdges().at(nextVertexName).getWeight()};
         // moving to this valve and opening it would take
         // more time than we have
-        if (newTime + timeToGoToNextValve >= TotalTime) {
+        if (newTime + timeToGoToNextValve >= TotalTimeWithoutElephant) {
             continue;
         }
         // recurse with this valve open. if it is an improvement, remember
-        const uint32_t candidateTotalPressure{analyzeValve(
+        const uint32_t candidateTotalPressure{analyzeValveAlone(
             graph,
             nextVertex,
             newTime + timeToGoToNextValve,
@@ -139,11 +140,11 @@ uint32_t analyzeValve(
     return maxTotalPressure;
 }
 
-uint32_t searchMaximumFlowPath(const Graph<Valve, uint32_t>& graph)
+uint32_t searchMaximumFlowPathAlone(const Graph<Valve, uint32_t>& graph)
 {
     std::unordered_set<std::string> openValves;
     auto& startingValve{graph.getVertex("AA")};
-    return analyzeValve(graph, startingValve, 0U, 0U, openValves);
+    return analyzeValveAlone(graph, startingValve, 0U, 0U, openValves);
 }
 
 // ---------- End of Private Methods ----------
@@ -154,14 +155,16 @@ std::string solvePart1(const std::string& filename)
 {
     std::ifstream fileStream{filename};
     const auto globalGraph{buildGraph(parseInput(fileStream))};
-    const auto pressure{searchMaximumFlowPath(globalGraph)};
+    const auto pressure{searchMaximumFlowPathAlone(globalGraph)};
     return std::to_string(pressure);
 }
 
 std::string solvePart2(const std::string& filename)
 {
-    (void)filename;
-    return "";
+    std::ifstream fileStream{filename};
+    const auto globalGraph{buildGraph(parseInput(fileStream))};
+
+    return std::to_string(pressure);
 }
 
 // ---------- End of Public Methods ----------
