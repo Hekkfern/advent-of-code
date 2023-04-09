@@ -95,16 +95,6 @@ uint32_t calculateEventualPressureRelease(
     return currentPressure + flowRate * (TotalTime - time);
 }
 
-uint32_t calculateCombinedFlowRateForOpenValves(
-    const Graph<Valve, uint32_t>& graph,
-    const std::unordered_set<std::string>& openValves)
-{
-    return ranges::accumulate(
-        openValves, 0U, [&graph](uint32_t acc, auto& valveName) {
-            return acc + graph.getVertex(valveName).getInfo().getFlowRate();
-        });
-}
-
 uint32_t analyzeValve(
     const Graph<Valve, uint32_t>& graph,
     const Vertex<Valve, uint32_t>& thisVertex,
@@ -116,8 +106,8 @@ uint32_t analyzeValve(
     uint32_t newTime{time};
     // open valve
     if (thisVertex.getInfo().getFlowRate() != 0U) {
-        maxTotalPressure = totalPressure
-            + (thisVertex.getInfo().getFlowRate() * ((TotalTime - time)));
+        maxTotalPressure = calculateEventualPressureRelease(
+            totalPressure, thisVertex.getInfo().getFlowRate(), time);
         newTime += TimeToOpenAValve;
     }
     openValves.emplace(thisVertex.getName());
