@@ -17,7 +17,7 @@ public:
      * @param[in]  min   The minimum value.
      * @param[in]  max   The maximum value.
      */
-    Interval(int32_t min, int32_t max);
+    explicit Interval(int32_t min, int32_t max);
     /**
      * @brief      Constructs a new instance.
      *

@@ -6,7 +6,8 @@ using namespace utils::interval;
 
 TEST_CASE("[MultiInterval] Constructor", "[utils][MultiInterval]")
 {
-    const MultiInterval interval1{{{1, 3}, {-1, 4}, {5, 7}}};
+    const MultiInterval interval1{
+        {Interval{1, 3}, Interval{-1, 4}, Interval{5, 7}}};
     const auto& result1{interval1.get()};
     REQUIRE(result1.size() == 1U);
     CHECK(result1[0] == Interval{-1, 7});
@@ -18,24 +19,24 @@ TEST_CASE("[MultiInterval] add() method", "[utils][MultiInterval]")
     {
         SECTION("Already-contained interval")
         {
-            MultiInterval interval1{{{1, 5}}};
-            interval1.add({1, 2});
+            MultiInterval interval1{{Interval{1, 5}}};
+            interval1.add(Interval{1, 2});
             const auto result1{interval1.get()};
             REQUIRE(result1.size() == 1U);
             CHECK(result1[0] == Interval{1, 5});
         }
         SECTION("Contiguous interval")
         {
-            MultiInterval interval1{{{1, 5}}};
-            interval1.add({4, 6});
+            MultiInterval interval1{{Interval{1, 5}}};
+            interval1.add(Interval{4, 6});
             const auto result1{interval1.get()};
             REQUIRE(result1.size() == 1U);
             CHECK(result1[0] == Interval{1, 6});
         }
         SECTION("Append interval")
         {
-            MultiInterval interval1{{{1, 5}}};
-            interval1.add({7, 9});
+            MultiInterval interval1{{Interval{1, 5}}};
+            interval1.add(Interval{7, 9});
             const auto result1{interval1.get()};
             REQUIRE(result1.size() == 2U);
             CHECK(result1[0] == Interval{1, 5});
@@ -43,8 +44,8 @@ TEST_CASE("[MultiInterval] add() method", "[utils][MultiInterval]")
         }
         SECTION("Fill the gap")
         {
-            MultiInterval interval1{{{1, 5}, {7, 9}}};
-            interval1.add({4, 8});
+            MultiInterval interval1{{Interval{1, 5}, Interval{7, 9}}};
+            interval1.add(Interval{4, 8});
             const auto result1{interval1.get()};
             REQUIRE(result1.size() == 1U);
             CHECK(result1[0] == Interval{1, 9});
@@ -54,7 +55,7 @@ TEST_CASE("[MultiInterval] add() method", "[utils][MultiInterval]")
     {
         SECTION("Already-contained value")
         {
-            MultiInterval interval1{{{1, 5}, {7, 9}}};
+            MultiInterval interval1{{Interval{1, 5}, Interval{7, 9}}};
             interval1.add(4);
             const auto result1{interval1.get()};
             REQUIRE(result1.size() == 2U);
@@ -63,7 +64,7 @@ TEST_CASE("[MultiInterval] add() method", "[utils][MultiInterval]")
         }
         SECTION("New value")
         {
-            MultiInterval interval2{{{1, 5}, {7, 9}}};
+            MultiInterval interval2{{Interval{1, 5}, Interval{7, 9}}};
             interval2.add(6);
             const auto result2{interval2.get()};
             REQUIRE(result2.size() == 1U);
@@ -80,7 +81,7 @@ TEST_CASE(
     {
         SECTION("Splits in half")
         {
-            MultiInterval interval1{{{1, 5}}};
+            MultiInterval interval1{{Interval{1, 5}}};
             interval1.remove(3);
             const auto result1{interval1.get()};
             REQUIRE(result1.size() == 2U);
@@ -89,7 +90,7 @@ TEST_CASE(
         }
         SECTION("Non-contained value")
         {
-            MultiInterval interval1{{{1, 5}}};
+            MultiInterval interval1{{Interval{1, 5}}};
             interval1.remove(7);
             const auto result1{interval1.get()};
             REQUIRE(result1.size() == 1U);
@@ -97,7 +98,7 @@ TEST_CASE(
         }
         SECTION("Value in the border")
         {
-            MultiInterval interval1{{{1, 5}, {7, 9}}};
+            MultiInterval interval1{{Interval{1, 5}, Interval{7, 9}}};
             interval1.remove(5);
             const auto result1{interval1.get()};
             REQUIRE(result1.size() == 2U);
@@ -109,8 +110,8 @@ TEST_CASE(
     {
         SECTION("Delete a completely-contained interval")
         {
-            MultiInterval interval1{{{1, 5}}};
-            interval1.remove({3, 4});
+            MultiInterval interval1{{Interval{1, 5}}};
+            interval1.remove(Interval{3, 4});
             const auto result1{interval1.get()};
             REQUIRE(result1.size() == 2U);
             CHECK(result1[0] == Interval{1, 2});
@@ -118,16 +119,16 @@ TEST_CASE(
         }
         SECTION("Non-contained values")
         {
-            MultiInterval interval1{{{1, 5}}};
-            interval1.remove({7, 8});
+            MultiInterval interval1{{Interval{1, 5}}};
+            interval1.remove(Interval{7, 8});
             const auto result1{interval1.get()};
             REQUIRE(result1.size() == 1U);
             CHECK(result1[0] == Interval{1, 5});
         }
         SECTION("Remove only contained values")
         {
-            MultiInterval interval1{{{1, 5}, {7, 10}}};
-            interval1.remove({4, 8});
+            MultiInterval interval1{{Interval{1, 5}, Interval{7, 10}}};
+            interval1.remove(Interval{4, 8});
             const auto result1{interval1.get()};
             REQUIRE(result1.size() == 2U);
             CHECK(result1[0] == Interval{1, 3});
@@ -135,8 +136,9 @@ TEST_CASE(
         }
         SECTION("Remove values in several intervals")
         {
-            MultiInterval interval1{{{1, 3}, {5, 6}, {8, 10}}};
-            interval1.remove({2, 8});
+            MultiInterval interval1{
+                {Interval{1, 3}, Interval{5, 6}, Interval{8, 10}}};
+            interval1.remove(Interval{2, 8});
             const auto result1{interval1.get()};
             REQUIRE(result1.size() == 2U);
             CHECK(result1[0] == Interval{1, 1});
@@ -147,8 +149,8 @@ TEST_CASE(
     {
         SECTION("Split in half")
         {
-            MultiInterval interval1{{{1, 5}}};
-            interval1.remove({4, 4});
+            MultiInterval interval1{{Interval{1, 5}}};
+            interval1.remove(Interval{4, 4});
             const auto result1{interval1.get()};
             REQUIRE(result1.size() == 2U);
             CHECK(result1[0] == Interval{1, 3});
@@ -156,8 +158,8 @@ TEST_CASE(
         }
         SECTION("Keep untouched intervals")
         {
-            MultiInterval interval1{{{1, 5}, {7, 9}}};
-            interval1.remove({4, 4});
+            MultiInterval interval1{{Interval{1, 5}, Interval{7, 9}}};
+            interval1.remove(Interval{4, 4});
             const auto result1{interval1.get()};
             REQUIRE(result1.size() == 3U);
             CHECK(result1[0] == Interval{1, 3});
@@ -171,12 +173,12 @@ TEST_CASE("[MultiInterval] count() method", "[utils][MultiInterval]")
 {
     SECTION("With single-value intervals")
     {
-        const MultiInterval interval1{{{1, 1}}};
+        const MultiInterval interval1{{Interval{1, 1}}};
         CHECK(interval1.count() == 1U);
     }
     SECTION("With multiple intervals")
     {
-        const MultiInterval interval1{{{1, 2}, {5, 7}}};
+        const MultiInterval interval1{{Interval{1, 2}, Interval{5, 7}}};
         CHECK(interval1.count() == 5U);
     }
 }
@@ -185,7 +187,7 @@ TEST_CASE("[MultiInterval] extract() method", "[utils][MultiInterval]")
 {
     SECTION("With multiple intervals")
     {
-        MultiInterval interval1{{{1, 2}, {5, 7}}};
+        MultiInterval interval1{{Interval{1, 2}, Interval{5, 7}}};
         MultiInterval interval2{interval1.extract(2, 5)};
         const auto result1{interval2.get()};
         REQUIRE(result1.size() == 2U);

@@ -61,17 +61,17 @@ public:
      * @param[in]  info    Information to attach to this node.
      * @param[in]  name    Unique identifier for this node.
      */
-    Vertex(std::string&& name, T&& info)
+    explicit Vertex(std::string&& name, T&& info)
         : mName{std::forward<std::string>(name)}
         , mInfo{std::forward<T>(info)}
     {
     }
-    Vertex(const std::string_view name, const T& info)
+    explicit Vertex(const std::string_view name, const T& info)
         : mName{name}
         , mInfo{info}
     {
     }
-    Vertex(const std::string& name, const T& info)
+    explicit Vertex(const std::string& name, const T& info)
         : mName{name}
         , mInfo{info}
     {
