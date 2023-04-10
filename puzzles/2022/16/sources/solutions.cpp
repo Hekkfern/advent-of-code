@@ -221,7 +221,7 @@ uint32_t analyzeValveWithElephant(
             newTotalPressure,
             openValves,
             usefulValves,
-            false)};
+            isElephant)};
         maxTotalPressure = std::max(maxTotalPressure, candidateTotalPressure);
     }
     openValves.erase(thisVertex.getName());
