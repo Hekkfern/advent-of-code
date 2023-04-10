@@ -1,0 +1,29 @@
+name: Formatter
+run-name: Apply format styles to all the sources files
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  apply-format:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Install Python packages
+        id: installpythonpackages
+        run: python3 -m pip install cmakelang autopep8
+      - name: Format C++ files
+        id: formatcpp
+        working-directory: ./scripts
+        run: ./apply-cpp-format.sh
+      - name: Format CMake files
+        id: formatcmake
+        working-directory: ./scripts
+        run: ./apply-cmake-format.sh
+      - name: Format Python files
+        id: formatpython
+        working-directory: ./scripts
+        run: ./apply-python-format.sh
