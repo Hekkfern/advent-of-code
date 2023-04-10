@@ -200,7 +200,7 @@ uint32_t analyzeValveWithElephant(
     /* Let's forget the elephant and try to get a better flow by opening more
      * valves. */
     uint32_t maxTotalPressure{newTotalPressure};
-    for (auto& [nextVertexName, nextVertex] : graph.getVertices()) {
+    for (auto& nextVertexName : usefulValves) {
         // moving to this valve is useless, as it is already open
         if (openValves.contains(nextVertexName)) {
             continue;
@@ -210,13 +210,13 @@ uint32_t analyzeValveWithElephant(
             thisVertex.getEdges().at(nextVertexName).getWeight()};
         // moving to this valve and opening it would take
         // more time than we have
-        if (newTime + timeToGoToNextValve >= TotalTimeWithoutElephant) {
+        if (newTime + timeToGoToNextValve >= TotalTimeWithElephant) {
             continue;
         }
         // recurse with this valve open. if it is an improvement, remember
         const uint32_t candidateTotalPressure{analyzeValveWithElephant(
             graph,
-            nextVertex,
+            graph.getVertex(nextVertexName),
             newTime + timeToGoToNextValve,
             newTotalPressure,
             openValves,
