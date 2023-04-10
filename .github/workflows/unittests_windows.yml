@@ -1,0 +1,45 @@
+name: Unit Tests
+run-name: Execute the unit tests of all the projects in Windows
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "master"
+  pull_request:
+    branches:
+      - "master"
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build-and-test:
+    strategy:
+      matrix:
+        preset: [windows-x64-release, windows-x64-asan]
+    runs-on: windows-2022
+    steps:
+      - name: Install Packages
+        id: installpackages
+        run: choco install cppcheck
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: Restore artifacts, or setup vcpkg for building artifacts
+        uses: lukka/run-vcpkg@v10
+        id: runvcpkg
+        with:
+          vcpkgDirectory: "${{ github.workspace }}/extern/vcpkg"
+          vcpkgJsonGlob: "${{ github.workspace }}/vcpkg.json"
+      - name: Configure CMake project
+        id: configurecmake
+        run: cmake -S . --preset ${{ matrix.preset }} -DGENERATE_PROJECTS=UNITTESTS
+      - name: Build CMake project
+        id: buildcmake
+        run: cmake --build --preset ${{ matrix.preset }} -j
+      - name: Run CTest
+        id: runctest
+        run: ctest --preset ${{ matrix.preset }} -j

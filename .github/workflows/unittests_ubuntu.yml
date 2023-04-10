@@ -1,5 +1,5 @@
 name: Unit Tests
-run-name: Execute the unit tests of all the projects
+run-name: Execute the unit tests of all the projects in Ubuntu
 
 on:
   workflow_dispatch:
@@ -10,15 +10,23 @@ on:
     branches:
       - "master"
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   build-and-test:
+    strategy:
+      matrix:
+        preset:
+          [linux-x64-release, linux-x64-asan, linux-x64-tsan, linux-x64-lsan, linux-x64-ubsan]
     runs-on: ubuntu-22.04
     steps:
       - name: Cache APT Packages
         uses: awalsh128/cache-apt-pkgs-action@v1.2.2
         id: installpackages
         with:
-          packages: ccache cppcheck ninja-build
+          packages: cppcheck ninja-build
           version: 1.0
       - uses: actions/checkout@v3
         with:
@@ -30,13 +38,12 @@ jobs:
         with:
           vcpkgDirectory: "${{ github.workspace }}/extern/vcpkg"
           vcpkgJsonGlob: "${{ github.workspace }}/vcpkg.json"
-      - name: Run CMake+vcpkg+Ninja+CTest to generate/build/test.
-        uses: lukka/run-cmake@v10
-        id: runcmake
-        with:
-          configurePreset: "linux-x64-release"
-          configurePresetAdditionalArgs: "['-DGENERATE_PROJECTS=UNITTESTS']"
-          buildPreset: "linux-x64-release"
-          testPreset: "linux-x64-release"
-        env:
-          VCPKG_FORCE_SYSTEM_BINARIES: 1
+      - name: Configure CMake project
+        id: configurecmake
+        run: cmake -S . --preset ${{ matrix.preset }} -DGENERATE_PROJECTS=UNITTESTS
+      - name: Build CMake project
+        id: buildcmake
+        run: cmake --build --preset ${{ matrix.preset }} -j
+      - name: Run CTest
+        id: runctest
+        run: ctest --preset ${{ matrix.preset }} -j
