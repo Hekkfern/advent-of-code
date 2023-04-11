@@ -55,11 +55,12 @@ namespace utils::file {
 [[nodiscard]] std::optional<std::vector<std::vector<int64_t>>> readGroupsOfNumbers(
     const std::string& filename);
 /**
- * @brief      Reads matrix of digits.
+ * @brief      Reads a list of numbers, where each character of a line is a
+ *             independent digit.
  *
  * @param[in]  filename  The filename.
  *
- * @return     { description_of_the_return_value }
+ * @return     List of list of digits.
  */
 [[nodiscard]] std::optional<std::vector<std::vector<uint8_t>>> readMatrixOfDigits(
     const std::string& filename);
