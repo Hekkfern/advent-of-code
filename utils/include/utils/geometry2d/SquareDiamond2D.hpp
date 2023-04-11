@@ -25,14 +25,14 @@ public:
      * @param[in]  centerPoint     The center point.
      * @param[in]  perimeterPoint  Any perimeter point.
      */
-    SquareDiamond2D(const Point2D& centerPoint, const Point2D& perimeterPoint);
+    explicit SquareDiamond2D(const Point2D& centerPoint, const Point2D& perimeterPoint);
     /**
      * @brief      Constructs a new instance.
      *
      * @param[in]  centerPoint  The center point.
      * @param[in]  distance     The distance from the center to the perimeter.
      */
-    SquareDiamond2D(const Point2D& centerPoint, uint32_t distance);
+    explicit SquareDiamond2D(const Point2D& centerPoint, uint32_t distance);
     /**
      * @brief      Gets the central point.
      *

@@ -5,6 +5,19 @@
 
 namespace utils::graph {
 
+/**
+ * @brief      Applies Floyd-Warshall algorithm to calculate the shortest paths
+ *             between all the vertexes.
+ *
+ * @param[in]  graph  The graph to apply the algorithm to.
+ *
+ * @tparam     T      Type of the information contained in the vertexes.
+ * @tparam     W      Type of the weights value of the edges.
+ *
+ * @return     New graph.
+ *
+ * @see        https://en.wikipedia.org/wiki/Floyd-Warshall_algorithm
+ */
 template <std::equality_comparable T, UnsignedNumericType W>
 Graph<T, W> applyFloydWarshall(const Graph<T, W>& graph)
 {

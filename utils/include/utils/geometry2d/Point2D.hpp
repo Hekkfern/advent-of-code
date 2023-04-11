@@ -25,7 +25,7 @@ public:
      * @param[in]  x     Coordinate X.
      * @param[in]  y     Coordinate Y.
      */
-    Point2D(int32_t x, int32_t y);
+    explicit Point2D(int32_t x, int32_t y);
     /**
      * @brief      Constructs a new instance.
      *
@@ -93,7 +93,8 @@ public:
      */
     bool operator==(const Point2D& other) const;
     /**
-     * @brief      Addition operator, which applies a
+     * @brief      Addition operator, which sums the coordinates of both
+     *             objects.
      *
      * @param[in]  other  The other object.
      *
@@ -121,6 +122,8 @@ public:
      * @param[in]  x     The coordinate X.
      * @param[in]  y     The coordinate Y.
      *
+     * @tparam     T     Type of the coordinates.
+     *
      * @return     New point.
      */
     template <std::integral T>
@@ -132,7 +135,13 @@ public:
 private:
     friend std::ostream& operator<<(std::ostream& os, const Point2D& point2d);
 
+    /**
+     * Stores coordinate X.
+     */
     int32_t mX = 0U;
+    /**
+     * Stores coordinate Y.
+     */
     int32_t mY = 0U;
 };
 
@@ -174,7 +183,6 @@ Point2D operator+(const Point2D& point2d, const Direction2D& direction2D);
  * @return     The result of the movement.
  */
 Point2D operator+(const Direction2D& direction2D, const Point2D& point2d);
-
 /**
  * @brief      "Insert string into stream" operator.
  *
