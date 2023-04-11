@@ -2,6 +2,12 @@
 
 #include <concepts>
 
+/**
+ * @brief      Defines a type which is a signed integer type of any kind, or a
+ *             floating-point type of any kind.
+ *
+ * @tparam     T     Type to validate the concept against.
+ */
 template <typename T>
 concept NumericType
     = requires(T param) {
@@ -11,6 +17,11 @@ concept NumericType
           requires !std::is_pointer_v<T>;
       };
 
+/**
+ * @brief      Defines a type which is a unsigned integer type of any kind.
+ *
+ * @tparam     T     Type to validate the concept against.
+ */
 template <typename T>
 concept UnsignedNumericType
     = requires(T param) {

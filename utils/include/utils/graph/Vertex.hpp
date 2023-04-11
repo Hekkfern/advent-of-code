@@ -37,13 +37,13 @@ public:
      *
      * @return     The weight.
      */
-    W getWeight() const { return mWeight; }
+    [[nodiscard]] W getWeight() const { return mWeight; }
     /**
      * @brief      Gets the destination vertex.
      *
      * @return     The destination vertex.
      */
-    Vertex<T, W>& getDestinationVertex() const { return mDestinationVertex; }
+    [[nodiscard]] Vertex<T, W>& getDestinationVertex() const { return mDestinationVertex; }
     /**
      * @brief      Equality operator.
      *
@@ -51,7 +51,7 @@ public:
      *
      * @return     The result of the equality.
      */
-    bool operator==(const Edge& other) const
+    [[nodiscard]] bool operator==(const Edge& other) const
     {
         return mDestinationVertex == other.mDestinationVertex
             && mWeight == other.mWeight;
@@ -115,13 +115,13 @@ public:
      *
      * @return     The name.
      */
-    const std::string& getName() const { return mName; }
+    [[nodiscard]] const std::string& getName() const { return mName; }
     /**
      * @brief      Gets the information attached to this node.
      *
      * @return     The attached information.
      */
-    const T& getInfo() const { return mInfo; }
+    [[nodiscard]] const T& getInfo() const { return mInfo; }
     /**
      * @brief      Equality operator.
      *
@@ -129,7 +129,7 @@ public:
      *
      * @return     The result of the equality.
      */
-    bool operator==(const Vertex& other) const { return mName == other.mName; }
+    [[nodiscard]] bool operator==(const Vertex& other) const { return mName == other.mName; }
     /**
      * @brief      Adds an edge between this vertex and another one.
      *
@@ -160,7 +160,7 @@ public:
      *
      * @return     List of edges.
      */
-    const std::unordered_map<std::string, Edge<T, W>>& getEdges() const
+    [[nodiscard]] const std::unordered_map<std::string, Edge<T, W>>& getEdges() const
     {
         return mEdges;
     }

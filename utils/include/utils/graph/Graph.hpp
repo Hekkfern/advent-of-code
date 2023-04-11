@@ -204,7 +204,7 @@ public:
      *
      * @return     List of vertices.
      */
-    const std::unordered_map<std::string, Vertex<T, W>>& getVertices() const
+    [[nodiscard]] const std::unordered_map<std::string, Vertex<T, W>>& getVertices() const
     {
         return mVertices;
     }
@@ -215,7 +215,7 @@ public:
      *
      * @return     The vertex object.
      */
-    const Vertex<T, W>& getVertex(const std::string& vertexName) const
+    [[nodiscard]] const Vertex<T, W>& getVertex(const std::string& vertexName) const
     {
         return mVertices.at(vertexName);
     }

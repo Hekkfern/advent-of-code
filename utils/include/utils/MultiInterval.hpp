@@ -32,7 +32,7 @@ public:
      *
      * @return     The intervals.
      */
-    const std::vector<Interval>& get() const;
+    [[nodiscard]] const std::vector<Interval>& get() const;
     /**
      * @brief      Adds the specified interval.
      *
@@ -70,7 +70,7 @@ public:
      *
      * @return     The result of merging both intervals.
      */
-    MultiInterval join(const MultiInterval& other) const;
+    [[nodiscard]] MultiInterval join(const MultiInterval& other) const;
     /**
      * @brief      Checks if another interval includes completely the range of
      *             this one.
@@ -80,7 +80,7 @@ public:
      * @return     True if the other interval includes this one. False,
      *             otherwise.
      */
-    bool subsumes(const MultiInterval& other) const;
+    [[nodiscard]] bool subsumes(const MultiInterval& other) const;
     /**
      * @brief      Checks if another interval includes completely the range of
      *             this one.
@@ -90,7 +90,7 @@ public:
      * @return     True if the other interval includes this one. False,
      *             otherwise.
      */
-    bool subsumes(const Interval& other) const;
+    [[nodiscard]] bool subsumes(const Interval& other) const;
     /**
      * @brief      Checks if both intervals overlap partial or totally.
      *
@@ -98,7 +98,7 @@ public:
      *
      * @return     True if they overlap in any way. False, otherwise.
      */
-    bool overlaps(const MultiInterval& other) const;
+    [[nodiscard]] bool overlaps(const MultiInterval& other) const;
     /**
      * @brief      Checks if both intervals overlap partial or totally.
      *
@@ -106,7 +106,7 @@ public:
      *
      * @return     True if they overlap in any way. False, otherwise.
      */
-    bool overlaps(const Interval& other) const;
+    [[nodiscard]] bool overlaps(const Interval& other) const;
     /**
      * @brief      Checks if the specified value is contained in the interval.
      *
@@ -114,13 +114,13 @@ public:
      *
      * @return     True if the interval contains the value. False, otherwise.
      */
-    bool contains(int32_t value) const;
+    [[nodiscard]] bool contains(int32_t value) const;
     /**
      * @brief      Gets the number of contained items.
      *
      * @return     Total number of items.
      */
-    uint32_t count() const;
+    [[nodiscard]] uint32_t count() const;
     /**
      * @brief      Extracts a sub interval contained between the selected
      *             values.
@@ -130,7 +130,7 @@ public:
      *
      * @return     A sub interval.
      */
-    MultiInterval extract(int32_t min, int32_t max) const;
+    [[nodiscard]] MultiInterval extract(int32_t min, int32_t max) const;
 
 private:
     /**

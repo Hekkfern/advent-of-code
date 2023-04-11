@@ -91,7 +91,7 @@ public:
      *
      * @return     The result of the equality.
      */
-    bool operator==(const Point2D& other) const;
+    [[nodiscard]] bool operator==(const Point2D& other) const;
     /**
      * @brief      Addition operator, which sums the coordinates of both
      *             objects.
@@ -100,13 +100,13 @@ public:
      *
      * @return     The result of the addition.
      */
-    Point2D operator+(const Point2D& other) const;
+    [[nodiscard]] Point2D operator+(const Point2D& other) const;
     /**
      * @brief      Negation operator.
      *
      * @return     The result of the subtraction
      */
-    Point2D operator-() const;
+    [[nodiscard]] Point2D operator-() const;
     /**
      * @brief      Subtraction operator.
      *
@@ -114,7 +114,7 @@ public:
      *
      * @return     The result of the subtraction
      */
-    Point2D operator-(const Point2D& other) const;
+    [[nodiscard]] Point2D operator-(const Point2D& other) const;
     /**
      * @brief      Factory method to create a new Point based on the selected
      *             coordinates.

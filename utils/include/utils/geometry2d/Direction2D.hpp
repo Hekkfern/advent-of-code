@@ -42,7 +42,7 @@ public:
      *
      * @return     String representation of the object.
      */
-    std::string toString() const
+    [[nodiscard]] std::string toString() const
     {
         using namespace std::string_literals;
 
@@ -73,7 +73,7 @@ public:
      *
      * @return     Vector2D representation of the direction.
      */
-    Vector2D toVector2D() const
+    [[nodiscard]] Vector2D toVector2D() const
     {
         int32_t coordX = 0;
         int32_t coordY = 0;
@@ -114,7 +114,7 @@ public:
      *
      * @return     The value.
      */
-    constexpr Value getValue() const { return mValue; }
+    [[nodiscard]] constexpr Value getValue() const { return mValue; }
 
 private:
     /**

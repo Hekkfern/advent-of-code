@@ -5,7 +5,7 @@
 
 namespace utils::time {
 
-std::chrono::microseconds calculateExecutionTime(
+[[nodiscard]] std::chrono::microseconds calculateExecutionTime(
     std::function<void()>&& action);
 
 }

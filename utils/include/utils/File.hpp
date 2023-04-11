@@ -9,46 +9,59 @@
 namespace utils::file {
 
 /**
- * @brief
+ * @brief      Reads only the first line of a file.
  *
- * @param[in] filename
- * @return std::vector<std::string>
+ * @param[in]  filename  The filename.
+ *
+ * @return     A string with the content of the first line, or std::nullopt.
  */
-std::optional<std::string> readFirstLine(const std::string& filename);
+[[nodiscard]] std::optional<std::string> readFirstLine(const std::string& filename);
 /**
- * @brief
+ * @brief      Reads the whole file and converts its content to generate a
+ *             single string.
  *
- * @param[in] filename
+ * @param[in]  filename  The filename.
  *
- * @return
+ * @return     A string with all the lines joined with "\n" characters.
  */
-std::optional<std::string> readWholeLine(const std::string& filename);
+[[nodiscard]] std::optional<std::string> readWholeLine(const std::string& filename);
 /**
- * @brief
+ * @brief      Reads a list of strings separated by new lines, from a file.
  *
- * @param[in] filename
- * @return std::vector<std::string>
+ * @param[in]  filename  The filename.
+ *
+ * @return     List of string, where each string contains the content of one
+ *             line in the file.
  */
-std::optional<std::vector<std::string>> readListOfStrings(
+[[nodiscard]] std::optional<std::vector<std::string>> readListOfStrings(
     const std::string& filename);
 /**
- * @brief
+ * @brief      Reads a list of numbers separated by new lines, from a file.
  *
- * @param[in] filename
- * @return std::vector<int64_t>
+ * @param[in]  filename  The filename.
+ *
+ * @return     List of numbers, where each numbers corresponds to the content of
+ *             one line in the file.
  */
-std::optional<std::vector<int64_t>> readListOfNumbers(
+[[nodiscard]] std::optional<std::vector<int64_t>> readListOfNumbers(
     const std::string& filename);
 /**
- * @brief
+ * @brief      Reads groups of numbers, separated by empty lines, from a file.
  *
- * @param[in] filename
- * @return std::vector<std::vector<int64_t>>
+ * @param[in]  filename  The filename.
+ *
+ * @return     List of groups of numbers. Each group contains a list of numbers.
  */
-std::optional<std::vector<std::vector<int64_t>>> readGroupsOfNumbers(
+[[nodiscard]] std::optional<std::vector<std::vector<int64_t>>> readGroupsOfNumbers(
     const std::string& filename);
-
-std::optional<std::vector<std::vector<uint8_t>>> readMatrixOfDigits(
+/**
+ * @brief      Reads matrix of digits.
+ *
+ * @param[in]  filename  The filename.
+ *
+ * @return     { description_of_the_return_value }
+ */
+[[nodiscard]] std::optional<std::vector<std::vector<uint8_t>>> readMatrixOfDigits(
     const std::string& filename);
 
 } // namespace utils::file

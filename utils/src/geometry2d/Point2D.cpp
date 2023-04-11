@@ -9,14 +9,14 @@ namespace utils::geometry2d {
 Point2D::Point2D() { }
 
 Point2D::Point2D(int32_t x, int32_t y)
-    : mX{ x }
-    , mY{ y }
+    : mX{x}
+    , mY{y}
 {
 }
 
 Point2D::Point2D(const std::pair<int32_t, int32_t>& coords)
-    : mX{ coords.first }
-    , mY{ coords.second }
+    : mX{coords.first}
+    , mY{coords.second}
 {
 }
 
@@ -44,7 +44,7 @@ bool Point2D::operator==(const Point2D& other) const
 
 Point2D Point2D::operator+(const Point2D& other) const
 {
-    return { mX + other.mX, mY + other.mY };
+    return Point2D{mX + other.mX, mY + other.mY};
 }
 
 Point2D Point2D::operator-(const Point2D& other) const
@@ -52,12 +52,11 @@ Point2D Point2D::operator-(const Point2D& other) const
     return *this + (-other);
 }
 
-Point2D Point2D::operator-() const { return { -mX, -mY }; }
+Point2D Point2D::operator-() const { return Point2D{-mX, -mY}; }
 
 Point2D Point2D::move(const Point2D& point2d, const Vector2D& vector2d)
 {
-    return Point2D{ point2d.mX + vector2d.getX(),
-                    point2d.mY + vector2d.getY() };
+    return Point2D{point2d.mX + vector2d.getX(), point2d.mY + vector2d.getY()};
 }
 
 Point2D Point2D::move(const Point2D& point2d, const Direction2D& direction2D)

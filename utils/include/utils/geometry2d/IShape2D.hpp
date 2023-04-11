@@ -20,13 +20,13 @@ public:
      *
      * @return     List of vertexes.
      */
-    virtual std::vector<Point2D> getVertexes() const = 0;
+    [[nodiscard]] virtual std::vector<Point2D> getVertexes() const = 0;
     /**
      * @brief      Calculates the area.
      *
      * @return     Area of the shape.
      */
-    virtual uint32_t area() const = 0;
+    [[nodiscard]] virtual uint32_t area() const = 0;
     /**
      * @brief      Determines whether the specified point is outside.
      * 
@@ -37,7 +37,7 @@ public:
      *
      * @return     True if the specified point is outside, False otherwise.
      */
-    virtual bool isOutside(const Point2D& point) const = 0;
+    [[nodiscard]] virtual bool isOutside(const Point2D& point) const = 0;
     /**
      * @brief      Determines whether the specified point is inside.
      *
@@ -45,7 +45,7 @@ public:
      *
      * @return     True if the specified point is inside, False otherwise.
      */
-    virtual bool isInside(const Point2D& point) const = 0;
+    [[nodiscard]] virtual bool isInside(const Point2D& point) const = 0;
     /**
      * @brief      Determines whether the specified point is in perimeter.
      *
@@ -53,7 +53,7 @@ public:
      *
      * @return     True if the specified point is in perimeter, False otherwise.
      */
-    virtual bool isInPerimeter(const Point2D& point) const = 0;
+    [[nodiscard]] virtual bool isInPerimeter(const Point2D& point) const = 0;
 };
 
 } // namespace utils::geometry2d

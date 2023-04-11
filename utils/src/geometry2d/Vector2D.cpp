@@ -48,10 +48,10 @@ bool Vector2D::operator==(const Vector2D& other) const
 
 Vector2D Vector2D::operator+(const Vector2D& other) const
 {
-    return { mX + other.mX, mY + other.mY };
+    return Vector2D{mX + other.mX, mY + other.mY};
 }
 
-Vector2D Vector2D::operator-() const { return { -mX, -mY }; }
+Vector2D Vector2D::operator-() const { return Vector2D{-mX, -mY}; }
 
 Vector2D Vector2D::operator-(const Vector2D& other) const
 {

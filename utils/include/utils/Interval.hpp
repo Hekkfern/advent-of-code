@@ -21,7 +21,7 @@ public:
     /**
      * @brief      Constructs a new instance.
      *
-     * @param[in]  values  A pair of values.
+     * @param[in]  values  A pair of values (Min, Max).
      */
     explicit Interval(const std::pair<int32_t, int32_t>& values);
     /**
@@ -31,14 +31,14 @@ public:
      *
      * @return     The result of the three-way comparison.
      */
-    auto operator<=>(const Interval& other) const = default;
+    [[nodiscard]] auto operator<=>(const Interval& other) const = default;
     /**
-     * @brief      Retrieves the length of the interval, i.e, the difference
+     * @brief      Retrieves the length of the interval, i.e. the difference
      *             between the minimum and maximum values.
      *
      * @return     The length of the interval.
      */
-    uint32_t length() const;
+    [[nodiscard]] uint32_t length() const;
     /**
      * @brief      Joins both intervals to create a new one with the highest
      *             length.
@@ -47,7 +47,7 @@ public:
      *
      * @return     Joined interval if they overlap. std::nullopt, otherwise.
      */
-    std::optional<Interval> join(const Interval& other) const;
+    [[nodiscard]] std::optional<Interval> join(const Interval& other) const;
     /**
      * @brief      Creates an interval which contains the overlapping parts of
      *             both provided intervals.
@@ -57,7 +57,7 @@ public:
      * @return     std::nullopt if they don't overlap. If so, a new interval
      *             with the overlapped fragment.
      */
-    std::optional<Interval> intersect(const Interval& other) const;
+    [[nodiscard]] std::optional<Interval> intersect(const Interval& other) const;
     /**
      * @brief      Checks if another interval includes completely the range of
      *             this one.
@@ -67,7 +67,7 @@ public:
      * @return     True if the other interval includes this one. False,
      *             otherwise.
      */
-    bool subsumes(const Interval& other) const;
+    [[nodiscard]] bool subsumes(const Interval& other) const;
     /**
      * @brief      Checks if both intervals overlap partial or totally.
      *
@@ -75,25 +75,25 @@ public:
      *
      * @return     True if they overlap in any way. False, otherwise.
      */
-    bool overlaps(const Interval& other) const;
+    [[nodiscard]] bool overlaps(const Interval& other) const;
     /**
      * @brief      Gets the minimum value of the interval.
      *
      * @return     The minimum value.
      */
-    int32_t getMin() const;
+    [[nodiscard]] int32_t getMin() const;
     /**
      * @brief      Gets the maximum value of the interval.
      *
      * @return     The maximum value.
      */
-    int32_t getMax() const;
+    [[nodiscard]] int32_t getMax() const;
     /**
      * @brief      Gets both extreme values of the interval.
      *
      * @return     Pair with both the minimum and the maximum values.
      */
-    std::pair<int32_t, int32_t> get() const;
+    [[nodiscard]] std::pair<int32_t, int32_t> get() const;
     /**
      * @brief      Checks if the specified value is contained in the interval.
      *
@@ -101,14 +101,14 @@ public:
      *
      * @return     True if the interval contains the value. False, otherwise.
      */
-    bool contains(int32_t value) const;
+    [[nodiscard]] bool contains(int32_t value) const;
     /**
      * @brief      Checks if the interval has one single value, meaning the
      *             minimum value equals the maximum value.
      *
      * @return     True if the interval has a single value. False, otherwise.
      */
-    bool hasOneValue() const;
+    [[nodiscard]] bool hasOneValue() const;
     /**
      * @brief      Checks if both intervals are contiguous, meaning that the
      *             difference between the minimum value of one interval and the
@@ -118,7 +118,7 @@ public:
      *
      * @return     True if both intervals are contiguous. False, otherwise.
      */
-    bool areContiguous(const Interval& other) const;
+    [[nodiscard]] bool areContiguous(const Interval& other) const;
 
 private:
     /**

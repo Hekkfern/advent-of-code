@@ -29,25 +29,25 @@ public:
      *
      * @return     The minimum coordinate X.
      */
-    int32_t getMinX() const;
+    [[nodiscard]] int32_t getMinX() const;
     /**
      * @brief      Gets the maximum coordinate X.
      *
      * @return     The maximum coordinate X.
      */
-    int32_t getMaxX() const;
+    [[nodiscard]] int32_t getMaxX() const;
     /**
      * @brief      Gets the minimum coordinate X.
      *
      * @return     The minimum coordinate X.
      */
-    int32_t getMinY() const;
+    [[nodiscard]] int32_t getMinY() const;
     /**
      * @brief      Gets the maximum coordinate Y.
      *
      * @return     The maximum coordinate Y.
      */
-    int32_t getMaxY() const;
+    [[nodiscard]] int32_t getMaxY() const;
     /**
      * @brief      Determines whether the specified point is outside of the
      *             bounding box.
@@ -59,7 +59,7 @@ public:
      *
      * @return     True if the specified point is outside, False otherwise.
      */
-    bool isOutside(const Point2D& point2D) const;
+    [[nodiscard]] bool isOutside(const Point2D& point2D) const;
     /**
      * @brief      Determines whether the specified point is outside the
      *             bounding box for a given side of the box.
@@ -70,7 +70,7 @@ public:
      *
      * @return     True if the specified point is outside, False otherwise.
      */
-    bool isOutside(const Point2D& point2D, const Direction2D direction2D) const;
+    [[nodiscard]] bool isOutside(const Point2D& point2D, const Direction2D direction2D) const;
 
 private:
     int32_t mMinX{ std::numeric_limits<int32_t>::max() };

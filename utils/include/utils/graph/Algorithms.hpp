@@ -19,7 +19,7 @@ namespace utils::graph {
  * @see        https://en.wikipedia.org/wiki/Floyd-Warshall_algorithm
  */
 template <std::equality_comparable T, UnsignedNumericType W>
-Graph<T, W> applyFloydWarshall(const Graph<T, W>& graph)
+[[nodiscard]] Graph<T, W> applyFloydWarshall(const Graph<T, W>& graph)
 {
     std::unordered_map<std::string, std::unordered_map<std::string, uint64_t>>
         distances;

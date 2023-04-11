@@ -18,7 +18,7 @@ namespace utils::string {
  *
  * @return
  */
-bool contains(const std::string& str, const std::string& match);
+[[nodiscard]] bool contains(const std::string& str, const std::string& match);
 /**
  * @brief
  *
@@ -26,10 +26,10 @@ bool contains(const std::string& str, const std::string& match);
  *
  * @return
  */
-std::string trim(const std::string& s);
+[[nodiscard]] std::string trim(const std::string& s);
 
 template <NumericType T>
-T toNumber(const std::string& str)
+[[nodiscard]] T toNumber(const std::string& str)
 {
     std::stringstream ss{str};
     T num;
@@ -38,18 +38,18 @@ T toNumber(const std::string& str)
 }
 
 template <>
-inline uint8_t toNumber(const std::string& str)
+[[nodiscard]] inline uint8_t toNumber(const std::string& str)
 {
     return static_cast<uint8_t>(std::stoi(str));
 }
 
 template <>
-inline int8_t toNumber(const std::string& str)
+[[nodiscard]] inline int8_t toNumber(const std::string& str)
 {
     return static_cast<int8_t>(std::stoi(str));
 }
 
-std::string join(const std::vector<std::string>& strings, std::string delim);
+[[nodiscard]] std::string join(const std::vector<std::string>& strings, std::string delim);
 
 /**
  * @brief a
@@ -58,9 +58,9 @@ std::string join(const std::vector<std::string>& strings, std::string delim);
  *
  * @return
  */
-std::string convertFrom(const std::vector<std::vector<char>>& input);
+[[nodiscard]] std::string convertFrom(const std::vector<std::vector<char>>& input);
 
-std::vector<std::string>
+[[nodiscard]] std::vector<std::string>
 split(std::string_view str, std::string_view separator = " ");
 
 } // namespace utils::string
