@@ -5,8 +5,15 @@
 
 namespace utils::geometry2d {
 
+/**
+ * @brief      This class describes a direction in 2D space. It includes the
+ *             four orthogonal directions as well as all their combinations.
+ */
 class Direction2D {
 public:
+    /**
+     * @brief      Values of the direction (diagonal directions included).
+     */
     enum Value { Up, Left, Down, Right, UpLeft, DownLeft, UpRight, DownRight };
 
     /**
@@ -61,6 +68,11 @@ public:
             return ""s;
         }
     }
+    /**
+     * @brief      Converts the direction to an unitary @ref Vector2D object.
+     *
+     * @return     Vector2D representation of the direction.
+     */
     Vector2D toVector2D() const
     {
         int32_t coordX = 0;
@@ -97,6 +109,11 @@ public:
         }
         return Vector2D{ coordX, coordY };
     }
+    /**
+     * @brief      Gets the value.
+     *
+     * @return     The value.
+     */
     constexpr Value getValue() const { return mValue; }
 
 private:
