@@ -25,6 +25,7 @@ def __create_files_from_templates(root_dir: pathlib.Path, year: int, day: int) -
     # day folder
     generate_templates.create_cmakelists_for_day(root_dir, year, day)
     generate_templates.create_readme_for_day(root_dir, year, day)
+    generate_templates.create_explanation_for_day(root_dir, year, day)
     # year folder
     generate_templates.create_cmakelists_for_year(root_dir, year)
     # puzzles folder

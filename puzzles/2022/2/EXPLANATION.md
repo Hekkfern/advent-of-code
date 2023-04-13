@@ -1,4 +1,4 @@
-# AoC 2022 Day 2: Rock Paper Scissors
+# Solution explanation for AoC 2022 Day 2
 
 To optimize performance, [Look-Up Tables](https://en.wikipedia.org/wiki/Lookup_table) (LUTs) have been manually created for all possible combinations of inputs. This task is feasible for any developer since the number of combinations is relatively small. By using a LUT, data retrieval time is significantly faster, with a constant access time of O(1) regardless of the size of the input data.
 

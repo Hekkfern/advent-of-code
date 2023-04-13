@@ -1,4 +1,4 @@
-# AoC 2022 Day 1: Calorie Counting
+# Solution explanation for AoC 2022 Day 1
 
 ## Part 1
 
