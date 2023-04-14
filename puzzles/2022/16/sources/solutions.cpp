@@ -96,22 +96,43 @@ uint32_t calculateEventualPressureRelease(
     return currentPressure + flowRate * (totalTime - time);
 }
 
+/**
+ * @brief Generates the list of names of the "useful" valves, i.e, the ones with
+ * non-zero flow.
+ *
+ * @return
+ */
+std::unordered_set<std::string>
+generateValveNameList(const Graph<Valve, uint32_t>& graph)
+{
+    std::unordered_set<std::string> usefulValves;
+    usefulValves.reserve(graph.getVertices().size());
+    for (const auto& vertex : graph.getVertices()) {
+        if (vertex.second.getInfo().getFlowRate() > 0U) {
+            usefulValves.emplace(vertex.second.getName());
+        }
+    }
+    return usefulValves;
+}
+
 uint32_t analyzeValveAlone(
     const Graph<Valve, uint32_t>& graph,
-    const Vertex<Valve, uint32_t>& thisVertex,
+    const std::string& currentValve,
     const uint32_t time,
+    const uint32_t totalTime,
     const uint32_t totalPressure,
     std::unordered_set<std::string>& openValves)
 {
     uint32_t newTotalPressure{totalPressure};
     uint32_t newTime{time};
+    auto& thisVertex{graph.getVertex(currentValve)};
     // open valve
     if (thisVertex.getInfo().getFlowRate() != 0U) {
         newTime += TimeToOpenAValve;
         newTotalPressure = calculateEventualPressureRelease(
             totalPressure,
             thisVertex.getInfo().getFlowRate(),
-            TotalTimeWithoutElephant,
+            totalTime,
             newTime);
     }
     openValves.emplace(thisVertex.getName());
@@ -128,14 +149,15 @@ uint32_t analyzeValveAlone(
             thisVertex.getEdges().at(nextVertexName).getWeight()};
         // moving to this valve and opening it would take
         // more time than we have
-        if (newTime + timeToGoToNextValve >= TotalTimeWithoutElephant) {
+        if (newTime + timeToGoToNextValve >= totalTime) {
             continue;
         }
         // recurse with this valve open. if it is an improvement, remember
         const uint32_t candidateTotalPressure{analyzeValveAlone(
             graph,
-            nextVertex,
+            nextVertexName,
             newTime + timeToGoToNextValve,
+            totalTime,
             newTotalPressure,
             openValves)};
         maxTotalPressure = std::max(maxTotalPressure, candidateTotalPressure);
@@ -147,18 +169,18 @@ uint32_t analyzeValveAlone(
 uint32_t searchMaximumFlowPathAlone(const Graph<Valve, uint32_t>& graph)
 {
     std::unordered_set<std::string> openValves;
-    auto& startingValve{graph.getVertex("AA")};
-    return analyzeValveAlone(graph, startingValve, 0U, 0U, openValves);
+    return analyzeValveAlone(
+        graph, "AA", 0U, TotalTimeWithoutElephant, 0U, openValves);
 }
 
 uint32_t analyzeValveWithElephant(
     const Graph<Valve, uint32_t>& graph,
     const Vertex<Valve, uint32_t>& thisVertex,
     const uint32_t time,
+    const uint32_t totalTime,
     const uint32_t totalPressure,
     std::unordered_set<std::string>& openValves,
-    std::unordered_set<std::string>& usefulValves,
-    bool isElephant)
+    std::unordered_set<std::string>& usefulValves)
 {
     uint32_t newTotalPressure{totalPressure};
     uint32_t newTime{time};
@@ -168,34 +190,24 @@ uint32_t analyzeValveWithElephant(
         newTotalPressure = calculateEventualPressureRelease(
             totalPressure,
             thisVertex.getInfo().getFlowRate(),
-            TotalTimeWithElephant,
+            totalTime,
             newTime);
     }
     openValves.emplace(thisVertex.getName());
 
-    // But if we are us, we can let loose an elephant.
-    if (!isElephant) {
-        // The elephant can only open valves that we haven't open yet.
-        std::unordered_set<std::string> newCandidates{usefulValves};
-        for (auto& v : openValves) {
-            newCandidates.erase(v);
-        }
-
-        std::unordered_set<std::string> newOpenValves;
-        // Let the elephant run around from "AA" at time zero
-        const uint32_t maxElephantTotalPressure{analyzeValveWithElephant(
-            graph,
-            graph.getVertex("AA"),
-            0U,
-            0U,
-            newOpenValves,
-            newCandidates,
-            true)};
-
-        /* This maximum represents the case when we do not open any more valves,
-         * but we let the elephant run around. */
-        newTotalPressure += maxElephantTotalPressure;
+    // Let loose an elephant to open valves
+    // The elephant can only open valves that we haven't open yet.
+    std::unordered_set<std::string> newCandidates{usefulValves};
+    for (auto& v : openValves) {
+        newCandidates.erase(v);
     }
+    std::unordered_set<std::string> newOpenValves;
+    // Let the elephant run around from "AA" at time zero
+    const uint32_t maxElephantTotalPressure{
+        analyzeValveAlone(graph, "AA" 0U, totalTime, 0U, openValves)};
+    /* This maximum represents the case when we do not open any more valves,
+     * but we let the elephant run around. */
+    newTotalPressure += maxElephantTotalPressure;
 
     /* Let's forget the elephant and try to get a better flow by opening more
      * valves. */
@@ -210,7 +222,7 @@ uint32_t analyzeValveWithElephant(
             thisVertex.getEdges().at(nextVertexName).getWeight()};
         // moving to this valve and opening it would take
         // more time than we have
-        if (newTime + timeToGoToNextValve >= TotalTimeWithElephant) {
+        if (newTime + timeToGoToNextValve >= totalTime) {
             continue;
         }
         // recurse with this valve open. if it is an improvement, remember
@@ -218,10 +230,10 @@ uint32_t analyzeValveWithElephant(
             graph,
             graph.getVertex(nextVertexName),
             newTime + timeToGoToNextValve,
+            totalTime,
             newTotalPressure,
             openValves,
-            usefulValves,
-            isElephant)};
+            usefulValves)};
         maxTotalPressure = std::max(maxTotalPressure, candidateTotalPressure);
     }
     openValves.erase(thisVertex.getName());
@@ -232,16 +244,15 @@ uint32_t searchMaximumFlowPathWithElephant(const Graph<Valve, uint32_t>& graph)
 {
     std::unordered_set<std::string> openValves;
     auto& startingValve{graph.getVertex("AA")};
-    /* generate the list of names of the "useful" valves, i.e, the ones with
-     * non-zero flow */
-    std::unordered_set<std::string> usefulValves;
-    for (const auto& vertex : graph.getVertices()) {
-        if (vertex.second.getInfo().getFlowRate() > 0U) {
-            usefulValves.emplace(vertex.second.getName());
-        }
-    }
+    std::unordered_set<std::string> usefulValves{generateValveNameList(graph)};
     return analyzeValveWithElephant(
-        graph, startingValve, 0U, 0U, openValves, usefulValves, false);
+        graph,
+        startingValve,
+        0U,
+        TotalTimeWithElephant,
+        0U,
+        openValves,
+        usefulValves);
 }
 
 // ---------- End of Private Methods ----------
