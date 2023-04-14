@@ -73,9 +73,15 @@ def create_readme_for_day(root_dir: pathlib.Path, year: int, day: int, title: st
     title = "TITLE OF THE PUZZLE" if not title else title
     # Generate file
     __generate_file_from_template(root_dir, "puzzles/year/day/README.md.j2",
-                                  {"DAY": day, "YEAR": year, "TITLE": title, "CONTENT_PART1": content_part1,
-                                   "CONTENT_PART2": content_part2},
+                                  {"DAY": day, "YEAR": year, "TITLE": title,
+                                      "CONTENT_PART1": content_part1, "CONTENT_PART2": content_part2},
                                   root_dir / f"puzzles/{year}/{day}/README.md")
+
+
+def create_explanation_for_day(root_dir: pathlib.Path, year: int, day: int) -> None:
+    # Generate file
+    __generate_file_from_template(root_dir, "puzzles/year/day/EXPLANATION.md.j2", {
+                                  "DAY": day, "YEAR": year}, root_dir / f"puzzles/{year}/{day}/README.md")
 
 
 # ----------- puzzles/year/day/sources -------------
