@@ -16,9 +16,7 @@ set(_SOURCES_UTILS
     include/utils/String.hpp
     src/Time.cpp
     include/utils/Time.hpp
-    src/Interval.cpp
     include/utils/Interval.hpp
-    src/MultiInterval.cpp
     include/utils/MultiInterval.hpp
     include/utils/Concepts.hpp)
 set(_SOURCES_UTILS_GEOMETRY2D
