@@ -18,13 +18,13 @@ public:
     /**
      * @brief      Default constructor
      */
-    MultiInterval() = default;
+    MultiInterval() noexcept = default;
     /**
      * @brief      Move constructor
      *
      * @param[in]  intervals  The intervals.
      */
-    explicit MultiInterval(std::vector<Interval<T>>&& intervals)
+    explicit MultiInterval(std::vector<Interval<T>>&& intervals) noexcept
         : mIntervals{std::move(intervals)}
     {
         reduce();
@@ -34,7 +34,7 @@ public:
      *
      * @param[in]  intervals  The intervals.
      */
-    explicit MultiInterval(const std::vector<Interval<T>>& intervals)
+    explicit MultiInterval(const std::vector<Interval<T>>& intervals) noexcept
         : mIntervals{intervals}
     {
         reduce();
@@ -44,7 +44,7 @@ public:
      *
      * @return     The intervals.
      */
-    [[nodiscard]] const std::vector<Interval<T>>& get() const
+    [[nodiscard]] const std::vector<Interval<T>>& get() const noexcept
     {
         return mIntervals;
     }
@@ -53,7 +53,7 @@ public:
      *
      * @param[in]  interval  The interval to add.
      */
-    void add(const Interval<T>& interval)
+    void add(const Interval<T>& interval) noexcept
     {
         mIntervals.emplace_back(interval);
         reduce();
@@ -63,7 +63,7 @@ public:
      *
      * @param[in]  interval  The interval to add.
      */
-    void add(Interval<T>&& interval)
+    void add(Interval<T>&& interval) noexcept
     {
         mIntervals.emplace_back(std::move(interval));
         reduce();
@@ -73,7 +73,7 @@ public:
      *
      * @param[in]  value  The value to add.
      */
-    void add(const T value)
+    void add(const T value) noexcept
     {
         mIntervals.emplace_back(value, value);
         reduce();
@@ -83,7 +83,7 @@ public:
      *
      * @param      value  The value to remove.
      */
-    void remove(const T value)
+    void remove(const T value) noexcept
     {
         std::vector<Interval<T>> tempIntervals;
         tempIntervals.reserve(mIntervals.size());
@@ -111,7 +111,7 @@ public:
      *
      * @param[in]  eraseInterval  The interval to remove.
      */
-    void remove(const Interval<T>& eraseInterval)
+    void remove(const Interval<T>& eraseInterval) noexcept
     {
         std::vector<Interval<T>> tempIntervals;
         tempIntervals.reserve(mIntervals.size());
@@ -150,7 +150,7 @@ public:
      *
      * @return     The result of merging both intervals.
      */
-    [[nodiscard]] MultiInterval join(const MultiInterval& other) const
+    [[nodiscard]] MultiInterval join(const MultiInterval& other) const noexcept
     {
         std::vector<Interval<T>> joinedIntervals{mIntervals};
         joinedIntervals.reserve(mIntervals.size() + other.mIntervals.size());
@@ -166,7 +166,7 @@ public:
      * @return     True if the other interval includes this one. False,
      *             otherwise.
      */
-    [[nodiscard]] bool subsumes(const MultiInterval& other) const
+    [[nodiscard]] bool subsumes(const MultiInterval& other) const noexcept
     {
         return ranges::all_of(
             other.mIntervals, [this](const Interval<T>& otherInterval) {
@@ -182,7 +182,7 @@ public:
      * @return     True if the other interval includes this one. False,
      *             otherwise.
      */
-    [[nodiscard]] bool subsumes(const Interval<T>& other) const
+    [[nodiscard]] bool subsumes(const Interval<T>& other) const noexcept
     {
         return ranges::any_of(
             mIntervals, [&other](const Interval<T>& interval) {
@@ -196,7 +196,7 @@ public:
      *
      * @return     True if they overlap in any way. False, otherwise.
      */
-    [[nodiscard]] bool overlaps(const MultiInterval& other) const
+    [[nodiscard]] bool overlaps(const MultiInterval& other) const noexcept
     {
         return ranges::any_of(
             other.mIntervals, [this](const Interval<T>& otherInterval) {
@@ -210,7 +210,7 @@ public:
      *
      * @return     True if they overlap in any way. False, otherwise.
      */
-    [[nodiscard]] bool overlaps(const Interval<T>& other) const
+    [[nodiscard]] bool overlaps(const Interval<T>& other) const noexcept
     {
         return ranges::any_of(
             mIntervals, [&other](const Interval<T>& interval) -> bool {
@@ -224,7 +224,7 @@ public:
      *
      * @return     True if the interval contains the value. False, otherwise.
      */
-    [[nodiscard]] bool contains(T value) const
+    [[nodiscard]] bool contains(T value) const noexcept
     {
         return ranges::any_of(
             mIntervals, [value](const Interval<T>& interval) -> bool {
@@ -236,7 +236,7 @@ public:
      *
      * @return     Total number of items.
      */
-    [[nodiscard]] size_t count() const
+    [[nodiscard]] size_t count() const noexcept
     {
         return ranges::accumulate(
             mIntervals, 0U, [](const size_t sum, const Interval<T>& interval) {
@@ -252,7 +252,7 @@ public:
      *
      * @return     A sub interval.
      */
-    [[nodiscard]] MultiInterval extract(T min, T max) const
+    [[nodiscard]] MultiInterval extract(T min, T max) const noexcept
     {
         MultiInterval resultInterval{mIntervals};
         resultInterval.remove(Interval{std::numeric_limits<T>::min(), min - 1});
@@ -262,10 +262,10 @@ public:
 
 private:
     /**
-     * @brief      Sorts the list of intervals, and merges contiguos intervals
+     * @brief      Sorts the list of intervals, and merges contiguous intervals
      *             to try to reduce the total of intervals in the list.
      */
-    void reduce()
+    void reduce() noexcept
     {
         // order the intervals
         ranges::sort(mIntervals);

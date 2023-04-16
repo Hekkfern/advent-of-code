@@ -97,10 +97,12 @@ uint32_t calculateEventualPressureRelease(
 }
 
 /**
- * @brief Generates the list of names of the "useful" valves, i.e, the ones with
- * non-zero flow.
+ * @brief      Generates the list of names of the "useful" valves, i.e, the ones
+ *             with non-zero flow.
  *
- * @return
+ * @param[in]  graph  The graph to get the valve names from.
+ *
+ * @return     { description_of_the_return_value }
  */
 std::unordered_set<std::string>
 generateValveNameList(const Graph<Valve, uint32_t>& graph)
@@ -115,13 +117,29 @@ generateValveNameList(const Graph<Valve, uint32_t>& graph)
     return usefulValves;
 }
 
+/**
+ * @brief      { function_description }
+ *
+ * @warning    Recursive method.
+ *
+ * @param[in]  graph            The graph.
+ * @param[in]  currentValve     The current valve name.
+ * @param[in]  time             The current time.
+ * @param[in]  totalTime        The total available time.
+ * @param[in]  totalPressure    The total pressure released so far.
+ * @param[in]  availableValves  The list of valves which can be opened and whose
+ *                              flow is not zero.
+ *
+ * @return     The maximum possible releasable pressure found so far.
+ */
 uint32_t analyzeValveAlone(
     const Graph<Valve, uint32_t>& graph,
     const std::string& currentValve,
     const uint32_t time,
     const uint32_t totalTime,
     const uint32_t totalPressure,
-    std::unordered_set<std::string>& openValves)
+    std::unordered_set<std::string>& openedValves,
+    std::unordered_set<std::string>& availableValves)
 {
     uint32_t newTotalPressure{totalPressure};
     uint32_t newTime{time};
@@ -135,13 +153,12 @@ uint32_t analyzeValveAlone(
             totalTime,
             newTime);
     }
-    openValves.emplace(thisVertex.getName());
-
+    openedValves.emplace(thisVertex.getName());
     // try to open more valves
     uint32_t maxTotalPressure{newTotalPressure};
-    for (auto& [nextVertexName, nextVertex] : graph.getVertices()) {
+    for (auto& nextVertexName : availableValves) {
         // moving to this valve is useless, as it is already open
-        if (openValves.contains(nextVertexName)) {
+        if (openedValves.contains(nextVertexName)) {
             continue;
         }
         // calculate time to move to this valve
@@ -159,31 +176,63 @@ uint32_t analyzeValveAlone(
             newTime + timeToGoToNextValve,
             totalTime,
             newTotalPressure,
-            openValves)};
+            openedValves,
+            availableValves)};
         maxTotalPressure = std::max(maxTotalPressure, candidateTotalPressure);
     }
-    openValves.erase(thisVertex.getName());
+    openedValves.erase(thisVertex.getName());
     return maxTotalPressure;
 }
 
+/**
+ * @brief      { function_description }
+ *
+ * @param[in]  graph  The graph.
+ *
+ * @return     { description_of_the_return_value }
+ */
 uint32_t searchMaximumFlowPathAlone(const Graph<Valve, uint32_t>& graph)
 {
-    std::unordered_set<std::string> openValves;
+    std::unordered_set<std::string> openedValves;
+    std::unordered_set<std::string> availableValves{
+        generateValveNameList(graph)};
     return analyzeValveAlone(
-        graph, "AA", 0U, TotalTimeWithoutElephant, 0U, openValves);
+        graph,
+        "AA",
+        0U,
+        TotalTimeWithoutElephant,
+        0U,
+        openedValves,
+        availableValves);
 }
 
+/**
+ * @brief      { function_description }
+ *
+ * @warning    Recursive method.
+ *
+ * @param[in]  graph            The graph.
+ * @param[in]  currentValve     The current valve name.
+ * @param[in]  time             The current time.
+ * @param[in]  totalTime        The total available time.
+ * @param[in]  totalPressure    The total pressure released so far.
+ * @param[in]  availableValves  The list of valves which can be opened and whose
+ *                              flow is not zero.
+ *
+ * @return     The maximum possible releasable pressure found so far.
+ */
 uint32_t analyzeValveWithElephant(
     const Graph<Valve, uint32_t>& graph,
-    const Vertex<Valve, uint32_t>& thisVertex,
+    const std::string& currentValve,
     const uint32_t time,
     const uint32_t totalTime,
     const uint32_t totalPressure,
-    std::unordered_set<std::string>& openValves,
-    std::unordered_set<std::string>& usefulValves)
+    std::unordered_set<std::string>& openedValves,
+    std::unordered_set<std::string>& availableValves)
 {
     uint32_t newTotalPressure{totalPressure};
     uint32_t newTime{time};
+    auto& thisVertex{graph.getVertex(currentValve)};
     // open valve
     if (thisVertex.getInfo().getFlowRate() != 0U) {
         newTime += TimeToOpenAValve;
@@ -193,28 +242,31 @@ uint32_t analyzeValveWithElephant(
             totalTime,
             newTime);
     }
-    openValves.emplace(thisVertex.getName());
+    availableValves.erase(thisVertex.getName());
 
-    // Let loose an elephant to open valves
-    // The elephant can only open valves that we haven't open yet.
-    std::unordered_set<std::string> newCandidates{usefulValves};
-    for (auto& v : openValves) {
-        newCandidates.erase(v);
-    }
-    std::unordered_set<std::string> newOpenValves;
-    // Let the elephant run around from "AA" at time zero
-    const uint32_t maxElephantTotalPressure{
-        analyzeValveAlone(graph, "AA" 0U, totalTime, 0U, openValves)};
+    /* Let the elephant run around from "AA" at time zero */
     /* This maximum represents the case when we do not open any more valves,
      * but we let the elephant run around. */
-    newTotalPressure += maxElephantTotalPressure;
+    std::unordered_set<std::string> elephantAvailableValves{availableValves};
+    for (auto& v : openedValves) {
+        elephantAvailableValves.erase(v);
+    }
+    std::unordered_set<std::string> elephantOpenedValves;
+    const uint32_t maxElephantTotalPressure{analyzeValveAlone(
+        graph,
+        "AA",
+        0U,
+        totalTime,
+        0U,
+        elephantOpenedValves,
+        elephantAvailableValves)};
 
     /* Let's forget the elephant and try to get a better flow by opening more
      * valves. */
     uint32_t maxTotalPressure{newTotalPressure};
-    for (auto& nextVertexName : usefulValves) {
+    for (auto& nextVertexName : availableValves) {
         // moving to this valve is useless, as it is already open
-        if (openValves.contains(nextVertexName)) {
+        if (openedValves.contains(nextVertexName)) {
             continue;
         }
         // calculate time to move to this valve
@@ -228,31 +280,40 @@ uint32_t analyzeValveWithElephant(
         // recurse with this valve open. if it is an improvement, remember
         const uint32_t candidateTotalPressure{analyzeValveWithElephant(
             graph,
-            graph.getVertex(nextVertexName),
+            nextVertexName,
             newTime + timeToGoToNextValve,
             totalTime,
             newTotalPressure,
-            openValves,
-            usefulValves)};
-        maxTotalPressure = std::max(maxTotalPressure, candidateTotalPressure);
+            openedValves,
+            availableValves)};
+        maxTotalPressure = std::max(
+            maxTotalPressure,
+            candidateTotalPressure + maxElephantTotalPressure);
     }
-    openValves.erase(thisVertex.getName());
+    availableValves.emplace(thisVertex.getName());
     return maxTotalPressure;
 }
 
+/**
+ * @brief      { function_description }
+ *
+ * @param[in]  graph  The graph.
+ *
+ * @return     { description_of_the_return_value }
+ */
 uint32_t searchMaximumFlowPathWithElephant(const Graph<Valve, uint32_t>& graph)
 {
-    std::unordered_set<std::string> openValves;
-    auto& startingValve{graph.getVertex("AA")};
-    std::unordered_set<std::string> usefulValves{generateValveNameList(graph)};
+    std::unordered_set<std::string> openedValves;
+    std::unordered_set<std::string> availableValves{
+        generateValveNameList(graph)};
     return analyzeValveWithElephant(
         graph,
-        startingValve,
+        "AA",
         0U,
         TotalTimeWithElephant,
         0U,
-        openValves,
-        usefulValves);
+        openedValves,
+        availableValves);
 }
 
 // ---------- End of Private Methods ----------
