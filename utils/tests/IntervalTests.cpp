@@ -340,6 +340,7 @@ TEST_CASE("[Interval] contains() method", "[utils][interval][Interval]")
         CHECK_FALSE(interval1.contains(21));
     }
     SECTION("Outside on the left side") { CHECK_FALSE(interval1.contains(-2)); }
+    SECTION("Static tests") { STATIC_CHECK(Interval{2, 7}.contains(2)); }
 }
 
 TEST_CASE("[Interval] hasOneValue() method", "[utils][interval][Interval]")
@@ -353,6 +354,10 @@ TEST_CASE("[Interval] hasOneValue() method", "[utils][interval][Interval]")
     {
         const Interval interval1{3, 3};
         CHECK(interval1.hasOneValue());
+    }
+    SECTION("Static tests") {
+        STATIC_CHECK_FALSE(Interval{2, 7}.hasOneValue());
+        STATIC_CHECK(Interval{3, 3}.hasOneValue());
     }
 }
 
@@ -378,5 +383,8 @@ TEST_CASE("[Interval] areContiguous() method", "[utils][interval][Interval]")
         const Interval interval2{3, 3};
         CHECK_FALSE(interval1.areContiguous(interval2));
         CHECK_FALSE(interval2.areContiguous(interval1));
+    }
+    SECTION("Static tests") {
+        STATIC_CHECK(Interval{2, 7}.areContiguous(Interval{-1, 1}));
     }
 }
