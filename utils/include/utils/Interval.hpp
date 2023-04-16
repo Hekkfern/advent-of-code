@@ -51,8 +51,8 @@ public:
     [[nodiscard]] auto operator<=>(const Interval& other) const noexcept
         = default;
     /**
-     * @brief      Retrieves the length of the interval, i.e. the number of different values
-     *             between the minimum and maximum values (both included).
+     * @brief      Retrieves the length of the interval, i.e. the number of
+     * different values between the minimum and maximum values (both included).
      *
      * @return     The length of the interval.
      */
@@ -68,7 +68,7 @@ public:
      *
      * @return     Joined interval if they overlap. std::nullopt, otherwise.
      */
-    [[nodiscard]] std::optional<Interval>
+    [[nodiscard]] constexpr std::optional<Interval>
     join(const Interval<T>& other) const noexcept
     {
         return (overlaps(other) || areContiguous(other))
@@ -85,7 +85,7 @@ public:
      * @return     std::nullopt if they don't overlap. If so, a new interval
      *             with the overlapped fragment.
      */
-    [[nodiscard]] std::optional<Interval>
+    [[nodiscard]] constexpr std::optional<Interval>
     intersect(const Interval& other) const noexcept
     {
         if (other.mMin >= mMin && other.mMin <= mMax && other.mMax >= mMax) {
@@ -110,7 +110,7 @@ public:
      * @return     True if the other interval includes this one. False,
      *             otherwise.
      */
-    [[nodiscard]] bool subsumes(const Interval& other) const noexcept
+    [[nodiscard]] constexpr bool subsumes(const Interval& other) const noexcept
     {
         return other.mMin >= mMin && other.mMax <= mMax;
     }
@@ -121,7 +121,7 @@ public:
      *
      * @return     True if they overlap in any way. False, otherwise.
      */
-    [[nodiscard]] bool overlaps(const Interval& other) const noexcept
+    [[nodiscard]] constexpr bool overlaps(const Interval& other) const noexcept
     {
         return (other.mMin >= mMin && other.mMin <= mMax)
             || (other.mMax >= mMin && other.mMax <= mMax)
@@ -155,7 +155,7 @@ public:
      *
      * @return     True if the interval contains the value. False, otherwise.
      */
-    [[nodiscard]] bool contains(T value) const noexcept
+    [[nodiscard]] constexpr bool contains(T value) const noexcept
     {
         return value >= mMin && value <= mMax;
     }
@@ -165,7 +165,10 @@ public:
      *
      * @return     True if the interval has a single value. False, otherwise.
      */
-    [[nodiscard]] bool hasOneValue() const noexcept { return mMin == mMax; }
+    [[nodiscard]] constexpr bool hasOneValue() const noexcept
+    {
+        return mMin == mMax;
+    }
     /**
      * @brief      Checks if both intervals are contiguous, meaning that the
      *             difference between the minimum value of one interval and the
@@ -175,7 +178,8 @@ public:
      *
      * @return     True if both intervals are contiguous. False, otherwise.
      */
-    [[nodiscard]] bool areContiguous(const Interval& other) const noexcept
+    [[nodiscard]] constexpr bool
+    areContiguous(const Interval& other) const noexcept
     {
         return (other.mMin - mMax) == 1 || (mMin - other.mMax) == 1;
     }

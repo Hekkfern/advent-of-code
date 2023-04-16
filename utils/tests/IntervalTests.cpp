@@ -160,6 +160,11 @@ TEST_CASE("[Interval] join() method", "[utils][interval][Interval]")
             }
         }
     }
+    SECTION("Static tests")
+    {
+        STATIC_CHECK(Interval{2, 3}.join(Interval{4, 6}) == Interval{2, 6});
+        STATIC_CHECK(Interval{2, 5}.join(Interval{3, 4}) == Interval{2, 5});
+    }
 }
 
 TEST_CASE("[Interval] intersect() method", "[utils][interval][Interval]")
@@ -231,6 +236,12 @@ TEST_CASE("[Interval] intersect() method", "[utils][interval][Interval]")
             CHECK(result2->get() == std::make_pair(1, 4));
         }
     }
+    SECTION("Static tests")
+    {
+        STATIC_CHECK_FALSE(Interval{2, 3}.intersect(Interval{-3, 1}));
+        STATIC_CHECK(
+            Interval{2, 3}.intersect(Interval{-3, 4}) == Interval{2, 3});
+    }
 }
 
 TEST_CASE("[Interval] subsumes() method", "[utils][interval][Interval]")
@@ -265,6 +276,11 @@ TEST_CASE("[Interval] subsumes() method", "[utils][interval][Interval]")
             CHECK(interval2.subsumes(interval1));
             CHECK_FALSE(interval1.subsumes(interval2));
         }
+    }
+    SECTION("Static tests")
+    {
+        STATIC_CHECK_FALSE(Interval{2, 3}.subsumes(Interval{-3, 6}));
+        STATIC_CHECK(Interval{-3, 6}.subsumes(Interval{2, 3}));
     }
 }
 
@@ -304,6 +320,11 @@ TEST_CASE("[Interval] overlaps() method", "[utils][interval][Interval]")
         const Interval interval2{6, 7};
         CHECK(interval1.overlaps(interval2));
         CHECK(interval2.overlaps(interval1));
+    }
+    SECTION("Static tests")
+    {
+        STATIC_CHECK(Interval{2, 6}.overlaps(Interval{1, 3}));
+        STATIC_CHECK(Interval{1, 3}.overlaps(Interval{2, 6}));
     }
 }
 
