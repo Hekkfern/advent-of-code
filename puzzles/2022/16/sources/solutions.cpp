@@ -263,7 +263,7 @@ uint32_t analyzeValveWithElephant(
 
     /* Let's forget the elephant and try to get a better flow by opening more
      * valves. */
-    uint32_t maxTotalPressure{newTotalPressure};
+    uint32_t maxTotalPressure{newTotalPressure + maxElephantTotalPressure};
     for (auto& nextVertexName : availableValves) {
         // moving to this valve is useless, as it is already open
         if (openedValves.contains(nextVertexName)) {
@@ -286,9 +286,7 @@ uint32_t analyzeValveWithElephant(
             newTotalPressure,
             openedValves,
             availableValves)};
-        maxTotalPressure = std::max(
-            maxTotalPressure,
-            candidateTotalPressure + maxElephantTotalPressure);
+        maxTotalPressure = std::max(maxTotalPressure, candidateTotalPressure);
     }
     availableValves.emplace(thisVertex.getName());
     return maxTotalPressure;
