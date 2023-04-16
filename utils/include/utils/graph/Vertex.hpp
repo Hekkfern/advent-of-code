@@ -7,9 +7,9 @@
 
 namespace utils::graph {
 
-template <std::equality_comparable T, UnsignedNumericType W>
+template <std::equality_comparable T, UnsignedIntegerType W>
 class Edge;
-template <std::equality_comparable T, UnsignedNumericType W>
+template <std::equality_comparable T, UnsignedIntegerType W>
 class Vertex;
 
 /**
@@ -18,7 +18,7 @@ class Vertex;
  * @tparam     T     Type of the information contained in the vertexes.
  * @tparam     W     Type of the weights value of the edges.
  */
-template <std::equality_comparable T, UnsignedNumericType W>
+template <std::equality_comparable T, UnsignedIntegerType W>
 class Edge {
 public:
     /**
@@ -74,7 +74,7 @@ private:
  * @tparam     T     Type of the information contained in the vertexes.
  * @tparam     W     Type of the weights value of the edges.
  */
-template <std::equality_comparable T, UnsignedNumericType W>
+template <std::equality_comparable T, UnsignedIntegerType W>
 class Vertex {
 public:
     /**
@@ -183,7 +183,7 @@ private:
 
 } // namespace utils::graph
 
-template <std::equality_comparable T, UnsignedNumericType W>
+template <std::equality_comparable T, UnsignedIntegerType W>
 struct std::hash<utils::graph::Vertex<T, W>> {
     std::size_t operator()(const utils::graph::Vertex<T, W>& k) const noexcept
     {
@@ -191,7 +191,7 @@ struct std::hash<utils::graph::Vertex<T, W>> {
     }
 };
 
-template <std::equality_comparable T, UnsignedNumericType W>
+template <std::equality_comparable T, UnsignedIntegerType W>
 struct std::hash<utils::graph::Edge<T, W>> {
     std::size_t operator()(const utils::graph::Edge<T, W>& k) const noexcept
     {

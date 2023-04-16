@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Concepts.hpp"
 #include <cstdint>
 #include <functional>
 #include <memory>
@@ -13,6 +14,7 @@ class Vector2D;
 /**
  * @brief      This class describes a point in 2D space.
  */
+// template <SignedIntegerType T = int32_t>
 class Point2D {
 public:
     /**
@@ -47,15 +49,16 @@ public:
      */
     void move(const Vector2D& vector2D);
     /**
-     * @brief      Calculates the point result of applying an arbtitrary movement to the
-     *             selected point.
+     * @brief      Calculates the point result of applying an arbtitrary
+     * movement to the selected point.
      *
      * @param[in]  point2d   The origin point.
      * @param[in]  vector2d  The vector of the movement.
      *
      * @return     Resulting position of the movement.
      */
-    [[nodiscard]] static Point2D move(const Point2D& point2d, const Vector2D& vector2d);
+    [[nodiscard]] static Point2D
+    move(const Point2D& point2d, const Vector2D& vector2d);
     /**
      * @brief      Calculates the point result of applying an unitary movement
      *             towards the given direction to the selected point.
@@ -65,7 +68,8 @@ public:
      *
      * @return     Resulting position of the movement.
      */
-    [[nodiscard]] static Point2D move(const Point2D& point2d, const Direction2D& direction2D);
+    [[nodiscard]] static Point2D
+    move(const Point2D& point2d, const Direction2D& direction2D);
     /**
      * @brief      Gets the coordinates.
      *
@@ -146,7 +150,8 @@ private:
 };
 
 /**
- * @brief      Addition operator to move a @ref Point2D according to a @ref Vector2D.
+ * @brief      Addition operator to move a @ref Point2D according to a @ref
+ * Vector2D.
  *
  * @param[in]  point2d   Original position.
  * @param[in]  vector2d  Vector of movement.
@@ -155,7 +160,8 @@ private:
  */
 Point2D operator+(const Point2D& point2d, const Vector2D& vector2d);
 /**
- * @brief      Addition operator to move a @ref Point2D according to a @ref Vector2D.
+ * @brief      Addition operator to move a @ref Point2D according to a @ref
+ * Vector2D.
  *
  * @param[in]  vector2d  Vector of movement.
  * @param[in]  point2d   Original position.
