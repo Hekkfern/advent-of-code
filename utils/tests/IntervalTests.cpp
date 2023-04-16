@@ -4,7 +4,7 @@
 
 using namespace utils::interval;
 
-TEST_CASE("[Interval] Constructor", "[utils][interval][Interval]")
+TEST_CASE("[Interval] Constructor", "[utils][Interval]")
 {
     SECTION("Positive values")
     {
@@ -32,7 +32,7 @@ TEST_CASE("[Interval] Constructor", "[utils][interval][Interval]")
     }
 }
 
-TEST_CASE("[Interval] length() method", "[utils][interval][Interval]")
+TEST_CASE("[Interval] length() method", "[utils][Interval]")
 {
     SECTION("Positive values")
     {
@@ -51,7 +51,7 @@ TEST_CASE("[Interval] length() method", "[utils][interval][Interval]")
     }
 }
 
-TEST_CASE("[Interval] join() method", "[utils][interval][Interval]")
+TEST_CASE("[Interval] join() method", "[utils][Interval]")
 {
     SECTION("Both intervals are contiguous, but they don't overlap")
     {
@@ -167,7 +167,7 @@ TEST_CASE("[Interval] join() method", "[utils][interval][Interval]")
     }
 }
 
-TEST_CASE("[Interval] intersect() method", "[utils][interval][Interval]")
+TEST_CASE("[Interval] intersect() method", "[utils][Interval]")
 {
     SECTION("No overlap")
     {
@@ -244,7 +244,7 @@ TEST_CASE("[Interval] intersect() method", "[utils][interval][Interval]")
     }
 }
 
-TEST_CASE("[Interval] subsumes() method", "[utils][interval][Interval]")
+TEST_CASE("[Interval] subsumes() method", "[utils][Interval]")
 {
     SECTION("One interval includes the other one totally")
     {
@@ -284,7 +284,7 @@ TEST_CASE("[Interval] subsumes() method", "[utils][interval][Interval]")
     }
 }
 
-TEST_CASE("[Interval] overlaps() method", "[utils][interval][Interval]")
+TEST_CASE("[Interval] overlaps() method", "[utils][Interval]")
 {
     SECTION("Left overlap")
     {
@@ -328,7 +328,7 @@ TEST_CASE("[Interval] overlaps() method", "[utils][interval][Interval]")
     }
 }
 
-TEST_CASE("[Interval] contains() method", "[utils][interval][Interval]")
+TEST_CASE("[Interval] contains() method", "[utils][Interval]")
 {
     const Interval interval1{2, 7};
 
@@ -343,7 +343,7 @@ TEST_CASE("[Interval] contains() method", "[utils][interval][Interval]")
     SECTION("Static tests") { STATIC_CHECK(Interval{2, 7}.contains(2)); }
 }
 
-TEST_CASE("[Interval] hasOneValue() method", "[utils][interval][Interval]")
+TEST_CASE("[Interval] hasOneValue() method", "[utils][Interval]")
 {
     SECTION("False")
     {
@@ -362,7 +362,7 @@ TEST_CASE("[Interval] hasOneValue() method", "[utils][interval][Interval]")
     }
 }
 
-TEST_CASE("[Interval] areContiguous() method", "[utils][interval][Interval]")
+TEST_CASE("[Interval] areContiguous() method", "[utils][Interval]")
 {
     SECTION("Contiguous on the left side")
     {
@@ -391,7 +391,7 @@ TEST_CASE("[Interval] areContiguous() method", "[utils][interval][Interval]")
     }
 }
 
-TEST_CASE("[Interval] Comparison operators", "[utils][interval][Interval]")
+TEST_CASE("[Interval] Comparison operators", "[utils][Interval]")
 {
     SECTION("Equality")
     {

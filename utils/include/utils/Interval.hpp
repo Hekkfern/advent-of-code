@@ -185,6 +185,14 @@ public:
     }
 
 private:
+    /**
+     * @brief      "Insert string into stream" operator.
+     *
+     * @param[in]      os       The output stream.
+     * @param[in]  interval  The interval.
+     *
+     * @return     The updated output stream.
+     */
     friend std::ostream&
     operator<<(std::ostream& os, const Interval<T>& interval)
     {

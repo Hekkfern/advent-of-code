@@ -2,6 +2,9 @@
 
 #include "Interval.hpp"
 #include <range/v3/all.hpp>
+#include <sstream>
+#include <string>
+#include <utils/String.hpp>
 #include <vector>
 
 namespace utils::interval {
@@ -24,8 +27,7 @@ public:
      *
      * @param[in]  intervals  The intervals.
      */
-    constexpr explicit MultiInterval(
-        std::vector<Interval<T>>&& intervals) noexcept
+    explicit MultiInterval(std::vector<Interval<T>>&& intervals) noexcept
         : mIntervals{std::move(intervals)}
     {
         reduce();
@@ -35,8 +37,7 @@ public:
      *
      * @param[in]  intervals  The intervals.
      */
-    constexpr explicit MultiInterval(
-        const std::vector<Interval<T>>& intervals) noexcept
+    explicit MultiInterval(const std::vector<Interval<T>>& intervals) noexcept
         : mIntervals{intervals}
     {
         reduce();
@@ -290,6 +291,25 @@ private:
         }
         newIntervals.emplace_back(accumulatedInterval);
         mIntervals = newIntervals;
+    }
+    /**
+     * @brief      "Insert string into stream" operator.
+     *
+     * @param[in]      os       The output stream.
+     * @param[in]  interval  The interval.
+     *
+     * @return     The updated output stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& os, const MultiInterval<T>& multiInterval)
+    {
+        std::vector<std::string> ranges;
+        for (const auto& interval : multiInterval.mIntervals) {
+            ranges.emplace_back(
+                '[' + interval.mMin + ',' + interval.mMax + ']');
+        }
+        os << utils::string::join(ranges, ",");
+        return os;
     }
 
     /**
