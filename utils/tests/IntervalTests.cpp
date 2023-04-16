@@ -4,34 +4,26 @@
 
 using namespace utils::interval;
 
-TEST_CASE(
-    "[Interval - getters] Getters return correct values when the range "
-    "has positive values only",
-    "[Interval, Interval_getters]")
+TEST_CASE("[Interval] Constructor", "[utils][interval][Interval]")
 {
-    const Interval interval1{2, 3};
-    CHECK(interval1.getMin() == 2);
-    CHECK(interval1.getMax() == 3);
-    CHECK(interval1.get() == std::make_pair(2, 3));
-}
-
-TEST_CASE(
-    "[Interval - getters] Getters return correct values when the range "
-    "has positive and negative values",
-    "[Interval, Interval_getters]")
-{
-    const Interval interval2{-3, 1};
-    CHECK(interval2.getMin() == -3);
-    CHECK(interval2.getMax() == 1);
-    CHECK(interval2.get() == std::make_pair(-3, 1));
-}
-
-TEST_CASE(
-    "[Interval - constructor] Construct fails when the min and max values are "
-    "wrong",
-    "[Interval, Interval_constructor]")
-{
-    CHECK_THROWS(Interval{2, -3});
+    SECTION("Positive values")
+    {
+        const Interval interval1{2, 3};
+        CHECK(interval1.getMin() == 2);
+        CHECK(interval1.getMax() == 3);
+        CHECK(interval1.get() == std::make_pair(2, 3));
+    }
+    SECTION("Positive and negatives values")
+    {
+        const Interval interval2{-3, 1};
+        CHECK(interval2.getMin() == -3);
+        CHECK(interval2.getMax() == 1);
+        CHECK(interval2.get() == std::make_pair(-3, 1));
+    }
+    SECTION("Left extreme value is greater than the right extreme value")
+    {
+        CHECK_THROWS(Interval{2, -3});
+    }
 }
 
 TEST_CASE(
