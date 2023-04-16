@@ -185,6 +185,13 @@ public:
     }
 
 private:
+    friend std::ostream&
+    operator<<(std::ostream& os, const Interval<T>& interval)
+    {
+        os << '[' << interval.mMin << ',' << interval.mMax << ']';
+        return os;
+    }
+
     /**
      * @brief      Minimum value.
      */

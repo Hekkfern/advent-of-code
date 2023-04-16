@@ -192,7 +192,7 @@ Point2D operator+(const Direction2D& direction2D, const Point2D& point2d);
 /**
  * @brief      "Insert string into stream" operator.
  *
- * @param      os       The output stream.
+ * @param[in]      os       The output stream.
  * @param[in]  point2d  The point.
  *
  * @return     The updated output stream.

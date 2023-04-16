@@ -355,7 +355,8 @@ TEST_CASE("[Interval] hasOneValue() method", "[utils][interval][Interval]")
         const Interval interval1{3, 3};
         CHECK(interval1.hasOneValue());
     }
-    SECTION("Static tests") {
+    SECTION("Static tests")
+    {
         STATIC_CHECK_FALSE(Interval{2, 7}.hasOneValue());
         STATIC_CHECK(Interval{3, 3}.hasOneValue());
     }
@@ -384,7 +385,45 @@ TEST_CASE("[Interval] areContiguous() method", "[utils][interval][Interval]")
         CHECK_FALSE(interval1.areContiguous(interval2));
         CHECK_FALSE(interval2.areContiguous(interval1));
     }
-    SECTION("Static tests") {
+    SECTION("Static tests")
+    {
         STATIC_CHECK(Interval{2, 7}.areContiguous(Interval{-1, 1}));
+    }
+}
+
+TEST_CASE("[Interval] Comparison operators", "[utils][interval][Interval]")
+{
+    SECTION("Equality")
+    {
+        CHECK(Interval{1, 3} == Interval{1, 3});
+        CHECK_FALSE(Interval{1, 3} == Interval{1, 5});
+        CHECK_FALSE(Interval{1, 3} == Interval{2, 3});
+    }
+    SECTION("Inequality")
+    {
+        CHECK_FALSE(Interval{1, 3} != Interval{1, 3});
+        CHECK(Interval{1, 3} != Interval{1, 5});
+        CHECK(Interval{1, 3} != Interval{2, 3});
+    }
+    SECTION("Greater and less than")
+    {
+        CHECK_FALSE(Interval{1, 3} > Interval{1, 3});
+        CHECK(Interval{1, 3} < Interval{1, 5});
+        CHECK(Interval{1, 3} < Interval{2, 3});
+        CHECK(Interval{1, 5} > Interval{1, 3});
+        CHECK(Interval{1, 5} < Interval{2, 3});
+    }
+    SECTION("Static tests")
+    {
+        SECTION("Equality")
+        {
+            STATIC_CHECK(Interval{2, 7} == Interval{2, 7});
+            STATIC_CHECK_FALSE(Interval{2, 7} == Interval{1, 5});
+        }
+        SECTION("Inequality")
+        {
+            STATIC_CHECK_FALSE(Interval{2, 7} != Interval{2, 7});
+            STATIC_CHECK(Interval{2, 7} != Interval{1, 5});
+        }
     }
 }
