@@ -24,24 +24,31 @@ TEST_CASE("[Interval] Constructor", "[utils][interval][Interval]")
     {
         CHECK_THROWS(Interval{2, -3});
     }
+    SECTION("Static tests")
+    {
+        STATIC_CHECK(Interval{2, 3}.getMin() == 2);
+        STATIC_CHECK(Interval{2, 3}.getMax() == 3);
+        STATIC_CHECK(Interval{2, 3}.get() == std::pair(2, 3));
+    }
 }
 
-TEST_CASE(
-    "[Interval - length] length() method returns correct values when the range "
-    "has positive values only",
-    "[Interval, Interval_length]")
+TEST_CASE("[Interval] length() method", "[utils][interval][Interval]")
 {
-    const Interval interval1{2, 3};
-    CHECK(interval1.length() == 2U);
-}
-
-TEST_CASE(
-    "[Interval - length] length() method returns correct values when the range "
-    "has positive and negative values",
-    "[Interval, Interval_length]")
-{
-    const Interval interval2{-3, 1};
-    CHECK(interval2.length() == 5U);
+    SECTION("Positive values")
+    {
+        const Interval interval1{2, 3};
+        CHECK(interval1.length() == 2U);
+    }
+    SECTION("Positive and negatives values")
+    {
+        const Interval interval2{-3, 1};
+        CHECK(interval2.length() == 5U);
+    }
+    SECTION("Static tests")
+    {
+        STATIC_CHECK(Interval{2, 3}.length() == 2U);
+        STATIC_CHECK(Interval{-3, 1}.length() == 5U);
+    }
 }
 
 TEST_CASE(

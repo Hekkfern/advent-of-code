@@ -22,7 +22,7 @@ public:
      * @param[in]  min   The minimum value.
      * @param[in]  max   The maximum value.
      */
-    explicit Interval(T min, T max)
+    constexpr explicit Interval(T min, T max)
         : mMin{min}
         , mMax{max}
     {
@@ -37,7 +37,7 @@ public:
      *
      * @param[in]  values  A pair of values (Min, Max).
      */
-    explicit Interval(const std::pair<T, T>& values)
+    constexpr explicit Interval(const std::pair<T, T>& values)
         : Interval{values.first, values.second}
     {
     }
@@ -51,12 +51,12 @@ public:
     [[nodiscard]] auto operator<=>(const Interval& other) const noexcept
         = default;
     /**
-     * @brief      Retrieves the length of the interval, i.e. the difference
-     *             between the minimum and maximum values.
+     * @brief      Retrieves the length of the interval, i.e. the number of different values
+     *             between the minimum and maximum values (both included).
      *
      * @return     The length of the interval.
      */
-    [[nodiscard]] size_t length() const noexcept
+    [[nodiscard]] constexpr size_t length() const noexcept
     {
         return static_cast<size_t>(mMax - mMin) + 1U;
     }
@@ -132,19 +132,19 @@ public:
      *
      * @return     The minimum value.
      */
-    [[nodiscard]] T getMin() const noexcept { return mMin; }
+    [[nodiscard]] constexpr T getMin() const noexcept { return mMin; }
     /**
      * @brief      Gets the maximum value of the interval.
      *
      * @return     The maximum value.
      */
-    [[nodiscard]] T getMax() const noexcept { return mMax; }
+    [[nodiscard]] constexpr T getMax() const noexcept { return mMax; }
     /**
      * @brief      Gets both extreme values of the interval.
      *
      * @return     Pair with both the minimum and the maximum values.
      */
-    [[nodiscard]] std::pair<T, T> get() const noexcept
+    [[nodiscard]] constexpr std::pair<T, T> get() const noexcept
     {
         return std::make_pair(mMin, mMax);
     }
