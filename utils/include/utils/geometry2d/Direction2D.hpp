@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Vector2D.hpp"
 #include <string>
 
 namespace utils::geometry2d {
@@ -69,47 +68,6 @@ public:
         }
     }
     /**
-     * @brief      Converts the direction to an unitary @ref Vector2D object.
-     *
-     * @return     Vector2D representation of the direction.
-     */
-    [[nodiscard]] Vector2D toVector2D() const
-    {
-        int32_t coordX = 0;
-        int32_t coordY = 0;
-        switch (mValue) {
-        case Direction2D::Left:
-        case Direction2D::DownLeft:
-        case Direction2D::UpLeft:
-            --coordX;
-            break;
-        case Direction2D::Right:
-        case Direction2D::UpRight:
-        case Direction2D::DownRight:
-            ++coordX;
-            break;
-        default:
-            /* NO STATEMENTS */
-            break;
-        }
-        switch (mValue) {
-        case Direction2D::Down:
-        case Direction2D::DownRight:
-        case Direction2D::DownLeft:
-            --coordY;
-            break;
-        case Direction2D::Up:
-        case Direction2D::UpRight:
-        case Direction2D::UpLeft:
-            ++coordY;
-            break;
-        default:
-            /* NO STATEMENTS */
-            break;
-        }
-        return Vector2D{ coordX, coordY };
-    }
-    /**
      * @brief      Gets the value.
      *
      * @return     The value.
@@ -125,7 +83,8 @@ private:
 
 } // namespace utils::geometry2d
 
-template <> struct std::hash<utils::geometry2d::Direction2D> {
+template <>
+struct std::hash<utils::geometry2d::Direction2D> {
     std::size_t operator()(const utils::geometry2d::Direction2D& k) const
     {
         return std::hash<utils::geometry2d::Direction2D::Value>()(k.getValue());

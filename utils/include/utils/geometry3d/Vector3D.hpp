@@ -4,6 +4,7 @@
 #include "Point3D.hpp"
 #include <algorithm>
 #include <array>
+#include <cstdint>
 #include <ostream>
 
 namespace utils::geometry3d {

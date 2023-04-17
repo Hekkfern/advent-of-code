@@ -1,17 +1,17 @@
 #pragma once
 
+#include "../Concepts.hpp"
 #include <cstdint>
 #include <memory>
 #include <utility>
 
 namespace utils::geometry2d {
 
-class Point2D;
-
 /**
  * @brief      This class describes a Vector (i.e. a directional arrow) in 2D
  *             space.
  */
+template <SignedIntegerType T = int32_t>
 class Vector2D {
 public:
     /**
@@ -77,8 +77,8 @@ public:
      */
     uint32_t distance() const;
     /**
-     * @brief      Modifies the vector so the lengths becomes one (positive or negative) up most, keeping the same
-     *             direction.
+     * @brief      Modifies the vector so the lengths becomes one (positive or
+     * negative) up most, keeping the same direction.
      */
     void normalize();
     /**
@@ -152,59 +152,40 @@ public:
      *
      * @return     New vector.
      */
-    template <std::integral T> [[nodiscard]] static Vector2D create(T x, T y)
+    template <std::integral T>
+    [[nodiscard]] static Vector2D create(T x, T y)
     {
-        return Vector2D{ static_cast<int32_t>(x), static_cast<int32_t>(y) };
+        return Vector2D{static_cast<int32_t>(x), static_cast<int32_t>(y)};
     }
 
 private:
+    /**
+     * @brief      "Insert string into stream" operator.
+     *
+     * @param      os        The output stream.
+     * @param[in]  vector2D  The vector.
+     *
+     * @return     The updated output stream.
+     */
     friend std::ostream& operator<<(std::ostream& os, const Vector2D& vector2D);
 
     /**
      * Stores coordinate X.
      */
-    int32_t mX = 0;
+    int32_t mX{0};
     /**
      * Stores coordinate Y.
      */
-    int32_t mY = 0;
+    int32_t mY{0};
 };
-
-/**
- * @brief      Multiplication operator, which multiplies the coordinates of a
- *             vector by a scalar value.
- *
- * @param[in]  vector2D  The vector to scale.
- * @param[in]  value     The scalar value to scale by.
- *
- * @return     Scaled vector by a scalar.
- */
-Vector2D operator*(const Vector2D& vector2D, const int32_t value);
-/**
- * @brief      Multiplication operator, which multiplies the coordinates of a
- *             vector by a scalar value.
- *
- * @param[in]  value     The scalar value to scale by.
- * @param[in]  vector2D  The vector to scale.
- *
- * @return     Scaled vector by a scalar.
- */
-Vector2D operator*(const int32_t value, const Vector2D& vector2D);
-/**
- * @brief      "Insert string into stream" operator.
- *
- * @param      os        The output stream.
- * @param[in]  vector2D  The vector.
- *
- * @return     The updated output stream.
- */
-std::ostream& operator<<(std::ostream& os, const Vector2D& vector2D);
 
 } // namespace utils::geometry2d
 
-template <> struct std::hash<utils::geometry2d::Vector2D> {
-    std::size_t operator()(const utils::geometry2d::Vector2D& k) const noexcept
+template <SignedIntegerType T>
+struct std::hash<utils::geometry2d::Vector2D<T>> {
+    std::size_t
+    operator()(const utils::geometry2d::Vector2D<T>& k) const noexcept
     {
-        return std::hash<int32_t>()(k.getX()) ^ std::hash<int32_t>()(k.getY());
+        return std::hash<T>()(k.getX()) ^ std::hash<T>()(k.getY());
     }
 };

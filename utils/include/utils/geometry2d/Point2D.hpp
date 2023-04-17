@@ -2,93 +2,62 @@
 
 #include "../Concepts.hpp"
 #include <cstdint>
-#include <functional>
-#include <memory>
 #include <ostream>
-#include <utility>
 
 namespace utils::geometry2d {
-
-class Direction2D;
-class Vector2D;
 
 /**
  * @brief      This class describes a point in 2D space.
  */
-// template <SignedIntegerType T = int32_t>
+template <SignedIntegerType T = int32_t>
 class Point2D {
 public:
     /**
      * @brief      Default constructor.
      */
-    Point2D();
+    explicit Point2D() = default;
     /**
      * @brief      Constructs a new instance.
      *
      * @param[in]  x     Coordinate X.
      * @param[in]  y     Coordinate Y.
      */
-    explicit Point2D(int32_t x, int32_t y);
+    explicit Point2D(T x, T y)
+        : mX{x}
+        , mY{y}
+    {
+    }
     /**
      * @brief      Constructs a new instance.
      *
      * @param[in]  coords  Pair of coordinates (X,Y).
      */
-    explicit Point2D(const std::pair<int32_t, int32_t>& coords);
-    /**
-     * @brief      Updates the position of this point to apply a unitary
-     *             movement in the given direction.
-     *
-     * @param[in]  direction2D  The direction of the movement.
-     */
-    void move(Direction2D direction2D);
-    /**
-     * @brief      Updates the position of this point to apply a movement
-     *             according to the given @ref Vector2D object.
-     *
-     * @param[in]  vector2D  The vector of the movement.
-     */
-    void move(const Vector2D& vector2D);
-    /**
-     * @brief      Calculates the point result of applying an arbitrary
-     * movement to the selected point.
-     *
-     * @param[in]  point2d   The origin point.
-     * @param[in]  vector2d  The vector of the movement.
-     *
-     * @return     Resulting position of the movement.
-     */
-    [[nodiscard]] static Point2D
-    move(const Point2D& point2d, const Vector2D& vector2d);
-    /**
-     * @brief      Calculates the point result of applying an unitary movement
-     *             towards the given direction to the selected point.
-     *
-     * @param[in]  point2d      The origin point.
-     * @param[in]  direction2D  The direction of the movement.
-     *
-     * @return     Resulting position of the movement.
-     */
-    [[nodiscard]] static Point2D
-    move(const Point2D& point2d, const Direction2D& direction2D);
+    explicit Point2D(const std::pair<int32_t, int32_t>& coords)
+        : mX{coords.first}
+        , mY{coords.second}
+    {
+    }
     /**
      * @brief      Gets the coordinates.
      *
      * @return     The coordinates as a pair (X,Y).
      */
-    [[nodiscard]] std::pair<int32_t, int32_t> getCoordinates() const;
+    [[nodiscard]] std::pair<int32_t, int32_t> getCoordinates() const
+    {
+        return std::make_pair(mX, mY);
+    }
     /**
      * @brief      Gets the coordinate X.
      *
      * @return     The coordinate X.
      */
-    [[nodiscard]] int32_t getX() const;
+    [[nodiscard]] int32_t getX() const { return mX; }
     /**
      * @brief      Gets the coordinate Y.
      *
      * @return     The coordinate Y.
      */
-    [[nodiscard]] int32_t getY() const;
+    [[nodiscard]] int32_t getY() const { return mY; }
     /**
      * @brief      Equality operator.
      *
@@ -96,7 +65,10 @@ public:
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] bool operator==(const Point2D& other) const;
+    [[nodiscard]] bool operator==(const Point2D& other) const
+    {
+        return (mX == other.mX) && (mY == other.mY);
+    }
     /**
      * @brief      Addition operator, which sums the coordinates of both
      *             objects.
@@ -105,13 +77,16 @@ public:
      *
      * @return     The result of the addition.
      */
-    [[nodiscard]] Point2D operator+(const Point2D& other) const;
+    [[nodiscard]] Point2D operator+(const Point2D& other) const
+    {
+        return Point2D{mX + other.mX, mY + other.mY};
+    }
     /**
      * @brief      Negation operator.
      *
      * @return     The result of the subtraction
      */
-    [[nodiscard]] Point2D operator-() const;
+    [[nodiscard]] Point2D operator-() const { return Point2D{-mX, -mY}; }
     /**
      * @brief      Subtraction operator.
      *
@@ -119,7 +94,10 @@ public:
      *
      * @return     The result of the subtraction
      */
-    [[nodiscard]] Point2D operator-(const Point2D& other) const;
+    [[nodiscard]] Point2D operator-(const Point2D& other) const
+    {
+        return *this + (-other);
+    }
     /**
      * @brief      Factory method to create a new Point based on the selected
      *             coordinates.
@@ -127,85 +105,48 @@ public:
      * @param[in]  x     The coordinate X.
      * @param[in]  y     The coordinate Y.
      *
-     * @tparam     T     Type of the coordinates.
+     * @tparam     U     Type of the input coordinates.
      *
      * @return     New point.
      */
-    template <std::integral T>
-    [[nodiscard]] static Point2D create(T x, T y)
+    template <std::integral U>
+    [[nodiscard]] static Point2D create(U x, U y)
     {
-        return Point2D{static_cast<int32_t>(x), static_cast<int32_t>(y)};
+        return Point2D{static_cast<T>(x), static_cast<T>(y)};
     }
 
 private:
-    friend std::ostream& operator<<(std::ostream& os, const Point2D& point2d);
+    /**
+     * @brief      "Insert string into stream" operator.
+     *
+     * @param[in]      os       The output stream.
+     * @param[in]  point2d  The point.
+     *
+     * @return     The updated output stream.
+     */
+    friend std::ostream& operator<<(std::ostream& os, const Point2D& point2d)
+    {
+        os << '(' << point2d.mX << ',' << point2d.mY << ')';
+        return os;
+    }
 
     /**
      * Stores coordinate X.
      */
-    int32_t mX = 0U;
+    int32_t mX{0};
     /**
      * Stores coordinate Y.
      */
-    int32_t mY = 0U;
+    int32_t mY{0};
 };
-
-/**
- * @brief      Addition operator to move a @ref Point2D according to a @ref
- * Vector2D.
- *
- * @param[in]  point2d   Original position.
- * @param[in]  vector2d  Vector of movement.
- *
- * @return     The result of the movement.
- */
-Point2D operator+(const Point2D& point2d, const Vector2D& vector2d);
-/**
- * @brief      Addition operator to move a @ref Point2D according to a @ref
- * Vector2D.
- *
- * @param[in]  vector2d  Vector of movement.
- * @param[in]  point2d   Original position.
- *
- * @return     The result of the movement.
- */
-Point2D operator+(const Vector2D& vector2d, const Point2D& point2d);
-/**
- * @brief      Addition operator to move a @ref Point2D according to a @ref
- *             Direction2D.
- *
- * @param[in]  point2d      Original position.
- * @param[in]  direction2D  Direction of movement.
- *
- * @return     The result of the movement.
- */
-Point2D operator+(const Point2D& point2d, const Direction2D& direction2D);
-/**
- * @brief      Addition operator to move a @ref Point2D according to a @ref
- *             Direction2D.
- *
- * @param[in]  direction2D  Direction of movement.
- * @param[in]  point2d      Original position.
- *
- * @return     The result of the movement.
- */
-Point2D operator+(const Direction2D& direction2D, const Point2D& point2d);
-/**
- * @brief      "Insert string into stream" operator.
- *
- * @param[in]      os       The output stream.
- * @param[in]  point2d  The point.
- *
- * @return     The updated output stream.
- */
-std::ostream& operator<<(std::ostream& os, const Point2D& point2d);
 
 } // namespace utils::geometry2d
 
-template <>
-struct std::hash<utils::geometry2d::Point2D> {
-    std::size_t operator()(const utils::geometry2d::Point2D& k) const noexcept
+template <SignedIntegerType T>
+struct std::hash<utils::geometry2d::Point2D<T>> {
+    std::size_t
+    operator()(const utils::geometry2d::Point2D<T>& k) const noexcept
     {
-        return std::hash<int32_t>()(k.getX()) ^ std::hash<int32_t>()(k.getY());
+        return std::hash<T>()(k.getX()) ^ std::hash<T>()(k.getY());
     }
 };

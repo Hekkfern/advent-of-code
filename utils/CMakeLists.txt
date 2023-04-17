@@ -21,8 +21,7 @@ set(_SOURCES_UTILS
     include/utils/Concepts.hpp)
 set(_SOURCES_UTILS_GEOMETRY2D
     include/utils/geometry2d/Direction2D.hpp
-    src/geometry2d/Point2D.cpp
-    include/utils/geometry2d/Point2D.hpp
+        include/utils/geometry2d/Point2D.hpp
     src/geometry2d/Vector2D.cpp
     include/utils/geometry2d/Vector2D.hpp
     src/geometry2d/Rectangle2D.cpp
@@ -31,7 +30,7 @@ set(_SOURCES_UTILS_GEOMETRY2D
     include/utils/geometry2d/BoundingBox2D.hpp
     src/geometry2d/SquareDiamond2D.cpp
     include/utils/geometry2d/SquareDiamond2D.hpp
-    include/utils/geometry2d/IShape2D.hpp)
+    include/utils/geometry2d/IShape2D.hpp include/utils/geometry2d/Operations2D.hpp include/utils/geometry2d/Coord2D.hpp)
 set(_SOURCES_UTILS_GEOMETRY3D
         include/utils/geometry3d/Point3D.hpp include/utils/geometry3d/Vector3D.hpp include/utils/geometry3d/Coord3D.hpp include/utils/geometry3d/Operations3D.hpp)
 set(_SOURCES_UTILS_GRAPH include/utils/graph/Graph.hpp
