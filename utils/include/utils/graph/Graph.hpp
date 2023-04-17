@@ -13,7 +13,7 @@ namespace utils::graph {
  * @tparam     T     Type of the information contained in the vertexes.
  * @tparam     W     Type of the weights value of the edges.
  */
-template <std::equality_comparable T, UnsignedIntegerType W>
+template <std::equality_comparable T, UnsignedIntegerType W = uint32_t>
 class Graph {
 public:
     /**

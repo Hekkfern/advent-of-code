@@ -23,12 +23,12 @@ TEST_CASE("[Graph] Constructor", "[utils][graph][Graph]")
 {
     SECTION("With integer-type information")
     {
-        const Graph<uint32_t, uint32_t> graph;
+        const Graph<uint32_t> graph;
         CHECK(graph.getVertices().empty());
     }
     SECTION("With custom-class-type information")
     {
-        const Graph<CustomInfo, uint32_t> graph;
+        const Graph<CustomInfo> graph;
         CHECK(graph.getVertices().empty());
     }
 }
@@ -39,7 +39,7 @@ TEST_CASE("[Graph] addVertex() method", "[utils][graph][Graph]")
     {
         SECTION("With integer-type information")
         {
-            Graph<uint32_t, uint32_t> graph;
+            Graph<uint32_t> graph;
             CHECK(graph.getVertices().empty());
             const bool result{graph.addVertex("vertex1", 32U)};
             CHECK(result);
@@ -48,7 +48,7 @@ TEST_CASE("[Graph] addVertex() method", "[utils][graph][Graph]")
         }
         SECTION("With custom-class-type information")
         {
-            Graph<CustomInfo, uint32_t> graph;
+            Graph<CustomInfo> graph;
             CHECK(graph.getVertices().empty());
             const bool result{graph.addVertex("vertex1", CustomInfo{32U})};
             CHECK(result);
@@ -60,7 +60,7 @@ TEST_CASE("[Graph] addVertex() method", "[utils][graph][Graph]")
     {
         SECTION("With integer-type information")
         {
-            Graph<uint32_t, uint32_t> graph;
+            Graph<uint32_t> graph;
             CHECK(graph.getVertices().empty());
             const bool result{graph.addVertex("vertex1", 32U)};
             CHECK(result);
@@ -73,7 +73,7 @@ TEST_CASE("[Graph] addVertex() method", "[utils][graph][Graph]")
         }
         SECTION("With custom-class-type information")
         {
-            Graph<CustomInfo, uint32_t> graph;
+            Graph<CustomInfo> graph;
             CHECK(graph.getVertices().empty());
             const bool result{graph.addVertex("vertex1", CustomInfo{32U})};
             CHECK(result);
@@ -93,7 +93,7 @@ TEST_CASE("[Graph] removeVertex() method", "[utils][graph][Graph]")
     {
         SECTION("With integer-type information")
         {
-            Graph<uint32_t, uint32_t> graph;
+            Graph<uint32_t> graph;
             CHECK(graph.getVertices().empty());
             graph.addVertex("vertex1", 32U);
             CHECK(graph.getVertices().size() == 1U);
@@ -103,7 +103,7 @@ TEST_CASE("[Graph] removeVertex() method", "[utils][graph][Graph]")
         }
         SECTION("With custom-class-type information")
         {
-            Graph<CustomInfo, uint32_t> graph;
+            Graph<CustomInfo> graph;
             CHECK(graph.getVertices().empty());
             graph.addVertex("vertex1", CustomInfo{32U});
             CHECK(graph.getVertices().size() == 1U);
@@ -116,7 +116,7 @@ TEST_CASE("[Graph] removeVertex() method", "[utils][graph][Graph]")
     {
         SECTION("With integer-type information")
         {
-            Graph<uint32_t, uint32_t> graph;
+            Graph<uint32_t> graph;
             CHECK(graph.getVertices().empty());
             const bool result{graph.removeVertex("vertex1")};
             CHECK_FALSE(result);
@@ -124,7 +124,7 @@ TEST_CASE("[Graph] removeVertex() method", "[utils][graph][Graph]")
         }
         SECTION("With custom-class-type information")
         {
-            Graph<CustomInfo, uint32_t> graph;
+            Graph<CustomInfo> graph;
             CHECK(graph.getVertices().empty());
             const bool result{graph.removeVertex("vertex1")};
             CHECK_FALSE(result);
@@ -137,7 +137,7 @@ TEST_CASE("[Graph] removeVertexIf() method", "[utils][graph][Graph]")
 {
     SECTION("With integer-type information")
     {
-        Graph<uint32_t, uint32_t> graph;
+        Graph<uint32_t> graph;
         CHECK(graph.getVertices().empty());
         graph.addVertex("vertex1", 32U);
         graph.addVertex("vertex2", 43U);
@@ -145,16 +145,15 @@ TEST_CASE("[Graph] removeVertexIf() method", "[utils][graph][Graph]")
         CHECK(graph.getVertices().size() == 3U);
         graph.addUndirectedEdge("vertex1", "vertex2", 1U);
         graph.addUndirectedEdge("vertex1", "vertex3", 2U);
-        graph.removeVertexIf(
-            [](const Vertex<uint32_t, uint32_t>& vertex) -> bool {
-                return vertex.getInfo() == 43U;
-            });
+        graph.removeVertexIf([](const Vertex<uint32_t>& vertex) -> bool {
+            return vertex.getInfo() == 43U;
+        });
         CHECK(graph.getVertices().size() == 1U);
         CHECK(graph.getVertices().at("vertex1").getEdges().empty());
     }
     SECTION("With custom-class-type information")
     {
-        Graph<CustomInfo, uint32_t> graph;
+        Graph<CustomInfo> graph;
         CHECK(graph.getVertices().empty());
         graph.addVertex("vertex1", CustomInfo{32U});
         graph.addVertex("vertex2", CustomInfo{43U});
@@ -162,10 +161,9 @@ TEST_CASE("[Graph] removeVertexIf() method", "[utils][graph][Graph]")
         CHECK(graph.getVertices().size() == 3U);
         graph.addUndirectedEdge("vertex1", "vertex2", 1U);
         graph.addUndirectedEdge("vertex1", "vertex3", 2U);
-        graph.removeVertexIf(
-            [](const Vertex<CustomInfo, uint32_t>& vertex) -> bool {
-                return vertex.getInfo() == CustomInfo{43U};
-            });
+        graph.removeVertexIf([](const Vertex<CustomInfo>& vertex) -> bool {
+            return vertex.getInfo() == CustomInfo{43U};
+        });
         CHECK(graph.getVertices().size() == 1U);
         CHECK(graph.getVertices().at("vertex1").getEdges().empty());
     }
@@ -177,7 +175,7 @@ TEST_CASE("[Graph] addDirectedEdge() method", "[utils][graph][Graph]")
     {
         SECTION("Success")
         {
-            Graph<uint32_t, uint32_t> graph;
+            Graph<uint32_t> graph;
             graph.addVertex("vertex1", 32U);
             graph.addVertex("vertex2", 11U);
             CHECK(graph.getVertices().size() == 2U);
@@ -191,7 +189,7 @@ TEST_CASE("[Graph] addDirectedEdge() method", "[utils][graph][Graph]")
         }
         SECTION("Vertex1 doesn't exist")
         {
-            Graph<uint32_t, uint32_t> graph;
+            Graph<uint32_t> graph;
             graph.addVertex("vertex1", 32U);
             CHECK(graph.getVertices().size() == 1U);
             const bool result{graph.addDirectedEdge("vertex1", "vertex2", 3U)};
@@ -199,7 +197,7 @@ TEST_CASE("[Graph] addDirectedEdge() method", "[utils][graph][Graph]")
         }
         SECTION("Vertex2 doesn't exist")
         {
-            Graph<uint32_t, uint32_t> graph;
+            Graph<uint32_t> graph;
             graph.addVertex("vertex2", 32U);
             CHECK(graph.getVertices().size() == 1U);
             const bool result{graph.addDirectedEdge("vertex1", "vertex2", 3U)};
@@ -210,7 +208,7 @@ TEST_CASE("[Graph] addDirectedEdge() method", "[utils][graph][Graph]")
     {
         SECTION("Success")
         {
-            Graph<CustomInfo, uint32_t> graph;
+            Graph<CustomInfo> graph;
             graph.addVertex("vertex1", CustomInfo{32U});
             graph.addVertex("vertex2", CustomInfo{11U});
             CHECK(graph.getVertices().size() == 2U);
@@ -224,7 +222,7 @@ TEST_CASE("[Graph] addDirectedEdge() method", "[utils][graph][Graph]")
         }
         SECTION("Vertex1 doesn't exist")
         {
-            Graph<CustomInfo, uint32_t> graph;
+            Graph<CustomInfo> graph;
             graph.addVertex("vertex1", CustomInfo{32U});
             CHECK(graph.getVertices().size() == 1U);
             const bool result{graph.addDirectedEdge("vertex1", "vertex2", 3U)};
@@ -232,7 +230,7 @@ TEST_CASE("[Graph] addDirectedEdge() method", "[utils][graph][Graph]")
         }
         SECTION("Vertex2 doesn't exist")
         {
-            Graph<CustomInfo, uint32_t> graph;
+            Graph<CustomInfo> graph;
             graph.addVertex("vertex2", CustomInfo{32U});
             CHECK(graph.getVertices().size() == 1U);
             const bool result{graph.addDirectedEdge("vertex1", "vertex2", 3U)};
@@ -247,7 +245,7 @@ TEST_CASE("[Graph] addUndirectedEdge() method", "[utils][graph][Graph]")
     {
         SECTION("Success")
         {
-            Graph<uint32_t, uint32_t> graph;
+            Graph<uint32_t> graph;
             graph.addVertex("vertex1", 32U);
             graph.addVertex("vertex2", 11U);
             CHECK(graph.getVertices().size() == 2U);
@@ -263,7 +261,7 @@ TEST_CASE("[Graph] addUndirectedEdge() method", "[utils][graph][Graph]")
         }
         SECTION("Vertex1 doesn't exist")
         {
-            Graph<uint32_t, uint32_t> graph;
+            Graph<uint32_t> graph;
             graph.addVertex("vertex1", 32U);
             CHECK(graph.getVertices().size() == 1U);
             const bool result{
@@ -272,7 +270,7 @@ TEST_CASE("[Graph] addUndirectedEdge() method", "[utils][graph][Graph]")
         }
         SECTION("Vertex2 doesn't exist")
         {
-            Graph<uint32_t, uint32_t> graph;
+            Graph<uint32_t> graph;
             graph.addVertex("vertex2", 32U);
             CHECK(graph.getVertices().size() == 1U);
             const bool result{
@@ -284,7 +282,7 @@ TEST_CASE("[Graph] addUndirectedEdge() method", "[utils][graph][Graph]")
     {
         SECTION("Success")
         {
-            Graph<CustomInfo, uint32_t> graph;
+            Graph<CustomInfo> graph;
             graph.addVertex("vertex1", CustomInfo{32U});
             graph.addVertex("vertex2", CustomInfo{11U});
             CHECK(graph.getVertices().size() == 2U);
@@ -300,7 +298,7 @@ TEST_CASE("[Graph] addUndirectedEdge() method", "[utils][graph][Graph]")
         }
         SECTION("Vertex1 doesn't exist")
         {
-            Graph<CustomInfo, uint32_t> graph;
+            Graph<CustomInfo> graph;
             graph.addVertex("vertex1", CustomInfo{32U});
             CHECK(graph.getVertices().size() == 1U);
             const bool result{
@@ -309,7 +307,7 @@ TEST_CASE("[Graph] addUndirectedEdge() method", "[utils][graph][Graph]")
         }
         SECTION("Vertex2 doesn't exist")
         {
-            Graph<CustomInfo, uint32_t> graph;
+            Graph<CustomInfo> graph;
             graph.addVertex("vertex2", CustomInfo{32U});
             CHECK(graph.getVertices().size() == 1U);
             const bool result{
@@ -323,7 +321,7 @@ TEST_CASE("[Graph] removeDirectedEdge() method", "[utils][graph][Graph]")
 {
     SECTION("With integer-type information")
     {
-        Graph<uint32_t, uint32_t> graph;
+        Graph<uint32_t> graph;
         graph.addVertex("vertex1", 32U);
         graph.addVertex("vertex2", 11U);
         SECTION("Edge is undirected")
@@ -352,7 +350,7 @@ TEST_CASE("[Graph] removeDirectedEdge() method", "[utils][graph][Graph]")
     }
     SECTION("With custom-class-type information")
     {
-        Graph<CustomInfo, uint32_t> graph;
+        Graph<CustomInfo> graph;
         graph.addVertex("vertex1", CustomInfo{32U});
         graph.addVertex("vertex2", CustomInfo{11U});
         SECTION("Edge is undirected")
@@ -385,7 +383,7 @@ TEST_CASE("[Graph] removeAllEdges() method", "[utils][graph][Graph]")
 {
     SECTION("With integer-type information")
     {
-        Graph<uint32_t, uint32_t> graph;
+        Graph<uint32_t> graph;
         graph.addVertex("vertex1", 32U);
         graph.addVertex("vertex2", 11U);
         SECTION("Edge is undirected")
@@ -414,7 +412,7 @@ TEST_CASE("[Graph] removeAllEdges() method", "[utils][graph][Graph]")
     }
     SECTION("With custom-class-type information")
     {
-        Graph<CustomInfo, uint32_t> graph;
+        Graph<CustomInfo> graph;
         graph.addVertex("vertex1", CustomInfo{32U});
         graph.addVertex("vertex2", CustomInfo{11U});
         SECTION("Edge is undirected")
