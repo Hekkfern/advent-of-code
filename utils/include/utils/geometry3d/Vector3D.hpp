@@ -53,6 +53,12 @@ public:
     {
     }
     /**
+     * @brief      Gets the coordinates.
+     *
+     * @return     The coordinates as a group (X,Y,Z).
+     */
+    std::array<T, 3U> getCoordinates() const { return {mX, mY, mZ}; }
+    /**
      * @brief      Gets the coordinate X.
      *
      * @return     The coordinate X.
@@ -75,7 +81,7 @@ public:
      *
      * @return     Group of absolute coordinates (X,Y,Z).
      */
-    std::array<std::size_t, 3U> size() const
+    std::array<uint64_t, 3U> size() const
     {
         return {std::abs(mX), std::abs(mY), std::abs(mZ)};
     }
@@ -84,10 +90,9 @@ public:
      *
      * @return     { description_of_the_return_value }
      */
-    std::size_t range() const
+    uint64_t range() const
     {
-        return static_cast<std::size_t>(
-            std::max(std::max(std::abs(mX), std::abs(mY)), std::abs(mZ)));
+        return std::max(std::max(std::abs(mX), std::abs(mY)), std::abs(mZ));
     }
     /**
      * @brief      Calculates the Manhattan Distance.
@@ -96,10 +101,9 @@ public:
      *
      * @see        https://en.wikipedia.org/wiki/Taxicab_geometry
      */
-    std::size_t distance() const
+    uint64_t distance() const
     {
-        return static_cast<std::size_t>(
-            std::abs(mX) + std::abs(mY) + std::abs(mZ));
+        return std::abs(mX) + std::abs(mY) + std::abs(mZ);
     }
     /**
      * @brief      Modifies the vector so the lengths becomes one (positive or

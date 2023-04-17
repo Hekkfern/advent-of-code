@@ -9,6 +9,7 @@ namespace utils::geometry2d {
  * @brief      This interface describes the common methods for all the shapes in
  *             2D space.
  */
+template <SignedIntegerType T = int32_t>
 class IShape2D {
 public:
     /**
@@ -20,16 +21,16 @@ public:
      *
      * @return     List of vertexes.
      */
-    [[nodiscard]] virtual std::vector<Point2D> getVertexes() const = 0;
+    [[nodiscard]] virtual std::vector<Point2D<T>> getVertexes() const = 0;
     /**
      * @brief      Calculates the area.
      *
      * @return     Area of the shape.
      */
-    [[nodiscard]] virtual uint32_t area() const = 0;
+    [[nodiscard]] virtual uint64_t area() const = 0;
     /**
      * @brief      Determines whether the specified point is outside.
-     * 
+     *
      * @warning    Being in the border (i.e. the perimeter) of the bounding box
      *             is considered as "not being outside".
      *
@@ -37,7 +38,7 @@ public:
      *
      * @return     True if the specified point is outside, False otherwise.
      */
-    [[nodiscard]] virtual bool isOutside(const Point2D& point) const = 0;
+    [[nodiscard]] virtual bool isOutside(const Point2D<T>& point) const = 0;
     /**
      * @brief      Determines whether the specified point is inside.
      *
@@ -45,7 +46,7 @@ public:
      *
      * @return     True if the specified point is inside, False otherwise.
      */
-    [[nodiscard]] virtual bool isInside(const Point2D& point) const = 0;
+    [[nodiscard]] virtual bool isInside(const Point2D<T>& point) const = 0;
     /**
      * @brief      Determines whether the specified point is in perimeter.
      *
@@ -53,7 +54,7 @@ public:
      *
      * @return     True if the specified point is in perimeter, False otherwise.
      */
-    [[nodiscard]] virtual bool isInPerimeter(const Point2D& point) const = 0;
+    [[nodiscard]] virtual bool isInPerimeter(const Point2D<T>& point) const = 0;
 };
 
 } // namespace utils::geometry2d

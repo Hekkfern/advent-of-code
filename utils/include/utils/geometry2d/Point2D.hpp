@@ -32,7 +32,7 @@ public:
      *
      * @param[in]  coords  Pair of coordinates (X,Y).
      */
-    explicit Point2D(const std::pair<int32_t, int32_t>& coords)
+    explicit Point2D(const std::pair<T, T>& coords)
         : mX{coords.first}
         , mY{coords.second}
     {
@@ -42,7 +42,7 @@ public:
      *
      * @return     The coordinates as a pair (X,Y).
      */
-    [[nodiscard]] std::pair<int32_t, int32_t> getCoordinates() const
+    [[nodiscard]] std::pair<T, T> getCoordinates() const
     {
         return std::make_pair(mX, mY);
     }
@@ -51,13 +51,13 @@ public:
      *
      * @return     The coordinate X.
      */
-    [[nodiscard]] int32_t getX() const { return mX; }
+    [[nodiscard]] T getX() const { return mX; }
     /**
      * @brief      Gets the coordinate Y.
      *
      * @return     The coordinate Y.
      */
-    [[nodiscard]] int32_t getY() const { return mY; }
+    [[nodiscard]] T getY() const { return mY; }
     /**
      * @brief      Equality operator.
      *
@@ -133,11 +133,11 @@ private:
     /**
      * Stores coordinate X.
      */
-    int32_t mX{0};
+    T mX{0};
     /**
      * Stores coordinate Y.
      */
-    int32_t mY{0};
+    T mY{0};
 };
 
 } // namespace utils::geometry2d

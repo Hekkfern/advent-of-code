@@ -3,10 +3,10 @@
 #include <cstdint>
 #include <limits>
 
-namespace utils::geometry2d {
+#include "Direction2D.hpp"
+#include "Point2D.hpp"
 
-class Point2D;
-class Direction2D;
+namespace utils::geometry2d {
 
 /**
  * @brief      This class describes a bounding box in 2D space.
@@ -15,6 +15,7 @@ class Direction2D;
  *             dimensions is the box with the smallest measure within which all
  *             the points lie.
  */
+template <SignedIntegerType T = int32_t>
 class BoundingBox2D {
 public:
     /**
@@ -23,31 +24,39 @@ public:
      *
      * @param[in]  point2D  The point to enclose.
      */
-    void update(const Point2D& point2D);
+    void update(const Point2D<T>& point2D)
+    {
+        const auto x{point2D.getX()};
+        const auto y{point2D.getY()};
+        mMinX = std::min(mMinX, x);
+        mMaxX = std::max(mMaxX, x);
+        mMinY = std::min(mMinY, y);
+        mMaxY = std::max(mMaxY, y);
+    }
     /**
      * @brief      Gets the minimum coordinate X.
      *
      * @return     The minimum coordinate X.
      */
-    [[nodiscard]] int32_t getMinX() const;
+    [[nodiscard]] T getMinX() const { return mMinX; }
     /**
      * @brief      Gets the maximum coordinate X.
      *
      * @return     The maximum coordinate X.
      */
-    [[nodiscard]] int32_t getMaxX() const;
+    [[nodiscard]] T getMaxX() const { return mMaxX; }
     /**
      * @brief      Gets the minimum coordinate X.
      *
      * @return     The minimum coordinate X.
      */
-    [[nodiscard]] int32_t getMinY() const;
+    [[nodiscard]] T getMinY() const { return mMinY; }
     /**
      * @brief      Gets the maximum coordinate Y.
      *
      * @return     The maximum coordinate Y.
      */
-    [[nodiscard]] int32_t getMaxY() const;
+    [[nodiscard]] T getMaxY() const { return mMaxY; }
     /**
      * @brief      Determines whether the specified point is outside of the
      *             bounding box.
@@ -59,7 +68,12 @@ public:
      *
      * @return     True if the specified point is outside, False otherwise.
      */
-    [[nodiscard]] bool isOutside(const Point2D& point2D) const;
+    [[nodiscard]] bool isOutside(const Point2D<T>& point2D) const
+    {
+        const auto x{point2D.getX()};
+        const auto y{point2D.getY()};
+        return (x > mMaxX) || (x < mMinX) || (y > mMaxY) || (y < mMinY);
+    }
     /**
      * @brief      Determines whether the specified point is outside the
      *             bounding box for a given side of the box.
@@ -70,13 +84,30 @@ public:
      *
      * @return     True if the specified point is outside, False otherwise.
      */
-    [[nodiscard]] bool isOutside(const Point2D& point2D, const Direction2D direction2D) const;
+    [[nodiscard]] bool
+    isOutside(const Point2D<T>& point2D, Direction2D direction2D) const
+    {
+        const auto x{point2D.getX()};
+        const auto y{point2D.getY()};
+        switch (direction2D) {
+        case Direction2D::Up:
+            return y > mMaxY;
+        case Direction2D::Left:
+            return x < mMinX;
+        case Direction2D::Down:
+            return y < mMinY;
+        case Direction2D::Right:
+            return x > mMaxX;
+        default:
+            return false;
+        }
+    }
 
 private:
-    int32_t mMinX{ std::numeric_limits<int32_t>::max() };
-    int32_t mMaxX{ std::numeric_limits<int32_t>::min() };
-    int32_t mMinY{ std::numeric_limits<int32_t>::max() };
-    int32_t mMaxY{ std::numeric_limits<int32_t>::min() };
+    T mMinX{std::numeric_limits<T>::max()};
+    T mMaxX{std::numeric_limits<T>::min()};
+    T mMinY{std::numeric_limits<T>::max()};
+    T mMaxY{std::numeric_limits<T>::min()};
 };
 
 } // namespace utils::geometry2d

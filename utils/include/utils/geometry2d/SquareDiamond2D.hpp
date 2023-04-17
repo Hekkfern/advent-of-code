@@ -2,6 +2,7 @@
 
 #include "IShape2D.hpp"
 #include "Point2D.hpp"
+#include "Vector2D.hpp"
 #include <array>
 #include <cstdint>
 #include <optional>
@@ -12,12 +13,13 @@ namespace utils::geometry2d {
 /**
  * @brief      This class describes a Square Diamond shape in 2D space.
  */
-class SquareDiamond2D : public IShape2D {
+template <SignedIntegerType T = int32_t>
+class SquareDiamond2D : public IShape2D<T> {
 public:
     /**
      * Number of vertexes of a Rectangle.
      */
-    static constexpr uint32_t NumberOfVertexes{ 4U };
+    static constexpr uint32_t NumberOfVertexes{4U};
 
     /**
      * @brief      Constructs a new instance.
@@ -25,32 +27,49 @@ public:
      * @param[in]  centerPoint     The center point.
      * @param[in]  perimeterPoint  Any perimeter point.
      */
-    explicit SquareDiamond2D(const Point2D& centerPoint, const Point2D& perimeterPoint);
+    explicit SquareDiamond2D(
+        const Point2D<T>& centerPoint, const Point2D<T>& perimeterPoint)
+        : SquareDiamond2D{
+            centerPoint, Vector2D{centerPoint, perimeterPoint}.distance()}
+    {
+    }
     /**
      * @brief      Constructs a new instance.
      *
      * @param[in]  centerPoint  The center point.
      * @param[in]  distance     The distance from the center to the perimeter.
      */
-    explicit SquareDiamond2D(const Point2D& centerPoint, uint32_t distance);
+    explicit SquareDiamond2D(const Point2D<T>& centerPoint, uint64_t distance)
+        : mCenter{centerPoint}
+        , mDistance{distance}
+        , mVertexes{
+              centerPoint + Vector2D{0, static_cast<T>(mDistance)},
+              centerPoint + Vector2D{static_cast<T>(mDistance), 0},
+              centerPoint + Vector2D{0, -static_cast<T>(mDistance)},
+              centerPoint + Vector2D{-static_cast<T>(mDistance), 0}}
+    {
+    }
     /**
      * @brief      Gets the central point.
      *
      * @return     The central point.
      */
-    const Point2D& getCenter() const;
+    const Point2D<T>& getCenter() const { return mCenter; }
     /**
      * @brief      Gets the vertexes of the shape.
      *
      * @return     List of vertexes.
      */
-    std::vector<Point2D> getVertexes() const override;
+    std::vector<Point2D<T>> getVertexes() const override
+    {
+        return {std::begin(mVertexes), std::end(mVertexes)};
+    }
     /**
      * @brief      Gets the distance from the center to the perimeter.
      *
      * @return     The distance from the center to the perimeter.
      */
-    uint32_t getDistance() const;
+    uint64_t getDistance() const { return mDistance; }
     /**
      * @brief      Returns the next point going through the border of the shape,
      *             which is outside.
@@ -63,7 +82,53 @@ public:
      * @return     Next point of the closes point to the perimeter from the
      *             outside, or std::nullopt if a whole loop has been completed.
      */
-    std::optional<Point2D> stepAroundOutside();
+    std::optional<Point2D<T>> stepAroundOutside()
+    {
+        std::optional<Point2D<T>> nextPoint;
+        const auto& [centerCoordX, centerCoordY] = mCenter.getCoordinates();
+        if (!mLastPerimeterPosition) {
+            // First step around the perimeter, start on top
+            nextPoint = std::make_optional<Point2D>(
+                centerCoordX, (centerCoordY + static_cast<T>(mDistance) + 1));
+        } else {
+            const auto& [lastPositionCoordX, lastPositionCoordY]
+                = mLastPerimeterPosition->getCoordinates();
+            if ((lastPositionCoordY > centerCoordY)
+                && (lastPositionCoordX >= centerCoordX)) {
+                // upper right quadrant. go downwards
+                nextPoint = std::make_optional<Point2D>(
+                    lastPositionCoordX + 1, lastPositionCoordY - 1);
+            } else if (
+                (lastPositionCoordY <= centerCoordY)
+                && (lastPositionCoordX > centerCoordX)) {
+                // lower right quadrant. go downwards
+                nextPoint = std::make_optional<Point2D>(
+                    lastPositionCoordX - 1, lastPositionCoordY - 1);
+            } else if (
+                (lastPositionCoordY < centerCoordY)
+                && (lastPositionCoordX <= centerCoordX)) {
+                // lower left quadrant. go upwards
+                nextPoint = std::make_optional<Point2D>(
+                    lastPositionCoordX - 1, lastPositionCoordY + 1);
+            } else if (
+                (lastPositionCoordY >= centerCoordY)
+                && (lastPositionCoordX < centerCoordX)) {
+                if ((lastPositionCoordX + 1) == centerCoordX) {
+                    // circumference completed
+                    nextPoint = std::nullopt;
+                } else {
+                    // upper left quadrant. go upwards
+                    nextPoint = std::make_optional<Point2D>(
+                        lastPositionCoordX + 1, lastPositionCoordY + 1);
+                }
+            } else {
+                assert(false);
+                return std::nullopt;
+            }
+        }
+        mLastPerimeterPosition = nextPoint;
+        return nextPoint;
+    }
     /**
      * @brief      Determines whether the specified point is outside.
      *
@@ -74,7 +139,10 @@ public:
      *
      * @return     True if the specified point is outside, False otherwise.
      */
-    bool isOutside(const Point2D& point) const override;
+    bool isOutside(const Point2D<T>& point) const override
+    {
+        return Vector2D{mCenter, point}.distance() > mDistance;
+    }
     /**
      * @brief      Determines whether the specified point is inside.
      *
@@ -82,7 +150,10 @@ public:
      *
      * @return     True if the specified point is inside, False otherwise.
      */
-    bool isInside(const Point2D& point) const override;
+    bool isInside(const Point2D<T>& point) const override
+    {
+        return Vector2D{mCenter, point}.distance() <= mDistance;
+    }
     /**
      * @brief      Determines whether the specified point is in perimeter.
      *
@@ -90,32 +161,39 @@ public:
      *
      * @return     True if the specified point is in perimeter, False otherwise.
      */
-    bool isInPerimeter(const Point2D& point) const override;
+    bool isInPerimeter(const Point2D<T>& point) const override
+    {
+        return Vector2D{mCenter, point}.distance() == mDistance;
+    }
     /**
      * @brief      Calculates the area.
      *
      * @return     Area of the shape.
      */
-    uint32_t area() const override;
+    uint64_t area() const override
+    {
+        const uint64_t diagonalLength{(2U * mDistance) + 1U};
+        return ((diagonalLength * diagonalLength) / 2U) + 1U;
+    }
 
 private:
-    /** 
-     * Stores the central point of the shape. 
+    /**
+     * Stores the central point of the shape.
      */
-    Point2D mCenter;
+    Point2D<T> mCenter;
     /**
      * Stores the distance from the center to the perimeter.
      */
-    uint32_t mDistance;
+    uint64_t mDistance;
     /**
      * Stores the vertexes (points 2D) of this shape.
      */
-    std::array<Point2D, NumberOfVertexes> mVertexes;
+    std::array<Point2D<T>, NumberOfVertexes> mVertexes;
     /**
      * Stores the last position of the execution of @ref stepAroundOutside
      * method.
      */
-    std::optional<Point2D> mLastPerimeterPosition{};
+    std::optional<Point2D<T>> mLastPerimeterPosition{};
 };
 
 } // namespace utils::geometry2d
