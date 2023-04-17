@@ -95,7 +95,7 @@ public:
      */
     bool isZero() const;
     /**
-     * @brief      Determines if it is a horitzontal vector, i.e. its coordinate
+     * @brief      Determines if it is a horizontal vector, i.e. its coordinate
      *             Y is zero.
      *
      * @return     True if it is horizontal, False otherwise.

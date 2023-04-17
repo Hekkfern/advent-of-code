@@ -32,9 +32,11 @@ set(_SOURCES_UTILS_GEOMETRY2D
     src/geometry2d/SquareDiamond2D.cpp
     include/utils/geometry2d/SquareDiamond2D.hpp
     include/utils/geometry2d/IShape2D.hpp)
+set(_SOURCES_UTILS_GEOMETRY3D
+        include/utils/geometry3d/Point3D.hpp include/utils/geometry3d/Vector3D.hpp include/utils/geometry3d/Coord3D.hpp include/utils/geometry3d/Operations3D.hpp)
 set(_SOURCES_UTILS_GRAPH include/utils/graph/Graph.hpp
                          include/utils/graph/Vertex.hpp include/utils/graph/Algorithms.hpp)
-add_library(${_LIB_NAME} STATIC ${_SOURCES_UTILS} ${_SOURCES_UTILS_GEOMETRY2D}
+add_library(${_LIB_NAME} STATIC ${_SOURCES_UTILS} ${_SOURCES_UTILS_GEOMETRY2D} ${_SOURCES_UTILS_GEOMETRY3D}
                                 ${_SOURCES_UTILS_GRAPH})
 set_cpp_standard(${_LIB_NAME})
 set_compiler_flags(${_LIB_NAME})
@@ -50,6 +52,7 @@ target_link_libraries(${_LIB_NAME} PRIVATE range-v3)
 
 source_group("Source Files" FILES ${_SOURCES_UTILS})
 source_group("Source Files/geometry2d" FILES ${_SOURCES_UTILS_GEOMETRY2D})
+source_group("Source Files/geometry3d" FILES ${_SOURCES_UTILS_GEOMETRY3D})
 source_group("Source Files/graph" FILES ${_SOURCES_UTILS_GRAPH})
 
 if(GENERATE_PROJECTS STREQUAL "ALL" OR GENERATE_PROJECTS STREQUAL "UNITTESTS")

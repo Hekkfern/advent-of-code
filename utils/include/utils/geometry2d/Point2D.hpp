@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <functional>
 #include <memory>
+#include <ostream>
 #include <utility>
 
 namespace utils::geometry2d {
@@ -49,7 +50,7 @@ public:
      */
     void move(const Vector2D& vector2D);
     /**
-     * @brief      Calculates the point result of applying an arbtitrary
+     * @brief      Calculates the point result of applying an arbitrary
      * movement to the selected point.
      *
      * @param[in]  point2d   The origin point.
