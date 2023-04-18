@@ -7,29 +7,22 @@ find_package(Catch2 3 CONFIG REQUIRED)
 
 # aoc_utils_tests
 set(_EXEC_NAME "aoc_utils_tests")
-set(_TESTFILES
-        IntervalTests.cpp
-        MultiIntervalTests.cpp
-        StringTests.cpp)
+set(_TESTFILES IntervalTests.cpp MultiIntervalTests.cpp StringTests.cpp)
 set(_TESTFILES_GEOMETRY2D
-        geometry2d/BoundingBox2DTests.cpp
-        geometry2d/Direction2DTests.cpp
-        geometry2d/Point2DTests.cpp
-        geometry2d/Rectangle2DTests.cpp
-        geometry2d/SquareDiamond2DTests.cpp
-        geometry2d/Vector2DTests.cpp
-        geometry2d/Operations2DTests.cpp)
+    geometry2d/BoundingBox2DTests.cpp
+    geometry2d/Direction2DTests.cpp
+    geometry2d/Point2DTests.cpp
+    geometry2d/Rectangle2DTests.cpp
+    geometry2d/SquareDiamond2DTests.cpp
+    geometry2d/Vector2DTests.cpp
+    geometry2d/Operations2DTests.cpp)
 set(_TESTFILES_GEOMETRY3D
-        geometry3d/Point3DTests.cpp
-        geometry3d/Vector3DTests.cpp
-        geometry3d/Operations3DTests.cpp)
-set(_TESTFILES_GRAPH
-        graph/GraphTests.cpp
-        graph/VertexTests.cpp
-        graph/AlgorithmsTests.cpp)
-add_executable(
-        ${_EXEC_NAME}
-        ${_TESTFILES} ${_TESTFILES_GEOMETRY2D} ${_TESTFILES_GEOMETRY3D} ${_TESTFILES_GRAPH})
+    geometry3d/Point3DTests.cpp geometry3d/Vector3DTests.cpp
+    geometry3d/Operations3DTests.cpp)
+set(_TESTFILES_GRAPH graph/GraphTests.cpp graph/VertexTests.cpp
+                     graph/AlgorithmsTests.cpp)
+add_executable(${_EXEC_NAME} ${_TESTFILES} ${_TESTFILES_GEOMETRY2D}
+                             ${_TESTFILES_GEOMETRY3D} ${_TESTFILES_GRAPH})
 set_cpp_standard(${_EXEC_NAME})
 set_compiler_flags(${_EXEC_NAME})
 set_vectorization_flags(${_EXEC_NAME})
