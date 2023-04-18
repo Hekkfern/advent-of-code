@@ -43,11 +43,11 @@ public:
     /**
      * @brief      Constructs a new instance.
      *
-     * @param[in]  coords  Pair of coordinates (X,Y).
+     * @param[in]  coords  Coordinates.
      */
-    explicit Vector2D(const std::pair<T, T>& coords)
-        : mX{coords.first}
-        , mY{coords.second}
+    explicit Vector2D(const Coord2D<T> coords)
+        : mX{coords.mX}
+        , mY{coords.mY}
     {
     }
     /**
@@ -55,34 +55,36 @@ public:
      *
      * @return     The coordinates as a pair (X,Y).
      */
-    std::array<T, 2U> getCoordinates() const { return {mX, mY}; }
+    [[nodiscard]] std::array<T, 2U> getCoordinates() const { return {mX, mY}; }
     /**
      * @brief      Gets the coordinate X.
      *
      * @return     The coordinate X.
      */
-    T getX() const { return mX; }
+    [[nodiscard]] T getX() const { return mX; }
     /**
      * @brief      Gets the coordinate Y.
      *
      * @return     The coordinate Y.
      */
-    T getY() const { return mY; }
+    [[nodiscard]] T getY() const { return mY; }
     /**
      * @brief      Gets the absolute length of each coordinate.
      *
      * @return     Pair of absolute coordinates (X,Y).
      */
-    std::array<uint64_t, 2U> size() const
+    [[nodiscard]] std::array<uint64_t, 2U> size() const
     {
-        return {std::abs(mX), std::abs(mY)};
+        return {
+            static_cast<uint64_t>(std::abs(mX)),
+            static_cast<uint64_t>(std::abs(mY))};
     }
     /**
      * @brief      { function_description }
      *
      * @return     { description_of_the_return_value }
      */
-    uint64_t range() const
+    [[nodiscard]] uint64_t range() const
     {
         return static_cast<uint64_t>(std::max(std::abs(mX), std::abs(mY)));
     }
@@ -93,9 +95,10 @@ public:
      *
      * @see        https://en.wikipedia.org/wiki/Taxicab_geometry
      */
-    uint64_t distance() const
+    [[nodiscard]] uint64_t distance() const
     {
-        return static_cast<uint64_t>(std::abs(mX) + std::abs(mY));
+        return static_cast<uint64_t>(std::abs(mX))
+            + static_cast<uint64_t>(std::abs(mY));
     }
     /**
      * @brief      Modifies the vector so the lengths becomes one (positive or
@@ -113,7 +116,7 @@ public:
      *
      * @return     The normalized vector.
      */
-    Vector2D getNormalized() const
+    [[nodiscard]] Vector2D getNormalized() const
     {
         Vector2D vector2D(*this);
         vector2D.normalize();
@@ -125,21 +128,21 @@ public:
      *
      * @return     True if it is empty, False otherwise.
      */
-    bool isZero() const { return mX == 0 && mY == 0; }
+    [[nodiscard]] bool isZero() const { return mX == 0 && mY == 0; }
     /**
      * @brief      Determines if it is a horizontal vector, i.e. its coordinate
      *             Y is zero.
      *
      * @return     True if it is horizontal, False otherwise.
      */
-    bool isHorizontal() const { return mY == 0; }
+    [[nodiscard]] bool isHorizontal() const { return mY == 0; }
     /**
      * @brief      Determines if it is a vertical vector, i.e. its coordinate X
      *             is zero.
      *
      * @return     True if it is vertical, False otherwise.
      */
-    bool isVertical() const { return mX == 0; }
+    [[nodiscard]] bool isVertical() const { return mX == 0; }
     /**
      * @brief      Equality operator.
      *
@@ -147,7 +150,7 @@ public:
      *
      * @return     The result of the equality.
      */
-    bool operator==(const Vector2D& other) const
+    [[nodiscard]] bool operator==(const Vector2D& other) const
     {
         return (mX == other.mX) && (mY == other.mY);
     }
@@ -159,7 +162,7 @@ public:
      *
      * @return     The result of the addition.
      */
-    Vector2D operator+(const Vector2D& other) const
+    [[nodiscard]] Vector2D operator+(const Vector2D& other) const
     {
         return Vector2D{mX + other.mX, mY + other.mY};
     }
@@ -169,7 +172,7 @@ public:
      *
      * @return     The inverted vector.
      */
-    Vector2D operator-() const { return Vector2D{-mX, -mY}; }
+    [[nodiscard]] Vector2D operator-() const { return Vector2D{-mX, -mY}; }
     /**
      * @brief      Subtraction operator, which subtracts the coordinates of
      *             both objects.
@@ -178,7 +181,10 @@ public:
      *
      * @return     The result of the subtraction.
      */
-    Vector2D operator-(const Vector2D& other) const { return *this + (-other); }
+    [[nodiscard]] Vector2D operator-(const Vector2D& other) const
+    {
+        return *this + (-other);
+    }
     /**
      * @brief      Factory method to create a new Vector based on the selected
      *             coordinates.
@@ -220,6 +226,37 @@ private:
      */
     T mY{0};
 };
+
+/**
+ * @brief      Multiplication operator, which multiplies the coordinates of a
+ *             vector by a scalar value.
+ *
+ * @param[in]  vector2d  The vector to scale.
+ * @param[in]  value     The scalar value to scale by.
+ *
+ * @return     Scaled vector by a scalar.
+ */
+template <SignedIntegerType T>
+[[nodiscard]] Vector2D<T>
+operator*(const Vector2D<T>& vector2d, const int32_t value)
+{
+    return Vector2D<T>{value * vector2d.getX(), value * vector2d.getY()};
+}
+/**
+ * @brief      Multiplication operator, which multiplies the coordinates of a
+ *             vector by a scalar value.
+ *
+ * @param[in]  value     The scalar value to scale by.
+ * @param[in]  vector2d  The vector to scale.
+ *
+ * @return     Scaled vector by a scalar.
+ */
+template <SignedIntegerType T>
+[[nodiscard]] Vector2D<T>
+operator*(const int32_t value, const Vector2D<T>& vector2d)
+{
+    return vector2d * value;
+}
 
 } // namespace utils::geometry2d
 

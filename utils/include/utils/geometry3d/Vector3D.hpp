@@ -57,7 +57,10 @@ public:
      *
      * @return     The coordinates as a group (X,Y,Z).
      */
-    std::array<T, 3U> getCoordinates() const { return {mX, mY, mZ}; }
+    [[nodiscard]] std::array<T, 3U> getCoordinates() const
+    {
+        return {mX, mY, mZ};
+    }
     /**
      * @brief      Gets the coordinate X.
      *
@@ -81,16 +84,19 @@ public:
      *
      * @return     Group of absolute coordinates (X,Y,Z).
      */
-    std::array<uint64_t, 3U> size() const
+    [[nodiscard]] std::array<uint64_t, 3U> size() const
     {
-        return {std::abs(mX), std::abs(mY), std::abs(mZ)};
+        return {
+            static_cast<uint64_t>(std::abs(mX)),
+            static_cast<uint64_t>(std::abs(mY)),
+            static_cast<uint64_t>(std::abs(mZ))};
     }
     /**
      * @brief      { function_description }
      *
      * @return     { description_of_the_return_value }
      */
-    uint64_t range() const
+    [[nodiscard]] uint64_t range() const
     {
         return std::max(std::max(std::abs(mX), std::abs(mY)), std::abs(mZ));
     }
@@ -101,7 +107,7 @@ public:
      *
      * @see        https://en.wikipedia.org/wiki/Taxicab_geometry
      */
-    uint64_t distance() const
+    [[nodiscard]] uint64_t distance() const
     {
         return std::abs(mX) + std::abs(mY) + std::abs(mZ);
     }
@@ -123,7 +129,7 @@ public:
      *
      * @return     The normalized vector.
      */
-    Vector3D getNormalized() const
+    [[nodiscard]] Vector3D getNormalized() const
     {
         Vector3D vector3D(*this);
         vector3D.normalize();
@@ -135,14 +141,14 @@ public:
      *
      * @return     True if it is empty, False otherwise.
      */
-    bool isZero() const { return mX == 0 && mY == 0 && mZ == 0; }
+    [[nodiscard]] bool isZero() const { return mX == 0 && mY == 0 && mZ == 0; }
     /**
      * @brief      Determines if it is an orthogonal vector, i.e. all its
      * coordinates but one are zero.
      *
      * @return     True if it is orthogonal, False otherwise.
      */
-    bool isOrthogonal() const
+    [[nodiscard]] bool isOrthogonal() const
     {
         return (mX == 0 && mY == 0 && mZ != 0)
             || (mX == 0 && mY != 0 && mZ == 0)
@@ -232,7 +238,7 @@ private:
  * @brief      Multiplication operator, which multiplies the coordinates of a
  *             vector by a scalar value.
  *
- * @param[in]  Vector3D  The vector to scale.
+ * @param[in]  vector3d  The vector to scale.
  * @param[in]  value     The scalar value to scale by.
  *
  * @return     Scaled vector by a scalar.
@@ -250,7 +256,7 @@ Vector3D<T> operator*(const Vector3D<T>& vector3d, const int32_t value)
  *             vector by a scalar value.
  *
  * @param[in]  value     The scalar value to scale by.
- * @param[in]  Vector3D  The vector to scale.
+ * @param[in]  vector3d  The vector to scale.
  *
  * @return     Scaled vector by a scalar.
  */

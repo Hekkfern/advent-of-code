@@ -1,8 +1,11 @@
 #pragma once
 
 #include "../Concepts.hpp"
+#include "Coord2D.hpp"
+#include <array>
 #include <cstdint>
 #include <ostream>
+#include <vector>
 
 namespace utils::geometry2d {
 
@@ -30,11 +33,11 @@ public:
     /**
      * @brief      Constructs a new instance.
      *
-     * @param[in]  coords  Pair of coordinates (X,Y).
+     * @param[in]  coords  Coordinates.
      */
-    explicit Point2D(const std::pair<T, T>& coords)
-        : mX{coords.first}
-        , mY{coords.second}
+    explicit Point2D(const Coord2D<T> coords)
+        : mX{coords.mX}
+        , mY{coords.mY}
     {
     }
     /**
@@ -42,10 +45,7 @@ public:
      *
      * @return     The coordinates as a pair (X,Y).
      */
-    [[nodiscard]] std::pair<T, T> getCoordinates() const
-    {
-        return std::make_pair(mX, mY);
-    }
+    [[nodiscard]] std::array<T, 2U> getCoordinates() const { return {mX, mY}; }
     /**
      * @brief      Gets the coordinate X.
      *
@@ -58,6 +58,19 @@ public:
      * @return     The coordinate Y.
      */
     [[nodiscard]] T getY() const { return mY; }
+    /**
+     * @brief Gets a list of all the colliding points.
+     *
+     * @return List of colliding points.
+     */
+    [[nodiscard]] std::vector<Point2D<T>> getNeighbors() const noexcept
+    {
+        return std::vector<Point2D<T>>{
+            Point2D{mX, mY + 1},
+            Point2D{mX + 1, mY},
+            Point2D{mX, mY - 1},
+            Point2D{mX - 1, mY + 1}};
+    }
     /**
      * @brief      Equality operator.
      *

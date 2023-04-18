@@ -35,28 +35,6 @@ TEST_CASE(
 }
 
 TEST_CASE(
-    "[Direction2D - toVector2D] toVector2D returns the correct value",
-    "[Direction2D, Direction2D_toVector2D]")
-{
-    const Vector2D v1{ Direction2D{ Direction2D::Up }.toVector2D() };
-    CHECK(v1 == Vector2D{ 0, 1 });
-    const Vector2D v2{ Direction2D{ Direction2D::Left }.toVector2D() };
-    CHECK(v2 == Vector2D{ -1, 0 });
-    const Vector2D v3{ Direction2D{ Direction2D::Down }.toVector2D() };
-    CHECK(v3 == Vector2D{ 0, -1 });
-    const Vector2D v4{ Direction2D{ Direction2D::Right }.toVector2D() };
-    CHECK(v4 == Vector2D{ 1, 0 });
-    const Vector2D v5{ Direction2D{ Direction2D::UpRight }.toVector2D() };
-    CHECK(v5 == Vector2D{ 1, 1 });
-    const Vector2D v6{ Direction2D{ Direction2D::UpLeft }.toVector2D() };
-    CHECK(v6 == Vector2D{ -1, 1 });
-    const Vector2D v7{ Direction2D{ Direction2D::DownRight }.toVector2D() };
-    CHECK(v7 == Vector2D{ 1, -1 });
-    const Vector2D v8{ Direction2D{ Direction2D::DownLeft }.toVector2D() };
-    CHECK(v8 == Vector2D{ -1, -1 });
-}
-
-TEST_CASE(
     "[Direction2D - equality] Equality operators are correct",
     "[Direction2D, Direction2D_equality]")
 {

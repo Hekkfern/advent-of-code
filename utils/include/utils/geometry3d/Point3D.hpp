@@ -2,8 +2,10 @@
 
 #include "../Concepts.hpp"
 #include "Coord3D.hpp"
+#include <array>
 #include <cstdint>
 #include <ostream>
+#include <vector>
 
 namespace utils::geometry3d {
 
@@ -39,6 +41,15 @@ public:
     {
     }
     /**
+     * @brief      Gets the coordinates.
+     *
+     * @return     The coordinates as a group (X,Y,Z).
+     */
+    [[nodiscard]] std::array<T, 3U> getCoordinates() const
+    {
+        return {mX, mY, mZ};
+    }
+    /**
      * @brief      Gets the coordinate X.
      *
      * @return     The coordinate X.
@@ -56,6 +67,21 @@ public:
      * @return     The coordinate Z.
      */
     [[nodiscard]] T getZ() const { return mZ; }
+    /**
+     * @brief Gets a list of all the colliding points.
+     *
+     * @return List of colliding points.
+     */
+    [[nodiscard]] std::vector<Point3D<T>> getNeighbors() const noexcept
+    {
+        return std::vector<Point3D<T>>{
+            Point3D{mX, mY + 1, mZ},
+            Point3D{mX + 1, mY, mZ},
+            Point3D{mX, mY - 1, mZ},
+            Point3D{mX - 1, mY + 1, mZ},
+            Point3D{mX, mY, mZ + 1},
+            Point3D{mX, mY, mZ - 1}};
+    }
     /**
      * @brief      Equality operator.
      *
