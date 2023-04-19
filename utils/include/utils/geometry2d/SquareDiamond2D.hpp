@@ -3,6 +3,7 @@
 #include "IShape2D.hpp"
 #include "Point2D.hpp"
 #include "Vector2D.hpp"
+#include "Operations2D.hpp"
 #include <array>
 #include <cstdint>
 #include <optional>
@@ -39,14 +40,15 @@ public:
      * @param[in]  centerPoint  The center point.
      * @param[in]  distance     The distance from the center to the perimeter.
      */
-    explicit SquareDiamond2D(const Point2D<T>& centerPoint, uint64_t distance)
+    explicit SquareDiamond2D(
+        const Point2D<T>& centerPoint, const uint64_t distance)
         : mCenter{centerPoint}
         , mDistance{distance}
         , mVertexes{
-              centerPoint + Vector2D{0, static_cast<T>(mDistance)},
-              centerPoint + Vector2D{static_cast<T>(mDistance), 0},
-              centerPoint + Vector2D{0, -static_cast<T>(mDistance)},
-              centerPoint + Vector2D{-static_cast<T>(mDistance), 0}}
+              centerPoint + Vector2D{0, static_cast<T>(distance)},
+              centerPoint + Vector2D{static_cast<T>(distance), 0},
+              centerPoint + Vector2D{0, -static_cast<T>(distance)},
+              centerPoint + Vector2D{-static_cast<T>(distance), 0}}
     {
     }
     /**
@@ -54,13 +56,13 @@ public:
      *
      * @return     The central point.
      */
-    const Point2D<T>& getCenter() const { return mCenter; }
+    [[nodiscard]] const Point2D<T>& getCenter() const { return mCenter; }
     /**
      * @brief      Gets the vertexes of the shape.
      *
      * @return     List of vertexes.
      */
-    std::vector<Point2D<T>> getVertexes() const override
+    [[nodiscard]] std::vector<Point2D<T>> getVertexes() const override
     {
         return {std::begin(mVertexes), std::end(mVertexes)};
     }
@@ -69,7 +71,7 @@ public:
      *
      * @return     The distance from the center to the perimeter.
      */
-    uint64_t getDistance() const { return mDistance; }
+    [[nodiscard]] uint64_t getDistance() const { return mDistance; }
     /**
      * @brief      Returns the next point going through the border of the shape,
      *             which is outside.
@@ -82,13 +84,13 @@ public:
      * @return     Next point of the closes point to the perimeter from the
      *             outside, or std::nullopt if a whole loop has been completed.
      */
-    std::optional<Point2D<T>> stepAroundOutside()
+    [[nodiscard]] std::optional<Point2D<T>> stepAroundOutside()
     {
         std::optional<Point2D<T>> nextPoint;
         const auto& [centerCoordX, centerCoordY] = mCenter.getCoordinates();
         if (!mLastPerimeterPosition) {
             // First step around the perimeter, start on top
-            nextPoint = std::make_optional<Point2D>(
+            nextPoint = std::make_optional<Point2D<T>>(
                 centerCoordX, (centerCoordY + static_cast<T>(mDistance) + 1));
         } else {
             const auto& [lastPositionCoordX, lastPositionCoordY]
@@ -96,19 +98,19 @@ public:
             if ((lastPositionCoordY > centerCoordY)
                 && (lastPositionCoordX >= centerCoordX)) {
                 // upper right quadrant. go downwards
-                nextPoint = std::make_optional<Point2D>(
+                nextPoint = std::make_optional<Point2D<T>>(
                     lastPositionCoordX + 1, lastPositionCoordY - 1);
             } else if (
                 (lastPositionCoordY <= centerCoordY)
                 && (lastPositionCoordX > centerCoordX)) {
                 // lower right quadrant. go downwards
-                nextPoint = std::make_optional<Point2D>(
+                nextPoint = std::make_optional<Point2D<T>>(
                     lastPositionCoordX - 1, lastPositionCoordY - 1);
             } else if (
                 (lastPositionCoordY < centerCoordY)
                 && (lastPositionCoordX <= centerCoordX)) {
                 // lower left quadrant. go upwards
-                nextPoint = std::make_optional<Point2D>(
+                nextPoint = std::make_optional<Point2D<T>>(
                     lastPositionCoordX - 1, lastPositionCoordY + 1);
             } else if (
                 (lastPositionCoordY >= centerCoordY)
@@ -118,7 +120,7 @@ public:
                     nextPoint = std::nullopt;
                 } else {
                     // upper left quadrant. go upwards
-                    nextPoint = std::make_optional<Point2D>(
+                    nextPoint = std::make_optional<Point2D<T>>(
                         lastPositionCoordX + 1, lastPositionCoordY + 1);
                 }
             } else {
@@ -139,7 +141,7 @@ public:
      *
      * @return     True if the specified point is outside, False otherwise.
      */
-    bool isOutside(const Point2D<T>& point) const override
+    [[nodiscard]] bool isOutside(const Point2D<T>& point) const override
     {
         return Vector2D{mCenter, point}.distance() > mDistance;
     }
@@ -150,7 +152,7 @@ public:
      *
      * @return     True if the specified point is inside, False otherwise.
      */
-    bool isInside(const Point2D<T>& point) const override
+    [[nodiscard]] bool isInside(const Point2D<T>& point) const override
     {
         return Vector2D{mCenter, point}.distance() <= mDistance;
     }
@@ -161,7 +163,7 @@ public:
      *
      * @return     True if the specified point is in perimeter, False otherwise.
      */
-    bool isInPerimeter(const Point2D<T>& point) const override
+    [[nodiscard]] bool isInPerimeter(const Point2D<T>& point) const override
     {
         return Vector2D{mCenter, point}.distance() == mDistance;
     }
@@ -170,7 +172,7 @@ public:
      *
      * @return     Area of the shape.
      */
-    uint64_t area() const override
+    [[nodiscard]] uint64_t area() const override
     {
         const uint64_t diagonalLength{(2U * mDistance) + 1U};
         return ((diagonalLength * diagonalLength) / 2U) + 1U;

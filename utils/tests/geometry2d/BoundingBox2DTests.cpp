@@ -9,7 +9,7 @@ TEST_CASE(
     "correctly",
     "[BoundingBox2D, BoundingBox2D_constructor]")
 {
-    const BoundingBox2D boundingBox2D{};
+    const BoundingBox2D boundingBox2D;
     CHECK(boundingBox2D.getMaxX() == std::numeric_limits<int32_t>::min());
     CHECK(boundingBox2D.getMinX() == std::numeric_limits<int32_t>::max());
     CHECK(boundingBox2D.getMaxY() == std::numeric_limits<int32_t>::min());

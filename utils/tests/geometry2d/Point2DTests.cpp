@@ -28,8 +28,8 @@ TEST_CASE("[Point2D] Constructor", "[Point2D]")
         CHECK(point2D.getX() == 0);
         CHECK(point2D.getY() == 0);
         const auto coords{point2D.getCoordinates()};
-        CHECK(coords[0] == 0);
-        CHECK(coords[1] == 0);
+        CHECK(coords.mX == 0);
+        CHECK(coords.mY == 0);
     }
     SECTION("Parametrized constructor")
     {
@@ -39,8 +39,8 @@ TEST_CASE("[Point2D] Constructor", "[Point2D]")
             CHECK(point2D.getX() == 2);
             CHECK(point2D.getY() == 4);
             const auto coords{point2D.getCoordinates()};
-            CHECK(coords[0] == 2);
-            CHECK(coords[1] == 4);
+            CHECK(coords.mX == 2);
+            CHECK(coords.mY == 4);
         }
         SECTION("Positive and negatives values")
         {
@@ -48,8 +48,8 @@ TEST_CASE("[Point2D] Constructor", "[Point2D]")
             CHECK(point2D.getX() == -2);
             CHECK(point2D.getY() == 3);
             const auto coords{point2D.getCoordinates()};
-            CHECK(coords[0] == -2);
-            CHECK(coords[1] == 3);
+            CHECK(coords.mX == -2);
+            CHECK(coords.mY == 3);
         }
     }
     SECTION("Group constructor")
@@ -60,8 +60,8 @@ TEST_CASE("[Point2D] Constructor", "[Point2D]")
             CHECK(point2D.getX() == 2);
             CHECK(point2D.getY() == 4);
             const auto coords{point2D.getCoordinates()};
-            CHECK(coords[0] == 2);
-            CHECK(coords[1] == 4);
+            CHECK(coords.mX == 2);
+            CHECK(coords.mY == 4);
         }
         SECTION("Positive and negatives values")
         {
@@ -69,8 +69,8 @@ TEST_CASE("[Point2D] Constructor", "[Point2D]")
             CHECK(point2D.getX() == -2);
             CHECK(point2D.getY() == 3);
             const auto coords{point2D.getCoordinates()};
-            CHECK(coords[0] == -2);
-            CHECK(coords[1] == 3);
+            CHECK(coords.mX == -2);
+            CHECK(coords.mY == 3);
         }
     }
 }

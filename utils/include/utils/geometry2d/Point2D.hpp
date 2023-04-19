@@ -45,7 +45,7 @@ public:
      *
      * @return     The coordinates as a pair (X,Y).
      */
-    [[nodiscard]] std::array<T, 2U> getCoordinates() const { return {mX, mY}; }
+    [[nodiscard]] Coord2D<T> getCoordinates() const { return {mX, mY}; }
     /**
      * @brief      Gets the coordinate X.
      *
@@ -80,7 +80,7 @@ public:
      */
     [[nodiscard]] bool operator==(const Point2D& other) const
     {
-        return (mX == other.mX) && (mY == other.mY);
+        return mX == other.mX && mY == other.mY;
     }
     /**
      * @brief      Addition operator, which sums the coordinates of both

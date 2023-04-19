@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IShape2D.hpp"
+#include "Operations2D.hpp"
 #include "Point2D.hpp"
 #include "Vector2D.hpp"
 #include <array>
@@ -66,13 +67,16 @@ public:
      * @return     Pair of values, representing the width and height,
      *             respectively.
      */
-    std::array<uint64_t, 2U> size() const { return {mWidth, mHeight}; }
+    [[nodiscard]] std::array<uint64_t, 2U> size() const
+    {
+        return {mWidth, mHeight};
+    }
     /**
      * @brief      Calculates the area.
      *
      * @return     Area of the shape.
      */
-    uint64_t area() const override
+    [[nodiscard]] uint64_t area() const override
     {
         return static_cast<uint64_t>(mWidth) * static_cast<uint64_t>(mHeight);
     }
@@ -86,7 +90,7 @@ public:
      *
      * @return     True if the specified point is outside, False otherwise.
      */
-    bool isOutside(const Point2D<T>& point) const override
+    [[nodiscard]] bool isOutside(const Point2D<T>& point) const override
     {
         return !isInside(point);
     }
@@ -97,14 +101,14 @@ public:
      *
      * @return     True if the specified point is inside, False otherwise.
      */
-    bool isInside(const Point2D<T>& point) const override
+    [[nodiscard]] bool isInside(const Point2D<T>& point) const override
     {
         const auto& bottomLeft{getBottomLeftPoint()};
         const auto& topRight{getTopRightPoint()};
-        return (bottomLeft.getX() <= point.getX())
-            && (point.getX() <= topRight.getX())
-            && (bottomLeft.getY() <= point.getY())
-            && (point.getY() <= topRight.getY());
+        return bottomLeft.getX() <= point.getX()
+            && point.getX() <= topRight.getX()
+            && bottomLeft.getY() <= point.getY()
+            && point.getY() <= topRight.getY();
     }
     /**
      * @brief      Determines whether the specified point is in perimeter.
@@ -113,7 +117,7 @@ public:
      *
      * @return     True if the specified point is in perimeter, False otherwise.
      */
-    bool isInPerimeter(const Point2D<T>& point) const override
+    [[nodiscard]] bool isInPerimeter(const Point2D<T>& point) const override
     {
         const Vector2D v1{getBottomLeftPoint(), point};
         const Vector2D v2{getTopRightPoint(), point};
@@ -125,7 +129,7 @@ public:
      *
      * @return     List of vertexes.
      */
-    std::vector<Point2D<T>> getVertexes() const override
+    [[nodiscard]] std::vector<Point2D<T>> getVertexes() const override
     {
         return {std::begin(mVertexes), std::end(mVertexes)};
     }
@@ -134,13 +138,13 @@ public:
      *
      * @return     The width.
      */
-    uint32_t getWidth() const { return mWidth; }
+    [[nodiscard]] uint32_t getWidth() const { return mWidth; }
     /**
      * @brief      Gets the height.
      *
      * @return     The height.
      */
-    uint32_t getHeight() const { return mHeight; }
+    [[nodiscard]] uint32_t getHeight() const { return mHeight; }
 
 private:
     /**
@@ -148,13 +152,19 @@ private:
      *
      * @return     The bottom left point.
      */
-    const Point2D<T>& getBottomLeftPoint() const { return mVertexes.at(0); }
+    [[nodiscard]] const Point2D<T>& getBottomLeftPoint() const
+    {
+        return mVertexes.at(0);
+    }
     /**
      * @brief      Calculates the top right point of this shape.
      *
      * @return     The top right point.
      */
-    const Point2D<T>& getTopRightPoint() const { return mVertexes.at(2); }
+    [[nodiscard]] const Point2D<T>& getTopRightPoint() const
+    {
+        return mVertexes.at(2);
+    }
 
     /**
      * Stores the vertexes (points 2D) of this shape.

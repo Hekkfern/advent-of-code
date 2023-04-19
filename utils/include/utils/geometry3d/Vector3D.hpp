@@ -57,10 +57,7 @@ public:
      *
      * @return     The coordinates as a group (X,Y,Z).
      */
-    [[nodiscard]] std::array<T, 3U> getCoordinates() const
-    {
-        return {mX, mY, mZ};
-    }
+    [[nodiscard]] Coord3D<T> getCoordinates() const { return {mX, mY, mZ}; }
     /**
      * @brief      Gets the coordinate X.
      *
@@ -163,7 +160,7 @@ public:
      */
     [[nodiscard]] bool operator==(const Vector3D& other) const
     {
-        return (mX == other.mX) && (mY == other.mY) && (mZ == other.mZ);
+        return mX == other.mX && mY == other.mY && mZ == other.mZ;
     }
     /**
      * @brief      Addition operator, which sums the coordinates of both
@@ -192,7 +189,7 @@ public:
      */
     [[nodiscard]] Vector3D operator-(const Vector3D& other) const
     {
-        return *this + (-other);
+        return *this + -other;
     }
     /**
      * @brief      Factory method to create a new Vector based on the selected

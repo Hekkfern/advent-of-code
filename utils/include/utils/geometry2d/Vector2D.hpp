@@ -55,7 +55,7 @@ public:
      *
      * @return     The coordinates as a pair (X,Y).
      */
-    [[nodiscard]] std::array<T, 2U> getCoordinates() const { return {mX, mY}; }
+    [[nodiscard]] Coord2D<T> getCoordinates() const { return {mX, mY}; }
     /**
      * @brief      Gets the coordinate X.
      *

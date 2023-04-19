@@ -45,7 +45,7 @@ public:
      *
      * @return     The coordinates as a group (X,Y,Z).
      */
-    [[nodiscard]] std::array<T, 3U> getCoordinates() const
+    [[nodiscard]] Coord3D<T> getCoordinates() const
     {
         return {mX, mY, mZ};
     }
