@@ -119,7 +119,7 @@ public:
         // saturate Y
         mY = std::clamp(mY, -1, 1);
         // saturate Z
-        mY = std::clamp(mZ, -1, 1);
+        mZ = std::clamp(mZ, -1, 1);
     }
     /**
      * @brief      Creates a normalized vector from this one.

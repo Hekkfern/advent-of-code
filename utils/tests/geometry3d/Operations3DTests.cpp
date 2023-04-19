@@ -28,5 +28,5 @@ TEST_CASE("[Operations3D] Vector3D + Point3D", "[utils][Operations3D]")
     const auto newPoint3D{vector3D + point3D};
     CHECK(newPoint3D.getX() == 6);
     CHECK(newPoint3D.getY() == 4);
-    CHECK(newPoint3D.getY() == 5);
+    CHECK(newPoint3D.getZ() == 5);
 }

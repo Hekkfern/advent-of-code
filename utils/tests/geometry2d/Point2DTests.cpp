@@ -75,6 +75,13 @@ TEST_CASE("[Point2D] Constructor", "[Point2D]")
     }
 }
 
+TEST_CASE("[Point2D] getNeighbors() method", "[utils][Point2D]")
+{
+    const Point2D<> point2D{Coord2D<>{2, 4}};
+    const auto neighbors{point2D.getNeighbors()};
+    CHECK(neighbors.size() == 4U);
+}
+
 TEST_CASE("[Point2D] Equality operator", "[utils][Point2D]")
 {
     SECTION("Different")
