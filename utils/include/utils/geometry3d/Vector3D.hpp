@@ -95,7 +95,11 @@ public:
      */
     [[nodiscard]] uint64_t range() const
     {
-        return std::max(std::max(std::abs(mX), std::abs(mY)), std::abs(mZ));
+        return std::max(
+            std::max(
+                static_cast<uint64_t>(std::abs(mX)),
+                static_cast<uint64_t>(std::abs(mY))),
+            static_cast<uint64_t>(std::abs(mZ)));
     }
     /**
      * @brief      Calculates the Manhattan Distance.
@@ -106,7 +110,9 @@ public:
      */
     [[nodiscard]] uint64_t distance() const
     {
-        return std::abs(mX) + std::abs(mY) + std::abs(mZ);
+        return static_cast<uint64_t>(std::abs(mX))
+            + static_cast<uint64_t>(std::abs(mY))
+            + static_cast<uint64_t>(std::abs(mZ));
     }
     /**
      * @brief      Modifies the vector so the lengths becomes one (positive or
