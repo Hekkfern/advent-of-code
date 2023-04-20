@@ -2,11 +2,12 @@
 
 #include <range/v3/all.hpp>
 #include <utils/geometry2d/Direction2D.hpp>
+#include <utils/geometry2d/Operations2D.hpp>
 
 namespace aoc_2022_12 {
 
 PositionMap::PositionMap(
-    std::unordered_map<Point2D, Position>&& positions,
+    std::unordered_map<Point2D<int32_t>, Position>&& positions,
     size_t width,
     size_t height)
     : mPositions{ std::move(positions) }
@@ -18,7 +19,7 @@ PositionMap::PositionMap(
 }
 
 PositionMap::PositionMap(
-    std::unordered_map<Point2D, Position>&& positions,
+    std::unordered_map<Point2D<int32_t>, Position>&& positions,
     size_t width,
     size_t height,
     const Position& origin,
@@ -42,7 +43,7 @@ bool PositionMap::canMove(
         return false;
     }
     // check height gap
-    const Point2D newPoint{ position.getPoint() + direction };
+    const Point2D<int32_t> newPoint{position.getPoint() + direction};
     const auto nextPosition{ getPositionFromCoordinates(newPoint) };
     if (climbingDirection == ClimbingDirection::Down) {
         // valid: higher, equal or 1 unit lower
@@ -66,7 +67,7 @@ std::pair<std::size_t, std::size_t> PositionMap::size() const
 }
 
 const Position& PositionMap::getPositionFromCoordinates(
-    const Point2D& coords) const
+    const Point2D<int32_t>& coords) const
 {
     return mPositions.at(coords);
 }

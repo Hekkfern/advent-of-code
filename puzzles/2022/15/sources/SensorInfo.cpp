@@ -7,32 +7,38 @@ using namespace utils::geometry2d;
 namespace aoc_2022_15 {
 
 SensorInfo::SensorInfo(
-    utils::geometry2d::Point2D&& sensorPosition,
-    utils::geometry2d::Point2D&& beaconPosition)
-    : mSensorPosition{ std::move(sensorPosition) }
-    , mBeaconPosition{ std::move(beaconPosition) }
-    , mDistance{ Vector2D{ sensorPosition, beaconPosition }.distance() }
+    utils::geometry2d::Point2D<int32_t>&& sensorPosition,
+    utils::geometry2d::Point2D<int32_t>&& beaconPosition)
+    : mSensorPosition{std::move(sensorPosition)}
+    , mBeaconPosition{std::move(beaconPosition)}
+    , mDistance{Vector2D<int32_t>{sensorPosition, beaconPosition}.distance()}
     , mSquareDiamond2D(sensorPosition, mDistance)
 {
 }
 
-uint32_t SensorInfo::getDistance() const { return mDistance; }
+uint64_t SensorInfo::getDistance() const { return mDistance; }
 
-const Point2D& SensorInfo::getSensorPosition() const { return mSensorPosition; }
+const Point2D<int32_t>& SensorInfo::getSensorPosition() const
+{
+    return mSensorPosition;
+}
 
-const Point2D& SensorInfo::getBeaconPosition() const { return mBeaconPosition; }
+const Point2D<int32_t>& SensorInfo::getBeaconPosition() const
+{
+    return mBeaconPosition;
+}
 
-std::optional<Point2D> SensorInfo::stepAroundOutside()
+std::optional<Point2D<int32_t>> SensorInfo::stepAroundOutside()
 {
     return mSquareDiamond2D.stepAroundOutside();
 }
 
-bool SensorInfo::isCovered(const Point2D& testPoint) const
+bool SensorInfo::isCovered(const Point2D<int32_t>& testPoint) const
 {
     return mSquareDiamond2D.isInside(testPoint);
 }
 
-bool SensorInfo::hasBeaconAt(const Point2D& testPoint) const
+bool SensorInfo::hasBeaconAt(const Point2D<int32_t>& testPoint) const
 {
     return mBeaconPosition == testPoint;
 }

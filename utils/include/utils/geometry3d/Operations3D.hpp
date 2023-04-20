@@ -58,5 +58,21 @@ operator+(const Vector3D<T>& movement, const Point3D<T>& origin)
 {
     return Operations3D<T>::move(origin, movement);
 }
+/**
+ * @brief      Addition assignment operator to move a @ref Point3D according to
+ *             a @ref Vector3D.
+ *
+ * @param[in]  point     Original position.
+ * @param[in]  movement  Vector of movement.
+ *
+ * @tparam     T         Type of the coordinates.
+ *
+ * @return     The result of the movement.
+ */
+template <SignedIntegerType T = int32_t>
+void operator+=(Point3D<T>& point, const Vector3D<T>& movement)
+{
+    point = point + movement;
+}
 
 } // namespace utils::geometry3d

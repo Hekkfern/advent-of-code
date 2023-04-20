@@ -30,3 +30,13 @@ TEST_CASE("[Operations3D] Vector3D + Point3D", "[utils][Operations3D]")
     CHECK(newPoint3D.getY() == 4);
     CHECK(newPoint3D.getZ() == 5);
 }
+
+TEST_CASE("[Operations3D] Point3D += Vector3D", "[utils][Operations3D]")
+{
+    Point3D point3D{4, 1, 1};
+    const Vector3D vector3D{2, 3, 1};
+    point3D += vector3D;
+    CHECK(point3D.getX() == 6);
+    CHECK(point3D.getY() == 4);
+    CHECK(point3D.getZ() == 2);
+}

@@ -35,22 +35,23 @@ PositionType parsePositionType(const char c)
 
 PositionMap parseInput(const std::string& filename)
 {
-    std::unordered_map<Point2D, Position> map;
-    std::ifstream fileStream{ filename };
+    std::unordered_map<Point2D<int32_t>, Position> map;
+    std::ifstream fileStream{filename};
     std::string line;
-    uint32_t rowCounter{ 0U };
-    uint32_t colCounter{ 0U };
-    Position* origin{ nullptr };
-    Position* destination{ nullptr };
+    uint32_t rowCounter{0U};
+    uint32_t colCounter{0U};
+    Position* origin{nullptr};
+    Position* destination{nullptr};
     while (std::getline(fileStream, line)) {
         colCounter = 0U;
         for (const auto c : line) {
-            Point2D point2D{ static_cast<int32_t>(colCounter),
-                             static_cast<int32_t>(rowCounter) };
-            auto type{ parsePositionType(c) };
+            Point2D point2D{
+                static_cast<int32_t>(colCounter),
+                static_cast<int32_t>(rowCounter)};
+            auto type{parsePositionType(c)};
             // insert
             auto [insertedItem, isInserted] = map.emplace(
-                point2D, Position{ std::move(point2D), parseHeight(c), type });
+                point2D, Position{std::move(point2D), parseHeight(c), type});
             // detect origin or destination
             switch (type) {
             case PositionType::Origin:
@@ -69,8 +70,7 @@ PositionMap parseInput(const std::string& filename)
     }
 
     return PositionMap{
-        std::move(map), colCounter, rowCounter, *origin, *destination
-    };
+        std::move(map), colCounter, rowCounter, *origin, *destination};
 }
 
 uint32_t climbHill(PositionMap& positionMap)
@@ -81,9 +81,9 @@ uint32_t climbHill(PositionMap& positionMap)
     positionMap.setCost(positionMap.getOrigin(), 0U);
 
     while (!queue.empty()) {
-        auto enqueuedItem{ queue.front() };
-        const auto& enqueuedPosition{ enqueuedItem.first };
-        const auto enqueuedPositionCost{ enqueuedItem.second };
+        auto enqueuedItem{queue.front()};
+        const auto& enqueuedPosition{enqueuedItem.first};
+        const auto enqueuedPositionCost{enqueuedItem.second};
         queue.pop();
 
         // Do not explore past end
@@ -96,17 +96,16 @@ uint32_t climbHill(PositionMap& positionMap)
             Direction2D::Up,
             Direction2D::Right,
             Direction2D::Down,
-            Direction2D::Left
-        };
+            Direction2D::Left};
         for (auto dir : directionsToCheck) {
             if (!positionMap.canMove(
                     enqueuedPosition, dir, ClimbingDirection::Up)) {
                 continue;
             }
-            auto nextPosition{ positionMap.move(enqueuedPosition, dir) };
+            auto nextPosition{positionMap.move(enqueuedPosition, dir)};
             // Check if the path due to this movement is not longer than the
             // shortest known path.
-            const auto nextCost{ enqueuedPositionCost + 1U };
+            const auto nextCost{enqueuedPositionCost + 1U};
             if ((enqueuedPositionCost + 1U)
                 >= positionMap.getCost(nextPosition)) {
                 continue;
@@ -122,16 +121,16 @@ uint32_t climbHill(PositionMap& positionMap)
 
 uint32_t descendHill(PositionMap& positionMap)
 {
-    uint32_t bestCost{ UINT32_MAX };
+    uint32_t bestCost{UINT32_MAX};
     // BFS initialization with the starting point
     std::queue<std::pair<Position, uint32_t>> queue;
     queue.emplace(positionMap.getDestination(), 0U);
     positionMap.setCost(positionMap.getDestination(), 0U);
 
     while (!queue.empty()) {
-        auto enqueuedItem{ queue.front() };
-        const auto& enqueuedPosition{ enqueuedItem.first };
-        const auto enqueuedPositionCost{ enqueuedItem.second };
+        auto enqueuedItem{queue.front()};
+        const auto& enqueuedPosition{enqueuedItem.first};
+        const auto enqueuedPositionCost{enqueuedItem.second};
         queue.pop();
 
         // Update best cost
@@ -146,17 +145,16 @@ uint32_t descendHill(PositionMap& positionMap)
             Direction2D::Up,
             Direction2D::Right,
             Direction2D::Down,
-            Direction2D::Left
-        };
+            Direction2D::Left};
         for (auto dir : directionsToCheck) {
             if (!positionMap.canMove(
                     enqueuedPosition, dir, ClimbingDirection::Down)) {
                 continue;
             }
-            auto nextPosition{ positionMap.move(enqueuedPosition, dir) };
+            auto nextPosition{positionMap.move(enqueuedPosition, dir)};
             // Check if the path due to this movement is not longer than the
             // shortest known path.
-            const auto nextCost{ enqueuedPositionCost + 1U };
+            const auto nextCost{enqueuedPositionCost + 1U};
             if ((enqueuedPositionCost + 1U)
                 >= positionMap.getCost(nextPosition)) {
                 continue;
@@ -176,13 +174,13 @@ uint32_t descendHill(PositionMap& positionMap)
 
 std::string solvePart1(const std::string& filename)
 {
-    auto positionMap{ parseInput(filename) };
+    auto positionMap{parseInput(filename)};
     return std::to_string(climbHill(positionMap));
 }
 
 std::string solvePart2(const std::string& filename)
 {
-    auto positionMap{ parseInput(filename) };
+    auto positionMap{parseInput(filename)};
     return std::to_string(descendHill(positionMap));
 }
 

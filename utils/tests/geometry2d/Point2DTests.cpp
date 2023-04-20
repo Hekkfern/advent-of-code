@@ -75,11 +75,42 @@ TEST_CASE("[Point2D] Constructor", "[Point2D]")
     }
 }
 
+TEST_CASE("[Point2D] Constructor and containers", "[Point2D]")
+{
+    SECTION("Array")
+    {
+        const std::array<Point2D<int32_t>, 2U> points;
+        for (const auto& p : points) {
+            REQUIRE(p.getX() == 0);
+            REQUIRE(p.getY() == 0);
+        }
+    }
+}
+
 TEST_CASE("[Point2D] getNeighbors() method", "[utils][Point2D]")
 {
     const Point2D<> point2D{Coord2D<>{2, 4}};
     const auto neighbors{point2D.getNeighbors()};
     CHECK(neighbors.size() == 4U);
+}
+
+TEST_CASE("[Point2D] Setter methods", "[utils][Point2D]")
+{
+    Point2D<> point2D{2, 4};
+    REQUIRE(point2D.getX() == 2);
+    REQUIRE(point2D.getY() == 4);
+    SECTION("Set X")
+    {
+        point2D.setX(3);
+        REQUIRE(point2D.getX() == 3);
+        REQUIRE(point2D.getY() == 4);
+    }
+    SECTION("Set Y")
+    {
+        point2D.setY(5);
+        REQUIRE(point2D.getX() == 2);
+        REQUIRE(point2D.getY() == 5);
+    }
 }
 
 TEST_CASE("[Point2D] Equality operator", "[utils][Point2D]")

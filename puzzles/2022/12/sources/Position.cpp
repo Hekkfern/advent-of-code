@@ -2,10 +2,11 @@
 
 namespace aoc_2022_12 {
 
-Position::Position(Point2D&& pos, const Height height, const PositionType type)
-    : mPoint2D{ std::move(pos) }
-    , mType{ type }
-    , mHeight{ height }
+Position::Position(
+    Point2D<int32_t>&& pos, const Height height, const PositionType type)
+    : mPoint2D{std::move(pos)}
+    , mType{type}
+    , mHeight{height}
 {
 }
 
@@ -26,6 +27,6 @@ bool Position::operator==(const Position& other) const
         && mType == other.mType;
 }
 
-const Point2D& Position::getPoint() const { return mPoint2D; }
+const Point2D<int32_t>& Position::getPoint() const { return mPoint2D; }
 
 } // namespace aoc_2022_12

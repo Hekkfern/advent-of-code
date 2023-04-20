@@ -15,7 +15,7 @@ using namespace utils::geometry2d;
 
 // ---------- Private Methods ----------
 
-Direction2D convertDirectionCharacter(char directionChar)
+Direction2D convertDirectionCharacter(const char directionChar)
 {
     Direction2D result = Direction2D::Up;
     switch (directionChar) {
@@ -40,22 +40,14 @@ Direction2D convertDirectionCharacter(char directionChar)
 
 RopeInstruction parseInputLine(const std::string& line)
 {
-    std::stringstream lineStream{ line };
+    std::stringstream lineStream{line};
     char directionChar = 0;
     std::string numberPositions;
     lineStream >> directionChar >> numberPositions;
-    return RopeInstruction{ convertDirectionCharacter(directionChar),
-                            utils::string::toNumber<uint32_t>(
-                                numberPositions) };
+    return RopeInstruction{
+        convertDirectionCharacter(directionChar),
+        utils::string::toNumber<uint32_t>(numberPositions)};
 }
-
-struct Position2DHash {
-    size_t operator()(const Point2D& position) const
-    {
-        return std::hash<int32_t>{}(position.getX())
-            ^ std::hash<int32_t>{}(position.getY());
-    }
-};
 
 // ---------- End of Private Methods ----------
 
@@ -63,16 +55,16 @@ struct Position2DHash {
 
 std::string solvePart1(const std::string& filename)
 {
-    constexpr uint32_t RopeLength{ 2U };
+    constexpr uint32_t RopeLength{2U};
 
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
     std::string line;
     Rope<RopeLength> rope;
-    std::unordered_set<Point2D, Position2DHash> visitedTailPositions;
+    std::unordered_set<Point2D<int32_t>> visitedTailPositions;
 
     while (std::getline(fileStream, line)) {
-        const auto instruction = parseInputLine(line);
-        for (uint32_t i = 0U; i < instruction.mQuantity; ++i) {
+        const RopeInstruction instruction{parseInputLine(line)};
+        for (uint32_t i{0U}; i < instruction.mQuantity; ++i) {
             rope.moveHead(instruction.mDirection);
             visitedTailPositions.emplace(rope.getTailPosition());
         }
@@ -83,16 +75,16 @@ std::string solvePart1(const std::string& filename)
 
 std::string solvePart2(const std::string& filename)
 {
-    constexpr uint32_t RopeLength{ 10U };
+    constexpr uint32_t RopeLength{10U};
 
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
     std::string line;
     Rope<RopeLength> rope;
-    std::unordered_set<Point2D, Position2DHash> visitedTailPositions;
+    std::unordered_set<Point2D<int32_t>> visitedTailPositions;
 
     while (std::getline(fileStream, line)) {
-        const auto instruction = parseInputLine(line);
-        for (uint32_t i = 0U; i < instruction.mQuantity; ++i) {
+        const RopeInstruction instruction{parseInputLine(line)};
+        for (uint32_t i{0U}; i < instruction.mQuantity; ++i) {
             rope.moveHead(instruction.mDirection);
             visitedTailPositions.emplace(rope.getTailPosition());
         }

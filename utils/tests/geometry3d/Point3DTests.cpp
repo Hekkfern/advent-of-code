@@ -94,6 +94,35 @@ TEST_CASE("[Point3D] getNeighbors() method", "[utils][Point3D]")
     CHECK(neighbors.size() == 6U);
 }
 
+TEST_CASE("[Point3D] Setter methods", "[utils][Point3D]")
+{
+    Point3D<> point3D{2, 4, 1};
+    REQUIRE(point3D.getX() == 2);
+    REQUIRE(point3D.getY() == 4);
+    REQUIRE(point3D.getZ() == 1);
+    SECTION("Set X")
+    {
+        point3D.setX(3);
+        REQUIRE(point3D.getX() == 3);
+        REQUIRE(point3D.getY() == 4);
+        REQUIRE(point3D.getZ() == 1);
+    }
+    SECTION("Set Y")
+    {
+        point3D.setY(5);
+        REQUIRE(point3D.getX() == 2);
+        REQUIRE(point3D.getY() == 5);
+        REQUIRE(point3D.getZ() == 1);
+    }
+    SECTION("Set Z")
+    {
+        point3D.setZ(7);
+        REQUIRE(point3D.getX() == 2);
+        REQUIRE(point3D.getY() == 4);
+        REQUIRE(point3D.getZ() == 7);
+    }
+}
+
 TEST_CASE("[Point3D] Equality operator", "[utils][Point3D]")
 {
     SECTION("Different")

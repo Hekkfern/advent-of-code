@@ -2,6 +2,7 @@
 
 #include "../Concepts.hpp"
 #include "Point2D.hpp"
+#include <algorithm>
 #include <array>
 #include <cstdint>
 

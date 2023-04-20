@@ -11,10 +11,10 @@ template <SignedIntegerType T = int32_t>
 class Operations2D {
 public:
     /**
-     * @brief      Calculates the point result of applying an arbitrary
-     * movement to the selected point.
+     * @brief      Calculates the point result of applying an arbitrary movement
+     *             to the selected point.
      *
-     * @param[in]  origin      The origin point.
+     * @param[in]  origin    The origin point.
      * @param[in]  movement  The vector of the movement.
      *
      * @return     Resulting position of the movement.
@@ -29,7 +29,7 @@ public:
      * @brief      Calculates the point result of applying an unitary movement
      *             towards the given direction to the selected point.
      *
-     * @param[in]  origin      The origin point.
+     * @param[in]  origin     The origin point.
      * @param[in]  direction  The direction of the movement.
      *
      * @return     Resulting position of the movement.
@@ -41,6 +41,8 @@ public:
     }
     /**
      * @brief      Converts the direction to an unitary @ref Vector2D object.
+     *
+     * @param[in]  direction  The direction to be converted.
      *
      * @return     Vector2D representation of the direction.
      */
@@ -84,10 +86,12 @@ public:
 
 /**
  * @brief      Addition operator to move a @ref Point2D according to a @ref
- * Vector2D.
+ *             Vector2D.
  *
- * @param[in]  origin   Original position.
+ * @param[in]  origin    Original position.
  * @param[in]  movement  Vector of movement.
+ *
+ * @tparam     T         Type of the coordinates.
  *
  * @return     The result of the movement.
  */
@@ -99,10 +103,12 @@ operator+(const Point2D<T>& origin, const Vector2D<T>& movement)
 }
 /**
  * @brief      Addition operator to move a @ref Point2D according to a @ref
- * Vector2D.
+ *             Vector2D.
  *
  * @param[in]  movement  Vector of movement.
- * @param[in]  origin   Original position.
+ * @param[in]  origin    Original position.
+ *
+ * @tparam     T         Type of the coordinates.
  *
  * @return     The result of the movement.
  */
@@ -113,11 +119,29 @@ operator+(const Vector2D<T>& movement, const Point2D<T>& origin)
     return Operations2D<T>::move(origin, movement);
 }
 /**
+ * @brief      Addition assignment operator to move a @ref Point2D according to
+ *             a @ref Vector2D.
+ *
+ * @param[in]  point     Original position.
+ * @param[in]  movement  Vector of movement.
+ *
+ * @tparam     T         Type of the coordinates.
+ *
+ * @return     The result of the movement.
+ */
+template <SignedIntegerType T = int32_t>
+void operator+=(Point2D<T>& point, const Vector2D<T>& movement)
+{
+    point = point + movement;
+}
+/**
  * @brief      Addition operator to move a @ref Point2D according to a @ref
  *             Direction2D.
  *
- * @param[in]  origin      Original position.
+ * @param[in]  origin     Original position.
  * @param[in]  direction  Direction of movement.
+ *
+ * @tparam     T          Type of the coordinates.
  *
  * @return     The result of the movement.
  */
@@ -132,7 +156,9 @@ operator+(const Point2D<T>& origin, const Direction2D& direction)
  *             Direction2D.
  *
  * @param[in]  direction  Direction of movement.
- * @param[in]  origin      Original position.
+ * @param[in]  origin     Original position.
+ *
+ * @tparam     T          Type of the coordinates.
  *
  * @return     The result of the movement.
  */
@@ -141,6 +167,20 @@ template <SignedIntegerType T = int32_t>
 operator+(const Direction2D& direction, const Point2D<T>& origin)
 {
     return Operations2D<T>::move(origin, direction);
+}
+/**
+ * @brief         Addition assignment operator to move a @ref Point2D according
+ *                to a @ref Direction2D.
+ *
+ * @param[in,out] point      Position to move.
+ * @param[in]     direction  Direction of movement.
+ *
+ * @tparam        T          Type of the coordinates.
+ */
+template <SignedIntegerType T = int32_t>
+void operator+=(Point2D<T>& point, const Direction2D& direction)
+{
+    point = point + direction;
 }
 
 } // namespace utils::geometry2d

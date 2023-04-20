@@ -1,9 +1,9 @@
 #pragma once
 
 #include "IShape2D.hpp"
+#include "Operations2D.hpp"
 #include "Point2D.hpp"
 #include "Vector2D.hpp"
-#include "Operations2D.hpp"
 #include <array>
 #include <cstdint>
 #include <optional>
@@ -124,7 +124,6 @@ public:
                         lastPositionCoordX + 1, lastPositionCoordY + 1);
                 }
             } else {
-                assert(false);
                 return std::nullopt;
             }
         }

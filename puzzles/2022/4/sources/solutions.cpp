@@ -9,20 +9,21 @@ namespace aoc_2022_4 {
 
 // ---------- Private Methods ----------
 
-constexpr uint32_t GroupSize{ 2U };
+constexpr uint32_t GroupSize{2U};
 
-std::vector<utils::interval::Interval> parseInputLine(const std::string& line)
+std::vector<utils::interval::Interval<int32_t>>
+parseInputLine(const std::string& line)
 {
-    constexpr auto ElfSeparator{ "," };
-    constexpr auto RangeSeparator{ "-" };
+    constexpr auto ElfSeparator{","};
+    constexpr auto RangeSeparator{"-"};
 
-    std::vector<utils::interval::Interval> sections;
+    std::vector<utils::interval::Interval<int32_t>> sections;
     sections.reserve(GroupSize);
 
     // parse line of the input file
-    auto ranges{ utils::string::split(line, ElfSeparator) };
+    auto ranges{utils::string::split(line, ElfSeparator)};
     for (const auto& range : ranges) {
-        auto values{ utils::string::split(range, RangeSeparator) };
+        auto values{utils::string::split(range, RangeSeparator)};
         sections.emplace_back(
             utils::string::toNumber<int32_t>(values[0]),
             utils::string::toNumber<int32_t>(values[1]));
@@ -37,12 +38,13 @@ std::vector<utils::interval::Interval> parseInputLine(const std::string& line)
 
 std::string solvePart1(const std::string& filename)
 {
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
     std::string line;
-    uint32_t totalOverlaps{ 0U };
+    uint32_t totalOverlaps{0U};
 
     while (std::getline(fileStream, line)) {
-        std::vector<utils::interval::Interval> sections{ parseInputLine(line) };
+        std::vector<utils::interval::Interval<int32_t>> sections{
+            parseInputLine(line)};
         if (sections[0].subsumes(sections[1])
             || sections[1].subsumes(sections[0])) {
             ++totalOverlaps;
@@ -54,12 +56,13 @@ std::string solvePart1(const std::string& filename)
 
 std::string solvePart2(const std::string& filename)
 {
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
     std::string line;
-    uint32_t totalNoOverlaps{ 0U };
+    uint32_t totalNoOverlaps{0U};
 
     while (std::getline(fileStream, line)) {
-        std::vector<utils::interval::Interval> sections{ parseInputLine(line) };
+        std::vector<utils::interval::Interval<int32_t>> sections{
+            parseInputLine(line)};
         if (sections[0].overlaps(sections[1])) {
             ++totalNoOverlaps;
         }

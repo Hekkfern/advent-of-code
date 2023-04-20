@@ -2,6 +2,7 @@
 
 #include "PositionType.hpp"
 #include "Types.hpp"
+#include <utils/geometry2d/Direction2D.hpp>
 #include <utils/geometry2d/Point2D.hpp>
 
 namespace utils::geometry2D {
@@ -14,15 +15,15 @@ using namespace utils::geometry2d;
 
 class Position {
 public:
-    Position(Point2D&& pos, Height height, PositionType type);
+    Position(Point2D<int32_t>&& pos, Height height, PositionType type);
     std::pair<size_t, size_t> getCoordinates() const;
-    const Point2D& getPoint() const;
+    const Point2D<int32_t>& getPoint() const;
     Height getHeight() const;
     PositionType getType() const;
     bool operator==(const Position& other) const;
 
 private:
-    const Point2D mPoint2D;
+    const Point2D<int32_t> mPoint2D;
     const PositionType mType;
     const Height mHeight;
 };
@@ -33,9 +34,10 @@ Position operator+(const Direction2D& direction2D, const Position& position);
 
 } // namespace aoc_2022_12
 
-template <> struct std::hash<aoc_2022_12::Position> {
+template <>
+struct std::hash<aoc_2022_12::Position> {
     std::size_t operator()(const aoc_2022_12::Position& k) const
     {
-        return std::hash<utils::geometry2d::Point2D>()(k.getPoint());
+        return std::hash<utils::geometry2d::Point2D<int32_t>>()(k.getPoint());
     }
 };

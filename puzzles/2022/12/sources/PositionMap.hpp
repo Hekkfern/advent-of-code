@@ -10,11 +10,11 @@ enum class ClimbingDirection { Up, Down };
 class PositionMap {
 public:
     PositionMap(
-        std::unordered_map<Point2D, Position>&& positions,
+        std::unordered_map<Point2D<int32_t>, Position>&& positions,
         size_t width,
         size_t height);
     PositionMap(
-        std::unordered_map<Point2D, Position>&& positions,
+        std::unordered_map<Point2D<int32_t>, Position>&& positions,
         size_t width,
         size_t height,
         const Position& origin,
@@ -28,19 +28,19 @@ public:
     const Position& getDestination() const;
     void setCost(const Position& position, uint32_t newCost);
     uint32_t getCost(const Position& position);
-    const Position& move(const Position& position, const Direction2D direction)
-        const;
+    const Position&
+    move(const Position& position, const Direction2D direction) const;
 
 private:
-    const Position& getPositionFromCoordinates(const Point2D& coords) const;
+    const Position&
+    getPositionFromCoordinates(const Point2D<int32_t>& coords) const;
     bool isMovementOutOfBounds(
-        const Position& position,
-        const Direction2D direction) const;
+        const Position& position, const Direction2D direction) const;
     void lookForExtremes();
     void initializeCosts();
 
-    const std::unordered_map<Point2D, Position> mPositions;
-    std::unordered_map<Point2D, uint32_t> mCosts;
+    const std::unordered_map<Point2D<int32_t>, Position> mPositions;
+    std::unordered_map<Point2D<int32_t>, uint32_t> mCosts;
     const size_t mWidth;
     const size_t mHeight;
     const Position* mOrigin;

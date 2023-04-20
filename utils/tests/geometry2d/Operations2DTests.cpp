@@ -37,9 +37,16 @@ TEST_CASE("[Operations2D] Vector2D + Point2D", "[utils][Operations2D]")
     CHECK(newPoint2D.getY() == 4);
 }
 
-TEST_CASE(
-    "[Operations2D] toVector2D returns the correct value",
-    "[utils][Operations2D]")
+TEST_CASE("[Operations2D] Point2D += Vector2D", "[utils][Operations2D]")
+{
+    Point2D point2D{4, 1};
+    const Vector2D vector2D{2, 3};
+    point2D += vector2D;
+    CHECK(point2D.getX() == 6);
+    CHECK(point2D.getY() == 4);
+}
+
+TEST_CASE("[Operations2D] toVector2D() method", "[utils][Operations2D]")
 {
     SECTION("Up")
     {

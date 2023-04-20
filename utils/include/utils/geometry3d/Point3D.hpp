@@ -45,10 +45,7 @@ public:
      *
      * @return     The coordinates as a group (X,Y,Z).
      */
-    [[nodiscard]] Coord3D<T> getCoordinates() const
-    {
-        return {mX, mY, mZ};
-    }
+    [[nodiscard]] Coord3D<T> getCoordinates() const { return {mX, mY, mZ}; }
     /**
      * @brief      Gets the coordinate X.
      *
@@ -82,6 +79,24 @@ public:
             Point3D{mX, mY, mZ + 1},
             Point3D{mX, mY, mZ - 1}};
     }
+    /**
+     * @brief      Sets the coordinate X.
+     *
+     * @param[in]  x     The coordinate X.
+     */
+    void setX(const T x) { mX = x; }
+    /**
+     * @brief      Sets the coordinate Y.
+     *
+     * @param[in]  y     The coordinate Y.
+     */
+    void setY(const T y) { mY = y; }
+    /**
+     * @brief      Sets the coordinate Z.
+     *
+     * @param[in]  z     The coordinate Z.
+     */
+    void setZ(const T z) { mZ = z; }
     /**
      * @brief      Equality operator.
      *
