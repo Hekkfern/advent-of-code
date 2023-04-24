@@ -8,17 +8,17 @@
 
 int main()
 {
-    const std::string inputFile{ "input.txt" };
+    const std::string inputFile{"input.txt"};
 
     std::string solution1;
-    const auto part1ExecTime = utils::time::calculateExecutionTime(
+    auto const part1ExecTime = utils::time::calculateExecutionTime(
         [&solution1, &inputFile]() {
             solution1 = aoc_2022_6::solvePart1(inputFile);
         });
     utils::aoc::printPart1Solution(solution1, part1ExecTime);
 
     std::string solution2;
-    const auto part2ExecTime = utils::time::calculateExecutionTime(
+    auto const part2ExecTime = utils::time::calculateExecutionTime(
         [&solution2, &inputFile]() {
             solution2 = aoc_2022_6::solvePart2(inputFile);
         });

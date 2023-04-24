@@ -19,7 +19,7 @@ public:
      * @return     Resulting position of the movement.
      */
     [[nodiscard]] static Point3D<T>
-    move(const Point3D<T>& origin, const Vector3D<T>& movement)
+    move(Point3D<T> const& origin, Vector3D<T> const& movement)
     {
         return Point3D<T>{
             origin.getX() + movement.getX(),
@@ -39,7 +39,7 @@ public:
  */
 template <SignedIntegerType T = int32_t>
 [[nodiscard]] Point3D<T>
-operator+(const Point3D<T>& origin, const Vector3D<T>& movement)
+operator+(Point3D<T> const& origin, Vector3D<T> const& movement)
 {
     return Operations3D<T>::move(origin, movement);
 }
@@ -54,7 +54,7 @@ operator+(const Point3D<T>& origin, const Vector3D<T>& movement)
  */
 template <SignedIntegerType T = int32_t>
 [[nodiscard]] Point3D<T>
-operator+(const Vector3D<T>& movement, const Point3D<T>& origin)
+operator+(Vector3D<T> const& movement, Point3D<T> const& origin)
 {
     return Operations3D<T>::move(origin, movement);
 }
@@ -70,7 +70,7 @@ operator+(const Vector3D<T>& movement, const Point3D<T>& origin)
  * @return     The result of the movement.
  */
 template <SignedIntegerType T = int32_t>
-void operator+=(Point3D<T>& point, const Vector3D<T>& movement)
+void operator+=(Point3D<T>& point, Vector3D<T> const& movement)
 {
     point = point + movement;
 }

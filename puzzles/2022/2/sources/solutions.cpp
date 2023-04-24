@@ -10,10 +10,10 @@ namespace aoc_2022_2 {
 // A hash function used to hash a pair of any kind
 struct HashPair {
     template <class T1, class T2>
-    size_t operator()(const std::pair<T1, T2>& p) const
+    size_t operator()(std::pair<T1, T2> const& p) const
     {
-        auto hash1{ std::hash<T1>{}(p.first) };
-        auto hash2{ std::hash<T2>{}(p.second) };
+        auto hash1{std::hash<T1>{}(p.first)};
+        auto hash2{std::hash<T2>{}(p.second)};
 
         if (hash1 != hash2) {
             return hash1 ^ hash2;
@@ -24,51 +24,49 @@ struct HashPair {
     }
 };
 
-constexpr uint32_t PointsPerUsedRock{ 1U };
-constexpr uint32_t PointsPerUsedPaper{ 2U };
-constexpr uint32_t PointsPerUsedScissors{ 3U };
-constexpr uint32_t PointsPerLost{ 0U };
-constexpr uint32_t PointsPerDraw{ 3U };
-constexpr uint32_t PointsPerWin{ 6U };
+constexpr uint32_t PointsPerUsedRock{1U};
+constexpr uint32_t PointsPerUsedPaper{2U};
+constexpr uint32_t PointsPerUsedScissors{3U};
+constexpr uint32_t PointsPerLost{0U};
+constexpr uint32_t PointsPerDraw{3U};
+constexpr uint32_t PointsPerWin{6U};
 
-constexpr char OpponentRock{ 'A' };
-constexpr char OpponentPaper{ 'B' };
-constexpr char OpponentScissors{ 'C' };
-constexpr char PlayerRock{ 'X' };
-constexpr char PlayerPaper{ 'Y' };
-constexpr char PlayerScissors{ 'Z' };
-constexpr char MatchLost{ 'X' };
-constexpr char MatchDraw{ 'Y' };
-constexpr char MatchWin{ 'Z' };
+constexpr char OpponentRock{'A'};
+constexpr char OpponentPaper{'B'};
+constexpr char OpponentScissors{'C'};
+constexpr char PlayerRock{'X'};
+constexpr char PlayerPaper{'Y'};
+constexpr char PlayerScissors{'Z'};
+constexpr char MatchLost{'X'};
+constexpr char MatchDraw{'Y'};
+constexpr char MatchWin{'Z'};
 
 std::unordered_map<std::pair<char, char>, uint32_t, HashPair> PointsPerShapes{
-    { { OpponentRock, PlayerRock }, PointsPerUsedRock + PointsPerDraw },
-    { { OpponentRock, PlayerPaper }, PointsPerUsedPaper + PointsPerWin },
-    { { OpponentRock, PlayerScissors }, PointsPerUsedScissors + PointsPerLost },
-    { { OpponentPaper, PlayerRock }, PointsPerUsedRock + PointsPerLost },
-    { { OpponentPaper, PlayerPaper }, PointsPerUsedPaper + PointsPerDraw },
-    { { OpponentPaper, PlayerScissors }, PointsPerUsedScissors + PointsPerWin },
-    { { OpponentScissors, PlayerRock }, PointsPerUsedRock + PointsPerWin },
-    { { OpponentScissors, PlayerPaper }, PointsPerUsedPaper + PointsPerLost },
-    { { OpponentScissors, PlayerScissors },
-      PointsPerUsedScissors + PointsPerDraw }
-};
+    {{OpponentRock, PlayerRock}, PointsPerUsedRock + PointsPerDraw},
+    {{OpponentRock, PlayerPaper}, PointsPerUsedPaper + PointsPerWin},
+    {{OpponentRock, PlayerScissors}, PointsPerUsedScissors + PointsPerLost},
+    {{OpponentPaper, PlayerRock}, PointsPerUsedRock + PointsPerLost},
+    {{OpponentPaper, PlayerPaper}, PointsPerUsedPaper + PointsPerDraw},
+    {{OpponentPaper, PlayerScissors}, PointsPerUsedScissors + PointsPerWin},
+    {{OpponentScissors, PlayerRock}, PointsPerUsedRock + PointsPerWin},
+    {{OpponentScissors, PlayerPaper}, PointsPerUsedPaper + PointsPerLost},
+    {{OpponentScissors, PlayerScissors},
+     PointsPerUsedScissors + PointsPerDraw}};
 
 /**
  * @brief Look-up table which links the opponent shape and the result of the
  * match, to the shape that the player must use to reach the said result.
  */
 std::unordered_map<std::pair<char, char>, char, HashPair> ResultConversion{
-    { { OpponentRock, MatchLost }, PlayerScissors },
-    { { OpponentRock, MatchDraw }, PlayerRock },
-    { { OpponentRock, MatchWin }, PlayerPaper },
-    { { OpponentPaper, MatchLost }, PlayerRock },
-    { { OpponentPaper, MatchDraw }, PlayerPaper },
-    { { OpponentPaper, MatchWin }, PlayerScissors },
-    { { OpponentScissors, MatchLost }, PlayerPaper },
-    { { OpponentScissors, MatchDraw }, PlayerScissors },
-    { { OpponentScissors, MatchWin }, PlayerRock }
-};
+    {{OpponentRock, MatchLost}, PlayerScissors},
+    {{OpponentRock, MatchDraw}, PlayerRock},
+    {{OpponentRock, MatchWin}, PlayerPaper},
+    {{OpponentPaper, MatchLost}, PlayerRock},
+    {{OpponentPaper, MatchDraw}, PlayerPaper},
+    {{OpponentPaper, MatchWin}, PlayerScissors},
+    {{OpponentScissors, MatchLost}, PlayerPaper},
+    {{OpponentScissors, MatchDraw}, PlayerScissors},
+    {{OpponentScissors, MatchWin}, PlayerRock}};
 
 /**
  * @brief      Calculates the total round score, as result of adding the points
@@ -80,9 +78,8 @@ std::unordered_map<std::pair<char, char>, char, HashPair> ResultConversion{
  *
  * @return     The total points of the round.
  */
-uint32_t calculateRoundScoreFromShapes(
-    const char yourShape,
-    const char opponentShape)
+uint32_t
+calculateRoundScoreFromShapes(char const yourShape, char const opponentShape)
 {
     return PointsPerShapes.at(std::make_pair(opponentShape, yourShape));
 }
@@ -97,9 +94,8 @@ uint32_t calculateRoundScoreFromShapes(
  *
  * @return     The total points of the round.
  */
-uint32_t calculateRoundScoreFromResult(
-    const char matchResult,
-    const char opponentShape)
+uint32_t
+calculateRoundScoreFromResult(char const matchResult, char const opponentShape)
 {
     return PointsPerShapes.at(std::make_pair(
         opponentShape,
@@ -110,11 +106,11 @@ uint32_t calculateRoundScoreFromResult(
 
 // ---------- End of Public Methods ----------
 
-std::string solvePart1(const std::string& filename)
+std::string solvePart1(std::string const& filename)
 {
-    std::ifstream stream{ filename };
+    std::ifstream stream{filename};
     std::string line;
-    uint32_t totalScore{ 0U };
+    uint32_t totalScore{0U};
 
     while (std::getline(stream, line)) {
         totalScore += calculateRoundScoreFromShapes(line[2], line[0]);
@@ -123,11 +119,11 @@ std::string solvePart1(const std::string& filename)
     return std::to_string(totalScore);
 }
 
-std::string solvePart2(const std::string& filename)
+std::string solvePart2(std::string const& filename)
 {
-    std::ifstream stream{ filename };
+    std::ifstream stream{filename};
     std::string line;
-    uint32_t totalScore{ 0U };
+    uint32_t totalScore{0U};
 
     while (std::getline(stream, line)) {
         totalScore += calculateRoundScoreFromResult(line[2], line[0]);

@@ -19,33 +19,33 @@ Monkey parseMonkey(std::ifstream& fileStream)
     std::smatch regexResult;
     // line 1
     std::getline(fileStream, line);
-    constexpr auto PatternLine1{ R"(Monkey (\d+):)" };
+    constexpr auto PatternLine1{R"(Monkey (\d+):)"};
     if (!std::regex_match(line, regexResult, std::regex(PatternLine1))) {
         throw std::logic_error(
             "Regex failed in parsing the line 1 of a Monkey description");
     }
-    MonkeyId monkeyId{ utils::string::toNumber<uint8_t>(regexResult[1]) };
+    MonkeyId monkeyId{utils::string::toNumber<uint8_t>(regexResult[1])};
     // line 2
     std::getline(fileStream, line);
-    constexpr auto PatternLine2{ R"(  Starting items: (.+))" };
+    constexpr auto PatternLine2{R"(  Starting items: (.+))"};
     if (!std::regex_match(line, regexResult, std::regex(PatternLine2))) {
         throw std::logic_error(
             "Regex failed in parsing the line 2 of a Monkey description");
     }
-    auto itemTexts{ utils::string::split(std::string{ regexResult[1] }) };
-    auto monkeyItems = itemTexts
-        | ranges::views::transform([](const std::string& s) {
-                           return utils::string::toNumber<WorryLevel>(s);
-                       })
+    auto itemTexts{utils::string::split(std::string{regexResult[1]})};
+    auto monkeyItems
+        = itemTexts | ranges::views::transform([](std::string const& s) {
+              return utils::string::toNumber<WorryLevel>(s);
+          })
         | ranges::to<std::vector>();
     // line 3
     std::getline(fileStream, line);
-    constexpr auto PatternLine3{ R"(  Operation: new = old (.+) (.+))" };
+    constexpr auto PatternLine3{R"(  Operation: new = old (.+) (.+))"};
     if (!std::regex_match(line, regexResult, std::regex(PatternLine3))) {
         throw std::logic_error(
             "Regex failed in parsing the line 3 of a Monkey description");
     }
-    Operator monkeyOperator{ Operator::ADD };
+    Operator monkeyOperator{Operator::ADD};
     std::optional<WorryLevel> monkeyOperand;
     switch (std::string(regexResult[1])[0]) {
     case '+':
@@ -61,49 +61,53 @@ Monkey parseMonkey(std::ifstream& fileStream)
         ? std::nullopt
         : std::make_optional(
             utils::string::toNumber<WorryLevel>(regexResult[2]));
-    Operation monkeyOperation{ monkeyOperator, monkeyOperand };
+    Operation monkeyOperation{monkeyOperator, monkeyOperand};
     // line 4
     std::getline(fileStream, line);
-    constexpr auto PatternLine4{ R"(  Test: divisible by (.+))" };
+    constexpr auto PatternLine4{R"(  Test: divisible by (.+))"};
     if (!std::regex_match(line, regexResult, std::regex(PatternLine4))) {
         throw std::logic_error(
             "Regex failed in parsing the line 4 of a Monkey description");
     }
-    WorryLevel monkeyDivisor{ utils::string::toNumber<WorryLevel>(
-        regexResult[1]) };
+    WorryLevel monkeyDivisor{
+        utils::string::toNumber<WorryLevel>(regexResult[1])};
     // line 5
     std::getline(fileStream, line);
-    constexpr auto PatternLine5{ R"(    If true: throw to monkey (.+))" };
+    constexpr auto PatternLine5{R"(    If true: throw to monkey (.+))"};
     if (!std::regex_match(line, regexResult, std::regex(PatternLine5))) {
         throw std::logic_error(
             "Regex failed in parsing the line 5 of a Monkey description");
     }
-    MonkeyId monkeyTargetTrue{ utils::string::toNumber<MonkeyId>(
-        regexResult[1]) };
+    MonkeyId monkeyTargetTrue{
+        utils::string::toNumber<MonkeyId>(regexResult[1])};
     // line 6
     std::getline(fileStream, line);
-    constexpr auto PatternLine6{ R"(    If false: throw to monkey (.+))" };
+    constexpr auto PatternLine6{R"(    If false: throw to monkey (.+))"};
     if (!std::regex_match(line, regexResult, std::regex(PatternLine6))) {
         throw std::logic_error(
             "Regex failed in parsing the line 6 of a Monkey description");
     }
-    MonkeyId monkeyTargetFalse{ utils::string::toNumber<MonkeyId>(
-        regexResult[1]) };
+    MonkeyId monkeyTargetFalse{
+        utils::string::toNumber<MonkeyId>(regexResult[1])};
     // generate Monkey
-    return Monkey{ monkeyId,          std::move(monkeyOperation),
-                   monkeyDivisor,     monkeyTargetTrue,
-                   monkeyTargetFalse, std::move(monkeyItems) };
+    return Monkey{
+        monkeyId,
+        std::move(monkeyOperation),
+        monkeyDivisor,
+        monkeyTargetTrue,
+        monkeyTargetFalse,
+        std::move(monkeyItems)};
 }
 
-std::unordered_map<MonkeyId, Monkey> parseInput(const std::string& filename)
+std::unordered_map<MonkeyId, Monkey> parseInput(std::string const& filename)
 {
-    std::ifstream inputFile{ filename };
+    std::ifstream inputFile{filename};
     std::unordered_map<MonkeyId, Monkey> monkeys;
 
     std::string line;
     do {
-        Monkey monkey{ parseMonkey(inputFile) };
-        const MonkeyId id{ monkey.getId() };
+        Monkey monkey{parseMonkey(inputFile)};
+        const MonkeyId id{monkey.getId()};
         monkeys.emplace(id, std::move(monkey));
     } while (std::getline(inputFile, line));
 
@@ -111,13 +115,13 @@ std::unordered_map<MonkeyId, Monkey> parseInput(const std::string& filename)
 }
 
 uint32_t calculateMonkeyBusiness(
-    const std::unordered_map<MonkeyId, uint32_t>& monkeyInspections)
+    std::unordered_map<MonkeyId, uint32_t> const& monkeyInspections)
 {
     std::vector<uint32_t> monkeyInspectionsVector;
 
     ranges::for_each(
         monkeyInspections,
-        [&monkeyInspectionsVector](const std::pair<MonkeyId, uint32_t>& entry) {
+        [&monkeyInspectionsVector](std::pair<MonkeyId, uint32_t> const& entry) {
             monkeyInspectionsVector.push_back(entry.second);
         });
     ranges::sort(monkeyInspectionsVector, ranges::greater());
@@ -129,10 +133,10 @@ uint32_t calculateMonkeyBusiness(
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(const std::string& filename)
+std::string solvePart1(std::string const& filename)
 {
-    constexpr uint32_t NumberOfRounds{ 20U };
-    std::unordered_map<MonkeyId, Monkey> monkeys{ parseInput(filename) };
+    constexpr uint32_t NumberOfRounds{20U};
+    std::unordered_map<MonkeyId, Monkey> monkeys{parseInput(filename)};
     std::unordered_map<MonkeyId, uint32_t> monkeyInspections{};
     for (auto& m : monkeys) {
         monkeyInspections.emplace(m.first, 0U);
@@ -143,8 +147,7 @@ std::string solvePart1(const std::string& filename)
         for (MonkeyId monkeyIndex = 0U; monkeyIndex < monkeys.size();
              ++monkeyIndex) {
             const uint32_t numInspections{
-                monkeys.at(monkeyIndex).inspectAndThrowAll(monkeys, true)
-            };
+                monkeys.at(monkeyIndex).inspectAndThrowAll(monkeys, true)};
             monkeyInspections.at(monkeyIndex) += numInspections;
         }
     }
@@ -152,10 +155,10 @@ std::string solvePart1(const std::string& filename)
     return std::to_string(calculateMonkeyBusiness(monkeyInspections));
 }
 
-std::string solvePart2(const std::string& filename)
+std::string solvePart2(std::string const& filename)
 {
-    constexpr uint32_t NumberOfRounds{ 10000U };
-    std::unordered_map<MonkeyId, Monkey> monkeys{ parseInput(filename) };
+    constexpr uint32_t NumberOfRounds{10000U};
+    std::unordered_map<MonkeyId, Monkey> monkeys{parseInput(filename)};
     std::unordered_map<MonkeyId, uint32_t> monkeyInspections{};
     for (auto& m : monkeys) {
         monkeyInspections.emplace(m.first, 0U);
@@ -166,8 +169,7 @@ std::string solvePart2(const std::string& filename)
         for (MonkeyId monkeyIndex = 0U; monkeyIndex < monkeys.size();
              ++monkeyIndex) {
             uint32_t numInspections{
-                monkeys.at(monkeyIndex).inspectAndThrowAll(monkeys, false)
-            };
+                monkeys.at(monkeyIndex).inspectAndThrowAll(monkeys, false)};
             monkeyInspections.at(monkeyIndex) += numInspections;
         }
     }

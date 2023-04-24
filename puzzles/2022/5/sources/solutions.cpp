@@ -58,10 +58,10 @@ std::vector<CrateStack> parseInputStacks(std::ifstream& fileStream)
     return crateStackList;
 }
 
-CraneInstruction parseInputInstruction(const std::string& line)
+CraneInstruction parseInputInstruction(std::string const& line)
 {
     CraneInstruction craneInstruction{};
-    std::stringstream lineStream{ line };
+    std::stringstream lineStream{line};
     std::string uselessWord;
     lineStream >> uselessWord >> craneInstruction.mNumCrates >> uselessWord
         >> craneInstruction.mOriginStackIndex >> uselessWord
@@ -72,11 +72,11 @@ CraneInstruction parseInputInstruction(const std::string& line)
     return craneInstruction;
 }
 
-std::string generateResult(const std::vector<CrateStack>& crateStackList)
+std::string generateResult(std::vector<CrateStack> const& crateStackList)
 {
     std::string result;
 
-    for (const auto& crate : crateStackList) {
+    for (auto const& crate : crateStackList) {
         if (crate.empty()) {
             continue;
         }
@@ -88,7 +88,7 @@ std::string generateResult(const std::vector<CrateStack>& crateStackList)
 
 void executeCrateMover9000Instruction(
     std::vector<CrateStack>& crateStackList,
-    const CraneInstruction& craneInstruction)
+    CraneInstruction const& craneInstruction)
 {
     auto& originStack = crateStackList[craneInstruction.mOriginStackIndex];
     // view of the last elements of the stack, in reverse order
@@ -105,7 +105,7 @@ void executeCrateMover9000Instruction(
 
 void executeCrateMover9001Instruction(
     std::vector<CrateStack>& crateStackList,
-    const CraneInstruction& craneInstruction)
+    CraneInstruction const& craneInstruction)
 {
     auto& originStack = crateStackList[craneInstruction.mOriginStackIndex];
     // view of the last elements of the stack, in order
@@ -125,9 +125,9 @@ void executeCrateMover9001Instruction(
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(const std::string& filename)
+std::string solvePart1(std::string const& filename)
 {
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
     std::vector<CrateStack> crateStackList = parseInputStacks(fileStream);
     std::string line;
     while (std::getline(fileStream, line)) {
@@ -137,9 +137,9 @@ std::string solvePart1(const std::string& filename)
     return generateResult(crateStackList);
 }
 
-std::string solvePart2(const std::string& filename)
+std::string solvePart2(std::string const& filename)
 {
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
     std::vector<CrateStack> crateStackList = parseInputStacks(fileStream);
     std::string line;
     while (std::getline(fileStream, line)) {

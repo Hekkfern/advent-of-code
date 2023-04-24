@@ -15,7 +15,7 @@ using namespace utils::geometry2d;
 
 // ---------- Private Methods ----------
 
-Direction2D convertDirectionCharacter(const char directionChar)
+Direction2D convertDirectionCharacter(char const directionChar)
 {
     Direction2D result = Direction2D::Up;
     switch (directionChar) {
@@ -38,7 +38,7 @@ Direction2D convertDirectionCharacter(const char directionChar)
     return result;
 }
 
-RopeInstruction parseInputLine(const std::string& line)
+RopeInstruction parseInputLine(std::string const& line)
 {
     std::stringstream lineStream{line};
     char directionChar = 0;
@@ -53,7 +53,7 @@ RopeInstruction parseInputLine(const std::string& line)
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(const std::string& filename)
+std::string solvePart1(std::string const& filename)
 {
     constexpr uint32_t RopeLength{2U};
 
@@ -73,7 +73,7 @@ std::string solvePart1(const std::string& filename)
     return std::to_string(visitedTailPositions.size());
 }
 
-std::string solvePart2(const std::string& filename)
+std::string solvePart2(std::string const& filename)
 {
     constexpr uint32_t RopeLength{10U};
 

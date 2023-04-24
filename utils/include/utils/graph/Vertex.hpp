@@ -43,7 +43,10 @@ public:
      *
      * @return     The destination vertex.
      */
-    [[nodiscard]] Vertex<T, W>& getDestinationVertex() const { return mDestinationVertex; }
+    [[nodiscard]] Vertex<T, W>& getDestinationVertex() const
+    {
+        return mDestinationVertex;
+    }
     /**
      * @brief      Equality operator.
      *
@@ -51,7 +54,7 @@ public:
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] bool operator==(const Edge& other) const
+    [[nodiscard]] bool operator==(Edge const& other) const
     {
         return mDestinationVertex == other.mDestinationVertex
             && mWeight == other.mWeight;
@@ -94,7 +97,7 @@ public:
      * @param[in]  name  Unique identifier for this node.
      * @param[in]  info  Information to attach to this node.
      */
-    explicit Vertex(const std::string_view name, const T& info)
+    explicit Vertex(const std::string_view name, T const& info)
         : mName{name}
         , mInfo{info}
     {
@@ -105,7 +108,7 @@ public:
      * @param[in]  name  Unique identifier for this node.
      * @param[in]  info  Information to attach to this node.
      */
-    explicit Vertex(const std::string& name, const T& info)
+    explicit Vertex(std::string const& name, T const& info)
         : mName{name}
         , mInfo{info}
     {
@@ -115,13 +118,13 @@ public:
      *
      * @return     The name.
      */
-    [[nodiscard]] const std::string& getName() const { return mName; }
+    [[nodiscard]] std::string const& getName() const { return mName; }
     /**
      * @brief      Gets the information attached to this node.
      *
      * @return     The attached information.
      */
-    [[nodiscard]] const T& getInfo() const { return mInfo; }
+    [[nodiscard]] T const& getInfo() const { return mInfo; }
     /**
      * @brief      Equality operator.
      *
@@ -129,7 +132,10 @@ public:
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] bool operator==(const Vertex& other) const { return mName == other.mName; }
+    [[nodiscard]] bool operator==(Vertex const& other) const
+    {
+        return mName == other.mName;
+    }
     /**
      * @brief      Adds an edge between this vertex and another one.
      *
@@ -151,7 +157,7 @@ public:
      *
      * @return     True if the edge was deleted. False, otherwise.
      */
-    bool removeEdge(const std::string& vertexName)
+    bool removeEdge(std::string const& vertexName)
     {
         return mEdges.erase(vertexName) == 1U;
     }
@@ -160,7 +166,8 @@ public:
      *
      * @return     List of edges.
      */
-    [[nodiscard]] const std::unordered_map<std::string, Edge<T, W>>& getEdges() const
+    [[nodiscard]] std::unordered_map<std::string, Edge<T, W>> const&
+    getEdges() const
     {
         return mEdges;
     }
@@ -185,7 +192,7 @@ private:
 
 template <std::equality_comparable T, UnsignedIntegerType W>
 struct std::hash<utils::graph::Vertex<T, W>> {
-    std::size_t operator()(const utils::graph::Vertex<T, W>& k) const noexcept
+    std::size_t operator()(utils::graph::Vertex<T, W> const& k) const noexcept
     {
         return std::hash<std::string>()(k.mName);
     }
@@ -193,7 +200,7 @@ struct std::hash<utils::graph::Vertex<T, W>> {
 
 template <std::equality_comparable T, UnsignedIntegerType W>
 struct std::hash<utils::graph::Edge<T, W>> {
-    std::size_t operator()(const utils::graph::Edge<T, W>& k) const noexcept
+    std::size_t operator()(utils::graph::Edge<T, W> const& k) const noexcept
     {
         return std::hash<std::string>()(k.getDestinationVertex().getName())
             ^ std::hash<W>()(k.getWeight());

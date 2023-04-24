@@ -11,14 +11,13 @@ TEST_CASE(
     "[2022_15] Use example input for Part 1",
     "[2022, 2022_15, part1, 2022_15_part1]")
 {
-    constexpr auto InputFile{ "input_test.txt" };
-    constexpr int32_t GoalCoordY{ 10 };
+    constexpr auto InputFile{"input_test.txt"};
+    constexpr int32_t GoalCoordY{10};
 
     std::string mySolution = aoc_2022_15::solvePart1(
-        InputFile, { { "GoalCoordY", GoalCoordY } });
-    std::string expectedSolution = utils::file::readFirstLine(
-                                       "solution1_test.txt")
-                                       .value();
+        InputFile, {{"GoalCoordY", GoalCoordY}});
+    std::string expectedSolution
+        = utils::file::readFirstLine("solution1_test.txt").value();
 
     REQUIRE(mySolution == expectedSolution);
 }
@@ -27,14 +26,13 @@ TEST_CASE(
     "[2022_15] Use example input for Part 2",
     "[2022, 2022_15, part2, 2022_15_part2]")
 {
-    constexpr auto InputFile{ "input_test.txt" };
-    constexpr uint32_t GridSize{ 20U };
+    constexpr auto InputFile{"input_test.txt"};
+    constexpr uint32_t GridSize{20U};
 
     std::string mySolution = aoc_2022_15::solvePart2(
-        InputFile, { { "GridSize", GridSize } });
-    std::string expectedSolution = utils::file::readFirstLine(
-                                       "solution2_test.txt")
-                                       .value();
+        InputFile, {{"GridSize", GridSize}});
+    std::string expectedSolution
+        = utils::file::readFirstLine("solution2_test.txt").value();
 
     REQUIRE(mySolution == expectedSolution);
 }
@@ -43,13 +41,13 @@ TEST_CASE(
     "[2022_15] Use real input for Part 1",
     "[2022, 2022_15, part1, 2022_15_part1]")
 {
-    constexpr auto InputFile{ "input.txt" };
-    constexpr int32_t GoalCoordY{ 2000000 };
+    constexpr auto InputFile{"input.txt"};
+    constexpr int32_t GoalCoordY{2000000};
 
     std::string mySolution = aoc_2022_15::solvePart1(
-        InputFile, { { "GoalCoordY", GoalCoordY } });
-    std::string expectedSolution = utils::file::readFirstLine("solution1.txt")
-                                       .value();
+        InputFile, {{"GoalCoordY", GoalCoordY}});
+    std::string expectedSolution
+        = utils::file::readFirstLine("solution1.txt").value();
 
     REQUIRE(mySolution == expectedSolution);
 }
@@ -58,13 +56,13 @@ TEST_CASE(
     "[2022_15] Use real input for Part 2",
     "[2022, 2022_15, part1, 2022_15_part2]")
 {
-    constexpr auto InputFile{ "input.txt" };
-    constexpr uint32_t GridSize{ 4000000U };
+    constexpr auto InputFile{"input.txt"};
+    constexpr uint32_t GridSize{4000000U};
 
     std::string mySolution = aoc_2022_15::solvePart2(
-        InputFile, { { "GridSize", GridSize } });
-    std::string expectedSolution = utils::file::readFirstLine("solution2.txt")
-                                       .value();
+        InputFile, {{"GridSize", GridSize}});
+    std::string expectedSolution
+        = utils::file::readFirstLine("solution2.txt").value();
 
     REQUIRE(mySolution == expectedSolution);
 }

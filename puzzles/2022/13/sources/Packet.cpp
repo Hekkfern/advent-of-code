@@ -3,11 +3,11 @@
 namespace aoc_2022_13 {
 
 Packet::Packet()
-    : mRootItem{ nullptr }
+    : mRootItem{nullptr}
 {
 }
 
-std::strong_ordering Packet::operator<=>(const Packet& other) const
+std::strong_ordering Packet::operator<=>(Packet const& other) const
 {
     return *mRootItem <=> *other.mRootItem;
 }

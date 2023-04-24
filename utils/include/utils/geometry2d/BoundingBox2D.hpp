@@ -24,10 +24,10 @@ public:
      *
      * @param[in]  point2D  The point to enclose.
      */
-    void update(const Point2D<T>& point2D)
+    void update(Point2D<T> const& point2D)
     {
-        const auto x{point2D.getX()};
-        const auto y{point2D.getY()};
+        auto const x{point2D.getX()};
+        auto const y{point2D.getY()};
         mMinX = std::min(mMinX, x);
         mMaxX = std::max(mMaxX, x);
         mMinY = std::min(mMinY, y);
@@ -68,10 +68,10 @@ public:
      *
      * @return     True if the specified point is outside, False otherwise.
      */
-    [[nodiscard]] bool isOutside(const Point2D<T>& point2D) const
+    [[nodiscard]] bool isOutside(Point2D<T> const& point2D) const
     {
-        const auto x{point2D.getX()};
-        const auto y{point2D.getY()};
+        auto const x{point2D.getX()};
+        auto const y{point2D.getY()};
         return (x > mMaxX) || (x < mMinX) || (y > mMaxY) || (y < mMinY);
     }
     /**
@@ -85,10 +85,10 @@ public:
      * @return     True if the specified point is outside, False otherwise.
      */
     [[nodiscard]] bool
-    isOutside(const Point2D<T>& point2D, Direction2D direction2D) const
+    isOutside(Point2D<T> const& point2D, Direction2D direction2D) const
     {
-        const auto x{point2D.getX()};
-        const auto y{point2D.getY()};
+        auto const x{point2D.getX()};
+        auto const y{point2D.getY()};
         switch (direction2D) {
         case Direction2D::Up:
             return y > mMaxY;

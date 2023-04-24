@@ -11,11 +11,11 @@ namespace aoc_2022_6 {
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(const std::string& filename)
+std::string solvePart1(std::string const& filename)
 {
-    constexpr uint32_t NumberOfDifferentCharacters{ 4U };
+    constexpr uint32_t NumberOfDifferentCharacters{4U};
 
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
     char newChar = 0;
     uint32_t charCounter = 0U;
     CharSlidingWindow<NumberOfDifferentCharacters> charSlidingWindow;
@@ -32,11 +32,11 @@ std::string solvePart1(const std::string& filename)
     return std::to_string(charCounter);
 }
 
-std::string solvePart2(const std::string& filename)
+std::string solvePart2(std::string const& filename)
 {
-    constexpr uint32_t NumberOfDifferentCharacters{ 14U };
+    constexpr uint32_t NumberOfDifferentCharacters{14U};
 
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
     char newChar = 0;
     uint32_t charCounter = 0U;
     CharSlidingWindow<NumberOfDifferentCharacters> charSlidingWindow;

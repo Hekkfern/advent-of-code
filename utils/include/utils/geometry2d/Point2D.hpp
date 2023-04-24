@@ -35,7 +35,7 @@ public:
      *
      * @param[in]  coords  Coordinates.
      */
-    explicit Point2D(const Coord2D<T> coords)
+    explicit Point2D(Coord2D<T> const coords)
         : mX{coords.mX}
         , mY{coords.mY}
     {
@@ -90,7 +90,7 @@ public:
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] bool operator==(const Point2D& other) const
+    [[nodiscard]] bool operator==(Point2D const& other) const
     {
         return mX == other.mX && mY == other.mY;
     }
@@ -102,7 +102,7 @@ public:
      *
      * @return     The result of the addition.
      */
-    [[nodiscard]] Point2D operator+(const Point2D& other) const
+    [[nodiscard]] Point2D operator+(Point2D const& other) const
     {
         return Point2D{mX + other.mX, mY + other.mY};
     }
@@ -119,7 +119,7 @@ public:
      *
      * @return     The result of the subtraction
      */
-    [[nodiscard]] Point2D operator-(const Point2D& other) const
+    [[nodiscard]] Point2D operator-(Point2D const& other) const
     {
         return *this + (-other);
     }
@@ -149,7 +149,7 @@ private:
      *
      * @return     The updated output stream.
      */
-    friend std::ostream& operator<<(std::ostream& os, const Point2D& point2d)
+    friend std::ostream& operator<<(std::ostream& os, Point2D const& point2d)
     {
         os << '(' << point2d.mX << ',' << point2d.mY << ')';
         return os;
@@ -170,7 +170,7 @@ private:
 template <SignedIntegerType T>
 struct std::hash<utils::geometry2d::Point2D<T>> {
     std::size_t
-    operator()(const utils::geometry2d::Point2D<T>& k) const noexcept
+    operator()(utils::geometry2d::Point2D<T> const& k) const noexcept
     {
         return std::hash<T>()(k.getX()) ^ std::hash<T>()(k.getY());
     }

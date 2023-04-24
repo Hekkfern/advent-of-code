@@ -23,16 +23,16 @@ using TreeVisibilityLine = std::vector<bool>;
  *
  * @return     A 2D matrix of tree heights.
  */
-TreeHeightMatrix parseInput(const std::string& filename)
+TreeHeightMatrix parseInput(std::string const& filename)
 {
-    std::ifstream inputFile{ filename };
+    std::ifstream inputFile{filename};
     TreeHeightMatrix heightMatrix;
     std::string line;
 
     while (std::getline(inputFile, line)) {
         TreeHeightLine heightRow;
         heightRow.reserve(line.size());
-        for (const char c : line) {
+        for (char const c : line) {
             heightRow.emplace_back(static_cast<uint8_t>(c - '0'));
         }
         heightMatrix.push_back(std::move(heightRow));
@@ -53,8 +53,7 @@ TreeHeightMatrix parseInput(const std::string& filename)
  *             forest.
  */
 uint32_t checkTreeVisibilityFromTopLeft(
-    TreeHeightMatrix& forest,
-    TreeVisibilityMatrix& visibility)
+    TreeHeightMatrix& forest, TreeVisibilityMatrix& visibility)
 {
     uint32_t count = 0U;
     TreeHeightLine maxValueInRow(forest.size());
@@ -89,15 +88,14 @@ uint32_t checkTreeVisibilityFromTopLeft(
  *             forest.
  */
 uint32_t checkTreeVisibilityFromBottomRight(
-    TreeHeightMatrix& forest,
-    TreeVisibilityMatrix& visibility)
+    TreeHeightMatrix& forest, TreeVisibilityMatrix& visibility)
 {
     uint32_t count = 0U;
     TreeHeightLine maxValueInRow(forest.size());
     TreeHeightLine maxValueInColumn(forest[0].size());
-    const uint32_t lastRowIndex{ static_cast<uint32_t>(forest.size()) - 1U };
-    const uint32_t lastColumnIndex{ static_cast<uint32_t>(forest[0].size())
-                                    - 1U };
+    const uint32_t lastRowIndex{static_cast<uint32_t>(forest.size()) - 1U};
+    const uint32_t lastColumnIndex{
+        static_cast<uint32_t>(forest[0].size()) - 1U};
 
     for (uint32_t i = lastRowIndex; i != std::numeric_limits<uint32_t>::max();
          --i) {
@@ -150,13 +148,13 @@ uint32_t checkTreeVisibility(TreeHeightMatrix& forest)
  *             tree.
  */
 uint32_t
-calculateLeftView(const TreeHeightMatrix& forest, uint32_t row, uint32_t column)
+calculateLeftView(TreeHeightMatrix const& forest, uint32_t row, uint32_t column)
 {
     uint32_t visibleTress = 0U;
     if (column > 0) {
-        for (uint32_t j = column - 1U;
-             j != std::numeric_limits<uint32_t>::max();
-             --j) {
+        for (
+            uint32_t j = column - 1U; j != std::numeric_limits<uint32_t>::max();
+            --j) {
             ++visibleTress;
             if (forest[row][j] >= forest[row][column]) {
                 break;
@@ -178,11 +176,9 @@ calculateLeftView(const TreeHeightMatrix& forest, uint32_t row, uint32_t column)
  *             tree.
  */
 uint32_t calculateRightView(
-    const TreeHeightMatrix& forest,
-    uint32_t row,
-    uint32_t column)
+    TreeHeightMatrix const& forest, uint32_t row, uint32_t column)
 {
-    const uint32_t forestColumns{ static_cast<uint32_t>(forest[0].size()) };
+    const uint32_t forestColumns{static_cast<uint32_t>(forest[0].size())};
     uint32_t visibleTress = 0U;
     if (column < (forestColumns - 1U)) {
         for (uint32_t j = column + 1U; j < forestColumns; ++j) {
@@ -206,7 +202,7 @@ uint32_t calculateRightView(
  * @return     Number of trees which can be seen above the selected tree.
  */
 uint32_t
-calculateUpView(const TreeHeightMatrix& forest, uint32_t row, uint32_t column)
+calculateUpView(TreeHeightMatrix const& forest, uint32_t row, uint32_t column)
 {
     uint32_t visibleTress = 0U;
     if (row > 0) {
@@ -232,9 +228,9 @@ calculateUpView(const TreeHeightMatrix& forest, uint32_t row, uint32_t column)
  * @return     Number of trees which can be seen below the selected tree.
  */
 uint32_t
-calculateDownView(const TreeHeightMatrix& forest, uint32_t row, uint32_t column)
+calculateDownView(TreeHeightMatrix const& forest, uint32_t row, uint32_t column)
 {
-    const uint32_t forestRows{ static_cast<uint32_t>(forest.size()) };
+    const uint32_t forestRows{static_cast<uint32_t>(forest.size())};
     uint32_t visibleTress = 0U;
     if (row < (forestRows - 1U)) {
         for (uint32_t i = row + 1U; i < forestRows; ++i) {
@@ -257,9 +253,7 @@ calculateDownView(const TreeHeightMatrix& forest, uint32_t row, uint32_t column)
  * @return     The scenic score of the selected tree.
  */
 uint32_t calculateScenicScore(
-    const TreeHeightMatrix& forest,
-    uint32_t row,
-    uint32_t column)
+    TreeHeightMatrix const& forest, uint32_t row, uint32_t column)
 {
     const uint32_t visibleTreesLeft = calculateLeftView(forest, row, column);
     const uint32_t visibleTreesRight = calculateRightView(forest, row, column);
@@ -276,7 +270,7 @@ uint32_t calculateScenicScore(
  *
  * @return     The maximum scenic score.
  */
-uint32_t calculateMaximumScenicScore(const TreeHeightMatrix& forest)
+uint32_t calculateMaximumScenicScore(TreeHeightMatrix const& forest)
 {
     uint32_t maxScenicScore = 0U;
     for (uint32_t i = 0U; i < forest.size(); ++i) {
@@ -292,16 +286,16 @@ uint32_t calculateMaximumScenicScore(const TreeHeightMatrix& forest)
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(const std::string& filename)
+std::string solvePart1(std::string const& filename)
 {
-    auto forest{ parseInput(filename) };
+    auto forest{parseInput(filename)};
 
     return std::to_string(checkTreeVisibility(forest));
 }
 
-std::string solvePart2(const std::string& filename)
+std::string solvePart2(std::string const& filename)
 {
-    auto forest{ parseInput(filename) };
+    auto forest{parseInput(filename)};
 
     return std::to_string(calculateMaximumScenicScore(forest));
 }

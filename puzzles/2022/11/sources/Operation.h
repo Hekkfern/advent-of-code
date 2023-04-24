@@ -18,7 +18,7 @@ public:
      *
      * @return     The result of the equality.
      */
-    bool operator==(const Operation& other);
+    bool operator==(Operation const& other);
 
 private:
     const Operator mOperator;

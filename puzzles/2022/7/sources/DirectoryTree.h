@@ -11,8 +11,8 @@ class IFile;
 class DirectoryTree {
 public:
     DirectoryTree();
-    DirectoryTree(const DirectoryTree&) = delete;
-    DirectoryTree& operator=(const DirectoryTree&) = delete;
+    DirectoryTree(DirectoryTree const&) = delete;
+    DirectoryTree& operator=(DirectoryTree const&) = delete;
     DirectoryTree(DirectoryTree&&) = default;
     DirectoryTree& operator=(DirectoryTree&&) = default;
     IDirectory& getRoot() const;

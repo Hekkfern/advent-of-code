@@ -37,7 +37,7 @@ public:
      *
      * @param[in]  values  A pair of values (Min, Max).
      */
-    constexpr explicit Interval(const std::pair<T, T>& values)
+    constexpr explicit Interval(std::pair<T, T> const& values)
         : Interval{values.first, values.second}
     {
     }
@@ -48,7 +48,7 @@ public:
      *
      * @return     The result of the three-way comparison.
      */
-    [[nodiscard]] auto operator<=>(const Interval& other) const noexcept
+    [[nodiscard]] auto operator<=>(Interval const& other) const noexcept
         = default;
     /**
      * @brief      Retrieves the length of the interval, i.e. the number of
@@ -69,7 +69,7 @@ public:
      * @return     Joined interval if they overlap. std::nullopt, otherwise.
      */
     [[nodiscard]] constexpr std::optional<Interval>
-    join(const Interval<T>& other) const noexcept
+    join(Interval<T> const& other) const noexcept
     {
         return (overlaps(other) || areContiguous(other))
             ? std::make_optional<Interval<T>>(
@@ -86,7 +86,7 @@ public:
      *             with the overlapped fragment.
      */
     [[nodiscard]] constexpr std::optional<Interval>
-    intersect(const Interval& other) const noexcept
+    intersect(Interval const& other) const noexcept
     {
         if (other.mMin >= mMin && other.mMin <= mMax && other.mMax >= mMax) {
             return Interval{other.mMin, mMax};
@@ -110,7 +110,7 @@ public:
      * @return     True if the other interval includes this one. False,
      *             otherwise.
      */
-    [[nodiscard]] constexpr bool subsumes(const Interval& other) const noexcept
+    [[nodiscard]] constexpr bool subsumes(Interval const& other) const noexcept
     {
         return other.mMin >= mMin && other.mMax <= mMax;
     }
@@ -121,7 +121,7 @@ public:
      *
      * @return     True if they overlap in any way. False, otherwise.
      */
-    [[nodiscard]] constexpr bool overlaps(const Interval& other) const noexcept
+    [[nodiscard]] constexpr bool overlaps(Interval const& other) const noexcept
     {
         return (other.mMin >= mMin && other.mMin <= mMax)
             || (other.mMax >= mMin && other.mMax <= mMax)
@@ -179,7 +179,7 @@ public:
      * @return     True if both intervals are contiguous. False, otherwise.
      */
     [[nodiscard]] constexpr bool
-    areContiguous(const Interval& other) const noexcept
+    areContiguous(Interval const& other) const noexcept
     {
         return (other.mMin - mMax) == 1 || (mMin - other.mMax) == 1;
     }
@@ -194,7 +194,7 @@ private:
      * @return     The updated output stream.
      */
     friend std::ostream&
-    operator<<(std::ostream& os, const Interval<T>& interval)
+    operator<<(std::ostream& os, Interval<T> const& interval)
     {
         os << '[' << interval.mMin << ',' << interval.mMax << ']';
         return os;

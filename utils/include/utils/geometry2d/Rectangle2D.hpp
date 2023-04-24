@@ -28,7 +28,7 @@ public:
      * @param[in]  topRight    The top right point.
      */
     explicit Rectangle2D(
-        const Point2D<T>& bottomLeft, const Point2D<T>& topRight)
+        Point2D<T> const& bottomLeft, Point2D<T> const& topRight)
         : Rectangle2D{bottomLeft, Vector2D{bottomLeft, topRight}}
     {
     }
@@ -40,7 +40,7 @@ public:
      *                         the top right point.
      */
     explicit Rectangle2D(
-        const Point2D<T>& bottomLeft, const Vector2D<T>& diagonal)
+        Point2D<T> const& bottomLeft, Vector2D<T> const& diagonal)
         : Rectangle2D{
             bottomLeft,
             static_cast<uint32_t>(diagonal.size()[0]),
@@ -55,7 +55,7 @@ public:
      * @param[in]  height      The height of the shape.
      */
     explicit Rectangle2D(
-        const Point2D<T>& bottomLeft, uint32_t width, uint32_t height)
+        Point2D<T> const& bottomLeft, uint32_t width, uint32_t height)
         : mVertexes{{bottomLeft, bottomLeft + Vector2D{static_cast<T>(width), 0}, bottomLeft + Vector2D{static_cast<T>(width), static_cast<T>(height)}, bottomLeft + Vector2D{0, static_cast<T>(height)}}}
         , mWidth{width}
         , mHeight{height}
@@ -90,7 +90,7 @@ public:
      *
      * @return     True if the specified point is outside, False otherwise.
      */
-    [[nodiscard]] bool isOutside(const Point2D<T>& point) const override
+    [[nodiscard]] bool isOutside(Point2D<T> const& point) const override
     {
         return !isInside(point);
     }
@@ -101,10 +101,10 @@ public:
      *
      * @return     True if the specified point is inside, False otherwise.
      */
-    [[nodiscard]] bool isInside(const Point2D<T>& point) const override
+    [[nodiscard]] bool isInside(Point2D<T> const& point) const override
     {
-        const auto& bottomLeft{getBottomLeftPoint()};
-        const auto& topRight{getTopRightPoint()};
+        auto const& bottomLeft{getBottomLeftPoint()};
+        auto const& topRight{getTopRightPoint()};
         return bottomLeft.getX() <= point.getX()
             && point.getX() <= topRight.getX()
             && bottomLeft.getY() <= point.getY()
@@ -117,7 +117,7 @@ public:
      *
      * @return     True if the specified point is in perimeter, False otherwise.
      */
-    [[nodiscard]] bool isInPerimeter(const Point2D<T>& point) const override
+    [[nodiscard]] bool isInPerimeter(Point2D<T> const& point) const override
     {
         const Vector2D v1{getBottomLeftPoint(), point};
         const Vector2D v2{getTopRightPoint(), point};
@@ -152,7 +152,7 @@ private:
      *
      * @return     The bottom left point.
      */
-    [[nodiscard]] const Point2D<T>& getBottomLeftPoint() const
+    [[nodiscard]] Point2D<T> const& getBottomLeftPoint() const
     {
         return mVertexes.at(0);
     }
@@ -161,7 +161,7 @@ private:
      *
      * @return     The top right point.
      */
-    [[nodiscard]] const Point2D<T>& getTopRightPoint() const
+    [[nodiscard]] Point2D<T> const& getTopRightPoint() const
     {
         return mVertexes.at(2);
     }

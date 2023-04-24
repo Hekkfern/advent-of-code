@@ -173,19 +173,19 @@ TEST_CASE("[Interval] intersect() method", "[utils][Interval]")
     {
         const Interval interval1{2, 3};
         const Interval interval2{-3, 1};
-        const auto result{interval1.intersect(interval2)};
+        auto const result{interval1.intersect(interval2)};
         CHECK_FALSE(result);
-        const auto result2{interval2.intersect(interval1)};
+        auto const result2{interval2.intersect(interval1)};
         CHECK_FALSE(result2);
     }
     SECTION("One interval is contained in the other one")
     {
         const Interval interval1{2, 3};
         const Interval interval2{-3, 4};
-        const auto result{interval1.intersect(interval2)};
+        auto const result{interval1.intersect(interval2)};
         CHECK(result);
         CHECK(result->get() == std::make_pair(2, 3));
-        const auto result2{interval2.intersect(interval1)};
+        auto const result2{interval2.intersect(interval1)};
         CHECK(result2);
         CHECK(result2->get() == std::make_pair(2, 3));
     }
@@ -193,10 +193,10 @@ TEST_CASE("[Interval] intersect() method", "[utils][Interval]")
     {
         const Interval interval1{-3, 4};
         const Interval interval2{-5, -1};
-        const auto result{interval1.intersect(interval2)};
+        auto const result{interval1.intersect(interval2)};
         CHECK(result);
         CHECK(result->get() == std::make_pair(-3, -1));
-        const auto result2{interval2.intersect(interval1)};
+        auto const result2{interval2.intersect(interval1)};
         CHECK(result2);
         CHECK(result2->get() == std::make_pair(-3, -1));
     }
@@ -204,10 +204,10 @@ TEST_CASE("[Interval] intersect() method", "[utils][Interval]")
     {
         const Interval interval1{-3, 4};
         const Interval interval2{2, 7};
-        const auto result{interval1.intersect(interval2)};
+        auto const result{interval1.intersect(interval2)};
         CHECK(result);
         CHECK(result->get() == std::make_pair(2, 4));
-        const auto result2{interval2.intersect(interval1)};
+        auto const result2{interval2.intersect(interval1)};
         CHECK(result2);
         CHECK(result2->get() == std::make_pair(2, 4));
     }
@@ -217,10 +217,10 @@ TEST_CASE("[Interval] intersect() method", "[utils][Interval]")
         {
             const Interval interval1{-3, 1};
             const Interval interval2{-3, 4};
-            const auto result{interval1.intersect(interval2)};
+            auto const result{interval1.intersect(interval2)};
             CHECK(result);
             CHECK(result->get() == std::make_pair(-3, 1));
-            const auto result2{interval2.intersect(interval1)};
+            auto const result2{interval2.intersect(interval1)};
             CHECK(result2);
             CHECK(result2->get() == std::make_pair(-3, 1));
         }
@@ -228,10 +228,10 @@ TEST_CASE("[Interval] intersect() method", "[utils][Interval]")
         {
             const Interval interval1{1, 4};
             const Interval interval2{-3, 4};
-            const auto result{interval1.intersect(interval2)};
+            auto const result{interval1.intersect(interval2)};
             CHECK(result);
             CHECK(result->get() == std::make_pair(1, 4));
-            const auto result2{interval2.intersect(interval1)};
+            auto const result2{interval2.intersect(interval1)};
             CHECK(result2);
             CHECK(result2->get() == std::make_pair(1, 4));
         }

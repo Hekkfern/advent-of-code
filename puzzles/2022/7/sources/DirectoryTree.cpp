@@ -5,12 +5,12 @@
 
 namespace aoc_2022_7 {
 
-constexpr auto CdCommandRoot{ "/" };
-constexpr auto CdCommandGoUp{ ".." };
+constexpr auto CdCommandRoot{"/"};
+constexpr auto CdCommandGoUp{".."};
 
 DirectoryTree::DirectoryTree()
-    : mRootDir{ std::make_unique<Directory>("") }
-    , mCurrentDir{ &getRoot() }
+    : mRootDir{std::make_unique<Directory>("")}
+    , mCurrentDir{&getRoot()}
 {
 }
 
@@ -25,7 +25,7 @@ void DirectoryTree::changeDirectory(std::string_view dir)
     } else {
         auto childDirs = mCurrentDir->getChildDirectories();
         auto childIt = ranges::find_if(
-            childDirs, [dir](const IDirectory* const childDir) {
+            childDirs, [dir](IDirectory const* const childDir) {
                 return childDir->getName() == dir;
             });
         mCurrentDir = *childIt;

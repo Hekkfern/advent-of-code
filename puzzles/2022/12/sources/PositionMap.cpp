@@ -10,9 +10,9 @@ PositionMap::PositionMap(
     std::unordered_map<Point2D<int32_t>, Position>&& positions,
     size_t width,
     size_t height)
-    : mPositions{ std::move(positions) }
-    , mWidth{ width }
-    , mHeight{ height }
+    : mPositions{std::move(positions)}
+    , mWidth{width}
+    , mHeight{height}
 {
     lookForExtremes();
     initializeCosts();
@@ -22,19 +22,19 @@ PositionMap::PositionMap(
     std::unordered_map<Point2D<int32_t>, Position>&& positions,
     size_t width,
     size_t height,
-    const Position& origin,
-    const Position& destination)
-    : mPositions{ std::move(positions) }
-    , mWidth{ width }
-    , mHeight{ height }
-    , mOrigin{ &origin }
-    , mDestination{ &destination }
+    Position const& origin,
+    Position const& destination)
+    : mPositions{std::move(positions)}
+    , mWidth{width}
+    , mHeight{height}
+    , mOrigin{&origin}
+    , mDestination{&destination}
 {
     initializeCosts();
 }
 
 bool PositionMap::canMove(
-    const Position& position,
+    Position const& position,
     const Direction2D direction,
     ClimbingDirection climbingDirection) const
 {
@@ -43,8 +43,8 @@ bool PositionMap::canMove(
         return false;
     }
     // check height gap
-    const Point2D<int32_t> newPoint{position.getPoint() + direction};
-    const auto nextPosition{ getPositionFromCoordinates(newPoint) };
+    Point2D<int32_t> const newPoint{position.getPoint() + direction};
+    auto const nextPosition{getPositionFromCoordinates(newPoint)};
     if (climbingDirection == ClimbingDirection::Down) {
         // valid: higher, equal or 1 unit lower
         return nextPosition.getHeight() >= (position.getHeight() - 1U);
@@ -66,18 +66,17 @@ std::pair<std::size_t, std::size_t> PositionMap::size() const
     return std::make_pair(mWidth, mHeight);
 }
 
-const Position& PositionMap::getPositionFromCoordinates(
-    const Point2D<int32_t>& coords) const
+Position const&
+PositionMap::getPositionFromCoordinates(Point2D<int32_t> const& coords) const
 {
     return mPositions.at(coords);
 }
 
 bool PositionMap::isMovementOutOfBounds(
-    const Position& position,
-    const Direction2D direction) const
+    Position const& position, const Direction2D direction) const
 {
-    const auto [coordX, coordY]{ position.getCoordinates() };
-    const auto [sizeX, sizeY]{ size() };
+    auto const [coordX, coordY]{position.getCoordinates()};
+    auto const [sizeX, sizeY]{size()};
     if (coordX == 0 && direction == Direction2D::Left) {
         return true;
     }
@@ -95,9 +94,9 @@ bool PositionMap::isMovementOutOfBounds(
 
 void PositionMap::lookForExtremes()
 {
-    bool originFound{ false };
-    bool destFound{ false };
-    for (const auto& [point, item] : mPositions) {
+    bool originFound{false};
+    bool destFound{false};
+    for (auto const& [point, item] : mPositions) {
         if (item.getType() == PositionType::Origin) {
             mOrigin = &item;
             originFound = true;
@@ -112,33 +111,32 @@ void PositionMap::lookForExtremes()
     }
 }
 
-const Position& PositionMap::getOrigin() const { return *mOrigin; }
+Position const& PositionMap::getOrigin() const { return *mOrigin; }
 
-const Position& PositionMap::getDestination() const { return *mDestination; }
+Position const& PositionMap::getDestination() const { return *mDestination; }
 
 void PositionMap::initializeCosts()
 {
     mCosts.reserve(size().first * size().second);
-    for (const auto& [point, item] : mPositions) {
+    for (auto const& [point, item] : mPositions) {
         mCosts.emplace(point, std::numeric_limits<uint32_t>::max());
     }
 }
 
-void PositionMap::setCost(const Position& position, uint32_t newCost)
+void PositionMap::setCost(Position const& position, uint32_t newCost)
 {
     mCosts.at(position.getPoint()) = newCost;
 }
 
-uint32_t PositionMap::getCost(const Position& position)
+uint32_t PositionMap::getCost(Position const& position)
 {
     return mCosts.at(position.getPoint());
 }
 
-const Position& PositionMap::move(
-    const Position& position,
-    const Direction2D direction) const
+Position const&
+PositionMap::move(Position const& position, const Direction2D direction) const
 {
-    auto coords{ position.getPoint() + direction };
+    auto coords{position.getPoint() + direction};
     return getPositionFromCoordinates(coords);
 }
 

@@ -16,10 +16,10 @@ namespace aoc_2022_3 {
  *
  * @return
  */
-uint32_t calculatePriority(const char itemType)
+uint32_t calculatePriority(char const itemType)
 {
-    constexpr uint32_t UppercaseFirstPriorityValue{ 27 };
-    constexpr uint32_t LowercaseFirstPriorityValue{ 1 };
+    constexpr uint32_t UppercaseFirstPriorityValue{27};
+    constexpr uint32_t LowercaseFirstPriorityValue{1};
 
     if (itemType >= 'a' && itemType <= 'z') {
         return static_cast<uint32_t>(itemType - 'a')
@@ -33,15 +33,14 @@ uint32_t calculatePriority(const char itemType)
 }
 
 char searchCommonItemInRucksack(
-    const std::string& compartment1,
-    const std::string& compartment2)
+    std::string const& compartment1, std::string const& compartment2)
 {
     // fill first set
     const std::unordered_set<char> itemTypes1(
         std::cbegin(compartment1), std::cend(compartment1));
     // look for repeated item types in both compartments
-    for (const char& c : compartment2) {
-        if (const auto search = itemTypes1.find(c);
+    for (char const& c : compartment2) {
+        if (auto const search = itemTypes1.find(c);
             search != itemTypes1.cend()) {
             return c;
         }
@@ -50,9 +49,9 @@ char searchCommonItemInRucksack(
 }
 
 char searchCommonItemInGroup(
-    const std::string& rucksack1,
-    const std::string& rucksack2,
-    const std::string& rucksack3)
+    std::string const& rucksack1,
+    std::string const& rucksack2,
+    std::string const& rucksack3)
 {
     // fill first set
     const std::unordered_set<char> itemTypes1(
@@ -61,10 +60,10 @@ char searchCommonItemInGroup(
     const std::unordered_set<char> itemTypes2(
         std::cbegin(rucksack2), std::cend(rucksack2));
     // look for repeated item types in both compartments
-    for (const char& c : rucksack3) {
-        if (const auto search1 = itemTypes1.find(c);
+    for (char const& c : rucksack3) {
+        if (auto const search1 = itemTypes1.find(c);
             search1 != itemTypes1.cend()) {
-            if (const auto search2 = itemTypes2.find(c);
+            if (auto const search2 = itemTypes2.find(c);
                 search2 != itemTypes2.cend()) {
                 return c;
             }
@@ -77,9 +76,9 @@ char searchCommonItemInGroup(
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(const std::string& filename)
+std::string solvePart1(std::string const& filename)
 {
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
     std::string line;
     uint32_t totalPriority = 0U;
 
@@ -95,11 +94,11 @@ std::string solvePart1(const std::string& filename)
     return std::to_string(totalPriority);
 }
 
-std::string solvePart2(const std::string& filename)
+std::string solvePart2(std::string const& filename)
 {
-    constexpr uint32_t GroupSize{ 3U };
+    constexpr uint32_t GroupSize{3U};
 
-    std::ifstream stream{ filename };
+    std::ifstream stream{filename};
     std::array<std::string, GroupSize> rucksacks;
     uint32_t totalPriority = 0U;
 

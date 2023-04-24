@@ -24,7 +24,7 @@ public:
      *
      * @return     True if the vertex was added. False, otherwise.
      */
-    bool addVertex(const std::string& name, const T& info)
+    bool addVertex(std::string const& name, T const& info)
     {
         auto [insertedItem, isInserted]{
             mVertices.emplace(name, Vertex<T, W>{name, info})};
@@ -38,7 +38,7 @@ public:
      *
      * @return     True if the vertex was added. False, otherwise.
      */
-    bool addVertex(const std::string_view name, const T& info)
+    bool addVertex(const std::string_view name, T const& info)
     {
         auto [insertedItem, isInserted]{
             mVertices.emplace(name, Vertex<T, W>{name, info})};
@@ -68,7 +68,7 @@ public:
      *
      * @return     True if the vertex was added. False, otherwise.
      */
-    bool addVertex(const Vertex<T, W>& vertex)
+    bool addVertex(Vertex<T, W> const& vertex)
     {
         auto [insertedItem, isInserted]{mVertices.emplace(
             vertex.getName(),
@@ -82,7 +82,7 @@ public:
      *
      * @return     True if the vertex was deleted. False, otherwise.
      */
-    bool removeVertex(const std::string& vertexName)
+    bool removeVertex(std::string const& vertexName)
     {
         return mVertices.erase(vertexName) == 1U;
     }
@@ -92,15 +92,15 @@ public:
      * @param[in]  condition  The condition.
      */
     void
-    removeVertexIf(std::function<bool(const Vertex<T, W>& vertex)> condition)
+    removeVertexIf(std::function<bool(Vertex<T, W> const& vertex)> condition)
     {
         std::vector<std::string> erasableVertices{
             mVertices
-            | ranges::views::filter([&condition](const auto& item) -> bool {
+            | ranges::views::filter([&condition](auto const& item) -> bool {
                   auto const& [key, value] = item;
                   return condition(value);
               })
-            | ranges::views::transform([](const auto& item) {
+            | ranges::views::transform([](auto const& item) {
                   auto const& [key, value] = item;
                   return key;
               })
@@ -114,7 +114,7 @@ public:
         });
         // delete vertices
         ranges::for_each(
-            erasableVertices, [this](const std::string& vertexName) {
+            erasableVertices, [this](std::string const& vertexName) {
                 mVertices.erase(vertexName);
             });
     }
@@ -128,8 +128,8 @@ public:
      * @return     True if the edge was added. False, otherwise.
      */
     bool addDirectedEdge(
-        const std::string& vertexName1,
-        const std::string& vertexName2,
+        std::string const& vertexName1,
+        std::string const& vertexName2,
         const W weight)
     {
         if (!mVertices.contains(vertexName1)
@@ -149,8 +149,8 @@ public:
      * @return     True if the edge was added. False, otherwise.
      */
     bool addUndirectedEdge(
-        const std::string& vertexName1,
-        const std::string& vertexName2,
+        std::string const& vertexName1,
+        std::string const& vertexName2,
         const W weight)
     {
         if (!mVertices.contains(vertexName1)
@@ -171,7 +171,7 @@ public:
      * @return     True if the edge was deleted. False, otherwise.
      */
     bool removeDirectedEdge(
-        const std::string& vertexName1, const std::string& vertexName2)
+        std::string const& vertexName1, std::string const& vertexName2)
     {
         if (!mVertices.contains(vertexName1)
             || !mVertices.contains(vertexName2)) {
@@ -189,7 +189,7 @@ public:
      * @return     True if all the edges were deleted. False, otherwise.
      */
     bool removeAllEdges(
-        const std::string& vertexName1, const std::string& vertexName2)
+        std::string const& vertexName1, std::string const& vertexName2)
     {
         if (!mVertices.contains(vertexName1)
             || !mVertices.contains(vertexName2)) {
@@ -204,7 +204,8 @@ public:
      *
      * @return     List of vertices.
      */
-    [[nodiscard]] const std::unordered_map<std::string, Vertex<T, W>>& getVertices() const
+    [[nodiscard]] std::unordered_map<std::string, Vertex<T, W>> const&
+    getVertices() const
     {
         return mVertices;
     }
@@ -215,7 +216,8 @@ public:
      *
      * @return     The vertex object.
      */
-    [[nodiscard]] const Vertex<T, W>& getVertex(const std::string& vertexName) const
+    [[nodiscard]] Vertex<T, W> const&
+    getVertex(std::string const& vertexName) const
     {
         return mVertices.at(vertexName);
     }

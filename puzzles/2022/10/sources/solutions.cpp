@@ -11,14 +11,12 @@ namespace aoc_2022_10 {
 
 // ---------- Private Methods ----------
 
-constexpr char LitCrtCharacter{ '#' };
-constexpr char DarkCrtCharacter{ '.' };
-constexpr uint8_t CrtRowLength{ 40U };
+constexpr char LitCrtCharacter{'#'};
+constexpr char DarkCrtCharacter{'.'};
+constexpr uint8_t CrtRowLength{40U};
 
 const std::unordered_map<std::string, uint32_t> CyclesPerInstruction{
-    { AddxInstructionName, 2U },
-    { NoopInstructionName, 1U }
-};
+    {AddxInstructionName, 2U}, {NoopInstructionName, 1U}};
 
 void draw(
     std::vector<std::vector<char>>& crtScreen,
@@ -26,7 +24,7 @@ void draw(
     uint32_t crtPixelPosition,
     uint32_t registerValue)
 {
-    const bool isLit = (crtPixelPosition >= (registerValue - 1))
+    bool const isLit = (crtPixelPosition >= (registerValue - 1))
         && (crtPixelPosition <= (registerValue + 1));
     crtScreen.at(rowIndex).emplace_back(
         (isLit) ? (LitCrtCharacter) : (DarkCrtCharacter));
@@ -49,19 +47,19 @@ void moveCrtPointer(
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(const std::string& filename)
+std::string solvePart1(std::string const& filename)
 {
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
     std::string line;
-    uint32_t cycleStrengthSum{ 0U };
-    uint32_t cycleCounter{ 1U };
-    uint32_t registerValue{ 1U };
-    constexpr uint32_t InitialCheckpointCycle{ 20U };
-    constexpr uint32_t CyclesBetweenCheckpoints{ 40U };
-    uint32_t nextCheckpointCycle{ InitialCheckpointCycle };
+    uint32_t cycleStrengthSum{0U};
+    uint32_t cycleCounter{1U};
+    uint32_t registerValue{1U};
+    constexpr uint32_t InitialCheckpointCycle{20U};
+    constexpr uint32_t CyclesBetweenCheckpoints{40U};
+    uint32_t nextCheckpointCycle{InitialCheckpointCycle};
 
     while (std::getline(fileStream, line)) {
-        std::stringstream lineStream{ line };
+        std::stringstream lineStream{line};
         std::string instruction;
         lineStream >> instruction;
         if (((instruction == AddxInstructionName)
@@ -84,21 +82,21 @@ std::string solvePart1(const std::string& filename)
     return std::to_string(cycleStrengthSum);
 }
 
-std::string solvePart2(const std::string& filename)
+std::string solvePart2(std::string const& filename)
 {
-    uint32_t registerValue{ 1U };
-    uint32_t crtPixelPosition{ 0U };
-    std::ifstream fileStream{ filename };
+    uint32_t registerValue{1U};
+    uint32_t crtPixelPosition{0U};
+    std::ifstream fileStream{filename};
     std::string line;
-    std::vector<std::vector<char>> crtScreen{ {} };
-    uint8_t crtScreenRowIndex{ 0U };
+    std::vector<std::vector<char>> crtScreen{{}};
+    uint8_t crtScreenRowIndex{0U};
 
     while (std::getline(fileStream, line)) {
-        std::stringstream lineStream{ line };
+        std::stringstream lineStream{line};
         std::string instructionText;
         lineStream >> instructionText;
-        const InstructionType instruction{ convertInstructionType(
-            instructionText) };
+        const InstructionType instruction{
+            convertInstructionType(instructionText)};
         switch (instruction) {
         case InstructionType::ADDX: {
             // draw

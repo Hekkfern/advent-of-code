@@ -10,13 +10,13 @@ namespace aoc_2022_24 {
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(const std::string& filename)
+std::string solvePart1(std::string const& filename)
 {
     (void)filename;
     return "";
 }
 
-std::string solvePart2(const std::string& filename)
+std::string solvePart2(std::string const& filename)
 {
     (void)filename;
     return "";

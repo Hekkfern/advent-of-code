@@ -5,14 +5,14 @@
 namespace aoc_2022_11 {
 
 Operation::Operation(const Operator op, const std::optional<WorryLevel> operand)
-    : mOperator{ op }
-    , mOperand{ operand }
+    : mOperator{op}
+    , mOperand{operand}
 {
 }
 
 WorryLevel Operation::operator()(const WorryLevel oldValue)
 {
-    const WorryLevel rhs{ mOperand ? *mOperand : oldValue };
+    const WorryLevel rhs{mOperand ? *mOperand : oldValue};
     if (mOperator == Operator::MULTIPLY) {
         return (oldValue * rhs);
     } else if (mOperator == Operator::ADD) {
@@ -22,7 +22,7 @@ WorryLevel Operation::operator()(const WorryLevel oldValue)
     }
 }
 
-bool Operation::operator==(const Operation& other)
+bool Operation::operator==(Operation const& other)
 {
     return (mOperator == other.mOperator) && (mOperand == other.mOperand);
 }

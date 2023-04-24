@@ -12,7 +12,7 @@ namespace utils::time {
  *
  * @return     The execution time, expressed in microseconds.
  */
-[[nodiscard]] std::chrono::microseconds calculateExecutionTime(
-    std::function<void()>&& action);
+[[nodiscard]] std::chrono::microseconds
+calculateExecutionTime(std::function<void()>&& action);
 
-}
+} // namespace utils::time

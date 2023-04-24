@@ -28,7 +28,7 @@ struct Coord2D {
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] bool operator==(const Coord2D<>& other) const
+    [[nodiscard]] bool operator==(Coord2D<> const& other) const
     {
         return mX == other.mX && mY == other.mY;
     }

@@ -17,26 +17,26 @@ class Position {
 public:
     Position(Point2D<int32_t>&& pos, Height height, PositionType type);
     std::pair<size_t, size_t> getCoordinates() const;
-    const Point2D<int32_t>& getPoint() const;
+    Point2D<int32_t> const& getPoint() const;
     Height getHeight() const;
     PositionType getType() const;
-    bool operator==(const Position& other) const;
+    bool operator==(Position const& other) const;
 
 private:
-    const Point2D<int32_t> mPoint2D;
+    Point2D<int32_t> const mPoint2D;
     const PositionType mType;
     const Height mHeight;
 };
 
-Position operator+(const Position& position, const Direction2D& direction2D);
+Position operator+(Position const& position, Direction2D const& direction2D);
 
-Position operator+(const Direction2D& direction2D, const Position& position);
+Position operator+(Direction2D const& direction2D, Position const& position);
 
 } // namespace aoc_2022_12
 
 template <>
 struct std::hash<aoc_2022_12::Position> {
-    std::size_t operator()(const aoc_2022_12::Position& k) const
+    std::size_t operator()(aoc_2022_12::Position const& k) const
     {
         return std::hash<utils::geometry2d::Point2D<int32_t>>()(k.getPoint());
     }

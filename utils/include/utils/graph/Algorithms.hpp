@@ -19,7 +19,7 @@ namespace utils::graph {
  * @see        https://en.wikipedia.org/wiki/Floyd-Warshall_algorithm
  */
 template <std::equality_comparable T, UnsignedIntegerType W = uint32_t>
-[[nodiscard]] Graph<T, W> applyFloydWarshall(const Graph<T, W>& graph)
+[[nodiscard]] Graph<T, W> applyFloydWarshall(Graph<T, W> const& graph)
 {
     std::unordered_map<std::string, std::unordered_map<std::string, uint64_t>>
         distances;
@@ -44,7 +44,7 @@ template <std::equality_comparable T, UnsignedIntegerType W = uint32_t>
     for (auto& [viaName, viaVertex] : graph.getVertices()) {
         for (auto& [fromName, fromVertex] : graph.getVertices()) {
             for (auto& [toName, toVertex] : graph.getVertices()) {
-                const auto viaDistance{
+                auto const viaDistance{
                     distances[fromName][viaName] + distances[viaName][toName]};
                 if (distances[fromName][toName] > viaDistance) {
                     distances[fromName][toName] = viaDistance;
@@ -55,11 +55,11 @@ template <std::equality_comparable T, UnsignedIntegerType W = uint32_t>
 
     Graph<T, W> resultGraph;
     // copy vertexes
-    for (const auto& [vertexName, vertexItem] : graph.getVertices()) {
+    for (auto const& [vertexName, vertexItem] : graph.getVertices()) {
         resultGraph.addVertex(vertexItem);
     }
     // add all paths
-    for (const auto& [fromName, fromPaths] : distances) {
+    for (auto const& [fromName, fromPaths] : distances) {
         for (auto [toName, weight] : fromPaths) {
             resultGraph.addDirectedEdge(
                 fromName, toName, static_cast<W>(weight));

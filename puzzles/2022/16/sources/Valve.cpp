@@ -10,9 +10,9 @@ Valve::Valve(const std::string_view name, const uint32_t flowRate)
 
 uint32_t Valve::getFlowRate() const { return mFlowRate; }
 
-const std::string& Valve::getName() const { return mName; }
+std::string const& Valve::getName() const { return mName; }
 
-bool Valve::operator==(const Valve& other) const
+bool Valve::operator==(Valve const& other) const
 {
     return mName == other.mName;
 }

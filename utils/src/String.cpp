@@ -4,19 +4,19 @@
 
 namespace utils::string {
 
-bool contains(const std::string& str, const std::string& match)
+bool contains(std::string const& str, std::string const& match)
 {
     return str.find(match) != std::string::npos;
 }
 
-std::string trim(const std::string& s)
+std::string trim(std::string const& s)
 {
     auto first = s.find_first_not_of(" \f\n\r\t\v");
     auto last = s.find_last_not_of(" \f\n\r\t\v");
     return (first == std::string::npos) ? "" : s.substr(first, last + 1);
 }
 
-std::string join(const std::vector<std::string>& strings, std::string delim)
+std::string join(std::vector<std::string> const& strings, std::string delim)
 {
     if (strings.empty()) {
         return {};
@@ -26,15 +26,15 @@ std::string join(const std::vector<std::string>& strings, std::string delim)
         strings.begin() + 1,
         strings.end(),
         strings[0],
-        [&delim](const std::string& x, const std::string& y) {
+        [&delim](std::string const& x, std::string const& y) {
             return x + delim + y;
         });
 }
 
-std::string convertFrom(const std::vector<std::vector<char>>& input)
+std::string convertFrom(std::vector<std::vector<char>> const& input)
 {
     std::vector<std::string> lines;
-    for (const auto& item : input) {
+    for (auto const& item : input) {
         lines.emplace_back(item.begin(), item.end());
     }
     return join(lines, "\n");
@@ -42,12 +42,13 @@ std::string convertFrom(const std::vector<std::vector<char>>& input)
 
 std::vector<std::string> split(std::string_view str, std::string_view separator)
 {
-    auto list{ str | ranges::views::split(separator)
-               | ranges::views::transform([](auto&& rng) {
-                     return std::string(
-                         &*rng.begin(),
-                         static_cast<std::size_t>(ranges::distance(rng)));
-                 }) };
+    auto list{
+        str | ranges::views::split(separator)
+        | ranges::views::transform([](auto&& rng) {
+              return std::string(
+                  &*rng.begin(),
+                  static_cast<std::size_t>(ranges::distance(rng)));
+          })};
     return ranges::to<std::vector>(list);
 }
 

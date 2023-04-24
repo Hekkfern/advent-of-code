@@ -18,7 +18,7 @@ TEST_CASE(
     "[SquareDiamond2D, SquareDiamond2D_getVertexes]")
 {
     const SquareDiamond2D shape{Point2D{10, 10}, 2};
-    const auto vertexes{shape.getVertexes()};
+    auto const vertexes{shape.getVertexes()};
     CHECK(vertexes[0] == (Point2D{10, 12}));
     CHECK(vertexes[1] == (Point2D{12, 10}));
     CHECK(vertexes[2] == (Point2D{10, 8}));

@@ -8,14 +8,14 @@ TEST_CASE(
     "[Operations2D] Move point towards a direction", "[utils][Operations2D]")
 {
     const Point2D p1{3, -2};
-    const Point2D<> p2{Operations2D<>::move(p1, Direction2D::UpRight)};
+    Point2D<> const p2{Operations2D<>::move(p1, Direction2D::UpRight)};
     CHECK(p2 == Point2D{4, -1});
 }
 
 TEST_CASE("[Operations2D] Move point by a vector", "[Operations2D]")
 {
     const Point2D p1{3, -2};
-    const Point2D<> p2{Operations2D<>::move(p1, Vector2D{-1, 4})};
+    Point2D<> const p2{Operations2D<>::move(p1, Vector2D{-1, 4})};
     CHECK(p2 == Point2D{2, 2});
 }
 
@@ -23,7 +23,7 @@ TEST_CASE("[Operations2D] Point2D + Vector2D", "[utils][Operations2D]")
 {
     const Point2D point2D{4, 1};
     const Vector2D vector2D{2, 3};
-    const auto newPoint2D{point2D + vector2D};
+    auto const newPoint2D{point2D + vector2D};
     CHECK(newPoint2D.getX() == 6);
     CHECK(newPoint2D.getY() == 4);
 }
@@ -32,7 +32,7 @@ TEST_CASE("[Operations2D] Vector2D + Point2D", "[utils][Operations2D]")
 {
     const Point2D point2D{4, 1};
     const Vector2D vector2D{2, 3};
-    const auto newPoint2D{vector2D + point2D};
+    auto const newPoint2D{vector2D + point2D};
     CHECK(newPoint2D.getX() == 6);
     CHECK(newPoint2D.getY() == 4);
 }

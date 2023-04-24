@@ -10,7 +10,7 @@ public:
         : mValue{value}
     {
     }
-    bool operator==(const CustomInfo& other) const
+    bool operator==(CustomInfo const& other) const
     {
         return mValue == other.mValue;
     }
@@ -23,13 +23,13 @@ TEST_CASE("[Vertex] Constructor", "[utils][graph][Vertex]")
 {
     SECTION("With integer-type information")
     {
-        const auto vertex{Vertex<uint32_t>{"vertex1", 24U}};
+        auto const vertex{Vertex<uint32_t>{"vertex1", 24U}};
         CHECK(vertex.getName() == "vertex1");
         CHECK(vertex.getInfo() == 24U);
     }
     SECTION("With custom-class-type information")
     {
-        const auto vertex{Vertex<CustomInfo>{"vertex1", CustomInfo{12343U}}};
+        auto const vertex{Vertex<CustomInfo>{"vertex1", CustomInfo{12343U}}};
         CHECK(vertex.getName() == "vertex1");
         CHECK(vertex.getInfo() == CustomInfo{12343U});
     }
@@ -39,10 +39,10 @@ TEST_CASE("[Vertex] Equality operator", "[utils][graph][Vertex]")
 {
     SECTION("With integer-type information")
     {
-        const auto vertex1{Vertex<uint32_t>{"vertex", 24U}};
+        auto const vertex1{Vertex<uint32_t>{"vertex", 24U}};
         SECTION("Equal")
         {
-            const auto vertex2{Vertex<uint32_t>{"vertex", 12U}};
+            auto const vertex2{Vertex<uint32_t>{"vertex", 12U}};
             CHECK(vertex1 == vertex2);
             CHECK_FALSE(vertex1 != vertex2);
         }
@@ -50,13 +50,13 @@ TEST_CASE("[Vertex] Equality operator", "[utils][graph][Vertex]")
         {
             SECTION("Different name")
             {
-                const auto vertex2{Vertex<uint32_t>{"vertexAAAA", 12U}};
+                auto const vertex2{Vertex<uint32_t>{"vertexAAAA", 12U}};
                 CHECK_FALSE(vertex1 == vertex2);
                 CHECK(vertex1 != vertex2);
             }
             SECTION("Different info")
             {
-                const auto vertex2{Vertex<uint32_t>{"vertex", 222U}};
+                auto const vertex2{Vertex<uint32_t>{"vertex", 222U}};
                 CHECK(vertex1 == vertex2);
                 CHECK_FALSE(vertex1 != vertex2);
             }
@@ -64,17 +64,17 @@ TEST_CASE("[Vertex] Equality operator", "[utils][graph][Vertex]")
     }
     SECTION("With custom-class-type information")
     {
-        const auto vertex1{Vertex<CustomInfo>{"vertex1", CustomInfo{12343U}}};
+        auto const vertex1{Vertex<CustomInfo>{"vertex1", CustomInfo{12343U}}};
         SECTION("Equal")
         {
-            const auto vertex2{
+            auto const vertex2{
                 Vertex<CustomInfo>{"vertex1", CustomInfo{12343U}}};
             CHECK(vertex1 == vertex2);
             CHECK_FALSE(vertex1 != vertex2);
         }
         SECTION("Different")
         {
-            const auto vertex2{
+            auto const vertex2{
                 Vertex<CustomInfo>{"vertexAAAA", CustomInfo{54343U}}};
             CHECK_FALSE(vertex1 == vertex2);
             CHECK(vertex1 != vertex2);
@@ -88,7 +88,7 @@ TEST_CASE("[Vertex] addEdge method", "[utils][graph][Vertex]")
     {
         auto vertex1{Vertex<uint32_t>{"vertex1", 24U}};
         auto vertex2{Vertex<uint32_t>{"vertex2", 322U}};
-        const bool result{vertex1.addEdge(vertex2, 2U)};
+        bool const result{vertex1.addEdge(vertex2, 2U)};
         CHECK(result);
         CHECK(vertex1.getEdges().size() == 1U);
         CHECK(vertex1.getEdges().at("vertex2").getWeight() == 2U);
@@ -101,7 +101,7 @@ TEST_CASE("[Vertex] addEdge method", "[utils][graph][Vertex]")
     {
         auto vertex1{Vertex<CustomInfo>{"vertex1", CustomInfo{12343U}}};
         auto vertex2{Vertex<CustomInfo>{"vertex2", CustomInfo{454U}}};
-        const bool result{vertex1.addEdge(vertex2, 2U)};
+        bool const result{vertex1.addEdge(vertex2, 2U)};
         CHECK(result);
         CHECK(vertex1.getEdges().size() == 1U);
         CHECK(vertex1.getEdges().at("vertex2").getWeight() == 2U);
@@ -121,7 +121,7 @@ TEST_CASE("[Vertex] removeEdge method", "[utils][graph][Vertex]")
         auto vertex3{Vertex<uint32_t>{"vertex3", 2U}};
         vertex1.addEdge(vertex2, 2U);
         vertex1.addEdge(vertex3, 3U);
-        const bool result{vertex1.removeEdge("vertex2")};
+        bool const result{vertex1.removeEdge("vertex2")};
         CHECK(result);
         CHECK(vertex1.getEdges().size() == 1U);
         CHECK(vertex2.getEdges().empty());
@@ -133,7 +133,7 @@ TEST_CASE("[Vertex] removeEdge method", "[utils][graph][Vertex]")
         auto vertex3{Vertex<CustomInfo>{"vertex3", CustomInfo{2U}}};
         vertex1.addEdge(vertex2, 2U);
         vertex1.addEdge(vertex3, 3U);
-        const bool result{vertex1.removeEdge("vertex2")};
+        bool const result{vertex1.removeEdge("vertex2")};
         CHECK(result);
         CHECK(vertex1.getEdges().size() == 1U);
         CHECK(vertex2.getEdges().empty());

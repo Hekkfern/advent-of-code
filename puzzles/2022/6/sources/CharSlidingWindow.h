@@ -3,7 +3,8 @@
 #include <bitset>
 #include <deque>
 
-template <uint32_t WindowSize> class CharSlidingWindow {
+template <uint32_t WindowSize>
+class CharSlidingWindow {
 public:
     void addChar(char newChar)
     {
@@ -30,7 +31,7 @@ public:
     }
 
 private:
-    static constexpr uint32_t AlphabetSize{ 26U };
+    static constexpr uint32_t AlphabetSize{26U};
 
     std::deque<char> mChars{};
     std::bitset<AlphabetSize> mSlidingBinary{};

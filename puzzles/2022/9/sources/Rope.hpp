@@ -21,7 +21,7 @@ public:
         mKnots.front() += direction;
         updateTails();
     }
-    const Point2D<int32_t>& getTailPosition() const { return mKnots.back(); }
+    Point2D<int32_t> const& getTailPosition() const { return mKnots.back(); }
 
 private:
     void updateTails()
@@ -33,8 +33,8 @@ private:
                 return;
             }
 
-            const Coord2D<int32_t> desiredMovement{vector2D.getCoordinates()};
-            const Vector2D<int32_t> movement{
+            Coord2D<int32_t> const desiredMovement{vector2D.getCoordinates()};
+            Vector2D<int32_t> const movement{
                 std::clamp(desiredMovement.mX, -1, 1),
                 std::clamp(desiredMovement.mY, -1, 1)};
 

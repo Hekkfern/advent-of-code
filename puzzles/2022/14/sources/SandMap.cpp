@@ -10,7 +10,7 @@ using namespace utils::geometry2d;
 namespace aoc_2022_14 {
 
 void SandMap::addRockLine(
-    const Point2D<int32_t>& start, const Point2D<int32_t>& end)
+    Point2D<int32_t> const& start, Point2D<int32_t> const& end)
 {
     Vector2D vector2D{start, end};
     vector2D.normalize();
@@ -36,13 +36,13 @@ uint32_t SandMap::getNumberOfSandGrains() const
     return static_cast<uint32_t>(mSand.size());
 }
 
-static const Point2D<int32_t> SandOrigin{500, 0};
+static Point2D<int32_t> const SandOrigin{500, 0};
 constexpr Direction2D FallingDirection{Direction2D::Up};
 constexpr Direction2D SlidingLeftDirection{Direction2D::UpLeft};
 constexpr Direction2D SlidingRightDirection{Direction2D::UpRight};
 
 std::optional<Point2D<int32_t>>
-SandMap::sandGoDown(const Point2D<int32_t>& position)
+SandMap::sandGoDown(Point2D<int32_t> const& position)
 {
     Point2D<int32_t> nextPosition{position + FallingDirection};
     if (mRocks.contains(nextPosition) || mSand.contains(nextPosition)) {
@@ -55,7 +55,7 @@ SandMap::sandGoDown(const Point2D<int32_t>& position)
 }
 
 std::optional<Point2D<int32_t>> SandMap::sandSlide(
-    const Point2D<int32_t>& position, const Direction2D& direction2D)
+    Point2D<int32_t> const& position, Direction2D const& direction2D)
 {
     assert(
         (direction2D == SlidingLeftDirection)
@@ -106,7 +106,7 @@ bool SandMap::addSandGrainInConstrainedSpace()
     }
 }
 
-bool SandMap::isOutside(const Point2D<int32_t>& position) const
+bool SandMap::isOutside(Point2D<int32_t> const& position) const
 {
     return mBoundingBox.isOutside(position, Direction2D::Left)
         || mBoundingBox.isOutside(position, Direction2D::Up)

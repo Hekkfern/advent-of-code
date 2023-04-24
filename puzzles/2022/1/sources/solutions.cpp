@@ -37,7 +37,7 @@ void insertInRanking(
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(const std::string& filename)
+std::string solvePart1(std::string const& filename)
 {
     std::ifstream stream{filename};
     std::string line;
@@ -56,7 +56,7 @@ std::string solvePart1(const std::string& filename)
     return std::to_string(highestSum);
 }
 
-std::string solvePart2(const std::string& filename)
+std::string solvePart2(std::string const& filename)
 {
     std::ifstream stream{filename};
     std::string line;

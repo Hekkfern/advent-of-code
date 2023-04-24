@@ -9,14 +9,14 @@ namespace aoc_2022_13 {
 
 // ---------- Private Methods ----------
 
-Packet parsePacket(const std::string& line)
+Packet parsePacket(std::string const& line)
 {
-    std::stringstream lineStream{ line };
+    std::stringstream lineStream{line};
     Packet packet;
-    Item* currentItem{ nullptr };
+    Item* currentItem{nullptr};
     while (lineStream) {
         if (std::isdigit(lineStream.peek()) != 0) { // New value node
-            uint32_t value{ 0U };
+            uint32_t value{0U};
             lineStream >> value;
             currentItem->addIntegerItem(value);
         } else if (lineStream.peek() == '[') { // New list node
@@ -26,7 +26,7 @@ Packet parsePacket(const std::string& line)
                     std::make_unique<Item>(Item::createListItem(nullptr)));
                 currentItem = packet.getRoot();
             } else {
-                Item& nextItem{ currentItem->addListItem() };
+                Item& nextItem{currentItem->addListItem()};
                 currentItem = &nextItem;
             }
         } else if (lineStream.peek() == ']') { // End of list node
@@ -57,17 +57,16 @@ uint32_t findDecoderKey(std::vector<Packet>& packets)
 {
     ranges::sort(packets, std::less<>());
 
-    auto keyPacket1{ createKeyPacket(2U) };
-    auto keyPacket2{ createKeyPacket(6U) };
+    auto keyPacket1{createKeyPacket(2U)};
+    auto keyPacket2{createKeyPacket(6U)};
 
-    auto first{ ranges::lower_bound(packets, keyPacket1, std::less<>()) };
-    auto second{ ranges::upper_bound(packets, keyPacket2, std::less<>()) };
+    auto first{ranges::lower_bound(packets, keyPacket1, std::less<>())};
+    auto second{ranges::upper_bound(packets, keyPacket2, std::less<>())};
 
     // lower_bound returns the first element not less than the lookup
     // 1-based index
     uint32_t key{
-        static_cast<uint32_t>(ranges::distance(packets.begin(), first)) + 1U
-    };
+        static_cast<uint32_t>(ranges::distance(packets.begin(), first)) + 1U};
     // upper_bound returns the first element greater than the lookup
     // 1-based index and offset for Packet(2)
     key *= static_cast<uint32_t>(ranges::distance(packets.begin(), second))
@@ -79,19 +78,19 @@ uint32_t findDecoderKey(std::vector<Packet>& packets)
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(const std::string& filename)
+std::string solvePart1(std::string const& filename)
 {
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
     std::string line;
-    uint32_t index{ 1U };
-    uint32_t sum{ 0U };
+    uint32_t index{1U};
+    uint32_t sum{0U};
     while (std::getline(fileStream, line)) {
         if (line.empty()) {
             continue;
         }
-        auto packet1{ parsePacket(line) };
+        auto packet1{parsePacket(line)};
         std::getline(fileStream, line);
-        auto packet2{ parsePacket(line) };
+        auto packet2{parsePacket(line)};
         if (packet1 < packet2) {
             sum += index;
         }
@@ -100,9 +99,9 @@ std::string solvePart1(const std::string& filename)
     return std::to_string(sum);
 }
 
-std::string solvePart2(const std::string& filename)
+std::string solvePart2(std::string const& filename)
 {
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
     std::string line;
     std::vector<Packet> packets;
     while (std::getline(fileStream, line)) {

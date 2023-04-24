@@ -20,7 +20,7 @@ public:
      * @return     Resulting position of the movement.
      */
     [[nodiscard]] static Point2D<T>
-    move(const Point2D<T>& origin, const Vector2D<T>& movement)
+    move(Point2D<T> const& origin, Vector2D<T> const& movement)
     {
         return Point2D{
             origin.getX() + movement.getX(), origin.getY() + movement.getY()};
@@ -35,7 +35,7 @@ public:
      * @return     Resulting position of the movement.
      */
     [[nodiscard]] static Point2D<T>
-    move(const Point2D<T>& origin, const Direction2D& direction)
+    move(Point2D<T> const& origin, Direction2D const& direction)
     {
         return origin + toVector2D(direction);
     }
@@ -46,7 +46,7 @@ public:
      *
      * @return     Vector2D representation of the direction.
      */
-    [[nodiscard]] static Vector2D<T> toVector2D(const Direction2D& direction)
+    [[nodiscard]] static Vector2D<T> toVector2D(Direction2D const& direction)
     {
         T coordX{0};
         T coordY{0};
@@ -97,7 +97,7 @@ public:
  */
 template <SignedIntegerType T = int32_t>
 [[nodiscard]] Point2D<T>
-operator+(const Point2D<T>& origin, const Vector2D<T>& movement)
+operator+(Point2D<T> const& origin, Vector2D<T> const& movement)
 {
     return Operations2D<T>::move(origin, movement);
 }
@@ -114,7 +114,7 @@ operator+(const Point2D<T>& origin, const Vector2D<T>& movement)
  */
 template <SignedIntegerType T = int32_t>
 [[nodiscard]] Point2D<T>
-operator+(const Vector2D<T>& movement, const Point2D<T>& origin)
+operator+(Vector2D<T> const& movement, Point2D<T> const& origin)
 {
     return Operations2D<T>::move(origin, movement);
 }
@@ -130,7 +130,7 @@ operator+(const Vector2D<T>& movement, const Point2D<T>& origin)
  * @return     The result of the movement.
  */
 template <SignedIntegerType T = int32_t>
-void operator+=(Point2D<T>& point, const Vector2D<T>& movement)
+void operator+=(Point2D<T>& point, Vector2D<T> const& movement)
 {
     point = point + movement;
 }
@@ -147,7 +147,7 @@ void operator+=(Point2D<T>& point, const Vector2D<T>& movement)
  */
 template <SignedIntegerType T = int32_t>
 [[nodiscard]] Point2D<T>
-operator+(const Point2D<T>& origin, const Direction2D& direction)
+operator+(Point2D<T> const& origin, Direction2D const& direction)
 {
     return Operations2D<T>::move(origin, direction);
 }
@@ -164,7 +164,7 @@ operator+(const Point2D<T>& origin, const Direction2D& direction)
  */
 template <SignedIntegerType T = int32_t>
 [[nodiscard]] Point2D<T>
-operator+(const Direction2D& direction, const Point2D<T>& origin)
+operator+(Direction2D const& direction, Point2D<T> const& origin)
 {
     return Operations2D<T>::move(origin, direction);
 }
@@ -178,7 +178,7 @@ operator+(const Direction2D& direction, const Point2D<T>& origin)
  * @tparam        T          Type of the coordinates.
  */
 template <SignedIntegerType T = int32_t>
-void operator+=(Point2D<T>& point, const Direction2D& direction)
+void operator+=(Point2D<T>& point, Direction2D const& direction)
 {
     point = point + direction;
 }

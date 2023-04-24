@@ -11,9 +11,9 @@ namespace aoc_2022_7 {
 
 // ---------- Private constants ----------
 
-constexpr auto StartCommandChar{ '$' };
-constexpr auto CdCommand{ "cd" };
-constexpr auto LsCommand{ "ls" };
+constexpr auto StartCommandChar{'$'};
+constexpr auto CdCommand{"cd"};
+constexpr auto LsCommand{"ls"};
 
 // ---------- End of Private constants ----------
 
@@ -43,7 +43,7 @@ void executeLsCommand(DirectoryTree& tree, std::ifstream& fileStream)
             // it is a line describing a file
             std::string line;
             std::getline(fileStream, line);
-            std::stringstream lineStream{ line };
+            std::stringstream lineStream{line};
             uint32_t fileSize = 0;
             std::string fileName;
             lineStream >> fileSize >> fileName;
@@ -52,7 +52,7 @@ void executeLsCommand(DirectoryTree& tree, std::ifstream& fileStream)
             // it is a line describing a dir
             std::string line;
             std::getline(fileStream, line);
-            std::stringstream lineStream{ line };
+            std::stringstream lineStream{line};
             std::string dirWord;
             std::string dirName;
             lineStream >> dirWord >> dirName;
@@ -74,7 +74,7 @@ void readCommand(std::ifstream& fileStream, DirectoryTree& tree)
         // read whole line from input file
         std::string line;
         std::getline(fileStream, line);
-        std::stringstream lineStream{ line };
+        std::stringstream lineStream{line};
         // read command
         char dollarChar = 0;
         std::string command;
@@ -109,8 +109,7 @@ DirectoryTree parseInput(std::ifstream& fileStream)
 }
 
 uint32_t calculateSumOfChildDirSizes(
-    const IDirectory& dir,
-    std::function<bool(uint32_t)> condition)
+    IDirectory const& dir, std::function<bool(uint32_t)> condition)
 {
     uint32_t totalSum = 0U;
     for (auto childDir : dir.getChildDirectories()) {
@@ -126,12 +125,11 @@ uint32_t calculateSumOfChildDirSizes(
 }
 
 uint32_t getSmallestChildDirSize(
-    const IDirectory& dir,
-    std::function<bool(uint32_t)> condition)
+    IDirectory const& dir, std::function<bool(uint32_t)> condition)
 {
     uint32_t minSize = std::numeric_limits<uint32_t>::max();
     for (auto childDir : dir.getChildDirectories()) {
-        const auto dirSize = childDir->getSize();
+        auto const dirSize = childDir->getSize();
         if (condition(dirSize)) {
             minSize = std::min(minSize, dirSize);
         }
@@ -150,18 +148,18 @@ uint32_t getSmallestChildDirSize(
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(const std::string& filename)
+std::string solvePart1(std::string const& filename)
 {
-    constexpr uint32_t MaxSumSize{ 100000U };
+    constexpr uint32_t MaxSumSize{100000U};
 
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
 
-    DirectoryTree tree{ parseInput(fileStream) };
+    DirectoryTree tree{parseInput(fileStream)};
 
     constexpr auto MaxSumSizeCondition = [](const uint32_t size) {
         return size <= MaxSumSize;
     };
-    uint32_t sumSizes{ 0U };
+    uint32_t sumSizes{0U};
     if (MaxSumSizeCondition(tree.getRoot().getSize())) {
         sumSizes += tree.getRoot().getSize();
     }
@@ -171,25 +169,24 @@ std::string solvePart1(const std::string& filename)
     return std::to_string(sumSizes);
 }
 
-std::string solvePart2(const std::string& filename)
+std::string solvePart2(std::string const& filename)
 {
-    constexpr uint32_t TotalDiskCapacity{ 70000000U };
-    constexpr uint32_t MinimalUnusedDiskSpace{ 30000000U };
-    constexpr uint32_t MaxRootSize{ TotalDiskCapacity
-                                    - MinimalUnusedDiskSpace };
+    constexpr uint32_t TotalDiskCapacity{70000000U};
+    constexpr uint32_t MinimalUnusedDiskSpace{30000000U};
+    constexpr uint32_t MaxRootSize{TotalDiskCapacity - MinimalUnusedDiskSpace};
 
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
 
-    DirectoryTree tree{ parseInput(fileStream) };
+    DirectoryTree tree{parseInput(fileStream)};
 
     const uint32_t currentRootSize = tree.getRoot().getSize();
     const uint32_t diskSpaceToFree = currentRootSize - MaxRootSize;
     auto minSizeCondition = [diskSpaceToFree](const uint32_t size) {
         return size >= diskSpaceToFree;
     };
-    uint32_t minSize{ currentRootSize };
-    const uint32_t minChildSize{ getSmallestChildDirSize(
-        tree.getRoot(), minSizeCondition) };
+    uint32_t minSize{currentRootSize};
+    const uint32_t minChildSize{
+        getSmallestChildDirSize(tree.getRoot(), minSizeCondition)};
     minSize = (minChildSize < minSize) ? (minChildSize) : minSize;
 
     return std::to_string(minSize);

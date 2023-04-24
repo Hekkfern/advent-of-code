@@ -17,7 +17,7 @@ namespace utils::string {
  *
  * @return     True if the substring was found. False, otherwise.
  */
-[[nodiscard]] bool contains(const std::string& str, const std::string& match);
+[[nodiscard]] bool contains(std::string const& str, std::string const& match);
 /**
  * @brief      Removes all the spaces and tabs from both sides of a string.
  *
@@ -25,7 +25,7 @@ namespace utils::string {
  *
  * @return     String without spaces or tabs.
  */
-[[nodiscard]] std::string trim(const std::string& s);
+[[nodiscard]] std::string trim(std::string const& s);
 /**
  * @brief      Converts a string to a number.
  *
@@ -36,7 +36,7 @@ namespace utils::string {
  * @return     Converted number.
  */
 template <NumericType T>
-[[nodiscard]] T toNumber(const std::string& str)
+[[nodiscard]] T toNumber(std::string const& str)
 {
     std::stringstream ss{str};
     T num;
@@ -51,7 +51,7 @@ template <NumericType T>
  * @return     Converted number.
  */
 template <>
-[[nodiscard]] inline uint8_t toNumber(const std::string& str)
+[[nodiscard]] inline uint8_t toNumber(std::string const& str)
 {
     return static_cast<uint8_t>(std::stoi(str));
 }
@@ -63,7 +63,7 @@ template <>
  * @return     Converted number.
  */
 template <>
-[[nodiscard]] inline int8_t toNumber(const std::string& str)
+[[nodiscard]] inline int8_t toNumber(std::string const& str)
 {
     return static_cast<int8_t>(std::stoi(str));
 }
@@ -76,7 +76,8 @@ template <>
  *
  * @return     Resulting string.
  */
-[[nodiscard]] std::string join(const std::vector<std::string>& strings, std::string delim);
+[[nodiscard]] std::string
+join(std::vector<std::string> const& strings, std::string delim);
 /**
  * @brief      ?????
  *
@@ -84,7 +85,8 @@ template <>
  *
  * @return     ????
  */
-[[nodiscard]] std::string convertFrom(const std::vector<std::vector<char>>& input);
+[[nodiscard]] std::string
+convertFrom(std::vector<std::vector<char>> const& input);
 /**
  * @brief      Splits a string into multiple strings, based on the provided
  *             string as separator.

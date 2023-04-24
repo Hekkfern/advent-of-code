@@ -25,7 +25,7 @@ using namespace utils::interval;
  *
  * @return     The sensor information.
  */
-SensorInfo parseInputLine(const std::string& line)
+SensorInfo parseInputLine(std::string const& line)
 {
     std::smatch regexResult;
     constexpr auto Pattern{
@@ -51,7 +51,7 @@ SensorInfo parseInputLine(const std::string& line)
  */
 void fillNoBeaconIntervalAtCoordY(
     MultiInterval<int32_t>& multiInterval,
-    const SensorInfo& pairInfo,
+    SensorInfo const& pairInfo,
     const int32_t goalCoordY)
 {
     // add all the positions covered by the sensor in the coordinate Y to
@@ -95,9 +95,9 @@ uint64_t calculateTuningFrequency(const int32_t x, const int32_t y)
  * @return     True if having beacon possible, False otherwise.
  */
 bool isHavingBeaconPossible(
-    const std::vector<SensorInfo>& sensorList, const Point2D<int32_t>& point)
+    std::vector<SensorInfo> const& sensorList, Point2D<int32_t> const& point)
 {
-    return ranges::any_of(sensorList, [&point](const SensorInfo& sensor) {
+    return ranges::any_of(sensorList, [&point](SensorInfo const& sensor) {
         return sensor.hasBeaconAt(point) || sensor.isCovered(point);
     });
 }
@@ -116,7 +116,7 @@ searchSpace(std::vector<SensorInfo>& sensorList, const uint32_t gridSize)
     for (auto& sensor : sensorList) {
         auto currentPosition{sensor.stepAroundOutside()};
         while (currentPosition) {
-            const auto& [currentPositionCoordX, currentPositionCoordY]
+            auto const& [currentPositionCoordX, currentPositionCoordY]
                 = currentPosition->getCoordinates();
             if (currentPositionCoordX >= 0
                 && currentPositionCoordX <= static_cast<int32_t>(gridSize)
@@ -139,7 +139,7 @@ searchSpace(std::vector<SensorInfo>& sensorList, const uint32_t gridSize)
 // ---------- Public Methods ----------
 
 std::string solvePart1(
-    const std::string& filename,
+    std::string const& filename,
     std::unordered_map<std::string, std::any>&& extParams)
 {
     const int32_t goalCoordY{
@@ -158,14 +158,14 @@ std::string solvePart1(
         }
         fillNoBeaconIntervalAtCoordY(multiInterval, pairInfo, goalCoordY);
     }
-    for (const auto& busyPosition : busyPositions) {
+    for (auto const& busyPosition : busyPositions) {
         multiInterval.remove(busyPosition.getX());
     }
     return std::to_string(multiInterval.count());
 }
 
 std::string solvePart2(
-    const std::string& filename,
+    std::string const& filename,
     std::unordered_map<std::string, std::any>&& extParams)
 {
     const uint32_t gridSize{std::any_cast<uint32_t>(extParams.at("GridSize"))};

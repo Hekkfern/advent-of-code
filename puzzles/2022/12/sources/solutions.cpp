@@ -11,7 +11,7 @@ namespace aoc_2022_12 {
 
 // ---------- Private Methods ----------
 
-Height parseHeight(const char c)
+Height parseHeight(char const c)
 {
     if (c == 'S') {
         return 0;
@@ -22,7 +22,7 @@ Height parseHeight(const char c)
     return static_cast<Height>(c - 'a');
 }
 
-PositionType parsePositionType(const char c)
+PositionType parsePositionType(char const c)
 {
     if (c == 'S') {
         return PositionType::Origin;
@@ -33,7 +33,7 @@ PositionType parsePositionType(const char c)
     return PositionType::Normal;
 }
 
-PositionMap parseInput(const std::string& filename)
+PositionMap parseInput(std::string const& filename)
 {
     std::unordered_map<Point2D<int32_t>, Position> map;
     std::ifstream fileStream{filename};
@@ -44,7 +44,7 @@ PositionMap parseInput(const std::string& filename)
     Position* destination{nullptr};
     while (std::getline(fileStream, line)) {
         colCounter = 0U;
-        for (const auto c : line) {
+        for (auto const c : line) {
             Point2D point2D{
                 static_cast<int32_t>(colCounter),
                 static_cast<int32_t>(rowCounter)};
@@ -82,8 +82,8 @@ uint32_t climbHill(PositionMap& positionMap)
 
     while (!queue.empty()) {
         auto enqueuedItem{queue.front()};
-        const auto& enqueuedPosition{enqueuedItem.first};
-        const auto enqueuedPositionCost{enqueuedItem.second};
+        auto const& enqueuedPosition{enqueuedItem.first};
+        auto const enqueuedPositionCost{enqueuedItem.second};
         queue.pop();
 
         // Do not explore past end
@@ -105,7 +105,7 @@ uint32_t climbHill(PositionMap& positionMap)
             auto nextPosition{positionMap.move(enqueuedPosition, dir)};
             // Check if the path due to this movement is not longer than the
             // shortest known path.
-            const auto nextCost{enqueuedPositionCost + 1U};
+            auto const nextCost{enqueuedPositionCost + 1U};
             if ((enqueuedPositionCost + 1U)
                 >= positionMap.getCost(nextPosition)) {
                 continue;
@@ -129,8 +129,8 @@ uint32_t descendHill(PositionMap& positionMap)
 
     while (!queue.empty()) {
         auto enqueuedItem{queue.front()};
-        const auto& enqueuedPosition{enqueuedItem.first};
-        const auto enqueuedPositionCost{enqueuedItem.second};
+        auto const& enqueuedPosition{enqueuedItem.first};
+        auto const enqueuedPositionCost{enqueuedItem.second};
         queue.pop();
 
         // Update best cost
@@ -154,7 +154,7 @@ uint32_t descendHill(PositionMap& positionMap)
             auto nextPosition{positionMap.move(enqueuedPosition, dir)};
             // Check if the path due to this movement is not longer than the
             // shortest known path.
-            const auto nextCost{enqueuedPositionCost + 1U};
+            auto const nextCost{enqueuedPositionCost + 1U};
             if ((enqueuedPositionCost + 1U)
                 >= positionMap.getCost(nextPosition)) {
                 continue;
@@ -172,13 +172,13 @@ uint32_t descendHill(PositionMap& positionMap)
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(const std::string& filename)
+std::string solvePart1(std::string const& filename)
 {
     auto positionMap{parseInput(filename)};
     return std::to_string(climbHill(positionMap));
 }
 
-std::string solvePart2(const std::string& filename)
+std::string solvePart2(std::string const& filename)
 {
     auto positionMap{parseInput(filename)};
     return std::to_string(descendHill(positionMap));

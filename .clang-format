@@ -33,3 +33,5 @@ StatementMacros:
 Cpp11BracedListStyle: true
 BreakStringLiterals: false
 AlwaysBreakBeforeMultilineStrings: true
+
+QualifierAlignment: Right

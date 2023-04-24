@@ -34,7 +34,7 @@ public:
      *
      * @param[in]  coords     Coordinates.
      */
-    explicit Point3D(const Coord3D<T> coords)
+    explicit Point3D(Coord3D<T> const coords)
         : mX{coords.mX}
         , mY{coords.mY}
         , mZ{coords.mZ}
@@ -104,7 +104,7 @@ public:
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] bool operator==(const Point3D& other) const
+    [[nodiscard]] bool operator==(Point3D const& other) const
     {
         return (mX == other.mX) && (mY == other.mY) && (mZ == other.mZ);
     }
@@ -116,7 +116,7 @@ public:
      *
      * @return     The result of the addition.
      */
-    [[nodiscard]] Point3D operator+(const Point3D& other) const
+    [[nodiscard]] Point3D operator+(Point3D const& other) const
     {
         return Point3D{mX + other.mX, mY + other.mY, mZ + other.mZ};
     }
@@ -133,7 +133,7 @@ public:
      *
      * @return     The result of the subtraction
      */
-    [[nodiscard]] Point3D operator-(const Point3D& other) const
+    [[nodiscard]] Point3D operator-(Point3D const& other) const
     {
         return *this + (-other);
     }
@@ -155,7 +155,7 @@ public:
     }
 
 private:
-    friend std::ostream& operator<<(std::ostream& os, const Point3D& point2d)
+    friend std::ostream& operator<<(std::ostream& os, Point3D const& point2d)
     {
         os << '(' << point2d.mX << ',' << point2d.mY << ',' << point2d.mZ
            << ')';
@@ -181,7 +181,7 @@ private:
 template <SignedIntegerType T>
 struct std::hash<utils::geometry3d::Point3D<T>> {
     std::size_t
-    operator()(const utils::geometry3d::Point3D<T>& k) const noexcept
+    operator()(utils::geometry3d::Point3D<T> const& k) const noexcept
     {
         return std::hash<T>()(k.getX()) ^ std::hash<T>()(k.getY())
             ^ std::hash<T>()(k.getZ());

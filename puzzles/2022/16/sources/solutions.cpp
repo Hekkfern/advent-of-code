@@ -26,7 +26,7 @@ struct ParsedValve {
     std::vector<std::string> mNeighborNames;
 };
 
-ParsedValve parseInputLine(const std::string& line)
+ParsedValve parseInputLine(std::string const& line)
 {
     // parse line
     std::smatch lineRegexResult;
@@ -66,14 +66,14 @@ Graph<Valve, uint32_t> buildGraph(std::vector<ParsedValve>&& parsedValves)
 {
     Graph<Valve, uint32_t> graph;
     // add vertices
-    for (const auto& parsedValve : parsedValves) {
+    for (auto const& parsedValve : parsedValves) {
         graph.addVertex(
             std::string{parsedValve.mName},
             Valve{parsedValve.mName, parsedValve.mFlowRate});
     }
     // add edges
-    for (const auto& parsedValve : parsedValves) {
-        for (const auto& neighborName : parsedValve.mNeighborNames) {
+    for (auto const& parsedValve : parsedValves) {
+        for (auto const& neighborName : parsedValve.mNeighborNames) {
             graph.addUndirectedEdge(
                 parsedValve.mName, neighborName, TimeToMoveToNextValve);
         }
@@ -81,7 +81,7 @@ Graph<Valve, uint32_t> buildGraph(std::vector<ParsedValve>&& parsedValves)
     // look for shortest paths between vertices
     graph = applyFloydWarshall(graph);
     // delete all the vertex with zero flowrate (except "AA")
-    graph.removeVertexIf([](const Vertex<Valve, uint32_t>& vertex) -> bool {
+    graph.removeVertexIf([](Vertex<Valve, uint32_t> const& vertex) -> bool {
         return vertex.getName() != "AA" && vertex.getInfo().getFlowRate() == 0U;
     });
     return graph;
@@ -105,11 +105,11 @@ uint32_t calculateEventualPressureRelease(
  * @return     { description_of_the_return_value }
  */
 std::unordered_set<std::string>
-generateValveNameList(const Graph<Valve, uint32_t>& graph)
+generateValveNameList(Graph<Valve, uint32_t> const& graph)
 {
     std::unordered_set<std::string> usefulValves;
     usefulValves.reserve(graph.getVertices().size());
-    for (const auto& vertex : graph.getVertices()) {
+    for (auto const& vertex : graph.getVertices()) {
         if (vertex.second.getInfo().getFlowRate() > 0U) {
             usefulValves.emplace(vertex.second.getName());
         }
@@ -133,8 +133,8 @@ generateValveNameList(const Graph<Valve, uint32_t>& graph)
  * @return     The maximum possible releasable pressure found so far.
  */
 uint32_t analyzeValveAlone(
-    const Graph<Valve, uint32_t>& graph,
-    const std::string& currentValve,
+    Graph<Valve, uint32_t> const& graph,
+    std::string const& currentValve,
     const uint32_t time,
     const uint32_t totalTime,
     const uint32_t totalPressure,
@@ -191,7 +191,7 @@ uint32_t analyzeValveAlone(
  *
  * @return     { description_of_the_return_value }
  */
-uint32_t searchMaximumFlowPathAlone(const Graph<Valve, uint32_t>& graph)
+uint32_t searchMaximumFlowPathAlone(Graph<Valve, uint32_t> const& graph)
 {
     std::unordered_set<std::string> openedValves;
     std::unordered_set<std::string> availableValves{
@@ -222,8 +222,8 @@ uint32_t searchMaximumFlowPathAlone(const Graph<Valve, uint32_t>& graph)
  * @return     The maximum possible releasable pressure found so far.
  */
 uint32_t analyzeValveWithElephant(
-    const Graph<Valve, uint32_t>& graph,
-    const std::string& currentValve,
+    Graph<Valve, uint32_t> const& graph,
+    std::string const& currentValve,
     const uint32_t time,
     const uint32_t totalTime,
     const uint32_t totalPressure,
@@ -299,7 +299,7 @@ uint32_t analyzeValveWithElephant(
  *
  * @return     { description_of_the_return_value }
  */
-uint32_t searchMaximumFlowPathWithElephant(const Graph<Valve, uint32_t>& graph)
+uint32_t searchMaximumFlowPathWithElephant(Graph<Valve, uint32_t> const& graph)
 {
     std::unordered_set<std::string> openedValves;
     std::unordered_set<std::string> availableValves{
@@ -318,19 +318,19 @@ uint32_t searchMaximumFlowPathWithElephant(const Graph<Valve, uint32_t>& graph)
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(const std::string& filename)
+std::string solvePart1(std::string const& filename)
 {
     std::ifstream fileStream{filename};
-    const auto globalGraph{buildGraph(parseInput(fileStream))};
-    const auto pressure{searchMaximumFlowPathAlone(globalGraph)};
+    auto const globalGraph{buildGraph(parseInput(fileStream))};
+    auto const pressure{searchMaximumFlowPathAlone(globalGraph)};
     return std::to_string(pressure);
 }
 
-std::string solvePart2(const std::string& filename)
+std::string solvePart2(std::string const& filename)
 {
     std::ifstream fileStream{filename};
-    const auto globalGraph{buildGraph(parseInput(fileStream))};
-    const auto pressure{searchMaximumFlowPathWithElephant(globalGraph)};
+    auto const globalGraph{buildGraph(parseInput(fileStream))};
+    auto const pressure{searchMaximumFlowPathWithElephant(globalGraph)};
     return std::to_string(pressure);
 }
 

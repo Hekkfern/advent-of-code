@@ -20,8 +20,7 @@ public:
         std::vector<WorryLevel>&& items = {});
     MonkeyId getId() const;
     uint32_t inspectAndThrowAll(
-        std::unordered_map<MonkeyId, Monkey>& monkeys,
-        bool reliefEnabled);
+        std::unordered_map<MonkeyId, Monkey>& monkeys, bool reliefEnabled);
     /**
      * @brief      Equality operator.
      *
@@ -29,7 +28,7 @@ public:
      *
      * @return     The result of the equality.
      */
-    bool operator==(const Monkey& other);
+    bool operator==(Monkey const& other);
 
 private:
     const MonkeyId mId;
@@ -42,8 +41,9 @@ private:
 
 } // namespace aoc_2022_11
 
-template <> struct std::hash<aoc_2022_11::Monkey> {
-    std::size_t operator()(const aoc_2022_11::Monkey& k) const
+template <>
+struct std::hash<aoc_2022_11::Monkey> {
+    std::size_t operator()(aoc_2022_11::Monkey const& k) const
     {
         return (std::hash<aoc_2022_11::MonkeyId>()(k.getId()));
     }

@@ -36,7 +36,7 @@ public:
      * @param[in]  origin       The origin point.
      * @param[in]  destination  The destination point.
      */
-    explicit Vector2D(const Point2D<T>& origin, const Point2D<T>& destination)
+    explicit Vector2D(Point2D<T> const& origin, Point2D<T> const& destination)
         : mX{destination.getX() - origin.getX()}
         , mY{destination.getY() - origin.getY()}
     {
@@ -46,7 +46,7 @@ public:
      *
      * @param[in]  coords  Coordinates.
      */
-    explicit Vector2D(const Coord2D<T> coords)
+    explicit Vector2D(Coord2D<T> const coords)
         : mX{coords.mX}
         , mY{coords.mY}
     {
@@ -151,7 +151,7 @@ public:
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] bool operator==(const Vector2D& other) const
+    [[nodiscard]] bool operator==(Vector2D const& other) const
     {
         return (mX == other.mX) && (mY == other.mY);
     }
@@ -163,7 +163,7 @@ public:
      *
      * @return     The result of the addition.
      */
-    [[nodiscard]] Vector2D operator+(const Vector2D& other) const
+    [[nodiscard]] Vector2D operator+(Vector2D const& other) const
     {
         return Vector2D{mX + other.mX, mY + other.mY};
     }
@@ -182,7 +182,7 @@ public:
      *
      * @return     The result of the subtraction.
      */
-    [[nodiscard]] Vector2D operator-(const Vector2D& other) const
+    [[nodiscard]] Vector2D operator-(Vector2D const& other) const
     {
         return *this + (-other);
     }
@@ -212,7 +212,7 @@ private:
      *
      * @return     The updated output stream.
      */
-    friend std::ostream& operator<<(std::ostream& os, const Vector2D& vector2D)
+    friend std::ostream& operator<<(std::ostream& os, Vector2D const& vector2D)
     {
         os << '(' << vector2D.mX << ',' << vector2D.mY << ')';
         return os;
@@ -239,7 +239,7 @@ private:
  */
 template <SignedIntegerType T>
 [[nodiscard]] Vector2D<T>
-operator*(const Vector2D<T>& vector2d, const int32_t value)
+operator*(Vector2D<T> const& vector2d, const int32_t value)
 {
     return Vector2D<T>{value * vector2d.getX(), value * vector2d.getY()};
 }
@@ -254,7 +254,7 @@ operator*(const Vector2D<T>& vector2d, const int32_t value)
  */
 template <SignedIntegerType T>
 [[nodiscard]] Vector2D<T>
-operator*(const int32_t value, const Vector2D<T>& vector2d)
+operator*(const int32_t value, Vector2D<T> const& vector2d)
 {
     return vector2d * value;
 }
@@ -264,7 +264,7 @@ operator*(const int32_t value, const Vector2D<T>& vector2d)
 template <SignedIntegerType T>
 struct std::hash<utils::geometry2d::Vector2D<T>> {
     std::size_t
-    operator()(const utils::geometry2d::Vector2D<T>& k) const noexcept
+    operator()(utils::geometry2d::Vector2D<T> const& k) const noexcept
     {
         return std::hash<T>()(k.getX()) ^ std::hash<T>()(k.getY());
     }

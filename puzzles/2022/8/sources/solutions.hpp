@@ -8,7 +8,7 @@
 
 namespace aoc_2022_8 {
 
-std::string solvePart1(const std::string& filename);
-std::string solvePart2(const std::string& filename);
+std::string solvePart1(std::string const& filename);
+std::string solvePart2(std::string const& filename);
 
 } // namespace aoc_2022_8

@@ -9,7 +9,7 @@ namespace aoc_2022_20 {
 
 // ---------- Private Methods ----------
 
-std::list<int32_t> parseInput(const std::string& filename)
+std::list<int32_t> parseInput(std::string const& filename)
 {
     std::ifstream fileStream{filename};
     std::list<int32_t> outList;
@@ -21,7 +21,7 @@ std::list<int32_t> parseInput(const std::string& filename)
 }
 
 uint32_t calculatePositionsToMove(
-    const std::list<int32_t>& numberList, const int32_t value)
+    std::list<int32_t> const& numberList, const int32_t value)
 {
     return static_cast<uint32_t>(std::abs(value)) % (numberList.size() - 1U);
 }
@@ -46,13 +46,13 @@ auto advanceIterator(auto it, const uint32_t amount, auto begin, auto end)
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(const std::string& filename)
+std::string solvePart1(std::string const& filename)
 {
     (void)filename;
     return "";
 }
 
-std::string solvePart2(const std::string& filename)
+std::string solvePart2(std::string const& filename)
 {
     (void)filename;
     return "";

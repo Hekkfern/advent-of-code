@@ -85,7 +85,7 @@ private:
 
 template <>
 struct std::hash<utils::geometry2d::Direction2D> {
-    std::size_t operator()(const utils::geometry2d::Direction2D& k) const
+    std::size_t operator()(utils::geometry2d::Direction2D const& k) const
     {
         return std::hash<utils::geometry2d::Direction2D::Value>()(k.getValue());
     }

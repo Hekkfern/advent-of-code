@@ -29,7 +29,7 @@ public:
      * @param[in]  perimeterPoint  Any perimeter point.
      */
     explicit SquareDiamond2D(
-        const Point2D<T>& centerPoint, const Point2D<T>& perimeterPoint)
+        Point2D<T> const& centerPoint, Point2D<T> const& perimeterPoint)
         : SquareDiamond2D{
             centerPoint, Vector2D{centerPoint, perimeterPoint}.distance()}
     {
@@ -41,7 +41,7 @@ public:
      * @param[in]  distance     The distance from the center to the perimeter.
      */
     explicit SquareDiamond2D(
-        const Point2D<T>& centerPoint, const uint64_t distance)
+        Point2D<T> const& centerPoint, const uint64_t distance)
         : mCenter{centerPoint}
         , mDistance{distance}
         , mVertexes{
@@ -56,7 +56,7 @@ public:
      *
      * @return     The central point.
      */
-    [[nodiscard]] const Point2D<T>& getCenter() const { return mCenter; }
+    [[nodiscard]] Point2D<T> const& getCenter() const { return mCenter; }
     /**
      * @brief      Gets the vertexes of the shape.
      *
@@ -87,13 +87,13 @@ public:
     [[nodiscard]] std::optional<Point2D<T>> stepAroundOutside()
     {
         std::optional<Point2D<T>> nextPoint;
-        const auto& [centerCoordX, centerCoordY] = mCenter.getCoordinates();
+        auto const& [centerCoordX, centerCoordY] = mCenter.getCoordinates();
         if (!mLastPerimeterPosition) {
             // First step around the perimeter, start on top
             nextPoint = std::make_optional<Point2D<T>>(
                 centerCoordX, (centerCoordY + static_cast<T>(mDistance) + 1));
         } else {
-            const auto& [lastPositionCoordX, lastPositionCoordY]
+            auto const& [lastPositionCoordX, lastPositionCoordY]
                 = mLastPerimeterPosition->getCoordinates();
             if ((lastPositionCoordY > centerCoordY)
                 && (lastPositionCoordX >= centerCoordX)) {
@@ -140,7 +140,7 @@ public:
      *
      * @return     True if the specified point is outside, False otherwise.
      */
-    [[nodiscard]] bool isOutside(const Point2D<T>& point) const override
+    [[nodiscard]] bool isOutside(Point2D<T> const& point) const override
     {
         return Vector2D{mCenter, point}.distance() > mDistance;
     }
@@ -151,7 +151,7 @@ public:
      *
      * @return     True if the specified point is inside, False otherwise.
      */
-    [[nodiscard]] bool isInside(const Point2D<T>& point) const override
+    [[nodiscard]] bool isInside(Point2D<T> const& point) const override
     {
         return Vector2D{mCenter, point}.distance() <= mDistance;
     }
@@ -162,7 +162,7 @@ public:
      *
      * @return     True if the specified point is in perimeter, False otherwise.
      */
-    [[nodiscard]] bool isInPerimeter(const Point2D<T>& point) const override
+    [[nodiscard]] bool isInPerimeter(Point2D<T> const& point) const override
     {
         return Vector2D{mCenter, point}.distance() == mDistance;
     }

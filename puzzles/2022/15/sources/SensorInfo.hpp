@@ -12,13 +12,13 @@ public:
     SensorInfo(
         utils::geometry2d::Point2D<int32_t>&& sensorPosition,
         utils::geometry2d::Point2D<int32_t>&& beaconPosition);
-    const utils::geometry2d::Point2D<int32_t>& getSensorPosition() const;
-    const utils::geometry2d::Point2D<int32_t>& getBeaconPosition() const;
+    utils::geometry2d::Point2D<int32_t> const& getSensorPosition() const;
+    utils::geometry2d::Point2D<int32_t> const& getBeaconPosition() const;
     uint64_t getDistance() const;
     std::optional<utils::geometry2d::Point2D<int32_t>> stepAroundOutside();
-    bool isCovered(const utils::geometry2d::Point2D<int32_t>& testPoint) const;
+    bool isCovered(utils::geometry2d::Point2D<int32_t> const& testPoint) const;
     bool
-    hasBeaconAt(const utils::geometry2d::Point2D<int32_t>& testPoint) const;
+    hasBeaconAt(utils::geometry2d::Point2D<int32_t> const& testPoint) const;
 
 private:
     utils::geometry2d::Point2D<int32_t> mSensorPosition;

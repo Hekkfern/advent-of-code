@@ -16,13 +16,13 @@ Item& Item::addListItem()
         throw std::runtime_error(
             "Unable to add an item to an Integer-type item");
     }
-    auto& newItem{ mContent.emplace_back(createListItem(this)) };
+    auto& newItem{mContent.emplace_back(createListItem(this))};
     return newItem;
 }
 
 Item& Item::addIntegerItem(uint32_t value)
 {
-    auto& newItem{ mContent.emplace_back(createIntegerItem(this, value)) };
+    auto& newItem{mContent.emplace_back(createIntegerItem(this, value))};
     newItem.mValue = std::make_optional(value);
     return newItem;
 }
@@ -34,16 +34,15 @@ std::strong_ordering Item::compare(uint32_t value1, uint32_t value2) const
     return value1 <=> value2;
 }
 
-std::strong_ordering Item::compare(
-    uint32_t value,
-    const std::vector<Item>& list) const
+std::strong_ordering
+Item::compare(uint32_t value, std::vector<Item> const& list) const
 {
     // Comparing value against and empty list.
     if (list.empty()) {
         return std::strong_ordering::greater;
     }
     // Comparing a value against a list, recurse.
-    std::strong_ordering cmp{ std::strong_ordering::equal };
+    std::strong_ordering cmp{std::strong_ordering::equal};
     if (list[0].mType == Type::Integer) {
         cmp = compare(value, *list[0].mValue);
     } else {
@@ -59,9 +58,8 @@ std::strong_ordering Item::compare(
     return cmp;
 }
 
-std::strong_ordering Item::compare(
-    const std::vector<Item>& list,
-    uint32_t value) const
+std::strong_ordering
+Item::compare(std::vector<Item> const& list, uint32_t value) const
 {
     // reverse because we permuted the parameters to fit into the same
     // method
@@ -69,8 +67,7 @@ std::strong_ordering Item::compare(
 }
 
 std::strong_ordering Item::compare(
-    const std::vector<Item>& list1,
-    const std::vector<Item>& list2) const
+    std::vector<Item> const& list1, std::vector<Item> const& list2) const
 {
     auto list1It = list1.cbegin();
     auto list2It = list2.cbegin();
@@ -95,7 +92,7 @@ std::strong_ordering Item::compare(
     }
 }
 
-std::strong_ordering Item::operator<=>(const Item& other) const
+std::strong_ordering Item::operator<=>(Item const& other) const
 {
     if (mType == Type::Integer && other.mType == Type::Integer) {
         return compare(*mValue, *other.mValue);
@@ -113,7 +110,7 @@ std::strong_ordering Item::operator<=>(const Item& other) const
 
 Item Item::createIntegerItem(Item* const parent, uint32_t value)
 {
-    auto instance{ Item{ parent } };
+    auto instance{Item{parent}};
     instance.mType = Type::Integer;
     instance.mValue = std::make_optional(value);
     return instance;
@@ -121,7 +118,7 @@ Item Item::createIntegerItem(Item* const parent, uint32_t value)
 
 Item Item::createListItem(Item* const parent)
 {
-    auto instance{ Item{ parent } };
+    auto instance{Item{parent}};
     instance.mType = Type::List;
     return instance;
 }

@@ -18,12 +18,12 @@ SensorInfo::SensorInfo(
 
 uint64_t SensorInfo::getDistance() const { return mDistance; }
 
-const Point2D<int32_t>& SensorInfo::getSensorPosition() const
+Point2D<int32_t> const& SensorInfo::getSensorPosition() const
 {
     return mSensorPosition;
 }
 
-const Point2D<int32_t>& SensorInfo::getBeaconPosition() const
+Point2D<int32_t> const& SensorInfo::getBeaconPosition() const
 {
     return mBeaconPosition;
 }
@@ -33,12 +33,12 @@ std::optional<Point2D<int32_t>> SensorInfo::stepAroundOutside()
     return mSquareDiamond2D.stepAroundOutside();
 }
 
-bool SensorInfo::isCovered(const Point2D<int32_t>& testPoint) const
+bool SensorInfo::isCovered(Point2D<int32_t> const& testPoint) const
 {
     return mSquareDiamond2D.isInside(testPoint);
 }
 
-bool SensorInfo::hasBeaconAt(const Point2D<int32_t>& testPoint) const
+bool SensorInfo::hasBeaconAt(Point2D<int32_t> const& testPoint) const
 {
     return mBeaconPosition == testPoint;
 }

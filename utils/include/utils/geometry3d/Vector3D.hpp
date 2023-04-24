@@ -34,7 +34,7 @@ public:
      *
      * @param[in]  coords     Coordinates.
      */
-    explicit Vector3D(const Coord3D<T> coords)
+    explicit Vector3D(Coord3D<T> const coords)
         : mX{coords.mX}
         , mY{coords.mY}
         , mZ{coords.mZ}
@@ -46,7 +46,7 @@ public:
      * @param[in]  origin       The origin point.
      * @param[in]  destination  The destination point.
      */
-    explicit Vector3D(const Point3D<T>& origin, const Point3D<T>& destination)
+    explicit Vector3D(Point3D<T> const& origin, Point3D<T> const& destination)
         : mX{destination.getX() - origin.getX()}
         , mY{destination.getY() - origin.getY()}
         , mZ{destination.getZ() - origin.getZ()}
@@ -164,7 +164,7 @@ public:
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] bool operator==(const Vector3D& other) const
+    [[nodiscard]] bool operator==(Vector3D const& other) const
     {
         return mX == other.mX && mY == other.mY && mZ == other.mZ;
     }
@@ -176,7 +176,7 @@ public:
      *
      * @return     The result of the addition.
      */
-    [[nodiscard]] Vector3D operator+(const Vector3D& other) const
+    [[nodiscard]] Vector3D operator+(Vector3D const& other) const
     {
         return Vector3D{mX + other.mX, mY + other.mY, mZ + other.mZ};
     }
@@ -193,7 +193,7 @@ public:
      *
      * @return     The result of the subtraction
      */
-    [[nodiscard]] Vector3D operator-(const Vector3D& other) const
+    [[nodiscard]] Vector3D operator-(Vector3D const& other) const
     {
         return *this + -other;
     }
@@ -216,7 +216,7 @@ public:
     }
 
 private:
-    friend std::ostream& operator<<(std::ostream& os, const Vector3D& point2d)
+    friend std::ostream& operator<<(std::ostream& os, Vector3D const& point2d)
     {
         os << '(' << point2d.mX << ',' << point2d.mY << ',' << point2d.mZ
            << ')';
@@ -247,7 +247,7 @@ private:
  * @return     Scaled vector by a scalar.
  */
 template <SignedIntegerType T>
-Vector3D<T> operator*(const Vector3D<T>& vector3d, const int32_t value)
+Vector3D<T> operator*(Vector3D<T> const& vector3d, const int32_t value)
 {
     return Vector3D{
         value * vector3d.getX(),
@@ -264,7 +264,7 @@ Vector3D<T> operator*(const Vector3D<T>& vector3d, const int32_t value)
  * @return     Scaled vector by a scalar.
  */
 template <SignedIntegerType T>
-Vector3D<T> operator*(const int32_t value, const Vector3D<T>& vector3d)
+Vector3D<T> operator*(const int32_t value, Vector3D<T> const& vector3d)
 {
     return vector3d * value;
 }
@@ -274,7 +274,7 @@ Vector3D<T> operator*(const int32_t value, const Vector3D<T>& vector3d)
 template <SignedIntegerType T>
 struct std::hash<utils::geometry3d::Vector3D<T>> {
     std::size_t
-    operator()(const utils::geometry3d::Vector3D<T>& k) const noexcept
+    operator()(utils::geometry3d::Vector3D<T> const& k) const noexcept
     {
         return std::hash<T>()(k.getX()) ^ std::hash<T>()(k.getY())
             ^ std::hash<T>()(k.getZ());

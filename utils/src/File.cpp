@@ -5,9 +5,9 @@
 
 namespace utils::file {
 
-std::optional<std::string> readFirstLine(const std::string& filename)
+std::optional<std::string> readFirstLine(std::string const& filename)
 {
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
     if (!fileStream.is_open()) {
         return std::nullopt;
     }
@@ -17,21 +17,21 @@ std::optional<std::string> readFirstLine(const std::string& filename)
     return line;
 }
 
-std::optional<std::string> readWholeLine(const std::string& filename)
+std::optional<std::string> readWholeLine(std::string const& filename)
 {
-    const auto lines = readListOfStrings(filename);
+    auto const lines = readListOfStrings(filename);
     if (!lines) {
         return std::nullopt;
     }
 
-    std::string content{ utils::string::join(*lines, "\n") };
+    std::string content{utils::string::join(*lines, "\n")};
     return content;
 }
 
-std::optional<std::vector<std::string>> readListOfStrings(
-    const std::string& filename)
+std::optional<std::vector<std::string>>
+readListOfStrings(std::string const& filename)
 {
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
     if (!fileStream.is_open()) {
         return std::nullopt;
     }
@@ -46,10 +46,10 @@ std::optional<std::vector<std::string>> readListOfStrings(
     return outList;
 }
 
-std::optional<std::vector<int64_t>> readListOfNumbers(
-    const std::string& filename)
+std::optional<std::vector<int64_t>>
+readListOfNumbers(std::string const& filename)
 {
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
     if (!fileStream.is_open()) {
         return std::nullopt;
     }
@@ -64,10 +64,10 @@ std::optional<std::vector<int64_t>> readListOfNumbers(
     return outList;
 }
 
-std::optional<std::vector<std::vector<int64_t>>> readGroupsOfNumbers(
-    const std::string& filename)
+std::optional<std::vector<std::vector<int64_t>>>
+readGroupsOfNumbers(std::string const& filename)
 {
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
     if (!fileStream.is_open()) {
         return std::nullopt;
     }
@@ -86,10 +86,10 @@ std::optional<std::vector<std::vector<int64_t>>> readGroupsOfNumbers(
     return outList;
 }
 
-std::optional<std::vector<std::vector<uint8_t>>> readMatrixOfDigits(
-    const std::string& filename)
+std::optional<std::vector<std::vector<uint8_t>>>
+readMatrixOfDigits(std::string const& filename)
 {
-    std::ifstream fileStream{ filename };
+    std::ifstream fileStream{filename};
     if (!fileStream.is_open()) {
         return std::nullopt;
     }
@@ -100,7 +100,7 @@ std::optional<std::vector<std::vector<uint8_t>>> readMatrixOfDigits(
     while (std::getline(fileStream, line)) {
         std::vector<uint8_t> row;
         row.reserve(line.size());
-        for (const char c : line) {
+        for (char const c : line) {
             row.emplace_back(c - '0');
         }
         outList.push_back(std::move(row));

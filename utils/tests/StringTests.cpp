@@ -19,13 +19,13 @@ TEST_CASE("[String] split method", "[utils][String]")
 {
     SECTION("Comma-separated number")
     {
-        const auto result1{utils::string::split("12,3", ",")};
+        auto const result1{utils::string::split("12,3", ",")};
         CHECK(result1[0] == "12");
         CHECK(result1[1] == "3");
     }
     SECTION("Numbers and text")
     {
-        const auto result2{utils::string::split("-12..aa", "..")};
+        auto const result2{utils::string::split("-12..aa", "..")};
         CHECK(result2[0] == "-12");
         CHECK(result2[1] == "aa");
     }

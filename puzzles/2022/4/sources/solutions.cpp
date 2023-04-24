@@ -12,7 +12,7 @@ namespace aoc_2022_4 {
 constexpr uint32_t GroupSize{2U};
 
 std::vector<utils::interval::Interval<int32_t>>
-parseInputLine(const std::string& line)
+parseInputLine(std::string const& line)
 {
     constexpr auto ElfSeparator{","};
     constexpr auto RangeSeparator{"-"};
@@ -22,7 +22,7 @@ parseInputLine(const std::string& line)
 
     // parse line of the input file
     auto ranges{utils::string::split(line, ElfSeparator)};
-    for (const auto& range : ranges) {
+    for (auto const& range : ranges) {
         auto values{utils::string::split(range, RangeSeparator)};
         sections.emplace_back(
             utils::string::toNumber<int32_t>(values[0]),
@@ -36,7 +36,7 @@ parseInputLine(const std::string& line)
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(const std::string& filename)
+std::string solvePart1(std::string const& filename)
 {
     std::ifstream fileStream{filename};
     std::string line;
@@ -54,7 +54,7 @@ std::string solvePart1(const std::string& filename)
     return std::to_string(totalOverlaps);
 }
 
-std::string solvePart2(const std::string& filename)
+std::string solvePart2(std::string const& filename)
 {
     std::ifstream fileStream{filename};
     std::string line;

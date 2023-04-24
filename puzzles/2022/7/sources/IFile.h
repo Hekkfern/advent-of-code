@@ -11,7 +11,7 @@ class IFile {
 public:
     virtual ~IFile() = default;
     virtual std::string_view getName() const = 0;
-    virtual const IDirectory& getDir() const = 0;
+    virtual IDirectory const& getDir() const = 0;
     virtual uint32_t getSize() const = 0;
 };
 

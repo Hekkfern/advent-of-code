@@ -38,7 +38,7 @@ public:
      *
      * @return     True if the specified point is outside, False otherwise.
      */
-    [[nodiscard]] virtual bool isOutside(const Point2D<T>& point) const = 0;
+    [[nodiscard]] virtual bool isOutside(Point2D<T> const& point) const = 0;
     /**
      * @brief      Determines whether the specified point is inside.
      *
@@ -46,7 +46,7 @@ public:
      *
      * @return     True if the specified point is inside, False otherwise.
      */
-    [[nodiscard]] virtual bool isInside(const Point2D<T>& point) const = 0;
+    [[nodiscard]] virtual bool isInside(Point2D<T> const& point) const = 0;
     /**
      * @brief      Determines whether the specified point is in perimeter.
      *
@@ -54,7 +54,7 @@ public:
      *
      * @return     True if the specified point is in perimeter, False otherwise.
      */
-    [[nodiscard]] virtual bool isInPerimeter(const Point2D<T>& point) const = 0;
+    [[nodiscard]] virtual bool isInPerimeter(Point2D<T> const& point) const = 0;
 };
 
 } // namespace utils::geometry2d

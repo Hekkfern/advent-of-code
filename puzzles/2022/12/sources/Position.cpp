@@ -21,12 +21,12 @@ Height Position::getHeight() const { return mHeight; }
 
 PositionType Position::getType() const { return mType; }
 
-bool Position::operator==(const Position& other) const
+bool Position::operator==(Position const& other) const
 {
     return mPoint2D == other.mPoint2D && mHeight == other.mHeight
         && mType == other.mType;
 }
 
-const Point2D<int32_t>& Position::getPoint() const { return mPoint2D; }
+Point2D<int32_t> const& Position::getPoint() const { return mPoint2D; }
 
 } // namespace aoc_2022_12

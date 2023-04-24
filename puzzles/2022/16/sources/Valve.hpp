@@ -9,8 +9,8 @@ class Valve {
 public:
     Valve(std::string_view name, uint32_t flowRate);
     uint32_t getFlowRate() const;
-    const std::string& getName() const;
-    bool operator==(const Valve& other) const;
+    std::string const& getName() const;
+    bool operator==(Valve const& other) const;
 
 private:
     std::string mName;
@@ -21,7 +21,7 @@ private:
 
 template <>
 struct std::hash<aoc_2022_16::Valve> {
-    std::size_t operator()(const aoc_2022_16::Valve& k) const
+    std::size_t operator()(aoc_2022_16::Valve const& k) const
     {
         return std::hash<std::string>()(k.getName());
     }

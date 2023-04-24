@@ -13,8 +13,8 @@ class Directory : public IDirectory {
 public:
     Directory(std::string_view name, IDirectory* parentDir = nullptr);
     ~Directory() override = default;
-    Directory(const Directory&) = default;
-    Directory& operator=(const Directory&) = delete;
+    Directory(Directory const&) = default;
+    Directory& operator=(Directory const&) = delete;
     Directory(Directory&&) = default;
     Directory& operator=(Directory&&) = delete;
     uint32_t getSize() override;

@@ -8,22 +8,22 @@ TEST_CASE("[Vector3D] create() method", "[utils][Vector3D]")
 {
     SECTION("Positive values")
     {
-        const Vector3D<> vector3D{Vector3D<>::create(2, 4, 5)};
+        Vector3D<> const vector3D{Vector3D<>::create(2, 4, 5)};
         CHECK(vector3D.getX() == 2);
         CHECK(vector3D.getY() == 4);
         CHECK(vector3D.getZ() == 5);
-        const auto coords{vector3D.getCoordinates()};
+        auto const coords{vector3D.getCoordinates()};
         CHECK(coords.mX == 2);
         CHECK(coords.mY == 4);
         CHECK(coords.mZ == 5);
     }
     SECTION("Positive and negatives values")
     {
-        const Vector3D<> vector3D{Vector3D<>::create(-2, 3, -1)};
+        Vector3D<> const vector3D{Vector3D<>::create(-2, 3, -1)};
         CHECK(vector3D.getX() == -2);
         CHECK(vector3D.getY() == 3);
         CHECK(vector3D.getZ() == -1);
-        const auto coords{vector3D.getCoordinates()};
+        auto const coords{vector3D.getCoordinates()};
         CHECK(coords.mX == -2);
         CHECK(coords.mY == 3);
         CHECK(coords.mZ == -1);
@@ -34,11 +34,11 @@ TEST_CASE("[Vector3D] Constructor", "[utils][Vector3D]")
 {
     SECTION("Default constructor")
     {
-        const Vector3D<> vector3D;
+        Vector3D<> const vector3D;
         CHECK(vector3D.getX() == 0);
         CHECK(vector3D.getY() == 0);
         CHECK(vector3D.getZ() == 0);
-        const auto coords{vector3D.getCoordinates()};
+        auto const coords{vector3D.getCoordinates()};
         CHECK(coords.mX == 0);
         CHECK(coords.mY == 0);
         CHECK(coords.mZ == 0);
@@ -47,22 +47,22 @@ TEST_CASE("[Vector3D] Constructor", "[utils][Vector3D]")
     {
         SECTION("Positive values")
         {
-            const Vector3D<> vector3D{2, 4, 5};
+            Vector3D<> const vector3D{2, 4, 5};
             CHECK(vector3D.getX() == 2);
             CHECK(vector3D.getY() == 4);
             CHECK(vector3D.getZ() == 5);
-            const auto coords{vector3D.getCoordinates()};
+            auto const coords{vector3D.getCoordinates()};
             CHECK(coords.mX == 2);
             CHECK(coords.mY == 4);
             CHECK(coords.mZ == 5);
         }
         SECTION("Positive and negatives values")
         {
-            const Vector3D<> vector3D{-2, 3, -1};
+            Vector3D<> const vector3D{-2, 3, -1};
             CHECK(vector3D.getX() == -2);
             CHECK(vector3D.getY() == 3);
             CHECK(vector3D.getZ() == -1);
-            const auto coords{vector3D.getCoordinates()};
+            auto const coords{vector3D.getCoordinates()};
             CHECK(coords.mX == -2);
             CHECK(coords.mY == 3);
             CHECK(coords.mZ == -1);
@@ -72,22 +72,22 @@ TEST_CASE("[Vector3D] Constructor", "[utils][Vector3D]")
     {
         SECTION("Positive values")
         {
-            const Vector3D<> vector3D{Coord3D<>{2, 4, 5}};
+            Vector3D<> const vector3D{Coord3D<>{2, 4, 5}};
             CHECK(vector3D.getX() == 2);
             CHECK(vector3D.getY() == 4);
             CHECK(vector3D.getZ() == 5);
-            const auto coords{vector3D.getCoordinates()};
+            auto const coords{vector3D.getCoordinates()};
             CHECK(coords.mX == 2);
             CHECK(coords.mY == 4);
             CHECK(coords.mZ == 5);
         }
         SECTION("Positive and negatives values")
         {
-            const Vector3D<> vector3D{Coord3D<>{-2, 3, -1}};
+            Vector3D<> const vector3D{Coord3D<>{-2, 3, -1}};
             CHECK(vector3D.getX() == -2);
             CHECK(vector3D.getY() == 3);
             CHECK(vector3D.getZ() == -1);
-            const auto coords{vector3D.getCoordinates()};
+            auto const coords{vector3D.getCoordinates()};
             CHECK(coords.mX == -2);
             CHECK(coords.mY == 3);
             CHECK(coords.mZ == -1);
@@ -99,7 +99,7 @@ TEST_CASE("[Vector3D] range() method", "[utils][Vector3D]")
 {
     SECTION("Zero vector")
     {
-        const Vector3D<> v1;
+        Vector3D<> const v1;
         CHECK(v1.range() == 0UL);
     }
     SECTION("Positive values")
@@ -118,7 +118,7 @@ TEST_CASE("[Vector3D] distance() method", "[utils][Vector3D]")
 {
     SECTION("Zero vector")
     {
-        const Vector3D<> v1;
+        Vector3D<> const v1;
         CHECK(v1.distance() == 0UL);
     }
     SECTION("Positive values")
@@ -165,7 +165,7 @@ TEST_CASE("[Vector3D] getNormalized() method", "[utils][Vector3D]")
 {
     SECTION("Zero vector")
     {
-        const Vector3D<> v1;
+        Vector3D<> const v1;
         CHECK(v1.getNormalized() == Vector3D{0, 0, 0});
     }
     SECTION("Positive values")
@@ -189,7 +189,7 @@ TEST_CASE("[Vector3D] isZero() method", "[utils][Vector3D]")
 {
     SECTION("Zero vector")
     {
-        const Vector3D<> v1;
+        Vector3D<> const v1;
         CHECK(v1.isZero());
     }
     SECTION("Positive values")

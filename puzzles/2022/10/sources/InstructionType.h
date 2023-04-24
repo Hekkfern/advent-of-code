@@ -6,10 +6,10 @@ namespace aoc_2022_10 {
 
 enum class InstructionType { ADDX, NOOP };
 
-constexpr auto AddxInstructionName{ "addx" };
-constexpr auto NoopInstructionName{ "noop" };
+constexpr auto AddxInstructionName{"addx"};
+constexpr auto NoopInstructionName{"noop"};
 
-InstructionType convertInstructionType(const std::string& text)
+InstructionType convertInstructionType(std::string const& text)
 {
     InstructionType result{};
     if (text == AddxInstructionName) {
