@@ -18,7 +18,7 @@ set(_SOURCES_UTILS
     include/utils/Time.hpp
     include/utils/Interval.hpp
     include/utils/MultiInterval.hpp
-    include/utils/Concepts.hpp)
+    include/utils/Concepts.hpp include/utils/IntegerMath.hpp)
 set(_SOURCES_UTILS_GEOMETRY2D
     include/utils/geometry2d/Direction2D.hpp
     include/utils/geometry2d/Point2D.hpp

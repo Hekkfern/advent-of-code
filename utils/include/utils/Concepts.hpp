@@ -41,3 +41,16 @@ concept SignedIntegerType = requires(T param) {
     requires std::is_arithmetic_v<decltype(param + 1)>;
     requires !std::is_pointer_v<T>;
 };
+
+/**
+ * @brief      Defines a type which is a integer type of any kind.
+ *
+ * @tparam     T     Type to validate the concept against.
+ */
+template <typename T>
+concept IntegerType = requires(T param) {
+    requires std::integral<T>;
+    requires !std::is_same_v<bool, T>;
+    requires std::is_arithmetic_v<decltype(param + 1)>;
+    requires !std::is_pointer_v<T>;
+};
