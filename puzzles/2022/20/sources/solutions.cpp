@@ -4,12 +4,20 @@
 #include <list>
 #include <optional>
 #include <range/v3/all.hpp>
+#include <utils/IntegerMath.hpp>
 #include <utils/String.hpp>
 
 namespace aoc_2022_20 {
 
 // ---------- Private Methods ----------
 
+/**
+ * @brief      { function_description }
+ *
+ * @param      filename  The filename
+ *
+ * @return     { description_of_the_return_value }
+ */
 std::vector<int32_t> parseInput(std::string const& filename)
 {
     std::ifstream fileStream{filename};
@@ -21,25 +29,49 @@ std::vector<int32_t> parseInput(std::string const& filename)
     return outList;
 }
 
-std::size_t
-calculateIndex(std::vector<int32_t> const& list, int32_t const index)
+/**
+ * @brief      Calculates the index.
+ *
+ * @param      list   The list
+ * @param[in]  index  The index
+ *
+ * @return     The index.
+ */
+std::size_t refineIndex(std::vector<int32_t> const& list, int32_t const index)
 {
     int32_t const divisor{static_cast<int32_t>(list.size() - 1)};
     if (index < 0 || index > divisor) {
         // https://www.geeksforgeeks.org/modulus-on-negative-numbers/
-        return static_cast<std::size_t>((index % divisor + divisor) % divisor);
+        return static_cast<std::size_t>(
+            utils::integermath::modulusFloor(index, divisor));
     }
     return static_cast<std::size_t>(index);
 }
 
-std::size_t calculateNewPosition(
+/**
+ * @brief      Calculates the new position.
+ *
+ * @param      list           The list
+ * @param[in]  oldIndex          The index
+ * @param[in]  movementValue  The movement value
+ *
+ * @return     The new position.
+ */
+std::size_t calculateNewIndex(
     std::vector<int32_t> const& list,
-    std::size_t const index,
+    std::size_t const oldIndex,
     int32_t const movementValue)
 {
-    return index + calculateIndex(list, movementValue);
+    return refineIndex(list, static_cast<int32_t>(oldIndex) + movementValue);
 }
 
+/**
+ * @brief      { function_description }
+ *
+ * @param      list      The list
+ * @param[in]  oldIndex  The old index
+ * @param[in]  newIndex  The new index
+ */
 void moveItem(
     std::vector<int32_t>& list,
     std::size_t const oldIndex,
@@ -58,15 +90,25 @@ void moveItem(
     }
 }
 
+/**
+ * @brief      { function_description }
+ *
+ * @param      list  The list
+ *
+ * @return     { description_of_the_return_value }
+ */
 int32_t mixNumbers(std::vector<int32_t> const& list)
 {
     std::vector<int32_t> indexList(list.size());
     ranges::iota(indexList, 0);
     // reorder the items
     for (std::size_t i{0U}; i < list.size(); ++i) {
+        if (list.at(i) == 0) {
+            continue;
+        }
         std::size_t const oldIndex{static_cast<std::size_t>(ranges::distance(
             std::begin(indexList), ranges::find(indexList, i)))};
-        std::size_t newIndex{calculateNewPosition(list, oldIndex, list.at(i))};
+        std::size_t newIndex{calculateNewIndex(list, oldIndex, list.at(i))};
         moveItem(
             indexList,
             static_cast<size_t>(oldIndex),

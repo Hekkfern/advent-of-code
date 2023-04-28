@@ -28,7 +28,7 @@ public:
      * @param[in]  intervals  The intervals.
      */
     explicit MultiInterval(std::vector<Interval<T>>&& intervals) noexcept
-        : mIntervals{std::move(intervals)}
+        : mIntervals{std::forward<T>(intervals)}
     {
         reduce();
     }
@@ -68,7 +68,7 @@ public:
      */
     constexpr void add(Interval<T>&& interval) noexcept
     {
-        mIntervals.emplace_back(std::move(interval));
+        mIntervals.emplace_back(std::forward<T>(interval));
         reduce();
     }
     /**
@@ -159,7 +159,7 @@ public:
         std::vector<Interval<T>> joinedIntervals{mIntervals};
         joinedIntervals.reserve(mIntervals.size() + other.mIntervals.size());
         ranges::copy(other.mIntervals, std::back_inserter(joinedIntervals));
-        return MultiInterval{std::move(joinedIntervals)};
+        return MultiInterval{std::forward<T>(joinedIntervals)};
     }
     /**
      * @brief      Checks if another interval includes completely the range of

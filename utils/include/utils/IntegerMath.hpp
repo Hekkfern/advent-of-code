@@ -16,7 +16,7 @@ namespace utils::integermath {
  * @return     Result of the operation.
  */
 template <IntegerType T>
-constexpr T modulusFloor(T const dividend, T const divisor)
+[[nodiscard]] constexpr T modulusFloor(T const dividend, T const divisor)
 {
     return (dividend % divisor + divisor) % divisor;
 }
