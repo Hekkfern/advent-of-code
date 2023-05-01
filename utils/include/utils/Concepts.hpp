@@ -54,3 +54,10 @@ concept IntegerType = requires(T param) {
     requires std::is_arithmetic_v<decltype(param + 1)>;
     requires !std::is_pointer_v<T>;
 };
+
+template <typename T>
+concept Streamable = requires(std::ostream& os, T value) {
+    {
+        os << value
+    } -> std::convertible_to<std::ostream&>;
+};
