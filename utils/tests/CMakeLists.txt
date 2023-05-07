@@ -8,7 +8,7 @@ find_package(Catch2 3 CONFIG REQUIRED)
 # aoc_utils_tests
 set(_EXEC_NAME "aoc_utils_tests")
 set(_TESTFILES IntervalTests.cpp MultiIntervalTests.cpp StringTests.cpp
-               IntegerMathTests.cpp)
+               IntegerMathTests.cpp CircularListTests.cpp)
 set(_TESTFILES_GEOMETRY2D
     geometry2d/BoundingBox2DTests.cpp
     geometry2d/Direction2DTests.cpp

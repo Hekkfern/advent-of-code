@@ -12,7 +12,7 @@ namespace utils::containers {
  *
  * @tparam     T     Type of the contained items.
  */
-template <typename T>
+template <typename T = int32_t>
 class CircularList {
 public:
     /**
@@ -84,27 +84,27 @@ public:
      */
     void erase(std::list<T>::iterator it) { mList.erase(it); }
     /**
-     * @brief      { function_description }
+     * @brief      Gets the number of elements of the list.
      *
-     * @return     { description_of_the_return_value }
+     * @return     Number of items.
      */
     [[nodiscard]] std::size_t size() const { return mList.size(); }
     /**
-     * @brief      { function_description }
+     * @brief      Checks if the list is empty, i.e., has no items.
      *
-     * @return     { description_of_the_return_value }
+     * @return     True if it is empty. False, otherwise.
      */
     [[nodiscard]] bool empty() const { return mList.empty(); }
     /**
-     * @brief      Get the value of the first element in the list
+     * @brief      Get the value of the first element in the list.
      *
-     * @return     { description_of_the_return_value }
+     * @return     First element of the list.
      */
     [[nodiscard]] T& front() const { return mList.front(); }
     /**
-     * @brief      Get the value of the last element in the list
+     * @brief      Get the value of the last element in the list.
      *
-     * @return     { description_of_the_return_value }
+     * @return     Last element of the list.
      */
     [[nodiscard]] T& back() const { return mList.back(); }
     /**
@@ -113,51 +113,53 @@ public:
      * @param[in]  pos1  The position 1.
      * @param[in]  pos2  The position 2.
      */
-    void swap(std::size_t pos1, std::size_t pos2)
+    bool swap(std::size_t pos1, std::size_t pos2)
     {
-        if (mList.empty) {
-            return;
+        if (mList.size() < 2U) {
+            return false;
         }
-        if (pos1 >= _list.size() || pos2 >= _list.size()) {
-            throw std::out_of_range("Invalid position");
+        if (pos1 >= mList.size() || pos2 >= mList.size()) {
+            return false;
         }
         if (pos1 == pos2) {
-            return;
+            return true;
         }
-        auto iter1{_list.begin() + pos1};
-        auto iter2{_list.begin() + pos2};
         // Swap the values at the two positions
+        auto iter1{mList.begin() + pos1};
+        auto iter2{mList.begin() + pos2};
         std::swap(*iter1, *iter2);
+        return true;
     }
     /**
      * @brief      Deletes all the items.
      */
     void clear() { mList.clear(); }
     /**
-     * @brief      { function_description }
+     * @brief      Moves the item from one position to another, and slides all
+     * the other items accordingly.
      *
-     * @param[in]  oldIndex  The old index
-     * @param[in]  newIndex  The new index
+     * @param[in]  oldIndex  The old index.
+     * @param[in]  newIndex  The new index.
      */
-    void move(std::size_t const oldIndex, std::size_t const newIndex)
+    bool move(std::size_t const oldIndex, std::size_t const newIndex)
     {
-        if (pos1 >= _list.size() || pos2 >= _list.size()) {
-            throw std::out_of_range("Invalid position");
+        if (oldIndex >= mList.size() || newIndex >= mList.size()) {
+            return false;
         }
-        if (pos1 == pos2) {
-            return;
+        if (oldIndex == newIndex) {
+            return true;
         }
         // Get the iterators to the elements at the specified positions
-        auto iter1 = _list.begin() + pos1;
-        auto iter2 = _list.begin() + pos2;
+        auto iter1{mList.begin() + oldIndex};
+        auto iter2{mList.begin() + newIndex};
         // Determine the direction of the move and adjust the positions of all
         // elements in between
-        if (pos1 < pos2) {
-            _list.splice(std::next(iter2), _list, iter1);
+        if (oldIndex < newIndex) {
+            mList.splice(std::next(iter2), mList, iter1);
         } else {
-            _list.splice(iter2, _list, iter1);
-            ∫∫
+            mList.splice(iter2, mList, iter1);
         }
+        return true;
     }
     /**
      * @brief      Rotate the list some positions to the left.
