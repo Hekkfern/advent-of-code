@@ -28,7 +28,7 @@ public:
      * @param[in]  intervals  The intervals.
      */
     explicit MultiInterval(std::vector<Interval<T>>&& intervals) noexcept
-        : mIntervals{std::forward<T>(intervals)}
+        : mIntervals{std::move(intervals)}
     {
         reduce();
     }
@@ -68,7 +68,7 @@ public:
      */
     constexpr void add(Interval<T>&& interval) noexcept
     {
-        mIntervals.emplace_back(std::forward<T>(interval));
+        mIntervals.emplace_back(std::move(interval));
         reduce();
     }
     /**

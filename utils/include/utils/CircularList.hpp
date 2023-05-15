@@ -34,7 +34,7 @@ public:
      * @param[in]  list  A list.
      */
     explicit CircularList(std::list<T>&& list)
-        : mList{std::forward<T>(list)}
+        : mList{std::move(list)}
     {
     }
     /**
@@ -73,7 +73,7 @@ public:
      * @param[in]  it     The iterator of the position to insert to.
      * @param[in]  value  The value to add.
      */
-    void insert(std::list<T>::iterator it, T const& value)
+    void insert(typename std::list<T>::iterator it, T const& value)
     {
         mList.insert(it, value);
     }
@@ -82,7 +82,7 @@ public:
      *
      * @param[in]  it    The iterator of the position to delete its item.
      */
-    void erase(std::list<T>::iterator it) { mList.erase(it); }
+    void erase(typename std::list<T>::iterator it) { mList.erase(it); }
     /**
      * @brief      Gets the number of elements of the list.
      *
@@ -296,8 +296,9 @@ public:
      *
      * @return     { description_of_the_return_value }
      */
-    [[nodiscard]] std::list<T>::iterator
-    next(std::list<T>::iterator& it, std::size_t const amount = 1U) const
+    [[nodiscard]] typename std::list<T>::iterator
+    next(typename std::list<T>::iterator& it, std::size_t const amount = 1U)
+        const
     {
         if (mList.empty()) {
             throw std::out_of_range("CircularList is empty");
@@ -320,19 +321,22 @@ public:
      *
      * @return     { description_of_the_return_value }
      */
-    [[nodiscard]] std::list<T>::iterator
-    prev(std::list<T>::iterator& it, std::size_t const amount = 1U) const
+    [[nodiscard]] typename std::list<T>::iterator
+    prev(typename std::list<T>::iterator& it, std::size_t const amount = 1U)
+        const
     {
         if (mList.empty()) {
             throw std::out_of_range("CircularList is empty");
         }
-        for (int i = 0; i < amount; i++) {
-            if (_current == _list.begin()) {
-                _current = _list.end();
-            }
-            _current = std::prev(_current);
+        typename std::list<T>::reverse_iterator prevIt{it};
+        std::size_t counter{amount};
+        while (counter > 0) {
+            prevIt = std::next(it) == std::end(mList)
+                ? std::begin(mList)
+                : std::next(it);
+            --counter;
         }
-        return *_current;
+        return prevIt;
     }
 
 private:
