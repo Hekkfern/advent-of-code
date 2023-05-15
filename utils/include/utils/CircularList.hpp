@@ -24,7 +24,7 @@ public:
      *
      * @param[in]  list  A list.
      */
-    CircularList(std::list<T> const& list)
+    explicit CircularList(std::list<T> const& list)
         : mList{list}
     {
     }
@@ -33,7 +33,7 @@ public:
      *
      * @param[in]  list  A list.
      */
-    CircularList(std::list<T>&& list)
+    explicit CircularList(std::list<T>&& list)
         : mList{std::forward<T>(list)}
     {
     }
@@ -122,7 +122,7 @@ public:
             return false;
         }
         if (pos1 == pos2) {
-            return true;
+            return false;
         }
         // Swap the values at the two positions
         auto iter1{mList.begin() + pos1};
@@ -143,6 +143,9 @@ public:
      */
     bool move(std::size_t const oldIndex, std::size_t const newIndex)
     {
+        if (mList.size() < 3U) {
+            return false;
+        }
         if (oldIndex >= mList.size() || newIndex >= mList.size()) {
             return false;
         }
@@ -168,10 +171,21 @@ public:
      */
     void rotateLeft(std::size_t const amount = 1U)
     {
-        if (!empty() && amount > 0U) {
-            T val = mList.front();
-            mList.pop_front();
-            mList.splice(mList.end(), mList, mList.begin());
+        if (mList.size() < 2U || amount == 0U) {
+            return;
+        }
+        auto rotations{amount % mList.size()};
+        if (rotations == 0) {
+            /* No need to rotate if rotations is a multiple of the list size */
+            return;
+        }
+
+        auto it{std::advance(std::begin(mList), rotations)};
+        mList.splice(std::end(mList), mList, std::begin(mList), it);
+        // Handle wrapping around if rotations exceed list size
+        if (rotations > 0 && rotations < mList.size()) {
+            it = std::advance(std::begin(mList), mList.size() - rotations);
+            mList.splice(std::end(mList), mList, std::begin(mList), it);
         }
     }
     /**
@@ -181,70 +195,40 @@ public:
      */
     void rotateRight(std::size_t const amount = 1U)
     {
-        if (mList.size() < 2) {
+        if (mList.size() < 2U || amount == 0U) {
             return;
         }
-        amount %= mList.size();
-        if (amount == 0) {
+        auto rotations{amount % mList.size()};
+        if (rotations == 0) {
+            /* No need to rotate if rotations is a multiple of the list size */
             return;
         }
-        auto it = mList.end();
-        // point to the last element
-        --it;
-        // move the iterator to the selected position
-        std::advance(it, -static_cast<int>(amount));
-        // move the selected elements to the front
-        mList.splice(mList.begin(), mList, it, mList.end());
-        // move the iterator to the position after the selected position
-        std::advance(it, amount);
-        // move the elements from the beginning to the selected position to the
-        // end
-        mList.splice(mList.end(), mList, mList.begin(), it);
+
+        auto it{std::advance(mList.end(), -rotations)};
+        mList.splice(std::begin(mList), mList, it, std::end(mList));
+        // Handle wrapping around if rotations exceed list size
+        if (rotations > 0) {
+            it = std::advance(std::begin(mList), rotations);
+            mList.splice(std::end(mList), mList, std::begin(mList), it);
+        }
     }
     /**
      * @brief      { function_description }
      *
-     * @param[in]  reverse  The reverse
+     * @param[in]  reverse  Flag that makes the sort in descending order.
      */
     void sort(bool reverse = false)
     {
-        if (size() < 2U) {
-            return;
+        if (!reverse) {
+            mList.sort();
+        } else {
+            mList.sort(std::greater());
         }
-
-        bool swapped = false;
-        Node* last = nullptr;
-        do {
-            swapped = false;
-            Node* node = head;
-            while (node->next != head) {
-                if ((!reverse && node->value > node->next->value)
-                    || (reverse && node->value < node->next->value)) {
-                    std::swap(node->value, node->next->value);
-                    swapped = true;
-                    last = node->next;
-                }
-                node = node->next;
-            }
-        } while (swapped && last != head);
     }
     /**
      * @brief      { function_description }
      */
-    void reverse()
-    {
-        if (size() < 2U)
-            return;
-
-        Node* current = head;
-        do {
-            std::swap(current->next, current->prev);
-            current = current->prev;
-        } while (current != head);
-
-        std::swap(head->prev, head->next);
-        head = head->prev;
-    }
+    void reverse() { mList.reverse(); }
     /**
      * @brief      Equality operator.
      *
@@ -339,7 +323,7 @@ public:
     [[nodiscard]] std::list<T>::iterator
     prev(std::list<T>::iterator& it, std::size_t const amount = 1U) const
     {
-        if (_list.empty()) {
+        if (mList.empty()) {
             throw std::out_of_range("CircularList is empty");
         }
         for (int i = 0; i < amount; i++) {
