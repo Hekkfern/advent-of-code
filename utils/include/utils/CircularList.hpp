@@ -15,6 +15,7 @@ namespace utils::containers {
 template <typename T = int32_t>
 class CircularList {
 public:
+    using iterator = typename std::list<T>::iterator;
     /**
      * @brief      Default constructor
      */
@@ -73,16 +74,13 @@ public:
      * @param[in]  it     The iterator of the position to insert to.
      * @param[in]  value  The value to add.
      */
-    void insert(typename std::list<T>::iterator it, T const& value)
-    {
-        mList.insert(it, value);
-    }
+    void insert(iterator it, T const& value) { mList.insert(it, value); }
     /**
      * @brief      Deletes the selected item from the list.
      *
      * @param[in]  it    The iterator of the position to delete its item.
      */
-    void erase(typename std::list<T>::iterator it) { mList.erase(it); }
+    void erase(iterator it) { mList.erase(it); }
     /**
      * @brief      Gets the number of elements of the list.
      *
@@ -100,20 +98,32 @@ public:
      *
      * @return     First element of the list.
      */
-    [[nodiscard]] T& front() const { return mList.front(); }
+    [[nodiscard]] T& front() { return mList.front(); }
     /**
      * @brief      Get the value of the last element in the list.
      *
      * @return     Last element of the list.
      */
-    [[nodiscard]] T& back() const { return mList.back(); }
+    [[nodiscard]] T& back() { return mList.back(); }
+    /**
+     * @brief
+     *
+     * @return
+     */
+    [[nodiscard]] iterator begin() { return std::begin(mList); }
+    /**
+     * @brief
+     *
+     * @return
+     */
+    [[nodiscard]] iterator end() { return mList.end(); }
     /**
      * @brief      Swaps the values of the items in the selected positions.
      *
      * @param[in]  pos1  The position 1.
      * @param[in]  pos2  The position 2.
      */
-    bool swap(std::size_t pos1, std::size_t pos2)
+    bool swap(std::size_t const pos1, std::size_t const pos2)
     {
         if (mList.size() < 2U) {
             return false;
@@ -125,8 +135,10 @@ public:
             return false;
         }
         // Swap the values at the two positions
-        auto iter1{mList.begin() + pos1};
-        auto iter2{mList.begin() + pos2};
+        auto iter1{std::begin(mList)};
+        std::advance(iter1, pos1);
+        auto iter2{std::begin(mList)};
+        std::advance(iter2, pos2);
         std::swap(*iter1, *iter2);
         return true;
     }
@@ -153,8 +165,10 @@ public:
             return true;
         }
         // Get the iterators to the elements at the specified positions
-        auto iter1{mList.begin() + oldIndex};
-        auto iter2{mList.begin() + newIndex};
+        auto iter1{std::begin(mList)};
+        std::advance(iter1, oldIndex);
+        auto iter2{std::begin(mList)};
+        std::advance(iter2, newIndex);
         // Determine the direction of the move and adjust the positions of all
         // elements in between
         if (oldIndex < newIndex) {
@@ -180,11 +194,13 @@ public:
             return;
         }
 
-        auto it{std::advance(std::begin(mList), rotations)};
+        auto it{std::begin(mList)};
+        std::advance(it, rotations);
         mList.splice(std::end(mList), mList, std::begin(mList), it);
         // Handle wrapping around if rotations exceed list size
         if (rotations > 0 && rotations < mList.size()) {
-            it = std::advance(std::begin(mList), mList.size() - rotations);
+            it = std::begin(mList);
+            std::advance(it, mList.size() - rotations);
             mList.splice(std::end(mList), mList, std::begin(mList), it);
         }
     }
@@ -204,11 +220,13 @@ public:
             return;
         }
 
-        auto it{std::advance(mList.end(), -rotations)};
+        auto it{mList.end()};
+        std::advance(it, -rotations);
         mList.splice(std::begin(mList), mList, it, std::end(mList));
         // Handle wrapping around if rotations exceed list size
         if (rotations > 0) {
-            it = std::advance(std::begin(mList), rotations);
+            it = std::begin(mList);
+            std::advance(it, rotations);
             mList.splice(std::end(mList), mList, std::begin(mList), it);
         }
     }
@@ -296,14 +314,13 @@ public:
      *
      * @return     { description_of_the_return_value }
      */
-    [[nodiscard]] typename std::list<T>::iterator
-    next(typename std::list<T>::iterator& it, std::size_t const amount = 1U)
-        const
+    [[nodiscard]] iterator
+    next(iterator& it, std::size_t const amount = 1U) const
     {
         if (mList.empty()) {
             throw std::out_of_range("CircularList is empty");
         }
-        typename std::list<T>::iterator nextIt{it};
+        iterator nextIt{it};
         std::size_t counter{amount};
         while (counter > 0) {
             nextIt = std::next(it) == std::end(mList)
@@ -321,9 +338,8 @@ public:
      *
      * @return     { description_of_the_return_value }
      */
-    [[nodiscard]] typename std::list<T>::iterator
-    prev(typename std::list<T>::iterator& it, std::size_t const amount = 1U)
-        const
+    [[nodiscard]] iterator
+    prev(iterator& it, std::size_t const amount = 1U) const
     {
         if (mList.empty()) {
             throw std::out_of_range("CircularList is empty");
