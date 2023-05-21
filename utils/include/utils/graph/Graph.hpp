@@ -38,7 +38,7 @@ public:
      *
      * @return     True if the vertex was added. False, otherwise.
      */
-    bool addVertex(const std::string_view name, T const& info)
+    bool addVertex(std::string_view const name, T const& info)
     {
         auto [insertedItem, isInserted]{
             mVertices.emplace(name, Vertex<T, W>{name, info})};
@@ -76,6 +76,18 @@ public:
         return isInserted;
     }
     /**
+     * @brief      Adds a vertex.
+     *
+     * @param[in]  vertex  The vertex to add.
+     *
+     * @return     True if the vertex was added. False, otherwise.
+     */
+    bool addVertex(Vertex<T, W>&& vertex)
+    {
+        auto [insertedItem, isInserted]{mVertices.emplace(std::move(vertex))};
+        return isInserted;
+    }
+    /**
      * @brief      Removes a vertex.
      *
      * @param[in]  vertexName  The vertex name to remove.
@@ -84,6 +96,14 @@ public:
      */
     bool removeVertex(std::string const& vertexName)
     {
+        // delete edges whose origin or destination is this vertex
+        for (auto const& vertex : mVertices) {
+            if (vertexName == vertex.first) {
+                continue;
+            }
+            removeAllEdges(vertexName, vertex.first);
+        }
+        // delete vertex
         return mVertices.erase(vertexName) == 1U;
     }
     /**
@@ -132,10 +152,12 @@ public:
         std::string const& vertexName2,
         const W weight)
     {
+        // check that both vertices exist
         if (!mVertices.contains(vertexName1)
             || !mVertices.contains(vertexName2)) {
             return false;
         }
+        // create the edge
         return mVertices.at(vertexName1)
             .addEdge(mVertices.at(vertexName2), weight);
     }
@@ -153,10 +175,12 @@ public:
         std::string const& vertexName2,
         const W weight)
     {
+        // check that both vertices exist
         if (!mVertices.contains(vertexName1)
             || !mVertices.contains(vertexName2)) {
             return false;
         }
+        // create the edge
         return mVertices.at(vertexName1)
                    .addEdge(mVertices.at(vertexName2), weight)
             && mVertices.at(vertexName2)
@@ -173,10 +197,12 @@ public:
     bool removeDirectedEdge(
         std::string const& vertexName1, std::string const& vertexName2)
     {
+        // check that both vertices exist
         if (!mVertices.contains(vertexName1)
             || !mVertices.contains(vertexName2)) {
             return false;
         }
+        // delete the edge
         return mVertices.at(vertexName1).removeEdge(vertexName2);
     }
     /**
@@ -191,10 +217,12 @@ public:
     bool removeAllEdges(
         std::string const& vertexName1, std::string const& vertexName2)
     {
+        // check that both vertices exist
         if (!mVertices.contains(vertexName1)
             || !mVertices.contains(vertexName2)) {
             return false;
         }
+        // delete the edges
         mVertices.at(vertexName1).removeEdge(vertexName2);
         mVertices.at(vertexName2).removeEdge(vertexName1);
         return true;
