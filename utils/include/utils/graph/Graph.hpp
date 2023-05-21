@@ -52,13 +52,13 @@ public:
      *
      * @return     True if the vertex was added. False, otherwise.
      */
-    bool addVertex(std::string&& name, T&& info)
+    template <class U>
+        requires std::convertible_to<U, T>
+    bool addVertex(std::string&& name, U&& info)
     {
         std::string key{name};
         auto [insertedItem, isInserted]{mVertices.emplace(
-            key,
-            Vertex<T, W>{
-                std::forward<std::string>(name), std::forward<T>(info)})};
+            key, Vertex<T, W>{std::move(name), std::forward<U>(info)})};
         return isInserted;
     }
     /**
