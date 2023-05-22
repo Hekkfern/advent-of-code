@@ -9,10 +9,7 @@ TEST_CASE("[ListExtensions] circularMove() method", "[utils][ListExtensions]")
     std::list<int32_t> list{1, 2, 3, 4, 5, 6};
     SECTION("In the middle")
     {
-        SECTION("circularMoveFromXToY() method")
-        {
-            circularMoveFromXToY(list, 1U, 3U);
-        }
+        SECTION("moveFromXToY() method") { moveFromXToY(list, 1U, 3U); }
         SECTION("circularMoveXPositions() method")
         {
             circularMoveXPositions(list, 1U, 2);
@@ -23,10 +20,7 @@ TEST_CASE("[ListExtensions] circularMove() method", "[utils][ListExtensions]")
     }
     SECTION("In the middle (reverse)")
     {
-        SECTION("circularMoveFromXToY() method")
-        {
-            circularMoveFromXToY(list, 4U, 1U);
-        }
+        SECTION("moveFromXToY() method") { moveFromXToY(list, 4U, 1U); }
         SECTION("circularMoveXPositions() method")
         {
             SECTION("Negative number of positions")
@@ -44,9 +38,9 @@ TEST_CASE("[ListExtensions] circularMove() method", "[utils][ListExtensions]")
     }
     SECTION("Border positions")
     {
-        SECTION("circularMoveFromXToY() method")
+        SECTION("moveFromXToY() method")
         {
-            circularMoveFromXToY(list, 0U, list.size() - 1U);
+            moveFromXToY(list, 0U, list.size() - 1U);
         }
         SECTION("circularMoveXPositions() method")
         {
@@ -58,9 +52,9 @@ TEST_CASE("[ListExtensions] circularMove() method", "[utils][ListExtensions]")
     }
     SECTION("Border positions (reverse)")
     {
-        SECTION("circularMoveFromXToY() method")
+        SECTION("moveFromXToY() method")
         {
-            circularMoveFromXToY(list, list.size() - 1U, 0U);
+            moveFromXToY(list, list.size() - 1U, 0U);
         }
         SECTION("circularMoveXPositions() method")
         {
