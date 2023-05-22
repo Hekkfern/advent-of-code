@@ -6,7 +6,7 @@ using namespace utils::containers;
 
 TEST_CASE("[ListExtensions] circularMove() method", "[utils][ListExtensions]")
 {
-    std::list<int32_t> list{{1, 2, 3, 4, 5, 6}};
+    std::list<int32_t> list{1, 2, 3, 4, 5, 6};
     SECTION("In the middle")
     {
         SECTION("circularMoveFromXToY() method")
@@ -18,7 +18,7 @@ TEST_CASE("[ListExtensions] circularMove() method", "[utils][ListExtensions]")
             circularMoveXPositions(list, 1U, 2);
         }
         REQUIRE(list.size() == 6U);
-        std::list<int32_t> const expectedCircularList{{1, 3, 4, 2, 5, 6}};
+        std::list<int32_t> const expectedCircularList{1, 3, 4, 2, 5, 6};
         REQUIRE(list == expectedCircularList);
     }
     SECTION("In the middle (reverse)")
@@ -39,7 +39,7 @@ TEST_CASE("[ListExtensions] circularMove() method", "[utils][ListExtensions]")
             }
         }
         REQUIRE(list.size() == 6U);
-        std::list<int32_t> const expectedCircularList{{1, 5, 2, 3, 4, 6}};
+        std::list<int32_t> const expectedCircularList{1, 5, 2, 3, 4, 6};
         REQUIRE(list == expectedCircularList);
     }
     SECTION("Border positions")
@@ -53,7 +53,7 @@ TEST_CASE("[ListExtensions] circularMove() method", "[utils][ListExtensions]")
             circularMoveXPositions(list, 0U, 5U);
         }
         REQUIRE(list.size() == 6U);
-        std::list<int32_t> const expectedCircularList{{2, 3, 4, 5, 6, 1}};
+        std::list<int32_t> const expectedCircularList{2, 3, 4, 5, 6, 1};
         REQUIRE(list == expectedCircularList);
     }
     SECTION("Border positions (reverse)")
@@ -74,34 +74,80 @@ TEST_CASE("[ListExtensions] circularMove() method", "[utils][ListExtensions]")
             }
         }
         REQUIRE(list.size() == 6U);
-        std::list<int32_t> const expectedCircularList{{6, 1, 2, 3, 4, 5}};
+        std::list<int32_t> const expectedCircularList{6, 1, 2, 3, 4, 5};
         REQUIRE(list == expectedCircularList);
     }
 }
 
 TEST_CASE("[ListExtensions] rotateLeft() method", "[utils][ListExtensions]")
 {
-    std::list<int32_t> list{{1, 2, 3, 4, 5, 6}};
-    bool result{false};
-    SECTION("Small amount") { result = circularRotateLeft(list, 2U); }
-    SECTION("High amount") { result = circularRotateLeft(list, 8U); }
-    REQUIRE(result);
-    REQUIRE(list.size() == 6U);
-    std::list<int32_t> const expectedCircularList{{3, 4, 5, 6, 1, 2}};
-    REQUIRE(list == expectedCircularList);
+    SECTION("Success")
+    {
+        std::list<int32_t> list{1, 2, 3, 4, 5, 6};
+        bool result{false};
+        SECTION("Small amount") { result = circularRotateLeft(list, 2U); }
+        SECTION("High amount") { result = circularRotateLeft(list, 8U); }
+        REQUIRE(result);
+        REQUIRE(list.size() == 6U);
+        std::list<int32_t> const expectedCircularList{3, 4, 5, 6, 1, 2};
+        REQUIRE(list == expectedCircularList);
+    }
+    SECTION("Error")
+    {
+        SECTION("Small list")
+        {
+            std::list<int32_t> list{1};
+            bool result{circularRotateLeft(list, 2U)};
+            REQUIRE_FALSE(result);
+        }
+        SECTION("Wrong amount")
+        {
+            std::list<int32_t> list{1, 2, 3, 4, 5, 6};
+            bool result{false};
+            SECTION("Zero positions") { result = circularRotateLeft(list, 0U); }
+            SECTION("Wrap-around to zero")
+            {
+                result = circularRotateLeft(list, 6U);
+            }
+            REQUIRE_FALSE(result);
+        }
+    }
 }
 
 TEST_CASE("[ListExtensions] rotateRight() method", "[utils][ListExtensions]")
 {
-    std::list<int32_t> list{{1, 2, 3, 4, 5, 6}};
-    SECTION("Small amount")
+    SECTION("Success")
     {
+        std::list<int32_t> list{1, 2, 3, 4, 5, 6};
         bool result{false};
         SECTION("Small amount") { result = circularRotateRight(list, 2U); }
         SECTION("High amount") { result = circularRotateRight(list, 8U); }
         REQUIRE(result);
         REQUIRE(list.size() == 6U);
-        std::list<int32_t> const expectedCircularList{{5, 6, 1, 2, 3, 4}};
+        std::list<int32_t> const expectedCircularList{5, 6, 1, 2, 3, 4};
         REQUIRE(list == expectedCircularList);
+    }
+    SECTION("Error")
+    {
+        SECTION("Small list")
+        {
+            std::list<int32_t> list{1};
+            bool result{circularRotateRight(list, 2U)};
+            REQUIRE_FALSE(result);
+        }
+        SECTION("Wrong amount")
+        {
+            std::list<int32_t> list{1, 2, 3, 4, 5, 6};
+            bool result{false};
+            SECTION("Zero positions")
+            {
+                result = circularRotateRight(list, 0U);
+            }
+            SECTION("Wrap-around to zero")
+            {
+                result = circularRotateRight(list, 6U);
+            }
+            REQUIRE_FALSE(result);
+        }
     }
 }
