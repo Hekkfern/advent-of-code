@@ -4,71 +4,86 @@
 
 using namespace utils::containers;
 
-TEST_CASE("[ListExtensions] circularMove() method", "[utils][ListExtensions]")
+TEST_CASE("[ListExtensions] moveFromXToY() method", "[utils][ListExtensions]")
 {
     std::list<int32_t> list{1, 2, 3, 4, 5, 6};
     SECTION("In the middle")
     {
-        SECTION("moveFromXToY() method") { moveFromXToY(list, 1U, 3U); }
-        SECTION("circularMoveXPositions() method")
-        {
-            circularMoveXPositions(list, 1U, 2);
-        }
+        bool result{moveFromXToY(list, 1U, 3U)};
+        REQUIRE(result);
         REQUIRE(list.size() == 6U);
         std::list<int32_t> const expectedCircularList{1, 3, 4, 2, 5, 6};
         REQUIRE(list == expectedCircularList);
     }
     SECTION("In the middle (reverse)")
     {
-        SECTION("moveFromXToY() method") { moveFromXToY(list, 4U, 1U); }
-        SECTION("circularMoveXPositions() method")
-        {
-            SECTION("Negative number of positions")
-            {
-                circularMoveXPositions(list, 4U, -3);
-            }
-            SECTION("Positive number of positions")
-            {
-                circularMoveXPositions(list, 4U, 3U);
-            }
-        }
+        bool result{moveFromXToY(list, 4U, 1U)};
+        REQUIRE(result);
         REQUIRE(list.size() == 6U);
         std::list<int32_t> const expectedCircularList{1, 5, 2, 3, 4, 6};
         REQUIRE(list == expectedCircularList);
     }
     SECTION("Border positions")
     {
-        SECTION("moveFromXToY() method")
-        {
-            moveFromXToY(list, 0U, list.size() - 1U);
-        }
-        SECTION("circularMoveXPositions() method")
-        {
-            circularMoveXPositions(list, 0U, 5U);
-        }
+        bool result{moveFromXToY(list, 0U, list.size() - 1U)};
+        REQUIRE(result);
         REQUIRE(list.size() == 6U);
         std::list<int32_t> const expectedCircularList{2, 3, 4, 5, 6, 1};
         REQUIRE(list == expectedCircularList);
     }
     SECTION("Border positions (reverse)")
     {
-        SECTION("moveFromXToY() method")
-        {
-            moveFromXToY(list, list.size() - 1U, 0U);
-        }
-        SECTION("circularMoveXPositions() method")
-        {
-            SECTION("Negative number of positions")
-            {
-                circularMoveXPositions(list, 5U, -5);
-            }
-            SECTION("Positive number of positions")
-            {
-                circularMoveXPositions(list, 5U, 1U);
-            }
-        }
+        bool result{moveFromXToY(list, list.size() - 1U, 0U)};
+        REQUIRE(result);
         REQUIRE(list.size() == 6U);
         std::list<int32_t> const expectedCircularList{6, 1, 2, 3, 4, 5};
+        REQUIRE(list == expectedCircularList);
+    }
+}
+
+TEST_CASE(
+    "[ListExtensions] circularMoveXPositions() method",
+    "[utils][ListExtensions]")
+{
+    std::list<int32_t> list{1, 2, 3, 4, 5, 6};
+    SECTION("In the middle")
+    {
+        bool result{circularMoveXPositions(list, 1U, 2)};
+        REQUIRE(result);
+        REQUIRE(list.size() == 6U);
+        std::list<int32_t> const expectedCircularList{1, 3, 4, 2, 5, 6};
+        REQUIRE(list == expectedCircularList);
+    }
+    SECTION("In the middle (reverse)")
+    {
+        bool result{false};
+        SECTION("Negative number of positions")
+        {
+            result = circularMoveXPositions(list, 4U, -3);
+        }
+        SECTION("Positive number of positions")
+        {
+            result = circularMoveXPositions(list, 4U, 3U);
+        }
+        REQUIRE(result);
+        REQUIRE(list.size() == 6U);
+        std::list<int32_t> const expectedCircularList{1, 5, 2, 3, 4, 6};
+        REQUIRE(list == expectedCircularList);
+    }
+    SECTION("Wrap-around in the left side")
+    {
+        bool result{circularMoveXPositions(list, 1U, -3)};
+        REQUIRE(result);
+        REQUIRE(list.size() == 6U);
+        std::list<int32_t> const expectedCircularList{3, 4, 2, 5, 6, 1};
+        REQUIRE(list == expectedCircularList);
+    }
+    SECTION("Wrap-around in the right side")
+    {
+        bool result{circularMoveXPositions(list, 1U, 7)};
+        REQUIRE(result);
+        REQUIRE(list.size() == 6U);
+        std::list<int32_t> const expectedCircularList{1, 3, 2, 4, 5, 6};
         REQUIRE(list == expectedCircularList);
     }
 }

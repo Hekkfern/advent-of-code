@@ -42,10 +42,8 @@ bool moveFromXToY(
         return true;
     }
     /* Get the iterators to the elements at the specified positions */
-    auto iter1{std::begin(list)};
-    std::advance(iter1, oldIndex);
-    auto iter2{std::begin(list)};
-    std::advance(iter2, newIndex);
+    auto iter1{std::next(std::begin(list), static_cast<ssize_t>(oldIndex))};
+    auto iter2{std::next(std::begin(list), static_cast<ssize_t>(newIndex))};
     /* Determine the direction of the move and adjust the positions of all
      * elements in between */
     if (oldIndex < newIndex) {
@@ -73,13 +71,36 @@ template <SignedIntegerType T = int32_t>
 bool circularMoveXPositions(
     std::list<T>& list, std::size_t const oldIndex, ssize_t const positions)
 {
-    if (positions == 0U) {
+    /* Validations of the input parameters */
+    if (list.size() < 2U) {
         return false;
     }
-    ssize_t const newIndex{utils::integermath::modulusFloor(
-        static_cast<ssize_t>(oldIndex) + positions,
-        static_cast<ssize_t>(list.size()))};
-    return moveFromXToY<T>(list, oldIndex, static_cast<std::size_t>(newIndex));
+    if (oldIndex >= list.size()) {
+        return false;
+    }
+    // Wrap around the number of positions if necessary
+    ssize_t numPositions = positions % static_cast<ssize_t>(list.size());
+    if (numPositions == 0) {
+        return false;
+    }
+
+    // Find the iterator pointing to the item to move
+    auto itemIter = std::next(std::begin(list), static_cast<ssize_t>(oldIndex));
+
+    // Move the item using the splice method
+    if (numPositions > 0) {
+        auto nextIter = std::next(itemIter, numPositions);
+        list.splice(nextIter, list, itemIter);
+    } else {
+        auto prevIter = std::prev(itemIter, -numPositions);
+        if (prevIter == list.end()) {
+            // Special case: Moving to a position after the end of the list
+            list.splice(list.end(), list, itemIter);
+        } else {
+            list.splice(prevIter, list, itemIter);
+        }
+    }
+    return true;
 }
 
 /**
@@ -104,8 +125,7 @@ bool circularRotateLeft(std::list<T>& list, std::size_t const amount = 1U)
         return false;
     }
 
-    auto it{std::begin(list)};
-    std::advance(it, rotations);
+    auto it{std::next(std::begin(list), static_cast<ssize_t>(rotations))};
     list.splice(std::end(list), list, std::begin(list), it);
     return true;
 }
@@ -131,8 +151,7 @@ bool circularRotateRight(std::list<T>& list, std::size_t const amount = 1U)
         return false;
     }
 
-    auto it{list.end()};
-    std::advance(it, -rotations);
+    auto it{std::next(list.end(), static_cast<ssize_t>(-rotations))};
     list.splice(std::begin(list), list, it, std::end(list));
     return true;
 }
