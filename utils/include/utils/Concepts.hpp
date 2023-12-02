@@ -1,6 +1,7 @@
 #pragma once
 
 #include <concepts>
+#include <ostream>
 
 /**
  * @brief      Defines a type which is a signed integer type of any kind, or a
