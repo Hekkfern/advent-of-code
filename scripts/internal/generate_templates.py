@@ -130,7 +130,9 @@ def create_solutions_for_tests(root_dir: pathlib.Path, year: int, day: int) -> N
 
 def create_inputtxt_for_tests(root_dir: pathlib.Path, year: int, day: int) -> None:
     utils.create_empty_file(
-        root_dir / f"puzzles/{year}/{day}/tests/input_test.txt")
+        root_dir / f"puzzles/{year}/{day}/tests/input1_test.txt")
+    utils.create_empty_file(
+        root_dir / f"puzzles/{year}/{day}/tests/input2_test.txt")
 
 
 def create_cmakelists_for_tests(root_dir: pathlib.Path, year: int, day: int) -> None:

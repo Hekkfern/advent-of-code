@@ -36,6 +36,7 @@ sudo apt-get install -y curl wget tar zip unzip make ninja-build g++ cmake git p
 Also, some Python packages are needed:
 
 ```bash
+python3 -m pip install --upgrade pip wheel setuptools requests
 python3 -m pip install --upgrade pipenv
 ```
 
@@ -50,6 +51,7 @@ sudo dnf install -y curl wget tar zip unzip make ninja-build gcc-c++ cmake git p
 Also, some Python packages are needed:
 
 ```bash
+python3 -m pip install --upgrade pip wheel setuptools requests
 python3 -m pip install --upgrade pipenv
 ```
 
