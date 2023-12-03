@@ -42,8 +42,8 @@ bool moveFromXToY(
         return true;
     }
     /* Get the iterators to the elements at the specified positions */
-    auto iter1{std::next(std::begin(list), static_cast<ssize_t>(oldIndex))};
-    auto iter2{std::next(std::begin(list), static_cast<ssize_t>(newIndex))};
+    auto iter1{std::next(std::begin(list), static_cast<int64_t>(oldIndex))};
+    auto iter2{std::next(std::begin(list), static_cast<int64_t>(newIndex))};
     /* Determine the direction of the move and adjust the positions of all
      * elements in between */
     if (oldIndex < newIndex) {
@@ -69,7 +69,7 @@ bool moveFromXToY(
  */
 template <SignedIntegerType T = int32_t>
 bool circularMoveXPositions(
-    std::list<T>& list, std::size_t const oldIndex, ssize_t const positions)
+    std::list<T>& list, std::size_t const oldIndex, int64_t const positions)
 {
     /* Validations of the input parameters */
     if (list.size() < 2U) {
@@ -79,13 +79,13 @@ bool circularMoveXPositions(
         return false;
     }
     // Wrap around the number of positions if necessary
-    ssize_t numPositions = positions % static_cast<ssize_t>(list.size());
+    int64_t numPositions = positions % static_cast<int64_t>(list.size());
     if (numPositions == 0) {
         return false;
     }
 
     // Find the iterator pointing to the item to move
-    auto itemIter = std::next(std::begin(list), static_cast<ssize_t>(oldIndex));
+    auto itemIter = std::next(std::begin(list), static_cast<int64_t>(oldIndex));
 
     // Move the item using the splice method
     if (numPositions > 0) {
@@ -125,7 +125,7 @@ bool circularRotateLeft(std::list<T>& list, std::size_t const amount = 1U)
         return false;
     }
 
-    auto it{std::next(std::begin(list), static_cast<ssize_t>(rotations))};
+    auto it{std::next(std::begin(list), static_cast<int64_t>(rotations))};
     list.splice(std::end(list), list, std::begin(list), it);
     return true;
 }
@@ -151,7 +151,7 @@ bool circularRotateRight(std::list<T>& list, std::size_t const amount = 1U)
         return false;
     }
 
-    auto it{std::next(list.end(), static_cast<ssize_t>(-rotations))};
+    auto it{std::next(list.end(), -static_cast<int64_t>(rotations))};
     list.splice(std::begin(list), list, it, std::end(list));
     return true;
 }
