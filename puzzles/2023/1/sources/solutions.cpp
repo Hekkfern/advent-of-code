@@ -3,6 +3,7 @@
 #include <array>
 #include <optional>
 #include <range/v3/algorithm/any_of.hpp>
+#include <range/v3/algorithm/for_each.hpp>
 #include <unordered_map>
 #include <utility>
 #include <utils/File.hpp>
@@ -30,14 +31,14 @@ const std::unordered_map<std::string, char> NumberTextMap{
  * \param onlyDigits
  * \return
  */
-std::optional<std::pair<char, std::size_t>> analyzeItemInLine(
+std::optional<char> analyzeItemInLine(
     std::string const& line,
     const std::size_t position,
     bool const onlyDigits = true)
 {
     char const ch{line[position]};
     if (std::isdigit(ch) != 0 && ch != '0') {
-        return std::make_pair(ch, 1);
+        return ch;
     }
     if (!onlyDigits) {
         const std::string remainingLine{line.substr(position)};
@@ -52,8 +53,7 @@ std::optional<std::pair<char, std::size_t>> analyzeItemInLine(
                     }
                     return isMatch;
                 })) {
-            return std::make_pair(
-                numberMatched.second, numberMatched.first.length());
+            return numberMatched.second;
         }
     }
     return {};
@@ -92,8 +92,14 @@ std::string parseWeirdLine(std::string const& line)
             ++index;
             continue;
         }
-        result[resultIndex] = analysisResult->first;
-        index += analysisResult->second;
+        if (resultIndex == 0) {
+            ranges::for_each(result, [value = *analysisResult](char& ch) {
+                ch = value;
+            });
+        } else {
+            result[resultIndex] = *analysisResult;
+        }
+        ++index;
         if (resultIndex == 0) {
             ++resultIndex;
         }
