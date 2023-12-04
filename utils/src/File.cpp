@@ -109,4 +109,19 @@ readMatrixOfDigits(std::string const& filename)
     return outList;
 }
 
+void parseAndIterate(
+    std::string const& filename,
+    std::function<void(std::string const& line)>&& action)
+{
+    std::ifstream fileStream{filename};
+    if (!fileStream.is_open()) {
+        return;
+    }
+
+    std::string line;
+    while (std::getline(fileStream, line)) {
+        action(line);
+    }
+}
+
 } // namespace utils::file

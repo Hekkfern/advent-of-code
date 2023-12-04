@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -66,5 +67,13 @@ readGroupsOfNumbers(std::string const& filename);
  */
 [[nodiscard]] std::optional<std::vector<std::vector<uint8_t>>>
 readMatrixOfDigits(std::string const& filename);
+/**
+ * \brief ????
+ * \param[in] filename ????
+ * \param[in] action ????
+ */
+void parseAndIterate(
+    std::string const& filename,
+    std::function<void(std::string const& line)>&& action);
 
 } // namespace utils::file

@@ -11,7 +11,7 @@ TEST_CASE(
     "[2023_1] Use example input for Part 1",
     "[2023, 2023_1, part1, 2023_1_part1]")
 {
-    constexpr auto InputFile{ "input_test.txt" };
+    constexpr auto InputFile{ "input1_test.txt" };
 
     std::string mySolution = aoc_2023_1::solvePart1(InputFile);
     std::string expectedSolution = utils::file::readFirstLine(
@@ -25,7 +25,7 @@ TEST_CASE(
     "[2023_1] Use example input for Part 2",
     "[2023, 2023_1, part2, 2023_1_part2]")
 {
-    constexpr auto InputFile{ "input_test.txt" };
+    constexpr auto InputFile{ "input2_test.txt" };
 
     std::string mySolution = aoc_2023_1::solvePart2(InputFile);
     std::string expectedSolution = utils::file::readFirstLine(
