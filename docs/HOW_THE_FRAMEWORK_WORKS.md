@@ -41,4 +41,4 @@ The available CMake presets and its characteristics are:
 | `macos-x64-lsan`      | macOS    | GCC      | Unix Makefiles | Leak                |
 | `macos-x64-ubsan`     | macOS    | GCC      | Unix Makefiles | Undefined Behaviour |
 
-Also, these presets can be extended with the options above. For example, `cmake -S . --preset windows-x63-debug -DUSE_CPPCHECK=OFF -DGENERATE_YEARS="2022"`.
+Also, these presets can be extended with the options above. For example, `cmake -S . --preset windows-x64-debug -DUSE_CPPCHECK=OFF -DGENERATE_YEARS="2022"`.
