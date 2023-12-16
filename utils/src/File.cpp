@@ -58,7 +58,9 @@ readListOfNumbers(std::string const& filename)
     std::string line;
 
     while (std::getline(fileStream, line)) {
-        outList.emplace_back(utils::string::toNumber<int64_t>(line));
+        if (auto value{utils::string::toNumber<int64_t>(line)}) {
+            outList.emplace_back(*value);
+        }
     }
 
     return outList;
@@ -79,7 +81,10 @@ readGroupsOfNumbers(std::string const& filename)
         if (utils::string::trim(line).empty()) {
             outList.emplace_back();
         } else {
-            outList.back().emplace_back(utils::string::toNumber<int64_t>(line));
+            auto value{utils::string::toNumber<int64_t>(line)};
+            if (value) {
+                outList.back().emplace_back(*value);
+            }
         }
     }
 

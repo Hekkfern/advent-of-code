@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Concepts.hpp"
+#include <charconv>
 #include <concepts>
-#include <sstream>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -29,43 +30,21 @@ namespace utils::string {
 /**
  * @brief      Converts a string to a number.
  *
- * @param[in]  str   The string to convert to.
+ * @param[in]  sv   The string to convert to.
  *
  * @tparam     T     Type of the resulting number.
  *
  * @return     Converted number.
  */
 template <NumericType T>
-[[nodiscard]] T toNumber(std::string const& str)
+[[nodiscard]] std::optional<T> toNumber(std::string_view sv)
 {
-    std::stringstream ss{str};
-    T num;
-    ss >> num;
-    return num;
-}
-/**
- * @brief      Converts a string to a number.
- *
- * @param[in]  str   The string to convert to.
- *
- * @return     Converted number.
- */
-template <>
-[[nodiscard]] inline uint8_t toNumber(std::string const& str)
-{
-    return static_cast<uint8_t>(std::stoi(str));
-}
-/**
- * @brief      Converts a string to a number.
- *
- * @param[in]  str   The string to convert to.
- *
- * @return     Converted number.
- */
-template <>
-[[nodiscard]] inline int8_t toNumber(std::string const& str)
-{
-    return static_cast<int8_t>(std::stoi(str));
+    T value;
+    auto [ptr, ec]{std::from_chars(sv.data(), sv.data() + sv.size(), value)};
+    if (ec != std::errc{}) {
+        return {};
+    }
+    return value;
 }
 /**
  * @brief      Joins a list of strings and puts a delimiting string between

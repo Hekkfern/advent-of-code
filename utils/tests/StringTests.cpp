@@ -4,15 +4,33 @@
 
 TEST_CASE("[String] toNumber method", "[utils][String]")
 {
-    CHECK(utils::string::toNumber<uint8_t>("6") == 6U);
-    CHECK(utils::string::toNumber<uint32_t>("6") == 6U);
-    CHECK(utils::string::toNumber<uint64_t>("6") == 6ULL);
-    CHECK(utils::string::toNumber<int8_t>("6") == 6);
-    CHECK(utils::string::toNumber<int8_t>("-4") == -4);
-    CHECK(utils::string::toNumber<int32_t>("6") == 6);
-    CHECK(utils::string::toNumber<int32_t>("-4") == -4);
-    CHECK(utils::string::toNumber<int64_t>("6") == 6LL);
-    CHECK(utils::string::toNumber<int64_t>("-4") == -4LL);
+    auto value1{utils::string::toNumber<uint8_t>("6")};
+    CHECK(value1);
+    CHECK(*value1 == 6U);
+    auto value2{utils::string::toNumber<uint32_t>("6")};
+    CHECK(value2);
+    CHECK(*value2 == 6U);
+    auto value3{utils::string::toNumber<uint64_t>("6")};
+    CHECK(value3);
+    CHECK(*value3 == 6ULL);
+    auto value4{utils::string::toNumber<int8_t>("6")};
+    CHECK(value4);
+    CHECK(*value4 == 6);
+    auto value5{utils::string::toNumber<int8_t>("-4")};
+    CHECK(value5);
+    CHECK(*value5 == -4);
+    auto value6{utils::string::toNumber<int32_t>("6")};
+    CHECK(value6);
+    CHECK(*value6 == 6);
+    auto value7{utils::string::toNumber<int32_t>("-4")};
+    CHECK(value7);
+    CHECK(*value7 == -4);
+    auto value8{utils::string::toNumber<int64_t>("6")};
+    CHECK(value8);
+    CHECK(*value8 == 6LL);
+    auto value9{utils::string::toNumber<int64_t>("-4")};
+    CHECK(value9);
+    CHECK(*value9 == -4LL);
 }
 
 TEST_CASE("[String] split method", "[utils][String]")
