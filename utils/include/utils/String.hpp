@@ -18,7 +18,19 @@ namespace utils::string {
  *
  * @return     True if the substring was found. False, otherwise.
  */
-[[nodiscard]] bool contains(std::string const& str, std::string const& match);
+[[nodiscard]] bool contains(std::string_view str, std::string_view match);
+/**
+ * \brief 
+ * \param s 
+ * \return 
+ */
+[[nodiscard]] std::string ltrim(std::string_view s);
+/**
+ * \brief 
+ * \param s 
+ * \return 
+ */
+[[nodiscard]] std::string rtrim(std::string_view s);
 /**
  * @brief      Removes all the spaces and tabs from both sides of a string.
  *
@@ -26,7 +38,7 @@ namespace utils::string {
  *
  * @return     String without spaces or tabs.
  */
-[[nodiscard]] std::string trim(std::string const& s);
+[[nodiscard]] std::string trim(std::string_view s);
 /**
  * @brief      Converts a string to a number.
  *

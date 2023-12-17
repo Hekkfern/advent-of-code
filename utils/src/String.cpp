@@ -1,19 +1,40 @@
 #include "String.hpp"
 
+#include <cctype>
 #include <range/v3/all.hpp>
+
+namespace {
+constexpr auto TrimmableChars{" \f\n\r\t\v"};
+}
 
 namespace utils::string {
 
-bool contains(std::string const& str, std::string const& match)
+bool contains(const std::string_view str, const std::string_view match)
 {
     return str.find(match) != std::string::npos;
 }
 
-std::string trim(std::string const& s)
+std::string ltrim(std::string_view s)
 {
-    auto first = s.find_first_not_of(" \f\n\r\t\v");
-    auto last = s.find_last_not_of(" \f\n\r\t\v");
-    return first == std::string::npos ? "" : s.substr(first, last + 1);
+    s.remove_prefix(std::min(s.find_first_not_of(TrimmableChars), s.size()));
+    return std::string{s};
+}
+
+std::string rtrim(std::string_view s)
+{
+    s.remove_suffix(
+        s.size() - std::max(s.find_last_not_of(TrimmableChars), std::size_t{0})
+        - 1);
+    return std::string{s};
+}
+
+std::string trim(std::string_view s)
+{
+    s.remove_prefix(std::min(s.find_first_not_of(TrimmableChars), s.size()));
+    s.remove_suffix(
+        s.size() - std::max(s.find_last_not_of(TrimmableChars), std::size_t{0})
+        - 1);
+    return std::string{s};
 }
 
 std::string

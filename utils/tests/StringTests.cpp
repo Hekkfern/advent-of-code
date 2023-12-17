@@ -70,3 +70,31 @@ TEST_CASE("[String] contains method", "[utils][String]")
     CHECK(utils::string::contains("helloworldworl13518", "1"));
     CHECK_FALSE(utils::string::contains("helloworld13518", "."));
 }
+
+TEST_CASE("[String] ltrim method", "[utils][String]")
+{
+    CHECK(utils::string::ltrim("helloworld13518") == "helloworld13518");
+    CHECK(utils::string::ltrim("  helloworld13518") == "helloworld13518");
+    CHECK(utils::string::ltrim("  helloworld13518  ") == "helloworld13518  ");
+    CHECK(utils::string::ltrim("helloworl d13518") == "helloworl d13518");
+    CHECK(utils::string::ltrim("    ") == "");
+}
+
+TEST_CASE("[String] rtrim method", "[utils][String]")
+{
+    CHECK(utils::string::rtrim("helloworld13518") == "helloworld13518");
+    CHECK(utils::string::rtrim("helloworld13518  ") == "helloworld13518");
+    CHECK(utils::string::rtrim("  helloworld13518  ") == "  helloworld13518");
+    CHECK(utils::string::rtrim("helloworl d13518") == "helloworl d13518");
+    CHECK(utils::string::ltrim("    ") == "");
+}
+
+TEST_CASE("[String] trim method", "[utils][String]")
+{
+    CHECK(utils::string::trim("helloworld13518") == "helloworld13518");
+    CHECK(utils::string::trim("  helloworld13518") == "helloworld13518");
+    CHECK(utils::string::trim("helloworld13518  ") == "helloworld13518");
+    CHECK(utils::string::trim("  helloworld13518  ") == "helloworld13518");
+    CHECK(utils::string::trim("helloworl d13518") == "helloworl d13518");
+    CHECK(utils::string::ltrim("    ") == "");
+}
