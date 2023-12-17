@@ -1,7 +1,9 @@
 #include "String.hpp"
 
-#include <cctype>
-#include <range/v3/all.hpp>
+#include <range/v3/algorithm/fold_left.hpp>
+#include <range/v3/range/conversion.hpp>
+#include <range/v3/view/split.hpp>
+#include <range/v3/view/transform.hpp>
 
 namespace {
 constexpr auto TrimmableChars{" \f\n\r\t\v"};

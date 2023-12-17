@@ -2,7 +2,6 @@
 
 #include "Concepts.hpp"
 #include <charconv>
-#include <concepts>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -20,23 +19,32 @@ namespace utils::string {
  */
 [[nodiscard]] bool contains(std::string_view str, std::string_view match);
 /**
- * \brief 
- * \param s 
- * \return 
+ * @brief      Removes all the white-space and tab characters at the beginning
+ *             of the selected string.
+ *
+ * @param      s     The string to modify.
+ *
+ * @return     String with all the white-space and tab characters removed at the
+ *             beginning.
  */
 [[nodiscard]] std::string ltrim(std::string_view s);
 /**
- * \brief 
- * \param s 
- * \return 
+ * @brief      Removes all the white-space and tab characters at the end of the
+ *             selected string.
+ *
+ * @param      s     The string to modify.
+ *
+ * @return     String with all the white-space and tab characters removed at the
+ *             end.
  */
 [[nodiscard]] std::string rtrim(std::string_view s);
 /**
- * @brief      Removes all the spaces and tabs from both sides of a string.
+ * @brief      Removes all the space and tab characters from both sides of a
+ *             string.
  *
  * @param[in]  s     The string to modify.
  *
- * @return     String without spaces or tabs.
+ * @return     String without spaces or tabs at both sides.
  */
 [[nodiscard]] std::string trim(std::string_view s);
 /**
