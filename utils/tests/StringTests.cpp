@@ -37,14 +37,36 @@ TEST_CASE("[String] split method", "[utils][String]")
 {
     SECTION("Comma-separated number")
     {
-        auto const result1{utils::string::split("12,3", ",")};
-        CHECK(result1[0] == "12");
-        CHECK(result1[1] == "3");
+        auto const result{utils::string::split("12,3", ",")};
+        CHECK(result[0] == "12");
+        CHECK(result[1] == "3");
     }
     SECTION("Numbers and text")
     {
-        auto const result2{utils::string::split("-12..aa", "..")};
-        CHECK(result2[0] == "-12");
-        CHECK(result2[1] == "aa");
+        auto const result{utils::string::split("-12..aa", "..")};
+        CHECK(result[0] == "-12");
+        CHECK(result[1] == "aa");
     }
+}
+
+TEST_CASE("[String] join method", "[utils][String]")
+{
+    SECTION("Comma-separated number")
+    {
+        auto const result{utils::string::join({"12", "3"}, ",")};
+        CHECK(result == "12,3");
+    }
+    SECTION("Numbers and text")
+    {
+        auto const result{utils::string::join({"-12", "aa"}, "..")};
+        CHECK(result == "-12..aa");
+    }
+}
+
+TEST_CASE("[String] contains method", "[utils][String]")
+{
+    CHECK(utils::string::contains("helloworld13518", "world"));
+    CHECK(utils::string::contains("helloworldworld13518", "world"));
+    CHECK(utils::string::contains("helloworldworl13518", "1"));
+    CHECK_FALSE(utils::string::contains("helloworld13518", "."));
 }

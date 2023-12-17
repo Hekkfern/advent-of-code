@@ -51,12 +51,12 @@ template <NumericType T>
  *             them.
  *
  * @param[in]  strings  The list of strings to join.
- * @param[in]  delim    The delimiter.
+ * @param[in]  delimiter    The delimiter.
  *
  * @return     Resulting string.
  */
 [[nodiscard]] std::string
-join(std::vector<std::string> const& strings, std::string delim);
+join(std::vector<std::string> const& strings, std::string_view delimiter = ",");
 /**
  * @brief      ?????
  *

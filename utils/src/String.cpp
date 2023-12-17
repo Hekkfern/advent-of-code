@@ -13,22 +13,22 @@ std::string trim(std::string const& s)
 {
     auto first = s.find_first_not_of(" \f\n\r\t\v");
     auto last = s.find_last_not_of(" \f\n\r\t\v");
-    return (first == std::string::npos) ? "" : s.substr(first, last + 1);
+    return first == std::string::npos ? "" : s.substr(first, last + 1);
 }
 
-std::string join(std::vector<std::string> const& strings, std::string delim)
+std::string
+join(std::vector<std::string> const& strings, std::string_view delimiter)
 {
     if (strings.empty()) {
         return {};
     }
 
-    return ranges::accumulate(
+    return ranges::fold_left(
         strings.begin() + 1,
         strings.end(),
         strings[0],
-        [&delim](std::string const& x, std::string const& y) {
-            return x + delim + y;
-        });
+        [&delimiter](std::string const& x, std::string const& y)
+            -> std::string { return x + std::string{delimiter} + y; });
 }
 
 std::string convertFrom(std::vector<std::vector<char>> const& input)
