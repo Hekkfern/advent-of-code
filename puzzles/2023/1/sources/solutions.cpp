@@ -118,7 +118,7 @@ std::string solvePart1(std::string const& filename)
     utils::file::parseAndIterate(
         filename, [&value](std::string const& line) -> void {
             auto const lineDigits{parseLine(line)};
-            value += utils::string::toNumber<uint32_t>(lineDigits);
+            value += *utils::string::toNumber<uint32_t>(lineDigits);
         });
 
     return std::to_string(value);
@@ -131,7 +131,7 @@ std::string solvePart2(std::string const& filename)
     utils::file::parseAndIterate(
         filename, [&value](std::string const& line) -> void {
             auto const lineDigits{parseWeirdLine(line)};
-            value += utils::string::toNumber<uint32_t>(lineDigits);
+            value += *utils::string::toNumber<uint32_t>(lineDigits);
         });
 
     return std::to_string(value);

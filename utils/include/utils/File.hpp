@@ -27,7 +27,7 @@ readFirstLine(std::string const& filename);
  * @return     A string with all the lines joined with "\n" characters.
  */
 [[nodiscard]] std::optional<std::string>
-readWholeLine(std::string const& filename);
+readWholeFile(std::string const& filename);
 /**
  * @brief      Reads a list of strings separated by new lines, from a file.
  *
@@ -74,6 +74,6 @@ readMatrixOfDigits(std::string const& filename);
  */
 void parseAndIterate(
     std::string const& filename,
-    std::function<void(std::string const& line)>&& action);
+    std::function<void(std::string const& line)> const& action);
 
 } // namespace utils::file

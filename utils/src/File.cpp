@@ -17,7 +17,7 @@ std::optional<std::string> readFirstLine(std::string const& filename)
     return line;
 }
 
-std::optional<std::string> readWholeLine(std::string const& filename)
+std::optional<std::string> readWholeFile(std::string const& filename)
 {
     auto const lines = readListOfStrings(filename);
     if (!lines) {
@@ -116,7 +116,7 @@ readMatrixOfDigits(std::string const& filename)
 
 void parseAndIterate(
     std::string const& filename,
-    std::function<void(std::string const& line)>&& action)
+    std::function<void(std::string const& line)> const& action)
 {
     std::ifstream fileStream{filename};
     if (!fileStream.is_open()) {

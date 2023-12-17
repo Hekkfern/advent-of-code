@@ -28,7 +28,7 @@ TEST_CASE(
 
     std::string mySolution = aoc_2022_10::solvePart2(InputFile);
     std::string expectedSolution
-        = utils::file::readWholeLine("solution2_test.txt").value();
+        = utils::file::readWholeFile("solution2_test.txt").value();
 
     REQUIRE(mySolution == expectedSolution);
 }
@@ -54,7 +54,7 @@ TEST_CASE(
 
     std::string mySolution = aoc_2022_10::solvePart2(InputFile);
     std::string expectedSolution
-        = utils::file::readWholeLine("solution2.txt").value();
+        = utils::file::readWholeFile("solution2.txt").value();
 
     REQUIRE(mySolution == expectedSolution);
 }
