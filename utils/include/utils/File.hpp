@@ -27,7 +27,7 @@ readFirstLine(std::string_view filename);
  * @return     A string with all the lines joined with "\n" characters.
  */
 [[nodiscard]] std::optional<std::string>
-readWholeFile(std::string const& filename);
+readWholeFile(std::string_view filename);
 /**
  * @brief      Reads a list of strings separated by new lines, from a file.
  *
@@ -37,7 +37,7 @@ readWholeFile(std::string const& filename);
  *             line in the file.
  */
 [[nodiscard]] std::optional<std::vector<std::string>>
-readListOfStrings(std::string const& filename);
+readListOfStrings(std::string_view filename);
 /**
  * @brief      Reads a list of numbers separated by new lines, from a file.
  *
@@ -47,7 +47,7 @@ readListOfStrings(std::string const& filename);
  *             one line in the file.
  */
 [[nodiscard]] std::optional<std::vector<int64_t>>
-readListOfNumbers(std::string const& filename);
+readListOfNumbers(std::string_view filename);
 /**
  * @brief      Reads groups of numbers, separated by empty lines, from a file.
  *
@@ -56,7 +56,7 @@ readListOfNumbers(std::string const& filename);
  * @return     List of groups of numbers. Each group contains a list of numbers.
  */
 [[nodiscard]] std::optional<std::vector<std::vector<int64_t>>>
-readGroupsOfNumbers(std::string const& filename);
+readGroupsOfNumbers(std::string_view filename);
 /**
  * @brief      Reads a list of numbers, where each character of a line is a
  *             independent digit.
@@ -66,7 +66,7 @@ readGroupsOfNumbers(std::string const& filename);
  * @return     List of list of digits.
  */
 [[nodiscard]] std::optional<std::vector<std::vector<uint8_t>>>
-readMatrixOfDigits(std::string const& filename);
+readMatrixOfDigits(std::string_view filename);
 /**
  * \brief ????
  * \param[in] filename ????
@@ -74,6 +74,6 @@ readMatrixOfDigits(std::string const& filename);
  */
 void parseAndIterate(
     std::string const& filename,
-    std::function<void(std::string const& line)> const& action);
+    std::function<void(std::string_view line)> const& action);
 
 } // namespace utils::file

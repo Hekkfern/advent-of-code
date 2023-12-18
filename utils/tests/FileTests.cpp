@@ -4,7 +4,180 @@
 
 TEST_CASE("[File] readFirstLine method", "[utils][File]")
 {
-    auto const firstline{utils::file::readFirstLine("test_assets/File1.txt")};
-    CHECK(firstline);
-    CHECK_FALSE(firstline->empty());
+    SECTION("File exists")
+    {
+        SECTION("File with content")
+        {
+            auto const firstline{utils::file::readFirstLine(
+                "test_assets/FileWithTextLines.txt")};
+            CHECK(firstline);
+            CHECK_FALSE(firstline->empty());
+            CHECK(*firstline == "My first line");
+        }
+        SECTION("Empty file")
+        {
+            auto const firstline{
+                utils::file::readFirstLine("test_assets/EmptyFile.txt")};
+            CHECK(firstline);
+            CHECK(firstline->empty());
+        }
+    }
+    SECTION("File doesn't exist")
+    {
+        auto const firstline{utils::file::readFirstLine("unknown.txt")};
+        CHECK_FALSE(firstline);
+    }
+}
+
+TEST_CASE("[File] readWholeFile method", "[utils][File]")
+{
+    SECTION("File exists")
+    {
+        SECTION("File with content")
+        {
+            auto const text{utils::file::readWholeFile(
+                "test_assets/FileWithTextLines.txt")};
+            CHECK(text);
+            CHECK_FALSE(text->empty());
+            CHECK(*text == "My first line\nThe second line");
+        }
+        SECTION("Empty file")
+        {
+            auto const text{
+                utils::file::readFirstLine("test_assets/EmptyFile.txt")};
+            CHECK(text);
+            CHECK(text->empty());
+        }
+    }
+    SECTION("File doesn't exist")
+    {
+        auto const text{utils::file::readWholeFile("unknown.txt")};
+        CHECK_FALSE(text);
+    }
+}
+
+TEST_CASE("[File] readListOfStrings method", "[utils][File]")
+{
+    SECTION("File exists")
+    {
+        SECTION("File with content")
+        {
+            auto const lines{utils::file::readListOfStrings(
+                "test_assets/FileWithTextLines.txt")};
+            CHECK(lines);
+            CHECK(lines->size() == 2);
+            CHECK((*lines)[0] == "My first line");
+            CHECK((*lines)[1] == "The second line");
+        }
+        SECTION("Empty file")
+        {
+            auto const lines{
+                utils::file::readFirstLine("test_assets/EmptyFile.txt")};
+            CHECK(lines);
+            CHECK(lines->empty());
+        }
+    }
+    SECTION("File doesn't exist")
+    {
+        auto const lines{utils::file::readListOfStrings("unknown.txt")};
+        CHECK_FALSE(lines);
+    }
+}
+
+
+TEST_CASE("[File] readListOfNumbers method", "[utils][File]")
+{
+    SECTION("File exists")
+    {
+        SECTION("File with content")
+        {
+            SECTION("File with numbers")
+            {
+                auto const numbers{utils::file::readListOfNumbers(
+                    "test_assets/FileWithNumberLines.txt")};
+                CHECK(numbers);
+                CHECK(numbers->size() == 3);
+                CHECK((*numbers)[0] == 1LL);
+                CHECK((*numbers)[1] == 2LL);
+                CHECK((*numbers)[2] == 3LL);
+            }
+            SECTION("File with text")
+            {
+                auto const numbers{utils::file::readListOfNumbers(
+                    "test_assets/FileWithTextLines.txt")};
+                CHECK(numbers);
+                CHECK(numbers->empty());
+            }
+        }
+        SECTION("Empty file")
+        {
+            auto const numbers{
+                utils::file::readListOfNumbers("test_assets/EmptyFile.txt")};
+            CHECK(numbers);
+            CHECK(numbers->empty());
+        }
+    }
+    SECTION("File doesn't exist")
+    {
+        auto const numbers{utils::file::readListOfNumbers("unknown.txt")};
+        CHECK_FALSE(numbers);
+    }
+}
+
+TEST_CASE("[File] readGroupsOfNumbers method", "[utils][File]")
+{
+    SECTION("File exists")
+    {
+        SECTION("File with content")
+        {
+            SECTION("File with numbers")
+            {
+                SECTION("With groups")
+                {
+                    auto const numbers{utils::file::readGroupsOfNumbers(
+                        "test_assets/FileWithGroupedNumbers.txt")};
+                    CHECK(numbers);
+                    CHECK(numbers->size() == 3);
+                    CHECK((*numbers)[0].size() == 2);
+                    CHECK((*numbers)[0][0] == 1);
+                    CHECK((*numbers)[0][1] == 2);
+                    CHECK((*numbers)[1].size() == 2);
+                    CHECK((*numbers)[1][0] == 1);
+                    CHECK((*numbers)[1][1] == 2);
+                    CHECK((*numbers)[2].size() == 1);
+                    CHECK((*numbers)[2][0] == 1);
+                }
+                SECTION("Without groups")
+                {
+                    auto const numbers{utils::file::readGroupsOfNumbers(
+                        "test_assets/FileWithNumberLines.txt")};
+                    CHECK(numbers);
+                    CHECK(numbers->size() == 1);
+                    CHECK((*numbers)[0].size() == 3);
+                    CHECK((*numbers)[0][0] == 1);
+                    CHECK((*numbers)[0][1] == 2);
+                    CHECK((*numbers)[0][2] == 3);
+                }
+            }
+            SECTION("File with text")
+            {
+                auto const numbers{utils::file::readGroupsOfNumbers(
+                    "test_assets/FileWithTextLines.txt")};
+                CHECK(numbers);
+                CHECK(numbers->empty());
+            }
+        }
+        SECTION("Empty file")
+        {
+            auto const numbers{
+                utils::file::readGroupsOfNumbers("test_assets/EmptyFile.txt")};
+            CHECK(numbers);
+            CHECK(numbers->empty());
+        }
+    }
+    SECTION("File doesn't exist")
+    {
+        auto const numbers{utils::file::readGroupsOfNumbers("unknown.txt")};
+        CHECK_FALSE(numbers);
+    }
 }
