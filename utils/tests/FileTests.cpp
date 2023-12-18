@@ -142,10 +142,10 @@ TEST_CASE("[File] readGroupsOfNumbers method", "[utils][File]")
                     CHECK((*numbers)[0][0] == 1);
                     CHECK((*numbers)[0][1] == 2);
                     CHECK((*numbers)[1].size() == 2);
-                    CHECK((*numbers)[1][0] == 1);
-                    CHECK((*numbers)[1][1] == 2);
+                    CHECK((*numbers)[1][0] == 3);
+                    CHECK((*numbers)[1][1] == 4);
                     CHECK((*numbers)[2].size() == 1);
-                    CHECK((*numbers)[2][0] == 1);
+                    CHECK((*numbers)[2][0] == 5);
                 }
                 SECTION("Without groups")
                 {
