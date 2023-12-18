@@ -8,7 +8,7 @@ find_package(Catch2 3 CONFIG REQUIRED)
 # aoc_utils_tests
 set(_EXEC_NAME "aoc_utils_tests")
 set(_TESTFILES IntervalTests.cpp MultiIntervalTests.cpp StringTests.cpp
-               IntegerMathTests.cpp ListExtensionsTests.cpp)
+               IntegerMathTests.cpp ListExtensionsTests.cpp FileTests.cpp)
 set(_TESTFILES_GEOMETRY2D
     geometry2d/BoundingBox2DTests.cpp
     geometry2d/Direction2DTests.cpp
@@ -37,3 +37,5 @@ source_group("Source Files" FILES ${_TESTFILES})
 source_group("Source Files/geometry2d" FILES ${_TESTFILES_GEOMETRY2D})
 source_group("Source Files/geometry3d" FILES ${_TESTFILES_GEOMETRY3D})
 source_group("Source Files/graph" FILES ${_TESTFILES_GRAPH})
+
+add_subdirectory(test_assets)

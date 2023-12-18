@@ -17,7 +17,7 @@ namespace utils::file {
  * @return     A string with the content of the first line, or std::nullopt.
  */
 [[nodiscard]] std::optional<std::string>
-readFirstLine(std::string const& filename);
+readFirstLine(std::string_view filename);
 /**
  * @brief      Reads the whole file and converts its content to generate a
  *             single string.

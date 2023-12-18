@@ -5,11 +5,11 @@
 
 namespace utils::file {
 
-std::optional<std::string> readFirstLine(std::string const& filename)
+std::optional<std::string> readFirstLine(std::string_view filename)
 {
-    std::ifstream fileStream{filename};
+    std::ifstream fileStream{std::string{filename}};
     if (!fileStream.is_open()) {
-        return std::nullopt;
+        return {};
     }
 
     std::string line;
@@ -21,7 +21,7 @@ std::optional<std::string> readWholeFile(std::string const& filename)
 {
     auto const lines = readListOfStrings(filename);
     if (!lines) {
-        return std::nullopt;
+        return {};
     }
 
     std::string content{utils::string::join(*lines, "\n")};
@@ -33,7 +33,7 @@ readListOfStrings(std::string const& filename)
 {
     std::ifstream fileStream{filename};
     if (!fileStream.is_open()) {
-        return std::nullopt;
+        return {};
     }
 
     std::vector<std::string> outList;
@@ -51,7 +51,7 @@ readListOfNumbers(std::string const& filename)
 {
     std::ifstream fileStream{filename};
     if (!fileStream.is_open()) {
-        return std::nullopt;
+        return {};
     }
 
     std::vector<int64_t> outList;
@@ -71,7 +71,7 @@ readGroupsOfNumbers(std::string const& filename)
 {
     std::ifstream fileStream{filename};
     if (!fileStream.is_open()) {
-        return std::nullopt;
+        return {};
     }
 
     std::vector<std::vector<int64_t>> outList;
@@ -96,7 +96,7 @@ readMatrixOfDigits(std::string const& filename)
 {
     std::ifstream fileStream{filename};
     if (!fileStream.is_open()) {
-        return std::nullopt;
+        return {};
     }
 
     std::vector<std::vector<uint8_t>> outList;
