@@ -32,7 +32,7 @@ const std::unordered_map<std::string, char> NumberTextMap{
  * \return
  */
 std::optional<char> analyzeItemInLine(
-    std::string const& line,
+    std::string_view line,
     const std::size_t position,
     bool const onlyDigits = true)
 {
@@ -64,7 +64,7 @@ std::optional<char> analyzeItemInLine(
  * \param[in] line ???
  * \return The first and last digit. Otherwise, -1.
  */
-std::string parseLine(std::string const& line)
+std::string parseLine(std::string_view line)
 {
     bool firstFound{false};
     std::array<char, 2> result{-1, -1};
@@ -82,7 +82,7 @@ std::string parseLine(std::string const& line)
     return std::string{std::begin(result), std::end(result)};
 }
 
-std::string parseWeirdLine(std::string const& line)
+std::string parseWeirdLine(std::string_view line)
 {
     std::array<char, 2> result{-1, -1};
     std::size_t resultIndex{0};
@@ -115,8 +115,9 @@ std::string solvePart1(std::string const& filename)
 {
     uint32_t value{0U};
 
+    std::string_view filenameSv{filename};
     utils::file::parseAndIterate(
-        filename, [&value](std::string const& line) -> void {
+        filenameSv, [&value](std::string_view line) -> void {
             auto const lineDigits{parseLine(line)};
             value += *utils::string::toNumber<uint32_t>(lineDigits);
         });
@@ -128,8 +129,9 @@ std::string solvePart2(std::string const& filename)
 {
     uint32_t value{0U};
 
+    std::string_view filenameSv{filename};
     utils::file::parseAndIterate(
-        filename, [&value](std::string const& line) -> void {
+        filenameSv, [&value](std::string_view line) -> void {
             auto const lineDigits{parseWeirdLine(line)};
             value += *utils::string::toNumber<uint32_t>(lineDigits);
         });

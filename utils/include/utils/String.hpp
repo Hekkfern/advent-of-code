@@ -50,17 +50,17 @@ namespace utils::string {
 /**
  * @brief      Converts a string to a number.
  *
- * @param[in]  sv   The string to convert to.
+ * @param[in]  s   The string to convert to.
  *
  * @tparam     T     Type of the resulting number.
  *
  * @return     Converted number.
  */
 template <NumericType T>
-[[nodiscard]] std::optional<T> toNumber(std::string_view sv)
+[[nodiscard]] std::optional<T> toNumber(std::string_view s)
 {
     T value;
-    auto [ptr, ec]{std::from_chars(sv.data(), sv.data() + sv.size(), value)};
+    auto [ptr, ec]{std::from_chars(s.data(), s.data() + s.size(), value)};
     if (ec != std::errc{}) {
         return {};
     }
@@ -70,22 +70,22 @@ template <NumericType T>
  * @brief      Joins a list of strings and puts a delimiting string between
  *             them.
  *
- * @param[in]  strings  The list of strings to join.
- * @param[in]  delimiter    The delimiter.
+ * @param[in]  strings    The list of strings to join.
+ * @param[in]  delimiter  The delimiter.
  *
  * @return     Resulting string.
  */
 [[nodiscard]] std::string
 join(std::vector<std::string> const& strings, std::string_view delimiter = ",");
 /**
- * @brief      ?????
+ * @brief      Joins a list of list of characters.
  *
- * @param[in]  input  The input
+ * @param[in]  input  List of list of chars.
  *
- * @return     ????
+ * @return     Resulting string.
  */
 [[nodiscard]] std::string
-convertFrom(std::vector<std::vector<char>> const& input);
+join(std::vector<std::vector<char>> const& input);
 /**
  * @brief      Splits a string into multiple strings, based on the provided
  *             string as separator.

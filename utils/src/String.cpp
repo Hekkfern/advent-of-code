@@ -54,7 +54,7 @@ join(std::vector<std::string> const& strings, std::string_view delimiter)
             -> std::string { return x + std::string{delimiter} + y; });
 }
 
-std::string convertFrom(std::vector<std::vector<char>> const& input)
+std::string join(std::vector<std::vector<char>> const& input)
 {
     std::vector<std::string> lines;
     for (auto const& item : input) {

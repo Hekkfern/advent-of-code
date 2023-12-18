@@ -68,12 +68,15 @@ readGroupsOfNumbers(std::string_view filename);
 [[nodiscard]] std::optional<std::vector<std::vector<uint8_t>>>
 readMatrixOfDigits(std::string_view filename);
 /**
- * \brief ????
- * \param[in] filename ????
- * \param[in] action ????
+ * @brief      Reads a text file and executes the selected action in each line.
+ *
+ * @param[in]  filename  The filename.
+ * @param[in]  action    Code to be executed for every line.
+ *
+ * @return     True if the file exists and can be opened. False, otherwise.
  */
-void parseAndIterate(
-    std::string const& filename,
+bool parseAndIterate(
+    std::string_view filename,
     std::function<void(std::string_view line)> const& action);
 
 } // namespace utils::file
