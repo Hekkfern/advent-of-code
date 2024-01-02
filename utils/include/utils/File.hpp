@@ -1,10 +1,10 @@
 #pragma once
 
 #include <cstdint>
+#include <filesystem>
 #include <functional>
 #include <optional>
 #include <string>
-#include <string_view>
 #include <vector>
 
 namespace utils::file {
@@ -17,7 +17,7 @@ namespace utils::file {
  * @return     A string with the content of the first line, or std::nullopt.
  */
 [[nodiscard]] std::optional<std::string>
-readFirstLine(std::string_view filename);
+readFirstLine(std::filesystem::path const& filename);
 /**
  * @brief      Reads the whole file and converts its content to generate a
  *             single string.
@@ -27,7 +27,7 @@ readFirstLine(std::string_view filename);
  * @return     A string with all the lines joined with "\n" characters.
  */
 [[nodiscard]] std::optional<std::string>
-readWholeFile(std::string_view filename);
+readWholeFile(std::filesystem::path const& filename);
 /**
  * @brief      Reads a list of strings separated by new lines, from a file.
  *
@@ -37,7 +37,7 @@ readWholeFile(std::string_view filename);
  *             line in the file.
  */
 [[nodiscard]] std::optional<std::vector<std::string>>
-readListOfStrings(std::string_view filename);
+readListOfStrings(std::filesystem::path const& filename);
 /**
  * @brief      Reads a list of numbers separated by new lines, from a file.
  *
@@ -47,7 +47,7 @@ readListOfStrings(std::string_view filename);
  *             one line in the file.
  */
 [[nodiscard]] std::optional<std::vector<int64_t>>
-readListOfNumbers(std::string_view filename);
+readListOfNumbers(std::filesystem::path const& filename);
 /**
  * @brief      Reads groups of numbers, separated by empty lines, from a file.
  *
@@ -56,7 +56,7 @@ readListOfNumbers(std::string_view filename);
  * @return     List of groups of numbers. Each group contains a list of numbers.
  */
 [[nodiscard]] std::optional<std::vector<std::vector<int64_t>>>
-readGroupsOfNumbers(std::string_view filename);
+readGroupsOfNumbers(std::filesystem::path const& filename);
 /**
  * @brief      Reads a list of numbers, where each character of a line is a
  *             independent digit.
@@ -66,7 +66,7 @@ readGroupsOfNumbers(std::string_view filename);
  * @return     List of list of digits.
  */
 [[nodiscard]] std::optional<std::vector<std::vector<uint8_t>>>
-readMatrixOfDigits(std::string_view filename);
+readMatrixOfDigits(std::filesystem::path const& filename);
 /**
  * @brief      Reads a text file and executes the selected action in each line.
  *
@@ -76,7 +76,7 @@ readMatrixOfDigits(std::string_view filename);
  * @return     True if the file exists and can be opened. False, otherwise.
  */
 bool parseAndIterate(
-    std::string_view filename,
+    std::filesystem::path const& filename,
     std::function<void(std::string_view line)> const& action);
 
 } // namespace utils::file

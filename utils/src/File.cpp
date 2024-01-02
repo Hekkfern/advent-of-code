@@ -5,9 +5,9 @@
 
 namespace utils::file {
 
-std::optional<std::string> readFirstLine(std::string_view const filename)
+std::optional<std::string> readFirstLine(std::filesystem::path const& filename)
 {
-    std::ifstream fileStream{std::string{filename}};
+    std::ifstream fileStream{filename.string()};
     if (!fileStream.is_open()) {
         return {};
     }
@@ -17,9 +17,9 @@ std::optional<std::string> readFirstLine(std::string_view const filename)
     return line;
 }
 
-std::optional<std::string> readWholeFile(std::string_view const filename)
+std::optional<std::string> readWholeFile(std::filesystem::path const& filename)
 {
-    auto const lines = readListOfStrings(std::string{filename});
+    auto const lines = readListOfStrings(filename.string());
     if (!lines) {
         return {};
     }
@@ -29,7 +29,7 @@ std::optional<std::string> readWholeFile(std::string_view const filename)
 }
 
 std::optional<std::vector<std::string>>
-readListOfStrings(std::string_view const filename)
+readListOfStrings(std::filesystem::path const& filename)
 {
     std::vector<std::string> outList;
 
@@ -45,7 +45,7 @@ readListOfStrings(std::string_view const filename)
 }
 
 std::optional<std::vector<int64_t>>
-readListOfNumbers(std::string_view const filename)
+readListOfNumbers(std::filesystem::path const& filename)
 {
     std::vector<int64_t> outList;
 
@@ -63,7 +63,7 @@ readListOfNumbers(std::string_view const filename)
 }
 
 std::optional<std::vector<std::vector<int64_t>>>
-readGroupsOfNumbers(std::string_view const filename)
+readGroupsOfNumbers(std::filesystem::path const& filename)
 {
     std::vector<std::vector<int64_t>> outList;
 
@@ -88,7 +88,7 @@ readGroupsOfNumbers(std::string_view const filename)
 }
 
 std::optional<std::vector<std::vector<uint8_t>>>
-readMatrixOfDigits(std::string_view const filename)
+readMatrixOfDigits(std::filesystem::path const& filename)
 {
     std::vector<std::vector<uint8_t>> outList;
 
@@ -109,10 +109,10 @@ readMatrixOfDigits(std::string_view const filename)
 }
 
 bool parseAndIterate(
-    std::string_view const filename,
+    std::filesystem::path const& filename,
     std::function<void(std::string_view line)> const& action)
 {
-    std::ifstream fileStream{std::string{filename}};
+    std::ifstream fileStream{filename.string()};
     if (!fileStream.is_open()) {
         return false;
     }
