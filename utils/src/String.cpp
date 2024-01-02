@@ -65,14 +65,13 @@ std::string join(std::vector<std::vector<char>> const& input)
 
 std::vector<std::string> split(std::string_view str, std::string_view separator)
 {
-    auto list{
-        str | ranges::views::split(separator)
+    return str | ranges::views::split(separator)
         | ranges::views::transform([](auto&& rng) {
-              return std::string(
-                  &*rng.begin(),
-                  static_cast<std::size_t>(ranges::distance(rng)));
-          })};
-    return ranges::to<std::vector>(list);
+               return std::string(
+                   &*rng.begin(),
+                   static_cast<std::size_t>(ranges::distance(rng)));
+           })
+        | ranges::to<std::vector>();
 }
 
 } // namespace utils::string
