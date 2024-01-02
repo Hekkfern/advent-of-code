@@ -1,110 +1,127 @@
 #include "solutions.hpp"
 
-#include <array>
 #include <optional>
-#include <range/v3/algorithm/any_of.hpp>
-#include <range/v3/algorithm/for_each.hpp>
+#include <range/v3/algorithm/find_if.hpp>
+#include <range/v3/view/drop_while.hpp>
+#include <range/v3/view/iota.hpp>
+#include <range/v3/view/reverse.hpp>
 #include <unordered_map>
 #include <utility>
 #include <utils/File.hpp>
-#include <utils/String.hpp>
 
 namespace aoc_2023_1 {
 
 // ---------- Private Methods ----------
 
-const std::unordered_map<std::string, char> NumberTextMap{
-    {"one", '1'},
-    {"two", '2'},
-    {"three", '3'},
-    {"four", '4'},
-    {"five", '5'},
-    {"six", '6'},
-    {"seven", '7'},
-    {"eight", '8'},
-    {"nine", '9'}};
+const std::unordered_map<std::string, uint32_t> NumberTextMap{
+    {"one", 1U},
+    {"two", 2U},
+    {"three", 3U},
+    {"four", 4U},
+    {"five", 5U},
+    {"six", 6U},
+    {"seven", 7U},
+    {"eight", 8U},
+    {"nine", 9U}};
 
 /**
- * \brief ???
- * \param line
- * \param position aa. Value >=0.
- * \param onlyDigits
- * \return
+ * @brief      ???
+ *
+ * @param[in]      substr        The line
+ *
+ * @return     { description_of_the_return_value }
  */
-std::optional<char> analyzeItemInLine(
-    std::string_view line,
-    const std::size_t position,
-    bool const onlyDigits = true)
+std::optional<uint32_t> analyzeItemInWeirdLine(std::string_view substr)
 {
-    char const ch{line[position]};
-    if (std::isdigit(ch) != 0 && ch != '0') {
-        return ch;
+    /* simple digits */
+    char const firstChar{substr[0]};
+    if (std::isdigit(firstChar) != 0 && firstChar != '0') {
+        return firstChar - '0';
     }
-    if (!onlyDigits) {
-        const std::string remainingLine{line.substr(position)};
-        std::pair<std::string, char> numberMatched;
-        if (ranges::any_of(
-                NumberTextMap,
-                [&remainingLine,
-                 &numberMatched](std::pair<std::string, char> const& item) {
-                    const bool isMatch{remainingLine.starts_with(item.first)};
-                    if (isMatch) {
-                        numberMatched = item;
-                    }
-                    return isMatch;
-                })) {
-            return numberMatched.second;
-        }
+
+    /* words as digits */
+    auto match{ranges::find_if(
+        NumberTextMap,
+        [substr](std::pair<std::string, uint32_t> const& item) -> bool {
+            return substr.starts_with(item.first);
+        })};
+    if (match != std::cend(NumberTextMap)) {
+        return match->second;
     }
+
+    /* Nothing */
     return {};
 }
 
 /**
- * \brief ???
- * \param[in] line ???
- * \return The first and last digit. Otherwise, -1.
+ * @brief      Parses a single line of the input file for the Part 1.
+ *
+ * @param[in]  line  A single line of text obtained from the input file.
+ *
+ * @return     A string with two digits.
  */
-std::string parseLine(std::string_view line)
+uint32_t parseSimpleLine(const std::string_view line)
 {
-    bool firstFound{false};
-    std::array<char, 2> result{-1, -1};
-    for (char const& ch : line) {
-        if (std::isdigit(ch) == 0 || ch == '0') {
-            continue;
-        }
-        if (!firstFound) {
-            result[0] = ch;
-            result[1] = ch;
-            firstFound = true;
-        }
-        result[1] = ch;
-    }
-    return std::string{std::begin(result), std::end(result)};
+    /**
+     * @brief      Determines whether the specified character is not a digit.
+     *
+     * @param[in]  c     Character to check.
+     *
+     * @return     True if the specified character is not a digit, False
+     *             otherwise.
+     */
+    static constexpr auto is_not_digit = [](char const c) -> bool {
+        return !isdigit(c) || c == '0';
+    };
+    /**
+     * @brief      Drops all the items at the beginning of the container until
+     *             it finds a digit.
+     */
+    static constexpr auto first_digit = ranges::views::drop_while(is_not_digit);
+    /**
+     * @brief      Drops all the items at the end of the container until it
+     *             finds a digit.
+     */
+    static constexpr auto last_digit = ranges::views::reverse | first_digit;
+    /**
+     * @brief      Converts the first element of a range to an integer value.
+     *
+     * @param      rng   The range.
+     *
+     * @return     Corresponding integer value.
+     */
+    static constexpr auto convertToNumber = [](auto&& rng) -> uint32_t {
+        return *rng.begin() - '0';
+    };
+
+    return convertToNumber(line | first_digit) * 10
+        + convertToNumber(line | last_digit);
 }
 
-std::string parseWeirdLine(std::string_view line)
+/**
+ * @brief      Parses a single line of the input file for the Part 2.
+ *
+ * @param[in]  line  A single line of text obtained from the input file.
+ *
+ * @return     A string with two digits.
+ */
+uint32_t parseWeirdLine(const std::string_view line)
 {
-    std::array<char, 2> result{-1, -1};
-    std::size_t resultIndex{0};
-    for (std::size_t index{0}; index < line.length();) {
-        auto const analysisResult{analyzeItemInLine(line, index, false)};
-        if (!analysisResult) {
-            ++index;
+    uint32_t first{0};
+    uint32_t last{0};
+    for (auto const pos :
+         ranges::views::iota(std::begin(line), std::end(line))) {
+        std::string_view substr{pos, std::end(line)};
+        auto const value{analyzeItemInWeirdLine(line)};
+        if (!value) {
             continue;
         }
-        if (resultIndex == 0) {
-            ranges::for_each(result, [value = *analysisResult](char& ch) {
-                ch = value;
-            });
-        } else {
-            result[resultIndex] = *analysisResult;
+        if (first == 0) {
+            first = *value;
         }
-        ++index;
-        if (resultIndex == 0) {
-            ++resultIndex;
-        }
+        last = *value;
     }
-    return std::string{std::begin(result), std::end(result)};
+    return first * 10 + last;
 }
 
 // ---------- End of Private Methods ----------
@@ -117,8 +134,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
 
     utils::file::parseAndIterate(
         filePath, [&value](std::string_view const line) -> void {
-            auto const lineDigits{parseLine(line)};
-            value += *utils::string::toNumber<uint32_t>(lineDigits);
+            value += parseSimpleLine(line);
         });
 
     return std::to_string(value);
@@ -130,8 +146,7 @@ std::string solvePart2(std::filesystem::path const& filePath)
 
     utils::file::parseAndIterate(
         filePath, [&value](std::string_view const line) -> void {
-            auto const lineDigits{parseWeirdLine(line)};
-            value += *utils::string::toNumber<uint32_t>(lineDigits);
+            value += parseWeirdLine(line);
         });
 
     return std::to_string(value);
