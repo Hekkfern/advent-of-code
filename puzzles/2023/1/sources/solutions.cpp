@@ -111,13 +111,12 @@ std::string parseWeirdLine(std::string_view line)
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(std::string const& filename)
+std::string solvePart1(std::filesystem::path const& filePath)
 {
     uint32_t value{0U};
 
-    std::string_view filenameSv{filename};
     utils::file::parseAndIterate(
-        filenameSv, [&value](std::string_view line) -> void {
+        filePath, [&value](std::string_view const line) -> void {
             auto const lineDigits{parseLine(line)};
             value += *utils::string::toNumber<uint32_t>(lineDigits);
         });
@@ -125,13 +124,12 @@ std::string solvePart1(std::string const& filename)
     return std::to_string(value);
 }
 
-std::string solvePart2(std::string const& filename)
+std::string solvePart2(std::filesystem::path const& filePath)
 {
     uint32_t value{0U};
 
-    std::string_view filenameSv{filename};
     utils::file::parseAndIterate(
-        filenameSv, [&value](std::string_view line) -> void {
+        filePath, [&value](std::string_view const line) -> void {
             auto const lineDigits{parseWeirdLine(line)};
             value += *utils::string::toNumber<uint32_t>(lineDigits);
         });

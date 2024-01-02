@@ -5,9 +5,9 @@
 
 namespace utils::file {
 
-std::optional<std::string> readFirstLine(std::filesystem::path const& filename)
+std::optional<std::string> readFirstLine(std::filesystem::path const& filePath)
 {
-    std::ifstream fileStream{filename.string()};
+    std::ifstream fileStream{filePath.string()};
     if (!fileStream.is_open()) {
         return {};
     }
@@ -17,9 +17,9 @@ std::optional<std::string> readFirstLine(std::filesystem::path const& filename)
     return line;
 }
 
-std::optional<std::string> readWholeFile(std::filesystem::path const& filename)
+std::optional<std::string> readWholeFile(std::filesystem::path const& filePath)
 {
-    auto const lines = readListOfStrings(filename.string());
+    auto const lines = readListOfStrings(filePath.string());
     if (!lines) {
         return {};
     }
@@ -29,12 +29,12 @@ std::optional<std::string> readWholeFile(std::filesystem::path const& filename)
 }
 
 std::optional<std::vector<std::string>>
-readListOfStrings(std::filesystem::path const& filename)
+readListOfStrings(std::filesystem::path const& filePath)
 {
     std::vector<std::string> outList;
 
     bool const result{
-        parseAndIterate(filename, [&outList](std::string_view line) {
+        parseAndIterate(filePath, [&outList](std::string_view line) {
             outList.emplace_back(line);
         })};
     if (!result) {
@@ -45,12 +45,12 @@ readListOfStrings(std::filesystem::path const& filename)
 }
 
 std::optional<std::vector<int64_t>>
-readListOfNumbers(std::filesystem::path const& filename)
+readListOfNumbers(std::filesystem::path const& filePath)
 {
     std::vector<int64_t> outList;
 
     bool const result{
-        parseAndIterate(filename, [&outList](const std::string_view line) {
+        parseAndIterate(filePath, [&outList](const std::string_view line) {
             if (auto const value{utils::string::toNumber<int64_t>(line)}) {
                 outList.emplace_back(*value);
             }
@@ -63,12 +63,12 @@ readListOfNumbers(std::filesystem::path const& filename)
 }
 
 std::optional<std::vector<std::vector<int64_t>>>
-readGroupsOfNumbers(std::filesystem::path const& filename)
+readGroupsOfNumbers(std::filesystem::path const& filePath)
 {
     std::vector<std::vector<int64_t>> outList;
 
     bool const result{
-        parseAndIterate(filename, [&outList](const std::string_view line) {
+        parseAndIterate(filePath, [&outList](const std::string_view line) {
             if (utils::string::trim(line).empty()) {
                 outList.emplace_back();
             } else {
@@ -88,12 +88,12 @@ readGroupsOfNumbers(std::filesystem::path const& filename)
 }
 
 std::optional<std::vector<std::vector<uint8_t>>>
-readMatrixOfDigits(std::filesystem::path const& filename)
+readMatrixOfDigits(std::filesystem::path const& filePath)
 {
     std::vector<std::vector<uint8_t>> outList;
 
     bool const result{
-        parseAndIterate(filename, [&outList](const std::string_view line) {
+        parseAndIterate(filePath, [&outList](const std::string_view line) {
             std::vector<uint8_t> row;
             row.reserve(line.size());
             for (char const c : line) {
@@ -109,10 +109,10 @@ readMatrixOfDigits(std::filesystem::path const& filename)
 }
 
 bool parseAndIterate(
-    std::filesystem::path const& filename,
+    std::filesystem::path const& filePath,
     std::function<void(std::string_view line)> const& action)
 {
-    std::ifstream fileStream{filename.string()};
+    std::ifstream fileStream{filePath.string()};
     if (!fileStream.is_open()) {
         return false;
     }
