@@ -5,6 +5,7 @@
 #include "../sources/solutions.hpp"
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
+#include <string>
 #include <utils/File.hpp>
 
 TEST_CASE(
@@ -13,8 +14,8 @@ TEST_CASE(
 {
     constexpr auto InputFile{"input_test.txt"};
 
-    std::string mySolution = aoc_2021_1::solvePart1(InputFile);
-    std::string expectedSolution
+    std::string const mySolution = aoc_2021_1::solvePart1(InputFile);
+    std::string const expectedSolution
         = utils::file::readFirstLine("solution1_test.txt").value();
 
     REQUIRE(mySolution == expectedSolution);
@@ -26,8 +27,8 @@ TEST_CASE(
 {
     constexpr auto InputFile{"input_test.txt"};
 
-    std::string mySolution = aoc_2021_1::solvePart2(InputFile);
-    std::string expectedSolution
+    std::string const mySolution = aoc_2021_1::solvePart2(InputFile);
+    std::string const expectedSolution
         = utils::file::readFirstLine("solution2_test.txt").value();
 
     REQUIRE(mySolution == expectedSolution);
@@ -38,8 +39,8 @@ TEST_CASE(
 {
     constexpr auto InputFile{"input.txt"};
 
-    std::string mySolution = aoc_2021_1::solvePart1(InputFile);
-    std::string expectedSolution
+    std::string const mySolution = aoc_2021_1::solvePart1(InputFile);
+    std::string const expectedSolution
         = utils::file::readFirstLine("solution1.txt").value();
 
     REQUIRE(mySolution == expectedSolution);
@@ -50,8 +51,8 @@ TEST_CASE(
 {
     constexpr auto InputFile{"input.txt"};
 
-    std::string mySolution = aoc_2021_1::solvePart2(InputFile);
-    std::string expectedSolution
+    std::string const mySolution = aoc_2021_1::solvePart2(InputFile);
+    std::string const expectedSolution
         = utils::file::readFirstLine("solution2.txt").value();
 
     REQUIRE(mySolution == expectedSolution);
