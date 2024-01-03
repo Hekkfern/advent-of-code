@@ -106,9 +106,9 @@ calculateRoundScoreFromResult(char const matchResult, char const opponentShape)
 
 // ---------- End of Public Methods ----------
 
-std::string solvePart1(std::string const& filename)
+std::string solvePart1(std::filesystem::path const& filePath)
 {
-    std::ifstream stream{filename};
+    std::ifstream stream{filePath};
     std::string line;
     uint32_t totalScore{0U};
 
@@ -119,9 +119,9 @@ std::string solvePart1(std::string const& filename)
     return std::to_string(totalScore);
 }
 
-std::string solvePart2(std::string const& filename)
+std::string solvePart2(std::filesystem::path const& filePath)
 {
-    std::ifstream stream{filename};
+    std::ifstream stream{filePath};
     std::string line;
     uint32_t totalScore{0U};
 

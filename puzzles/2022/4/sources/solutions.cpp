@@ -36,9 +36,9 @@ parseInputLine(std::string const& line)
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(std::string const& filename)
+std::string solvePart1(std::filesystem::path const& filePath)
 {
-    std::ifstream fileStream{filename};
+    std::ifstream fileStream{filePath};
     std::string line;
     uint32_t totalOverlaps{0U};
 
@@ -54,9 +54,9 @@ std::string solvePart1(std::string const& filename)
     return std::to_string(totalOverlaps);
 }
 
-std::string solvePart2(std::string const& filename)
+std::string solvePart2(std::filesystem::path const& filePath)
 {
-    std::ifstream fileStream{filename};
+    std::ifstream fileStream{filePath};
     std::string line;
     uint32_t totalNoOverlaps{0U};
 

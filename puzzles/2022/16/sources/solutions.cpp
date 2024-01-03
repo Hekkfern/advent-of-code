@@ -318,17 +318,17 @@ uint32_t searchMaximumFlowPathWithElephant(Graph<Valve, uint32_t> const& graph)
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(std::string const& filename)
+std::string solvePart1(std::filesystem::path const& filePath)
 {
-    std::ifstream fileStream{filename};
+    std::ifstream fileStream{filePath};
     auto const globalGraph{buildGraph(parseInput(fileStream))};
     auto const pressure{searchMaximumFlowPathAlone(globalGraph)};
     return std::to_string(pressure);
 }
 
-std::string solvePart2(std::string const& filename)
+std::string solvePart2(std::filesystem::path const& filePath)
 {
-    std::ifstream fileStream{filename};
+    std::ifstream fileStream{filePath};
     auto const globalGraph{buildGraph(parseInput(fileStream))};
     auto const pressure{searchMaximumFlowPathWithElephant(globalGraph)};
     return std::to_string(pressure);

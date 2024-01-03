@@ -3,6 +3,7 @@
 //**********************************************************************
 
 #include "solutions.hpp"
+#include <utility>
 #include <utils/AoC.hpp>
 #include <utils/Time.hpp>
 
@@ -13,7 +14,7 @@ int main()
 
     std::string solution1;
     auto const part1ExecTime = utils::time::calculateExecutionTime(
-        [&solution1, &inputFile, GoalCoordY]() {
+        [&solution1, &inputFile = std::as_const(inputFile), GoalCoordY]() {
             solution1 = aoc_2022_15::solvePart1(
                 inputFile, {{"GoalCoordY", GoalCoordY}});
         });
@@ -23,7 +24,7 @@ int main()
 
     std::string solution2;
     auto const part2ExecTime = utils::time::calculateExecutionTime(
-        [&solution2, &inputFile, GridSize]() {
+        [&solution2, &inputFile = std::as_const(inputFile), GridSize]() {
             solution2 = aoc_2022_15::solvePart2(
                 inputFile, {{"GridSize", GridSize}});
         });

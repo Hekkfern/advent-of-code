@@ -286,16 +286,16 @@ uint32_t calculateMaximumScenicScore(TreeHeightMatrix const& forest)
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(std::string const& filename)
+std::string solvePart1(std::filesystem::path const& filePath)
 {
-    auto forest{parseInput(filename)};
+    auto forest{parseInput(filePath)};
 
     return std::to_string(checkTreeVisibility(forest));
 }
 
-std::string solvePart2(std::string const& filename)
+std::string solvePart2(std::filesystem::path const& filePath)
 {
-    auto forest{parseInput(filename)};
+    auto forest{parseInput(filePath)};
 
     return std::to_string(calculateMaximumScenicScore(forest));
 }

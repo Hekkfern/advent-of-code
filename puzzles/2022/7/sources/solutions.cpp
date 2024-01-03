@@ -148,11 +148,11 @@ uint32_t getSmallestChildDirSize(
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(std::string const& filename)
+std::string solvePart1(std::filesystem::path const& filePath)
 {
     constexpr uint32_t MaxSumSize{100000U};
 
-    std::ifstream fileStream{filename};
+    std::ifstream fileStream{filePath};
 
     DirectoryTree tree{parseInput(fileStream)};
 
@@ -169,13 +169,13 @@ std::string solvePart1(std::string const& filename)
     return std::to_string(sumSizes);
 }
 
-std::string solvePart2(std::string const& filename)
+std::string solvePart2(std::filesystem::path const& filePath)
 {
     constexpr uint32_t TotalDiskCapacity{70000000U};
     constexpr uint32_t MinimalUnusedDiskSpace{30000000U};
     constexpr uint32_t MaxRootSize{TotalDiskCapacity - MinimalUnusedDiskSpace};
 
-    std::ifstream fileStream{filename};
+    std::ifstream fileStream{filePath};
 
     DirectoryTree tree{parseInput(fileStream)};
 

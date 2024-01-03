@@ -172,15 +172,15 @@ uint32_t descendHill(PositionMap& positionMap)
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(std::string const& filename)
+std::string solvePart1(std::filesystem::path const& filePath)
 {
-    auto positionMap{parseInput(filename)};
+    auto positionMap{parseInput(filePath)};
     return std::to_string(climbHill(positionMap));
 }
 
-std::string solvePart2(std::string const& filename)
+std::string solvePart2(std::filesystem::path const& filePath)
 {
-    auto positionMap{parseInput(filename)};
+    auto positionMap{parseInput(filePath)};
     return std::to_string(descendHill(positionMap));
 }
 

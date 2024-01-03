@@ -47,9 +47,9 @@ void moveCrtPointer(
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(std::string const& filename)
+std::string solvePart1(std::filesystem::path const& filePath)
 {
-    std::ifstream fileStream{filename};
+    std::ifstream fileStream{filePath};
     std::string line;
     uint32_t cycleStrengthSum{0U};
     uint32_t cycleCounter{1U};
@@ -82,11 +82,11 @@ std::string solvePart1(std::string const& filename)
     return std::to_string(cycleStrengthSum);
 }
 
-std::string solvePart2(std::string const& filename)
+std::string solvePart2(std::filesystem::path const& filePath)
 {
     uint32_t registerValue{1U};
     uint32_t crtPixelPosition{0U};
-    std::ifstream fileStream{filename};
+    std::ifstream fileStream{filePath};
     std::string line;
     std::vector<std::vector<char>> crtScreen{{}};
     uint8_t crtScreenRowIndex{0U};

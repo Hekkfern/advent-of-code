@@ -133,10 +133,10 @@ uint32_t calculateMonkeyBusiness(
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(std::string const& filename)
+std::string solvePart1(std::filesystem::path const& filePath)
 {
     constexpr uint32_t NumberOfRounds{20U};
-    std::unordered_map<MonkeyId, Monkey> monkeys{parseInput(filename)};
+    std::unordered_map<MonkeyId, Monkey> monkeys{parseInput(filePath)};
     std::unordered_map<MonkeyId, uint32_t> monkeyInspections{};
     for (auto& m : monkeys) {
         monkeyInspections.emplace(m.first, 0U);
@@ -155,10 +155,10 @@ std::string solvePart1(std::string const& filename)
     return std::to_string(calculateMonkeyBusiness(monkeyInspections));
 }
 
-std::string solvePart2(std::string const& filename)
+std::string solvePart2(std::filesystem::path const& filePath)
 {
     constexpr uint32_t NumberOfRounds{10000U};
-    std::unordered_map<MonkeyId, Monkey> monkeys{parseInput(filename)};
+    std::unordered_map<MonkeyId, Monkey> monkeys{parseInput(filePath)};
     std::unordered_map<MonkeyId, uint32_t> monkeyInspections{};
     for (auto& m : monkeys) {
         monkeyInspections.emplace(m.first, 0U);

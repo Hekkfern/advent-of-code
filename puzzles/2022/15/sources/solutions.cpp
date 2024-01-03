@@ -139,12 +139,12 @@ searchSpace(std::vector<SensorInfo>& sensorList, const uint32_t gridSize)
 // ---------- Public Methods ----------
 
 std::string solvePart1(
-    std::string const& filename,
+    std::filesystem::path const& filePath,
     std::unordered_map<std::string, std::any>&& extParams)
 {
     const int32_t goalCoordY{
         std::any_cast<int32_t>(extParams.at("GoalCoordY"))};
-    std::ifstream fileStream{filename};
+    std::ifstream fileStream{filePath};
     std::string line;
     MultiInterval multiInterval;
     std::unordered_set<Point2D<int32_t>> busyPositions;
@@ -165,11 +165,11 @@ std::string solvePart1(
 }
 
 std::string solvePart2(
-    std::string const& filename,
+    std::filesystem::path const& filePath,
     std::unordered_map<std::string, std::any>&& extParams)
 {
     const uint32_t gridSize{std::any_cast<uint32_t>(extParams.at("GridSize"))};
-    std::ifstream fileStream{filename};
+    std::ifstream fileStream{filePath};
     std::string line;
     std::vector<SensorInfo> sensorList;
     while (std::getline(fileStream, line)) {

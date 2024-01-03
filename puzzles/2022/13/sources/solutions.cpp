@@ -78,9 +78,9 @@ uint32_t findDecoderKey(std::vector<Packet>& packets)
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(std::string const& filename)
+std::string solvePart1(std::filesystem::path const& filePath)
 {
-    std::ifstream fileStream{filename};
+    std::ifstream fileStream{filePath};
     std::string line;
     uint32_t index{1U};
     uint32_t sum{0U};
@@ -99,9 +99,9 @@ std::string solvePart1(std::string const& filename)
     return std::to_string(sum);
 }
 
-std::string solvePart2(std::string const& filename)
+std::string solvePart2(std::filesystem::path const& filePath)
 {
-    std::ifstream fileStream{filename};
+    std::ifstream fileStream{filePath};
     std::string line;
     std::vector<Packet> packets;
     while (std::getline(fileStream, line)) {

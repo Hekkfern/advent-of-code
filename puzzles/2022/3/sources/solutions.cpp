@@ -76,9 +76,9 @@ char searchCommonItemInGroup(
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(std::string const& filename)
+std::string solvePart1(std::filesystem::path const& filePath)
 {
-    std::ifstream fileStream{filename};
+    std::ifstream fileStream{filePath};
     std::string line;
     uint32_t totalPriority = 0U;
 
@@ -94,11 +94,11 @@ std::string solvePart1(std::string const& filename)
     return std::to_string(totalPriority);
 }
 
-std::string solvePart2(std::string const& filename)
+std::string solvePart2(std::filesystem::path const& filePath)
 {
     constexpr uint32_t GroupSize{3U};
 
-    std::ifstream stream{filename};
+    std::ifstream stream{filePath};
     std::array<std::string, GroupSize> rucksacks;
     uint32_t totalPriority = 0U;
 

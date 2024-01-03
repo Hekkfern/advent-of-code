@@ -125,9 +125,9 @@ void executeCrateMover9001Instruction(
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(std::string const& filename)
+std::string solvePart1(std::filesystem::path const& filePath)
 {
-    std::ifstream fileStream{filename};
+    std::ifstream fileStream{filePath};
     std::vector<CrateStack> crateStackList = parseInputStacks(fileStream);
     std::string line;
     while (std::getline(fileStream, line)) {
@@ -137,9 +137,9 @@ std::string solvePart1(std::string const& filename)
     return generateResult(crateStackList);
 }
 
-std::string solvePart2(std::string const& filename)
+std::string solvePart2(std::filesystem::path const& filePath)
 {
-    std::ifstream fileStream{filename};
+    std::ifstream fileStream{filePath};
     std::vector<CrateStack> crateStackList = parseInputStacks(fileStream);
     std::string line;
     while (std::getline(fileStream, line)) {
