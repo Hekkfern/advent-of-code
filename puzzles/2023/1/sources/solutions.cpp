@@ -112,7 +112,7 @@ uint32_t parseWeirdLine(const std::string_view line)
     for (auto const pos :
          ranges::views::iota(std::begin(line), std::end(line))) {
         std::string_view substr{pos, std::end(line)};
-        auto const value{analyzeItemInWeirdLine(line)};
+        auto const value{analyzeItemInWeirdLine(substr)};
         if (!value) {
             continue;
         }
