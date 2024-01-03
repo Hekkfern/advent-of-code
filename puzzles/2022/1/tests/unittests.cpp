@@ -13,8 +13,8 @@ TEST_CASE(
 {
     constexpr auto InputFile{"input_test.txt"};
 
-    std::string mySolution = aoc_2022_1::solvePart1(InputFile);
-    std::string expectedSolution
+    std::string const mySolution = aoc_2022_1::solvePart1(InputFile);
+    std::string const expectedSolution
         = utils::file::readFirstLine("solution1_test.txt").value();
 
     REQUIRE(mySolution == expectedSolution);
@@ -26,8 +26,8 @@ TEST_CASE(
 {
     constexpr auto InputFile{"input_test.txt"};
 
-    std::string mySolution = aoc_2022_1::solvePart2(InputFile);
-    std::string expectedSolution
+    std::string const mySolution = aoc_2022_1::solvePart2(InputFile);
+    std::string const expectedSolution
         = utils::file::readFirstLine("solution2_test.txt").value();
 
     REQUIRE(mySolution == expectedSolution);
@@ -38,8 +38,8 @@ TEST_CASE(
 {
     constexpr auto InputFile{"input.txt"};
 
-    std::string mySolution = aoc_2022_1::solvePart1(InputFile);
-    std::string expectedSolution
+    std::string const mySolution = aoc_2022_1::solvePart1(InputFile);
+    std::string const expectedSolution
         = utils::file::readFirstLine("solution1.txt").value();
 
     REQUIRE(mySolution == expectedSolution);
@@ -50,8 +50,8 @@ TEST_CASE(
 {
     constexpr auto InputFile{"input.txt"};
 
-    std::string mySolution = aoc_2022_1::solvePart2(InputFile);
-    std::string expectedSolution
+    std::string const mySolution = aoc_2022_1::solvePart2(InputFile);
+    std::string const expectedSolution
         = utils::file::readFirstLine("solution2.txt").value();
 
     REQUIRE(mySolution == expectedSolution);

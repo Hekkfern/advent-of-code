@@ -4,11 +4,12 @@
 
 #pragma once
 
+#include <filesystem>
 #include <string>
 
 namespace aoc_2022_1 {
 
-std::string solvePart1(std::string const& filename);
-std::string solvePart2(std::string const& filename);
+std::string solvePart1(std::filesystem::path const& filePath);
+std::string solvePart2(std::filesystem::path const& filePath);
 
 } // namespace aoc_2022_1

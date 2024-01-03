@@ -1,9 +1,9 @@
 #include "solutions.hpp"
 
 #include <array>
-#include <fstream>
 #include <range/v3/all.hpp>
 #include <utility>
+#include <utils/File.hpp>
 #include <utils/String.hpp>
 
 namespace aoc_2022_1 {
@@ -37,41 +37,39 @@ void insertInRanking(
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(std::string const& filename)
+std::string solvePart1(std::filesystem::path const& filePath)
 {
-    std::ifstream stream{filename};
-    std::string line;
     uint32_t highestSum{0U};
     uint32_t currentSum{0U};
 
-    while (std::getline(stream, line)) {
-        if (utils::string::trim(line).empty()) {
-            highestSum = std::max(highestSum, currentSum);
-            currentSum = 0U;
-        } else {
-            currentSum += utils::string::toNumber<uint32_t>(line);
-        }
-    }
+    utils::file::parseAndIterate(
+        filePath, [&highestSum, &currentSum](const std::string_view line) {
+            if (utils::string::trim(line).empty()) {
+                highestSum = std::max(highestSum, currentSum);
+                currentSum = 0U;
+            } else {
+                currentSum += *utils::string::toNumber<uint32_t>(line);
+            }
+        });
 
     return std::to_string(highestSum);
 }
 
-std::string solvePart2(std::string const& filename)
+std::string solvePart2(std::filesystem::path const& filePath)
 {
-    std::ifstream stream{filename};
-    std::string line;
     std::array<uint32_t, TopQuantity> highestSums{}; // the lower index, the
                                                      // higher sum of calories
     uint32_t currentSum{0U};
 
-    while (std::getline(stream, line)) {
-        if (utils::string::trim(line).empty()) {
-            insertInRanking(highestSums, currentSum);
-            currentSum = 0U;
-        } else {
-            currentSum += utils::string::toNumber<uint32_t>(line);
-        }
-    }
+    utils::file::parseAndIterate(
+        filePath, [&highestSums, &currentSum](const std::string_view line) {
+            if (utils::string::trim(line).empty()) {
+                insertInRanking(highestSums, currentSum);
+                currentSum = 0U;
+            } else {
+                currentSum += *utils::string::toNumber<uint32_t>(line);
+            }
+        });
     insertInRanking(highestSums, currentSum);
 
     return std::to_string(ranges::accumulate(highestSums, 0U));
