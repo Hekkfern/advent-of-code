@@ -14,6 +14,7 @@ Game parseInputLine(std::string_view const line)
     constexpr auto IdSeparator{":"};
     constexpr auto SpaceSeparator{" "};
     constexpr auto RoundSeparator{";"};
+    constexpr auto ColorSeparator{","};
 
     Game game;
 
@@ -28,7 +29,25 @@ Game parseInputLine(std::string_view const line)
     std::string roundsLine{utils::string::trim(parts[1])};
     auto rounds{utils::string::split(roundsLine, RoundSeparator)};
     for (auto const& round : rounds) {
-        // TODO
+        GameRound gameRound;
+        auto colors{
+            utils::string::split(utils::string::trim(round), ColorSeparator)};
+        for (auto const& color : colors) {
+            auto colorItems{utils::string::split(
+                utils::string::trim(color), SpaceSeparator)};
+            std::string colorKey{utils::string::trim(colorItems[1])};
+            if (colorKey == "green") {
+                gameRound.numGreenBalls = *utils::string::toNumber<uint32_t>(
+                    colorItems[0]);
+            } else if (colorKey == "red") {
+                gameRound.numRedBalls = *utils::string::toNumber<uint32_t>(
+                    colorItems[0]);
+            } else if (colorKey == "blue") {
+                gameRound.numBlueBalls = *utils::string::toNumber<uint32_t>(
+                    colorItems[0]);
+            }
+        }
+        game.rounds.emplace_back(gameRound);
     }
 
     return game;

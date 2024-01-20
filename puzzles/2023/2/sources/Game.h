@@ -15,9 +15,9 @@ namespace aoc_2023_2 {
 using GameId = uint32_t;
 
 struct GameRound {
-    uint32_t numGreenBalls;
-    uint32_t numRedBalls;
-    uint32_t numBlueBalls;
+    uint32_t numGreenBalls{0U};
+    uint32_t numRedBalls{0U};
+    uint32_t numBlueBalls{0U};
 
     [[nodiscard]] bool isPossible() const noexcept
     {
@@ -27,8 +27,8 @@ struct GameRound {
 };
 
 struct Game {
-    GameId gameId;
-    std::vector<GameRound> rounds;
+    GameId gameId{0U};
+    std::vector<GameRound> rounds{};
 
     [[nodiscard]] bool isPossible() const noexcept
     {
