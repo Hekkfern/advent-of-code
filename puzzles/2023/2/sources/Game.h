@@ -1,13 +1,18 @@
 #pragma once
 
 #include <cstdint>
+#include <range/v3/algorithm/all_of.hpp>
 #include <vector>
 
-namespace aoc_2023_2 {
-
+namespace {
 constexpr uint32_t MaxNumGreenBalls{12U};
 constexpr uint32_t MaxNumRedBalls{13U};
 constexpr uint32_t MaxNumBlueBalls{14U};
+} // namespace
+
+namespace aoc_2023_2 {
+
+using GameId = uint32_t;
 
 struct GameRound {
     uint32_t numGreenBalls;
@@ -22,8 +27,15 @@ struct GameRound {
 };
 
 struct Game {
-    uint32_t gameId;
+    GameId gameId;
     std::vector<GameRound> rounds;
+
+    [[nodiscard]] bool isPossible() const noexcept
+    {
+        return ranges::all_of(rounds, [](GameRound const& item) -> bool {
+            return item.isPossible();
+        });
+    }
 };
 
 } // namespace aoc_2023_2
