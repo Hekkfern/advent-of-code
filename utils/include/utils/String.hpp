@@ -84,8 +84,7 @@ join(std::vector<std::string> const& strings, std::string_view delimiter = ",");
  *
  * @return     Resulting string.
  */
-[[nodiscard]] std::string
-join(std::vector<std::vector<char>> const& input);
+[[nodiscard]] std::string join(std::vector<std::vector<char>> const& input);
 /**
  * @brief      Splits a string into multiple strings, based on the provided
  *             string as separator.

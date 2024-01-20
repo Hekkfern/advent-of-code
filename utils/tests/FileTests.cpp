@@ -84,7 +84,6 @@ TEST_CASE("[File] readListOfStrings method", "[utils][File]")
     }
 }
 
-
 TEST_CASE("[File] readListOfNumbers method", "[utils][File]")
 {
     SECTION("File exists")
