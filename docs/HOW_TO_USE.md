@@ -92,12 +92,13 @@ where:
 ```bash
 python3 -m pipenv install
 python3 -m pipenv shell
-python3 scripts/build.py add_day --year <year> --day <day>
+python3 scripts/build.py add_day --year <year> --day <day> --session <session_key>
 ```
 
 where:
 * <year> is the year (format 20XX) of the puzzle.
 * <day> is the day (from 1 to 25) of the puzzle.
+* <session_key> is the value of the "session" cookie stolen from your web browser after logging in https://adventofcode.com.
 
 **Note:** For more information, read [*"Add new puzzle" subcommand* in BUILDPY_SCRIPT.md](BUILDPY_SCRIPT.md#add-new-puzzle-subcommand).
 
