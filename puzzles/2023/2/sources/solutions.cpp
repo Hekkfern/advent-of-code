@@ -1,15 +1,22 @@
 #include "solutions.hpp"
 
 #include "Game.h"
+#include <range/v3/algorithm/all_of.hpp>
 #include <regex>
 #include <utils/File.hpp>
 #include <utils/String.hpp>
 
 namespace aoc_2023_2 {
 
+namespace {
+constexpr uint32_t MaxNumGreenBalls{12U};
+constexpr uint32_t MaxNumRedBalls{13U};
+constexpr uint32_t MaxNumBlueBalls{14U};
+} // namespace
+
 // ---------- Private Methods ----------
 
-Game parseInputLine(std::string_view const line)
+static Game parseInputLine(std::string_view const line) noexcept
 {
     constexpr auto IdSeparator{":"};
     constexpr auto SpaceSeparator{" "};
@@ -53,6 +60,15 @@ Game parseInputLine(std::string_view const line)
     return game;
 }
 
+static bool isGamePossible(Game const& game) noexcept
+{
+    return ranges::all_of(game.rounds, [](GameRound const& round) -> bool {
+        return round.numGreenBalls <= MaxNumGreenBalls
+            && round.numRedBalls <= MaxNumRedBalls
+            && round.numBlueBalls <= MaxNumBlueBalls;
+    });
+}
+
 // ---------- End of Private Methods ----------
 
 // ---------- Public Methods ----------
@@ -64,7 +80,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
     utils::file::parseAndIterate(
         filePath, [&accumGameIds](std::string_view const line) -> void {
             auto game{parseInputLine(line)};
-            if (game.isPossible()) {
+            if (isGamePossible(game)) {
                 accumGameIds += game.gameId;
             }
         });
