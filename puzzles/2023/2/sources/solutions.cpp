@@ -8,20 +8,14 @@
 
 namespace aoc_2023_2 {
 
-namespace {
-constexpr uint32_t MaxNumGreenBalls{12U};
-constexpr uint32_t MaxNumRedBalls{13U};
-constexpr uint32_t MaxNumBlueBalls{14U};
-} // namespace
-
 // ---------- Private Methods ----------
 
 static Game parseInputLine(std::string_view const line) noexcept
 {
-    constexpr auto IdSeparator{":"};
-    constexpr auto SpaceSeparator{" "};
-    constexpr auto RoundSeparator{";"};
-    constexpr auto ColorSeparator{","};
+    static constexpr auto IdSeparator{":"};
+    static constexpr auto SpaceSeparator{" "};
+    static constexpr auto RoundSeparator{";"};
+    static constexpr auto ColorSeparator{","};
 
     Game game;
 
@@ -62,6 +56,10 @@ static Game parseInputLine(std::string_view const line) noexcept
 
 static bool isGamePossible(Game const& game) noexcept
 {
+    static constexpr uint32_t MaxNumGreenBalls{13U};
+    static constexpr uint32_t MaxNumRedBalls{12U};
+    static constexpr uint32_t MaxNumBlueBalls{14U};
+
     return ranges::all_of(game.rounds, [](GameRound const& round) -> bool {
         return round.numGreenBalls <= MaxNumGreenBalls
             && round.numRedBalls <= MaxNumRedBalls
