@@ -4,15 +4,15 @@
 
 namespace aoc_2022_11 {
 
-Operation::Operation(const Operator op, const std::optional<WorryLevel> operand)
+Operation::Operation(Operator const op, std::optional<WorryLevel> const operand)
     : mOperator{op}
     , mOperand{operand}
 {
 }
 
-WorryLevel Operation::operator()(const WorryLevel oldValue)
+WorryLevel Operation::operator()(WorryLevel const oldValue)
 {
-    const WorryLevel rhs{mOperand ? *mOperand : oldValue};
+    WorryLevel const rhs{mOperand ? *mOperand : oldValue};
     if (mOperator == Operator::MULTIPLY) {
         return (oldValue * rhs);
     } else if (mOperator == Operator::ADD) {

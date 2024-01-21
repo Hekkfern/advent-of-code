@@ -9,7 +9,7 @@
 
 int main()
 {
-    const std::string inputFile{"input.txt"};
+    std::string const inputFile{"input.txt"};
     constexpr int32_t GoalCoordY{2000000};
 
     std::string solution1;

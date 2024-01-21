@@ -84,19 +84,19 @@ public:
      *
      * @param[in]  x     The coordinate X.
      */
-    void setX(const T x) { mX = x; }
+    void setX(T const x) { mX = x; }
     /**
      * @brief      Sets the coordinate Y.
      *
      * @param[in]  y     The coordinate Y.
      */
-    void setY(const T y) { mY = y; }
+    void setY(T const y) { mY = y; }
     /**
      * @brief      Sets the coordinate Z.
      *
      * @param[in]  z     The coordinate Z.
      */
-    void setZ(const T z) { mZ = z; }
+    void setZ(T const z) { mZ = z; }
     /**
      * @brief      Equality operator.
      *

@@ -11,7 +11,7 @@ constexpr auto TrimmableChars{" \f\n\r\t\v"};
 
 namespace utils::string {
 
-bool contains(const std::string_view str, const std::string_view match)
+bool contains(std::string_view const str, std::string_view const match)
 {
     return str.find(match) != std::string::npos;
 }

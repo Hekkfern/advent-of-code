@@ -28,7 +28,7 @@ private:
     {
         for (auto [index, point] :
              mKnots | ranges::views::enumerate | ranges::views::drop(1)) {
-            const Vector2D vector2D{point, mKnots.at(index - 1U)};
+            Vector2D const vector2D{point, mKnots.at(index - 1U)};
             if (vector2D.range() <= 1U) {
                 return;
             }

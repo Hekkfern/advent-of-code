@@ -97,7 +97,7 @@ public:
      * @param[in]  name  Unique identifier for this node.
      * @param[in]  info  Information to attach to this node.
      */
-    explicit Vertex(const std::string_view name, T const& info)
+    explicit Vertex(std::string_view const name, T const& info)
         : mName{name}
         , mInfo{info}
     {
@@ -144,7 +144,7 @@ public:
      *
      * @return     True if a new edge was added. False, otherwise.
      */
-    bool addEdge(Vertex<T, W>& other, const W weight)
+    bool addEdge(Vertex<T, W>& other, W const weight)
     {
         auto [insertedItem, isInserted]{
             mEdges.emplace(std::string{other.getName()}, Edge{other, weight})};

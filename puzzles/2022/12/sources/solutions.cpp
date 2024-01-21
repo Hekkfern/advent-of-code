@@ -92,7 +92,7 @@ uint32_t climbHill(PositionMap& positionMap)
         }
 
         // Try to step in each direction:
-        static const std::vector<Direction2D> directionsToCheck{
+        static std::vector<Direction2D> const directionsToCheck{
             Direction2D::Up,
             Direction2D::Right,
             Direction2D::Down,
@@ -141,7 +141,7 @@ uint32_t descendHill(PositionMap& positionMap)
         }
 
         // Try to step in each direction:
-        static const std::vector<Direction2D> directionsToCheck{
+        static std::vector<Direction2D> const directionsToCheck{
             Direction2D::Up,
             Direction2D::Right,
             Direction2D::Down,

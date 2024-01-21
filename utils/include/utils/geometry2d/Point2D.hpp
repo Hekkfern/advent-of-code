@@ -25,7 +25,7 @@ public:
      * @param[in]  x     Coordinate X.
      * @param[in]  y     Coordinate Y.
      */
-    explicit Point2D(const T x, const T y)
+    explicit Point2D(T const x, T const y)
         : mX{x}
         , mY{y}
     {
@@ -76,13 +76,13 @@ public:
      *
      * @param[in]  x     The coordinate X.
      */
-    void setX(const T x) { mX = x; }
+    void setX(T const x) { mX = x; }
     /**
      * @brief      Sets the coordinate Y.
      *
      * @param[in]  y     The coordinate Y.
      */
-    void setY(const T y) { mY = y; }
+    void setY(T const y) { mY = y; }
     /**
      * @brief      Equality operator.
      *

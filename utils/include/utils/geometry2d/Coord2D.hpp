@@ -35,11 +35,11 @@ struct Coord2D {
     /**
      * Stores coordinate X.
      */
-    const T mX{0};
+    T const mX{0};
     /**
      * Stores coordinate Y.
      */
-    const T mY{0};
+    T const mY{0};
 };
 
 } // namespace utils::geometry2d

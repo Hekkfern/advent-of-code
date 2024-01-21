@@ -8,14 +8,14 @@ TEST_CASE("[Interval] Constructor", "[utils][Interval]")
 {
     SECTION("Positive values")
     {
-        const Interval interval1{2, 3};
+        Interval const interval1{2, 3};
         CHECK(interval1.getMin() == 2);
         CHECK(interval1.getMax() == 3);
         CHECK(interval1.get() == std::make_pair(2, 3));
     }
     SECTION("Positive and negatives values")
     {
-        const Interval interval2{-3, 1};
+        Interval const interval2{-3, 1};
         CHECK(interval2.getMin() == -3);
         CHECK(interval2.getMax() == 1);
         CHECK(interval2.get() == std::make_pair(-3, 1));
@@ -36,12 +36,12 @@ TEST_CASE("[Interval] length() method", "[utils][Interval]")
 {
     SECTION("Positive values")
     {
-        const Interval interval1{2, 3};
+        Interval const interval1{2, 3};
         CHECK(interval1.length() == 2U);
     }
     SECTION("Positive and negatives values")
     {
-        const Interval interval2{-3, 1};
+        Interval const interval2{-3, 1};
         CHECK(interval2.length() == 5U);
     }
     SECTION("Static tests")
@@ -55,41 +55,41 @@ TEST_CASE("[Interval] join() method", "[utils][Interval]")
 {
     SECTION("Both intervals are contiguous, but they don't overlap")
     {
-        const Interval interval1{2, 4};
-        const Interval interval2{-3, 1};
-        const std::optional<Interval<>> result1{interval1.join(interval2)};
+        Interval const interval1{2, 4};
+        Interval const interval2{-3, 1};
+        std::optional<Interval<>> const result1{interval1.join(interval2)};
         CHECK(result1);
         CHECK(result1->get() == std::make_pair(-3, 4));
     }
     SECTION("One interval contains the other")
     {
-        const Interval interval1{2, 4};
-        const Interval interval2{3, 6};
-        const std::optional<Interval<>> result2{interval1.join(interval2)};
+        Interval const interval1{2, 4};
+        Interval const interval2{3, 6};
+        std::optional<Interval<>> const result2{interval1.join(interval2)};
         CHECK(result2);
         CHECK(result2->get() == std::make_pair(2, 6));
     }
     SECTION("Left overlap")
     {
-        const Interval interval1{2, 4};
-        const Interval interval2{-3, 1};
-        const std::optional<Interval<>> result1{interval1.join(interval2)};
+        Interval const interval1{2, 4};
+        Interval const interval2{-3, 1};
+        std::optional<Interval<>> const result1{interval1.join(interval2)};
         CHECK(result1);
         CHECK(result1->get() == std::make_pair(-3, 4));
     }
     SECTION("Right overlap")
     {
-        const Interval interval1{2, 4};
-        const Interval interval2{3, 6};
-        const std::optional<Interval<>> result2{interval1.join(interval2)};
+        Interval const interval1{2, 4};
+        Interval const interval2{3, 6};
+        std::optional<Interval<>> const result2{interval1.join(interval2)};
         CHECK(result2);
         CHECK(result2->get() == std::make_pair(2, 6));
     }
     SECTION("They don't overlap")
     {
-        const Interval interval1{2, 4};
-        const Interval interval2{-3, 3};
-        const std::optional<Interval<>> result1{interval1.join(interval2)};
+        Interval const interval1{2, 4};
+        Interval const interval2{-3, 3};
+        std::optional<Interval<>> const result1{interval1.join(interval2)};
         CHECK(result1);
         CHECK(result1->get() == std::make_pair(-3, 4));
     }
@@ -97,25 +97,25 @@ TEST_CASE("[Interval] join() method", "[utils][Interval]")
     {
         SECTION("Left extreme")
         {
-            const Interval interval1{2, 4};
-            const Interval interval2{2, 2};
-            const std::optional<Interval<>> result1{interval1.join(interval2)};
+            Interval const interval1{2, 4};
+            Interval const interval2{2, 2};
+            std::optional<Interval<>> const result1{interval1.join(interval2)};
             CHECK(result1);
             CHECK(result1->get() == std::make_pair(2, 4));
         }
         SECTION("Right extreme")
         {
-            const Interval interval1{2, 4};
-            const Interval interval2{4, 4};
-            const std::optional<Interval<>> result1{interval1.join(interval2)};
+            Interval const interval1{2, 4};
+            Interval const interval2{4, 4};
+            std::optional<Interval<>> const result1{interval1.join(interval2)};
             CHECK(result1);
             CHECK(result1->get() == std::make_pair(2, 4));
         }
         SECTION("In the middle")
         {
-            const Interval interval1{-1, 4};
-            const Interval interval2{2, 2};
-            const std::optional<Interval<>> result1{interval1.join(interval2)};
+            Interval const interval1{-1, 4};
+            Interval const interval2{2, 2};
+            std::optional<Interval<>> const result1{interval1.join(interval2)};
             CHECK(result1);
             CHECK(result1->get() == std::make_pair(-1, 4));
         }
@@ -123,18 +123,18 @@ TEST_CASE("[Interval] join() method", "[utils][Interval]")
         {
             SECTION("Contiguous")
             {
-                const Interval interval1{2, 4};
-                const Interval interval2{1, 1};
-                const std::optional<Interval<>> result2{
+                Interval const interval1{2, 4};
+                Interval const interval2{1, 1};
+                std::optional<Interval<>> const result2{
                     interval1.join(interval2)};
                 CHECK(result2);
                 CHECK(result2->get() == std::make_pair(1, 4));
             }
             SECTION("Non-contiguous")
             {
-                const Interval interval1{2, 4};
-                const Interval interval2{-1, -1};
-                const std::optional<Interval<>> result2{
+                Interval const interval1{2, 4};
+                Interval const interval2{-1, -1};
+                std::optional<Interval<>> const result2{
                     interval1.join(interval2)};
                 CHECK_FALSE(result2);
             }
@@ -143,18 +143,18 @@ TEST_CASE("[Interval] join() method", "[utils][Interval]")
         {
             SECTION("Contiguous")
             {
-                const Interval interval1{2, 4};
-                const Interval interval2{5, 5};
-                const std::optional<Interval<>> result2{
+                Interval const interval1{2, 4};
+                Interval const interval2{5, 5};
+                std::optional<Interval<>> const result2{
                     interval1.join(interval2)};
                 CHECK(result2);
                 CHECK(result2->get() == std::make_pair(2, 5));
             }
             SECTION("Non-contiguous")
             {
-                const Interval interval1{2, 4};
-                const Interval interval2{7, 7};
-                const std::optional<Interval<>> result2{
+                Interval const interval1{2, 4};
+                Interval const interval2{7, 7};
+                std::optional<Interval<>> const result2{
                     interval1.join(interval2)};
                 CHECK_FALSE(result2);
             }
@@ -171,8 +171,8 @@ TEST_CASE("[Interval] intersect() method", "[utils][Interval]")
 {
     SECTION("No overlap")
     {
-        const Interval interval1{2, 3};
-        const Interval interval2{-3, 1};
+        Interval const interval1{2, 3};
+        Interval const interval2{-3, 1};
         auto const result{interval1.intersect(interval2)};
         CHECK_FALSE(result);
         auto const result2{interval2.intersect(interval1)};
@@ -180,8 +180,8 @@ TEST_CASE("[Interval] intersect() method", "[utils][Interval]")
     }
     SECTION("One interval is contained in the other one")
     {
-        const Interval interval1{2, 3};
-        const Interval interval2{-3, 4};
+        Interval const interval1{2, 3};
+        Interval const interval2{-3, 4};
         auto const result{interval1.intersect(interval2)};
         CHECK(result);
         CHECK(result->get() == std::make_pair(2, 3));
@@ -191,8 +191,8 @@ TEST_CASE("[Interval] intersect() method", "[utils][Interval]")
     }
     SECTION("Left overlap")
     {
-        const Interval interval1{-3, 4};
-        const Interval interval2{-5, -1};
+        Interval const interval1{-3, 4};
+        Interval const interval2{-5, -1};
         auto const result{interval1.intersect(interval2)};
         CHECK(result);
         CHECK(result->get() == std::make_pair(-3, -1));
@@ -202,8 +202,8 @@ TEST_CASE("[Interval] intersect() method", "[utils][Interval]")
     }
     SECTION("Right overlap")
     {
-        const Interval interval1{-3, 4};
-        const Interval interval2{2, 7};
+        Interval const interval1{-3, 4};
+        Interval const interval2{2, 7};
         auto const result{interval1.intersect(interval2)};
         CHECK(result);
         CHECK(result->get() == std::make_pair(2, 4));
@@ -215,8 +215,8 @@ TEST_CASE("[Interval] intersect() method", "[utils][Interval]")
     {
         SECTION("Left extreme")
         {
-            const Interval interval1{-3, 1};
-            const Interval interval2{-3, 4};
+            Interval const interval1{-3, 1};
+            Interval const interval2{-3, 4};
             auto const result{interval1.intersect(interval2)};
             CHECK(result);
             CHECK(result->get() == std::make_pair(-3, 1));
@@ -226,8 +226,8 @@ TEST_CASE("[Interval] intersect() method", "[utils][Interval]")
         }
         SECTION("Right extreme")
         {
-            const Interval interval1{1, 4};
-            const Interval interval2{-3, 4};
+            Interval const interval1{1, 4};
+            Interval const interval2{-3, 4};
             auto const result{interval1.intersect(interval2)};
             CHECK(result);
             CHECK(result->get() == std::make_pair(1, 4));
@@ -248,15 +248,15 @@ TEST_CASE("[Interval] subsumes() method", "[utils][Interval]")
 {
     SECTION("One interval includes the other one totally")
     {
-        const Interval interval1{2, 3};
-        const Interval interval2{-3, 6};
+        Interval const interval1{2, 3};
+        Interval const interval2{-3, 6};
         CHECK_FALSE(interval1.subsumes(interval2));
         CHECK(interval2.subsumes(interval1));
     }
     SECTION("Contiguous intervals")
     {
-        const Interval interval1{2, 3};
-        const Interval interval2{-3, 1};
+        Interval const interval1{2, 3};
+        Interval const interval2{-3, 1};
         CHECK_FALSE(interval1.subsumes(interval2));
         CHECK_FALSE(interval2.subsumes(interval1));
     }
@@ -264,15 +264,15 @@ TEST_CASE("[Interval] subsumes() method", "[utils][Interval]")
     {
         SECTION("Left extreme")
         {
-            const Interval interval1{1, 3};
-            const Interval interval2{1, 5};
+            Interval const interval1{1, 3};
+            Interval const interval2{1, 5};
             CHECK(interval2.subsumes(interval1));
             CHECK_FALSE(interval1.subsumes(interval2));
         }
         SECTION("Right extreme")
         {
-            const Interval interval1{2, 3};
-            const Interval interval2{-3, 3};
+            Interval const interval1{2, 3};
+            Interval const interval2{-3, 3};
             CHECK(interval2.subsumes(interval1));
             CHECK_FALSE(interval1.subsumes(interval2));
         }
@@ -288,36 +288,36 @@ TEST_CASE("[Interval] overlaps() method", "[utils][Interval]")
 {
     SECTION("Left overlap")
     {
-        const Interval interval1{2, 6};
-        const Interval interval2{1, 3};
+        Interval const interval1{2, 6};
+        Interval const interval2{1, 3};
         CHECK(interval1.overlaps(interval2));
         CHECK(interval2.overlaps(interval1));
     }
     SECTION("Right overlap")
     {
-        const Interval interval1{2, 6};
-        const Interval interval2{5, 7};
+        Interval const interval1{2, 6};
+        Interval const interval2{5, 7};
         CHECK(interval1.overlaps(interval2));
         CHECK(interval2.overlaps(interval1));
     }
     SECTION("One interval includes the other one totally")
     {
-        const Interval interval1{2, 6};
-        const Interval interval2{4, 5};
+        Interval const interval1{2, 6};
+        Interval const interval2{4, 5};
         CHECK(interval2.overlaps(interval1));
         CHECK(interval1.overlaps(interval2));
     }
     SECTION("Their left extremes touch")
     {
-        const Interval interval1{2, 6};
-        const Interval interval2{1, 2};
+        Interval const interval1{2, 6};
+        Interval const interval2{1, 2};
         CHECK(interval1.overlaps(interval2));
         CHECK(interval2.overlaps(interval1));
     }
     SECTION("Their right extremes touch")
     {
-        const Interval interval1{2, 6};
-        const Interval interval2{6, 7};
+        Interval const interval1{2, 6};
+        Interval const interval2{6, 7};
         CHECK(interval1.overlaps(interval2));
         CHECK(interval2.overlaps(interval1));
     }
@@ -330,7 +330,7 @@ TEST_CASE("[Interval] overlaps() method", "[utils][Interval]")
 
 TEST_CASE("[Interval] contains() method", "[utils][Interval]")
 {
-    const Interval interval1{2, 7};
+    Interval const interval1{2, 7};
 
     SECTION("Left extreme value") { CHECK(interval1.contains(2)); }
     SECTION("Intermediate value") { CHECK(interval1.contains(5)); }
@@ -347,12 +347,12 @@ TEST_CASE("[Interval] hasOneValue() method", "[utils][Interval]")
 {
     SECTION("False")
     {
-        const Interval interval1{2, 7};
+        Interval const interval1{2, 7};
         CHECK_FALSE(interval1.hasOneValue());
     }
     SECTION("True")
     {
-        const Interval interval1{3, 3};
+        Interval const interval1{3, 3};
         CHECK(interval1.hasOneValue());
     }
     SECTION("Static tests")
@@ -366,22 +366,22 @@ TEST_CASE("[Interval] areContiguous() method", "[utils][Interval]")
 {
     SECTION("Contiguous on the left side")
     {
-        const Interval interval1{2, 7};
-        const Interval interval2{-1, 1};
+        Interval const interval1{2, 7};
+        Interval const interval2{-1, 1};
         CHECK(interval1.areContiguous(interval2));
         CHECK(interval2.areContiguous(interval1));
     }
     SECTION("Contiguous on the right side")
     {
-        const Interval interval1{2, 7};
-        const Interval interval2{8, 9};
+        Interval const interval1{2, 7};
+        Interval const interval2{8, 9};
         CHECK(interval1.areContiguous(interval2));
         CHECK(interval2.areContiguous(interval1));
     }
     SECTION("One interval includes the other one totally")
     {
-        const Interval interval1{2, 7};
-        const Interval interval2{3, 3};
+        Interval const interval1{2, 7};
+        Interval const interval2{3, 3};
         CHECK_FALSE(interval1.areContiguous(interval2));
         CHECK_FALSE(interval2.areContiguous(interval1));
     }

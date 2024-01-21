@@ -15,8 +15,8 @@ public:
 
 private:
     IDirectory const& mCurrentDir;
-    const uint32_t mSize;
-    const std::string mName;
+    uint32_t const mSize;
+    std::string const mName;
 };
 
 } // namespace aoc_2022_7

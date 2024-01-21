@@ -50,7 +50,7 @@ readListOfNumbers(std::filesystem::path const& filePath)
     std::vector<int64_t> outList;
 
     bool const result{
-        parseAndIterate(filePath, [&outList](const std::string_view line) {
+        parseAndIterate(filePath, [&outList](std::string_view const line) {
             if (auto const value{utils::string::toNumber<int64_t>(line)}) {
                 outList.emplace_back(*value);
             }
@@ -68,7 +68,7 @@ readGroupsOfNumbers(std::filesystem::path const& filePath)
     std::vector<std::vector<int64_t>> outList;
 
     bool const result{
-        parseAndIterate(filePath, [&outList](const std::string_view line) {
+        parseAndIterate(filePath, [&outList](std::string_view const line) {
             if (utils::string::trim(line).empty()) {
                 outList.emplace_back();
             } else {
@@ -93,7 +93,7 @@ readMatrixOfDigits(std::filesystem::path const& filePath)
     std::vector<std::vector<uint8_t>> outList;
 
     bool const result{
-        parseAndIterate(filePath, [&outList](const std::string_view line) {
+        parseAndIterate(filePath, [&outList](std::string_view const line) {
             std::vector<uint8_t> row;
             row.reserve(line.size());
             for (char const c : line) {

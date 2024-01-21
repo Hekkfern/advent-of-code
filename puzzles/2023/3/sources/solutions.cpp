@@ -1,7 +1,6 @@
 #include "solutions.hpp"
 
 #include "Schematic.hpp"
-#include <range/v3/view/enumerate.hpp>
 #include <utils/File.hpp>
 #include <utils/String.hpp>
 
@@ -39,7 +38,11 @@ parseInputLine(uint32_t const rowIndex, std::string_view line) noexcept
     return schematic;
 }
 
-Schematic parseInputFile() noexcept { }
+Schematic parseInputFile() noexcept
+{
+    // TODO
+    return {};
+}
 
 // ---------- End of Private Methods ----------
 

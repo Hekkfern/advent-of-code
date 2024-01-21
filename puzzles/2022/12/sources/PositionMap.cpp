@@ -35,7 +35,7 @@ PositionMap::PositionMap(
 
 bool PositionMap::canMove(
     Position const& position,
-    const Direction2D direction,
+    Direction2D const direction,
     ClimbingDirection climbingDirection) const
 {
     // check boundaries of the map
@@ -73,7 +73,7 @@ PositionMap::getPositionFromCoordinates(Point2D<int32_t> const& coords) const
 }
 
 bool PositionMap::isMovementOutOfBounds(
-    Position const& position, const Direction2D direction) const
+    Position const& position, Direction2D const direction) const
 {
     auto const [coordX, coordY]{position.getCoordinates()};
     auto const [sizeX, sizeY]{size()};
@@ -134,7 +134,7 @@ uint32_t PositionMap::getCost(Position const& position)
 }
 
 Position const&
-PositionMap::move(Position const& position, const Direction2D direction) const
+PositionMap::move(Position const& position, Direction2D const direction) const
 {
     auto coords{position.getPoint() + direction};
     return getPositionFromCoordinates(coords);

@@ -76,7 +76,7 @@ public:
      *
      * @param[in]  value  The value to add.
      */
-    constexpr void add(const T value) noexcept
+    constexpr void add(T const value) noexcept
     {
         mIntervals.emplace_back(value, value);
         reduce();
@@ -86,7 +86,7 @@ public:
      *
      * @param      value  The value to remove.
      */
-    constexpr void remove(const T value) noexcept
+    constexpr void remove(T const value) noexcept
     {
         std::vector<Interval<T>> tempIntervals;
         tempIntervals.reserve(mIntervals.size());
@@ -247,7 +247,7 @@ public:
     [[nodiscard]] constexpr size_t count() const noexcept
     {
         return ranges::accumulate(
-            mIntervals, 0U, [](const size_t sum, Interval<T> const& interval) {
+            mIntervals, 0U, [](size_t const sum, Interval<T> const& interval) {
                 return sum + interval.length();
             });
     }

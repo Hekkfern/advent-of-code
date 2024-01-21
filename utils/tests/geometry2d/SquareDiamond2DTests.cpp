@@ -8,7 +8,7 @@ TEST_CASE(
     "[SquareDiamond2D - getter] Getters return correct values",
     "[SquareDiamond2D, SquareDiamond2D_getter]")
 {
-    const SquareDiamond2D shape{Point2D{10, 10}, 2};
+    SquareDiamond2D const shape{Point2D{10, 10}, 2};
     CHECK(shape.getCenter().getCoordinates() == Coord2D<>{10, 10});
     CHECK(shape.getDistance() == 2);
 }
@@ -17,7 +17,7 @@ TEST_CASE(
     "[SquareDiamond2D - getVertexes] getVertexes() returns correct values",
     "[SquareDiamond2D, SquareDiamond2D_getVertexes]")
 {
-    const SquareDiamond2D shape{Point2D{10, 10}, 2};
+    SquareDiamond2D const shape{Point2D{10, 10}, 2};
     auto const vertexes{shape.getVertexes()};
     CHECK(vertexes[0] == (Point2D{10, 12}));
     CHECK(vertexes[1] == (Point2D{12, 10}));
@@ -30,7 +30,7 @@ TEST_CASE(
     "outside",
     "[SquareDiamond2D, SquareDiamond2D_isOutside]")
 {
-    const SquareDiamond2D shape{Point2D{10, 10}, 2};
+    SquareDiamond2D const shape{Point2D{10, 10}, 2};
     CHECK(shape.isOutside(Point2D{2, 2}));
 }
 
@@ -39,7 +39,7 @@ TEST_CASE(
     "in the perimeter",
     "[SquareDiamond2D, SquareDiamond2D_isOutside]")
 {
-    const SquareDiamond2D shape{Point2D{10, 10}, 2};
+    SquareDiamond2D const shape{Point2D{10, 10}, 2};
     CHECK_FALSE(shape.isOutside(Point2D{8, 10}));
 }
 
@@ -48,7 +48,7 @@ TEST_CASE(
     "in the inside",
     "[SquareDiamond2D, SquareDiamond2D_isOutside]")
 {
-    const SquareDiamond2D shape{Point2D{10, 10}, 2};
+    SquareDiamond2D const shape{Point2D{10, 10}, 2};
     CHECK_FALSE(shape.isOutside(Point2D{11, 10}));
 }
 
@@ -57,7 +57,7 @@ TEST_CASE(
     "outside",
     "[SquareDiamond2D, SquareDiamond2D_isInside]")
 {
-    const SquareDiamond2D shape{Point2D{10, 10}, 2};
+    SquareDiamond2D const shape{Point2D{10, 10}, 2};
     CHECK_FALSE(shape.isInside(Point2D{2, 2}));
 }
 
@@ -66,7 +66,7 @@ TEST_CASE(
     "in the perimeter",
     "[SquareDiamond2D, SquareDiamond2D_isInside]")
 {
-    const SquareDiamond2D shape{Point2D{10, 10}, 2};
+    SquareDiamond2D const shape{Point2D{10, 10}, 2};
     CHECK(shape.isInside(Point2D{8, 10}));
 }
 
@@ -75,7 +75,7 @@ TEST_CASE(
     "in the inside",
     "[SquareDiamond2D, SquareDiamond2D_isInside]")
 {
-    const SquareDiamond2D shape{Point2D{10, 10}, 2};
+    SquareDiamond2D const shape{Point2D{10, 10}, 2};
     CHECK(shape.isInside(Point2D{11, 10}));
 }
 
@@ -84,7 +84,7 @@ TEST_CASE(
     "point is outside",
     "[SquareDiamond2D, SquareDiamond2D_isInPerimeter]")
 {
-    const SquareDiamond2D shape{Point2D{10, 10}, 2};
+    SquareDiamond2D const shape{Point2D{10, 10}, 2};
     CHECK_FALSE(shape.isInPerimeter(Point2D{2, 2}));
 }
 
@@ -93,7 +93,7 @@ TEST_CASE(
     "point is in the perimeter",
     "[SquareDiamond2D, SquareDiamond2D_isInPerimeter]")
 {
-    const SquareDiamond2D shape{Point2D{10, 10}, 2};
+    SquareDiamond2D const shape{Point2D{10, 10}, 2};
     CHECK(shape.isInPerimeter(Point2D{8, 10}));
 }
 
@@ -102,7 +102,7 @@ TEST_CASE(
     "point is in the inside",
     "[SquareDiamond2D, SquareDiamond2D_isInPerimeter]")
 {
-    const SquareDiamond2D shape{Point2D{10, 10}, 2};
+    SquareDiamond2D const shape{Point2D{10, 10}, 2};
     CHECK_FALSE(shape.isInPerimeter(Point2D{11, 10}));
 }
 
@@ -110,7 +110,7 @@ TEST_CASE(
     "[SquareDiamond2D - area] area() returns the correct value",
     "[SquareDiamond2D, SquareDiamond2D_area]")
 {
-    const SquareDiamond2D shape{Point2D{10, 10}, 2};
+    SquareDiamond2D const shape{Point2D{10, 10}, 2};
     CHECK(shape.area() == 13U);
 }
 

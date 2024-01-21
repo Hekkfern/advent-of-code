@@ -127,15 +127,15 @@ TEST_CASE("[Point3D] Equality operator", "[utils][Point3D]")
 {
     SECTION("Different")
     {
-        const Point3D p1{2, 3, 5};
-        const Point3D p2{-4, 2, -3};
+        Point3D const p1{2, 3, 5};
+        Point3D const p2{-4, 2, -3};
         CHECK_FALSE(p1 == p2);
         CHECK(p1 != p2);
     }
     SECTION("Equal")
     {
-        const Point3D p1{2, 3, 5};
-        const Point3D p2{2, 3, 5};
+        Point3D const p1{2, 3, 5};
+        Point3D const p2{2, 3, 5};
         CHECK(p1 == p2);
         CHECK_FALSE(p1 != p2);
     }
@@ -143,24 +143,24 @@ TEST_CASE("[Point3D] Equality operator", "[utils][Point3D]")
 
 TEST_CASE("[Point3D] Addition operator", "[utils][Point3D]")
 {
-    const Point3D p1{-2, 3, 5};
-    const Point3D p2{4, 2, 4};
+    Point3D const p1{-2, 3, 5};
+    Point3D const p2{4, 2, 4};
     CHECK((p1 + p2) == Point3D{2, 5, 9});
     CHECK((p2 + p1) == Point3D{2, 5, 9});
 }
 
 TEST_CASE("[Point3D] Negation operator", "[utils][Point3D]")
 {
-    const Point3D p1{-2, 3, 5};
-    const Point3D p2{4, -2, 4};
+    Point3D const p1{-2, 3, 5};
+    Point3D const p2{4, -2, 4};
     CHECK(-p1 == Point3D{2, -3, -5});
     CHECK(-p2 == Point3D{-4, 2, -4});
 }
 
 TEST_CASE("[Point3D] Subtraction operator", "[utils][Point3D]")
 {
-    const Point3D p1{-2, 3, 5};
-    const Point3D p2{4, 2, 4};
+    Point3D const p1{-2, 3, 5};
+    Point3D const p2{4, 2, 4};
     CHECK((p1 - p2) == Point3D{-6, 1, 1});
     CHECK((p2 - p1) == Point3D{6, -1, -1});
 }

@@ -30,14 +30,14 @@ ParsedValve parseInputLine(std::string const& line)
 {
     // parse line
     std::smatch lineRegexResult;
-    const std::regex LinePattern{
+    std::regex const LinePattern{
         R"(Valve ([A-Z]{2}) has flow rate=([0-9]+); tunnel(?:s?) lead(?:s?) to valve(?:s?) ([A-Z, ]+))"};
     if (!std::regex_match(line, lineRegexResult, LinePattern)) {
         throw std::logic_error("Regex failed in parsing the line");
     }
     // parse neighbors inside line
     std::regex_token_iterator<std::string::iterator> rend;
-    const std::regex NeighborPattern{R"([A-Z]{2})"};
+    std::regex const NeighborPattern{R"([A-Z]{2})"};
     std::string neighborString{lineRegexResult[3]};
     std::regex_token_iterator<std::string::iterator> matchIt{
         std::begin(neighborString), std::end(neighborString), NeighborPattern};
@@ -88,10 +88,10 @@ Graph<Valve, uint32_t> buildGraph(std::vector<ParsedValve>&& parsedValves)
 }
 
 uint32_t calculateEventualPressureRelease(
-    const uint32_t currentPressure,
-    const uint32_t flowRate,
-    const uint32_t totalTime,
-    const uint32_t time)
+    uint32_t const currentPressure,
+    uint32_t const flowRate,
+    uint32_t const totalTime,
+    uint32_t const time)
 {
     return currentPressure + flowRate * (totalTime - time);
 }
@@ -135,9 +135,9 @@ generateValveNameList(Graph<Valve, uint32_t> const& graph)
 uint32_t analyzeValveAlone(
     Graph<Valve, uint32_t> const& graph,
     std::string const& currentValve,
-    const uint32_t time,
-    const uint32_t totalTime,
-    const uint32_t totalPressure,
+    uint32_t const time,
+    uint32_t const totalTime,
+    uint32_t const totalPressure,
     std::unordered_set<std::string>& openedValves,
     std::unordered_set<std::string>& availableValves)
 {
@@ -162,7 +162,7 @@ uint32_t analyzeValveAlone(
             continue;
         }
         // calculate time to move to this valve
-        const uint32_t timeToGoToNextValve{
+        uint32_t const timeToGoToNextValve{
             thisVertex.getEdges().at(nextVertexName).getWeight()};
         // moving to this valve and opening it would take
         // more time than we have
@@ -170,7 +170,7 @@ uint32_t analyzeValveAlone(
             continue;
         }
         // recurse with this valve open. if it is an improvement, remember
-        const uint32_t candidateTotalPressure{analyzeValveAlone(
+        uint32_t const candidateTotalPressure{analyzeValveAlone(
             graph,
             nextVertexName,
             newTime + timeToGoToNextValve,
@@ -224,9 +224,9 @@ uint32_t searchMaximumFlowPathAlone(Graph<Valve, uint32_t> const& graph)
 uint32_t analyzeValveWithElephant(
     Graph<Valve, uint32_t> const& graph,
     std::string const& currentValve,
-    const uint32_t time,
-    const uint32_t totalTime,
-    const uint32_t totalPressure,
+    uint32_t const time,
+    uint32_t const totalTime,
+    uint32_t const totalPressure,
     std::unordered_set<std::string>& openedValves,
     std::unordered_set<std::string>& availableValves)
 {
@@ -252,7 +252,7 @@ uint32_t analyzeValveWithElephant(
         elephantAvailableValves.erase(v);
     }
     std::unordered_set<std::string> elephantOpenedValves;
-    const uint32_t maxElephantTotalPressure{analyzeValveAlone(
+    uint32_t const maxElephantTotalPressure{analyzeValveAlone(
         graph,
         "AA",
         0U,
@@ -270,7 +270,7 @@ uint32_t analyzeValveWithElephant(
             continue;
         }
         // calculate time to move to this valve
-        const uint32_t timeToGoToNextValve{
+        uint32_t const timeToGoToNextValve{
             thisVertex.getEdges().at(nextVertexName).getWeight()};
         // moving to this valve and opening it would take
         // more time than we have
@@ -278,7 +278,7 @@ uint32_t analyzeValveWithElephant(
             continue;
         }
         // recurse with this valve open. if it is an improvement, remember
-        const uint32_t candidateTotalPressure{analyzeValveWithElephant(
+        uint32_t const candidateTotalPressure{analyzeValveWithElephant(
             graph,
             nextVertexName,
             newTime + timeToGoToNextValve,

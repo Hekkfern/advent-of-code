@@ -239,7 +239,7 @@ private:
  */
 template <SignedIntegerType T>
 [[nodiscard]] Vector2D<T>
-operator*(Vector2D<T> const& vector2d, const int32_t value)
+operator*(Vector2D<T> const& vector2d, int32_t const value)
 {
     return Vector2D<T>{value * vector2d.getX(), value * vector2d.getY()};
 }
@@ -254,7 +254,7 @@ operator*(Vector2D<T> const& vector2d, const int32_t value)
  */
 template <SignedIntegerType T>
 [[nodiscard]] Vector2D<T>
-operator*(const int32_t value, Vector2D<T> const& vector2d)
+operator*(int32_t const value, Vector2D<T> const& vector2d)
 {
     return vector2d * value;
 }

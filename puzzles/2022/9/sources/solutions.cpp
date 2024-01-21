@@ -63,7 +63,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
     std::unordered_set<Point2D<int32_t>> visitedTailPositions;
 
     while (std::getline(fileStream, line)) {
-        const RopeInstruction instruction{parseInputLine(line)};
+        RopeInstruction const instruction{parseInputLine(line)};
         for (uint32_t i{0U}; i < instruction.mQuantity; ++i) {
             rope.moveHead(instruction.mDirection);
             visitedTailPositions.emplace(rope.getTailPosition());
@@ -83,7 +83,7 @@ std::string solvePart2(std::filesystem::path const& filePath)
     std::unordered_set<Point2D<int32_t>> visitedTailPositions;
 
     while (std::getline(fileStream, line)) {
-        const RopeInstruction instruction{parseInputLine(line)};
+        RopeInstruction const instruction{parseInputLine(line)};
         for (uint32_t i{0U}; i < instruction.mQuantity; ++i) {
             rope.moveHead(instruction.mDirection);
             visitedTailPositions.emplace(rope.getTailPosition());

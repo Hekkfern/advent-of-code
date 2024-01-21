@@ -107,7 +107,7 @@ std::unordered_map<MonkeyId, Monkey> parseInput(std::string const& filename)
     std::string line;
     do {
         Monkey monkey{parseMonkey(inputFile)};
-        const MonkeyId id{monkey.getId()};
+        MonkeyId const id{monkey.getId()};
         monkeys.emplace(id, std::move(monkey));
     } while (std::getline(inputFile, line));
 
@@ -146,7 +146,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
          ++roundCounter) {
         for (MonkeyId monkeyIndex = 0U; monkeyIndex < monkeys.size();
              ++monkeyIndex) {
-            const uint32_t numInspections{
+            uint32_t const numInspections{
                 monkeys.at(monkeyIndex).inspectAndThrowAll(monkeys, true)};
             monkeyInspections.at(monkeyIndex) += numInspections;
         }

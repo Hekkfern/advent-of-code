@@ -13,7 +13,7 @@ namespace aoc_2023_1 {
 
 // ---------- Private Methods ----------
 
-const std::unordered_map<std::string, uint32_t> NumberTextMap{
+std::unordered_map<std::string, uint32_t> const NumberTextMap{
     {"one", 1U},
     {"two", 2U},
     {"three", 3U},
@@ -60,7 +60,7 @@ std::optional<uint32_t> analyzeItemInWeirdLine(std::string_view substr)
  *
  * @return     A string with two digits.
  */
-uint32_t parseSimpleLine(const std::string_view line)
+uint32_t parseSimpleLine(std::string_view const line)
 {
     /**
      * @brief      Determines whether the specified character is not a digit.
@@ -105,7 +105,7 @@ uint32_t parseSimpleLine(const std::string_view line)
  *
  * @return     A string with two digits.
  */
-uint32_t parseWeirdLine(const std::string_view line)
+uint32_t parseWeirdLine(std::string_view const line)
 {
     uint32_t first{0};
     uint32_t last{0};

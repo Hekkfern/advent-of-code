@@ -41,7 +41,7 @@ public:
      * @param[in]  distance     The distance from the center to the perimeter.
      */
     explicit SquareDiamond2D(
-        Point2D<T> const& centerPoint, const uint64_t distance)
+        Point2D<T> const& centerPoint, uint64_t const distance)
         : mCenter{centerPoint}
         , mDistance{distance}
         , mVertexes{
@@ -173,7 +173,7 @@ public:
      */
     [[nodiscard]] uint64_t area() const override
     {
-        const uint64_t diagonalLength{(2U * mDistance) + 1U};
+        uint64_t const diagonalLength{(2U * mDistance) + 1U};
         return ((diagonalLength * diagonalLength) / 2U) + 1U;
     }
 

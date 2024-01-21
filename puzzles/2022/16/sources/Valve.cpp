@@ -2,7 +2,7 @@
 
 namespace aoc_2022_16 {
 
-Valve::Valve(const std::string_view name, const uint32_t flowRate)
+Valve::Valve(std::string_view const name, uint32_t const flowRate)
     : mName{name}
     , mFlowRate{flowRate}
 {

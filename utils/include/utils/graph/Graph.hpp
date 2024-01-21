@@ -53,7 +53,7 @@ public:
      * @return     True if the vertex was added. False, otherwise.
      */
     template <class U>
-    requires std::convertible_to<U, T>
+        requires std::convertible_to<U, T>
     bool addVertex(std::string&& name, U&& info)
     {
         std::string key{name};
@@ -150,7 +150,7 @@ public:
     bool addDirectedEdge(
         std::string const& vertexName1,
         std::string const& vertexName2,
-        const W weight)
+        W const weight)
     {
         // check that both vertices exist
         if (!mVertices.contains(vertexName1)
@@ -173,7 +173,7 @@ public:
     bool addUndirectedEdge(
         std::string const& vertexName1,
         std::string const& vertexName2,
-        const W weight)
+        W const weight)
     {
         // check that both vertices exist
         if (!mVertices.contains(vertexName1)

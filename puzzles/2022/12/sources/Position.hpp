@@ -24,8 +24,8 @@ public:
 
 private:
     Point2D<int32_t> const mPoint2D;
-    const PositionType mType;
-    const Height mHeight;
+    PositionType const mType;
+    Height const mHeight;
 };
 
 Position operator+(Position const& position, Direction2D const& direction2D);

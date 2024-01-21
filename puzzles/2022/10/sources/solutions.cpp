@@ -15,7 +15,7 @@ constexpr char LitCrtCharacter{'#'};
 constexpr char DarkCrtCharacter{'.'};
 constexpr uint8_t CrtRowLength{40U};
 
-const std::unordered_map<std::string, uint32_t> CyclesPerInstruction{
+std::unordered_map<std::string, uint32_t> const CyclesPerInstruction{
     {AddxInstructionName, 2U}, {NoopInstructionName, 1U}};
 
 void draw(
@@ -95,7 +95,7 @@ std::string solvePart2(std::filesystem::path const& filePath)
         std::stringstream lineStream{line};
         std::string instructionText;
         lineStream >> instructionText;
-        const InstructionType instruction{
+        InstructionType const instruction{
             convertInstructionType(instructionText)};
         switch (instruction) {
         case InstructionType::ADDX: {

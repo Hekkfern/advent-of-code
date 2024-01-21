@@ -3,7 +3,7 @@
 namespace aoc_2022_12 {
 
 Position::Position(
-    Point2D<int32_t>&& pos, const Height height, const PositionType type)
+    Point2D<int32_t>&& pos, Height const height, PositionType const type)
     : mPoint2D{std::move(pos)}
     , mType{type}
     , mHeight{height}

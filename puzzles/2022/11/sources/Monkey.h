@@ -31,11 +31,11 @@ public:
     bool operator==(Monkey const& other);
 
 private:
-    const MonkeyId mId;
+    MonkeyId const mId;
     Operation mOperation;
-    const WorryLevel mDivisor;
-    const MonkeyId mTargetTrue;
-    const MonkeyId mTargetFalse;
+    WorryLevel const mDivisor;
+    MonkeyId const mTargetTrue;
+    MonkeyId const mTargetFalse;
     std::vector<WorryLevel> mItems{};
 };
 

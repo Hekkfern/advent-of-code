@@ -6,7 +6,7 @@ using namespace utils::graph;
 
 class CustomInfo {
 public:
-    explicit CustomInfo(const uint32_t value)
+    explicit CustomInfo(uint32_t const value)
         : mValue{value}
     {
     }

@@ -119,8 +119,8 @@ public:
      */
     [[nodiscard]] bool isInPerimeter(Point2D<T> const& point) const override
     {
-        const Vector2D v1{getBottomLeftPoint(), point};
-        const Vector2D v2{getTopRightPoint(), point};
+        Vector2D const v1{getBottomLeftPoint(), point};
+        Vector2D const v2{getTopRightPoint(), point};
         return v1.isVertical() || v1.isHorizontal() || v2.isVertical()
             || v2.isHorizontal();
     }

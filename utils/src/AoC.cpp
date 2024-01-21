@@ -5,7 +5,7 @@
 namespace utils::aoc {
 
 void printPart1Solution(
-    const std::string_view solution, const std::chrono::microseconds execTime)
+    std::string_view const solution, std::chrono::microseconds const execTime)
 {
     std::cout
         << "\n-----Part 1-----\n\nValue:\n"
@@ -14,7 +14,7 @@ void printPart1Solution(
 }
 
 void printPart2Solution(
-    const std::string_view solution, const std::chrono::microseconds execTime)
+    std::string_view const solution, std::chrono::microseconds const execTime)
 {
     std::cout
         << "\n-----Part 2-----\n\nValue:\n"

@@ -247,7 +247,7 @@ private:
  * @return     Scaled vector by a scalar.
  */
 template <SignedIntegerType T>
-Vector3D<T> operator*(Vector3D<T> const& vector3d, const int32_t value)
+Vector3D<T> operator*(Vector3D<T> const& vector3d, int32_t const value)
 {
     return Vector3D{
         value * vector3d.getX(),
@@ -264,7 +264,7 @@ Vector3D<T> operator*(Vector3D<T> const& vector3d, const int32_t value)
  * @return     Scaled vector by a scalar.
  */
 template <SignedIntegerType T>
-Vector3D<T> operator*(const int32_t value, Vector3D<T> const& vector3d)
+Vector3D<T> operator*(int32_t const value, Vector3D<T> const& vector3d)
 {
     return vector3d * value;
 }

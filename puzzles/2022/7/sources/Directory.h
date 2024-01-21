@@ -30,7 +30,7 @@ private:
     std::unordered_map<std::string, std::unique_ptr<IDirectory>> mDirs{};
     std::unordered_map<std::string, std::unique_ptr<IFile>> mFiles{};
     IDirectory* mParentDir;
-    const std::string mName;
+    std::string const mName;
     std::optional<uint32_t> mCachedSize{};
 };
 

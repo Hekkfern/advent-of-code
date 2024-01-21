@@ -21,8 +21,8 @@ public:
     bool operator==(Operation const& other);
 
 private:
-    const Operator mOperator;
-    const std::optional<WorryLevel> mOperand;
+    Operator const mOperator;
+    std::optional<WorryLevel> const mOperand;
 };
 
 } // namespace aoc_2022_11

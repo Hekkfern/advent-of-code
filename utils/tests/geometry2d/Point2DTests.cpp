@@ -79,7 +79,7 @@ TEST_CASE("[Point2D] Constructor and containers", "[Point2D]")
 {
     SECTION("Array")
     {
-        const std::array<Point2D<int32_t>, 2U> points;
+        std::array<Point2D<int32_t>, 2U> const points;
         for (auto const& p : points) {
             REQUIRE(p.getX() == 0);
             REQUIRE(p.getY() == 0);
@@ -117,15 +117,15 @@ TEST_CASE("[Point2D] Equality operator", "[utils][Point2D]")
 {
     SECTION("Different")
     {
-        const Point2D p1{2, 3};
-        const Point2D p2{-4, 2};
+        Point2D const p1{2, 3};
+        Point2D const p2{-4, 2};
         CHECK_FALSE(p1 == p2);
         CHECK(p1 != p2);
     }
     SECTION("Equal")
     {
-        const Point2D p1{2, 3};
-        const Point2D p2{2, 3};
+        Point2D const p1{2, 3};
+        Point2D const p2{2, 3};
         CHECK(p1 == p2);
         CHECK_FALSE(p1 != p2);
     }
@@ -133,24 +133,24 @@ TEST_CASE("[Point2D] Equality operator", "[utils][Point2D]")
 
 TEST_CASE("[Point2D] Addition operator", "[utils][Point2D]")
 {
-    const Point2D p1{-2, 3};
-    const Point2D p2{4, 2};
+    Point2D const p1{-2, 3};
+    Point2D const p2{4, 2};
     CHECK((p1 + p2) == Point2D{2, 5});
     CHECK((p2 + p1) == Point2D{2, 5});
 }
 
 TEST_CASE("[Point2D] Negation operator", "[utils][Point2D]")
 {
-    const Point2D p1{-2, 3};
-    const Point2D p2{4, -2};
+    Point2D const p1{-2, 3};
+    Point2D const p2{4, -2};
     CHECK(-p1 == Point2D{2, -3});
     CHECK(-p2 == Point2D{-4, 2});
 }
 
 TEST_CASE("[Point2D] Subtraction operator", "[utils][Point2D]")
 {
-    const Point2D p1{-2, 3};
-    const Point2D p2{4, 2};
+    Point2D const p1{-2, 3};
+    Point2D const p2{4, 2};
     CHECK((p1 - p2) == Point2D{-6, 1});
     CHECK((p2 - p1) == Point2D{6, -1});
 }

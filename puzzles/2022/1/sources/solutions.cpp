@@ -23,7 +23,7 @@ constexpr uint32_t TopQuantity{3U};
 void insertInRanking(
     std::array<uint32_t, TopQuantity>& highestSums, uint32_t candidate)
 {
-    auto it{ranges::find_if(highestSums, [candidate](const uint32_t value) {
+    auto it{ranges::find_if(highestSums, [candidate](uint32_t const value) {
         return candidate > value;
     })};
     if (it != std::end(highestSums)) {
@@ -43,7 +43,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
     uint32_t currentSum{0U};
 
     utils::file::parseAndIterate(
-        filePath, [&highestSum, &currentSum](const std::string_view line) {
+        filePath, [&highestSum, &currentSum](std::string_view const line) {
             if (utils::string::trim(line).empty()) {
                 highestSum = std::max(highestSum, currentSum);
                 currentSum = 0U;
@@ -62,7 +62,7 @@ std::string solvePart2(std::filesystem::path const& filePath)
     uint32_t currentSum{0U};
 
     utils::file::parseAndIterate(
-        filePath, [&highestSums, &currentSum](const std::string_view line) {
+        filePath, [&highestSums, &currentSum](std::string_view const line) {
             if (utils::string::trim(line).empty()) {
                 insertInRanking(highestSums, currentSum);
                 currentSum = 0U;

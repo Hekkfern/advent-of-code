@@ -36,7 +36,7 @@ char searchCommonItemInRucksack(
     std::string const& compartment1, std::string const& compartment2)
 {
     // fill first set
-    const std::unordered_set<char> itemTypes1(
+    std::unordered_set<char> const itemTypes1(
         std::cbegin(compartment1), std::cend(compartment1));
     // look for repeated item types in both compartments
     for (char const& c : compartment2) {
@@ -54,10 +54,10 @@ char searchCommonItemInGroup(
     std::string const& rucksack3)
 {
     // fill first set
-    const std::unordered_set<char> itemTypes1(
+    std::unordered_set<char> const itemTypes1(
         std::cbegin(rucksack1), std::cend(rucksack1));
     // fill second set
-    const std::unordered_set<char> itemTypes2(
+    std::unordered_set<char> const itemTypes2(
         std::cbegin(rucksack2), std::cend(rucksack2));
     // look for repeated item types in both compartments
     for (char const& c : rucksack3) {
@@ -84,8 +84,8 @@ std::string solvePart1(std::filesystem::path const& filePath)
 
     while (std::getline(fileStream, line)) {
         assert(line.size() % 2 == 0);
-        const std::string compartment1 = line.substr(0, line.size() / 2);
-        const std::string compartment2 = line.substr(
+        std::string const compartment1 = line.substr(0, line.size() / 2);
+        std::string const compartment2 = line.substr(
             line.size() / 2, line.size());
         totalPriority += calculatePriority(
             searchCommonItemInRucksack(compartment1, compartment2));

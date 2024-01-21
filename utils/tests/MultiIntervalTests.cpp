@@ -8,16 +8,16 @@ TEST_CASE("[MultiInterval] Constructor", "[utils][MultiInterval]")
 {
     SECTION("Normal constructor")
     {
-        const std::vector<Interval<int32_t>> intervals{
+        std::vector<Interval<int32_t>> const intervals{
             {Interval{1, 3}, Interval{-1, 4}, Interval{5, 7}}};
-        const MultiInterval multiInterval{intervals};
+        MultiInterval const multiInterval{intervals};
         auto const& result1{multiInterval.get()};
         REQUIRE(result1.size() == 1U);
         CHECK(result1[0] == Interval{-1, 7});
     }
     SECTION("Move constructor")
     {
-        const MultiInterval interval1{
+        MultiInterval const interval1{
             {Interval{1, 3}, Interval{-1, 4}, Interval{5, 7}}};
         auto const& result1{interval1.get()};
         REQUIRE(result1.size() == 1U);
@@ -185,12 +185,12 @@ TEST_CASE("[MultiInterval] count() method", "[utils][MultiInterval]")
 {
     SECTION("With single-value intervals")
     {
-        const MultiInterval interval1{{Interval{1, 1}}};
+        MultiInterval const interval1{{Interval{1, 1}}};
         CHECK(interval1.count() == 1U);
     }
     SECTION("With multiple intervals")
     {
-        const MultiInterval interval1{{Interval{1, 2}, Interval{5, 7}}};
+        MultiInterval const interval1{{Interval{1, 2}, Interval{5, 7}}};
         CHECK(interval1.count() == 5U);
     }
 }

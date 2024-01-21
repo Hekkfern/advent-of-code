@@ -52,22 +52,22 @@ SensorInfo parseInputLine(std::string const& line)
 void fillNoBeaconIntervalAtCoordY(
     MultiInterval<int32_t>& multiInterval,
     SensorInfo const& pairInfo,
-    const int32_t goalCoordY)
+    int32_t const goalCoordY)
 {
     // add all the positions covered by the sensor in the coordinate Y to
     // analyze
-    const int32_t distance{static_cast<int32_t>(pairInfo.getDistance())};
-    const int32_t diffYAbs{
+    int32_t const distance{static_cast<int32_t>(pairInfo.getDistance())};
+    int32_t const diffYAbs{
         std::abs(goalCoordY - pairInfo.getSensorPosition().getY())};
     if (diffYAbs == distance) {
         // add just one value
-        const int32_t coordX{pairInfo.getSensorPosition().getX()};
+        int32_t const coordX{pairInfo.getSensorPosition().getX()};
         multiInterval.add(coordX);
     } else if (diffYAbs < distance) {
         // add all the matching nodes
-        const int32_t firstPosition{
+        int32_t const firstPosition{
             pairInfo.getSensorPosition().getX() - (distance - diffYAbs)};
-        const int32_t lastPosition{
+        int32_t const lastPosition{
             pairInfo.getSensorPosition().getX() + (distance - diffYAbs)};
         multiInterval.add(Interval{firstPosition, lastPosition});
     }
@@ -81,7 +81,7 @@ void fillNoBeaconIntervalAtCoordY(
  *
  * @return     The tuning frequency.
  */
-uint64_t calculateTuningFrequency(const int32_t x, const int32_t y)
+uint64_t calculateTuningFrequency(int32_t const x, int32_t const y)
 {
     return (4000000U * static_cast<uint64_t>(x)) + static_cast<uint64_t>(y);
 }
@@ -111,7 +111,7 @@ bool isHavingBeaconPossible(
  * @return     { description_of_the_return_value }
  */
 Point2D<int32_t>
-searchSpace(std::vector<SensorInfo>& sensorList, const uint32_t gridSize)
+searchSpace(std::vector<SensorInfo>& sensorList, uint32_t const gridSize)
 {
     for (auto& sensor : sensorList) {
         auto currentPosition{sensor.stepAroundOutside()};
@@ -142,7 +142,7 @@ std::string solvePart1(
     std::filesystem::path const& filePath,
     std::unordered_map<std::string, std::any>&& extParams)
 {
-    const int32_t goalCoordY{
+    int32_t const goalCoordY{
         std::any_cast<int32_t>(extParams.at("GoalCoordY"))};
     std::ifstream fileStream{filePath};
     std::string line;
@@ -168,14 +168,14 @@ std::string solvePart2(
     std::filesystem::path const& filePath,
     std::unordered_map<std::string, std::any>&& extParams)
 {
-    const uint32_t gridSize{std::any_cast<uint32_t>(extParams.at("GridSize"))};
+    uint32_t const gridSize{std::any_cast<uint32_t>(extParams.at("GridSize"))};
     std::ifstream fileStream{filePath};
     std::string line;
     std::vector<SensorInfo> sensorList;
     while (std::getline(fileStream, line)) {
         sensorList.emplace_back(parseInputLine(line));
     }
-    const Point2D emptySpot{searchSpace(sensorList, gridSize)};
+    Point2D const emptySpot{searchSpace(sensorList, gridSize)};
     return std::to_string(
         calculateTuningFrequency(emptySpot.getX(), emptySpot.getY()));
 }

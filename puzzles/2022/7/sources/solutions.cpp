@@ -113,7 +113,7 @@ uint32_t calculateSumOfChildDirSizes(
 {
     uint32_t totalSum = 0U;
     for (auto childDir : dir.getChildDirectories()) {
-        const uint32_t childSize = childDir->getSize();
+        uint32_t const childSize = childDir->getSize();
         if (condition(childSize)) {
             totalSum += childSize;
         }
@@ -134,7 +134,7 @@ uint32_t getSmallestChildDirSize(
             minSize = std::min(minSize, dirSize);
         }
         if (!childDir->getChildDirectories().empty()) {
-            const uint32_t minChildSize = getSmallestChildDirSize(
+            uint32_t const minChildSize = getSmallestChildDirSize(
                 *childDir, condition);
             if (condition(minChildSize)) {
                 minSize = std::min(minSize, minChildSize);
@@ -156,7 +156,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
 
     DirectoryTree tree{parseInput(fileStream)};
 
-    constexpr auto MaxSumSizeCondition = [](const uint32_t size) {
+    constexpr auto MaxSumSizeCondition = [](uint32_t const size) {
         return size <= MaxSumSize;
     };
     uint32_t sumSizes{0U};
@@ -179,13 +179,13 @@ std::string solvePart2(std::filesystem::path const& filePath)
 
     DirectoryTree tree{parseInput(fileStream)};
 
-    const uint32_t currentRootSize = tree.getRoot().getSize();
-    const uint32_t diskSpaceToFree = currentRootSize - MaxRootSize;
-    auto minSizeCondition = [diskSpaceToFree](const uint32_t size) {
+    uint32_t const currentRootSize = tree.getRoot().getSize();
+    uint32_t const diskSpaceToFree = currentRootSize - MaxRootSize;
+    auto minSizeCondition = [diskSpaceToFree](uint32_t const size) {
         return size >= diskSpaceToFree;
     };
     uint32_t minSize{currentRootSize};
-    const uint32_t minChildSize{
+    uint32_t const minChildSize{
         getSmallestChildDirSize(tree.getRoot(), minSizeCondition)};
     minSize = (minChildSize < minSize) ? (minChildSize) : minSize;
 

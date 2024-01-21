@@ -35,7 +35,7 @@ uint32_t Monkey::inspectAndThrowAll(
             itemValue %= mDivisor;
         }
         // test your worry level and throw to the target monkey
-        const MonkeyId target{
+        MonkeyId const target{
             (itemValue % mDivisor == 0) ? mTargetTrue : mTargetFalse};
         monkeys.at(target).mItems.emplace_back(itemValue);
         ++inspectionsCounter;

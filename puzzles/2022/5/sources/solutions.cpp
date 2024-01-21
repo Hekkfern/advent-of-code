@@ -42,7 +42,7 @@ std::vector<CrateStack> parseInputStacks(std::ifstream& fileStream)
                 continue;
             }
             // calculate the destination stack
-            const size_t stack = (i - 1) / 4;
+            size_t const stack = (i - 1) / 4;
             // and insert
             if (crateStackList.size() <= stack) {
                 crateStackList.resize(stack + 1);
@@ -131,7 +131,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
     std::vector<CrateStack> crateStackList = parseInputStacks(fileStream);
     std::string line;
     while (std::getline(fileStream, line)) {
-        const CraneInstruction craneInstruction = parseInputInstruction(line);
+        CraneInstruction const craneInstruction = parseInputInstruction(line);
         executeCrateMover9000Instruction(crateStackList, craneInstruction);
     }
     return generateResult(crateStackList);
@@ -143,7 +143,7 @@ std::string solvePart2(std::filesystem::path const& filePath)
     std::vector<CrateStack> crateStackList = parseInputStacks(fileStream);
     std::string line;
     while (std::getline(fileStream, line)) {
-        const CraneInstruction craneInstruction = parseInputInstruction(line);
+        CraneInstruction const craneInstruction = parseInputInstruction(line);
         executeCrateMover9001Instruction(crateStackList, craneInstruction);
     }
     return generateResult(crateStackList);
