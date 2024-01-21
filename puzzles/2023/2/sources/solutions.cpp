@@ -67,6 +67,15 @@ static bool isGamePossible(Game const& game) noexcept
     });
 }
 
+static uint32_t calculateMinPower(Game const& game) noexcept
+{
+    uint32_t minGreenBalls{std::numeric_limits<uint32_t>::max()};
+    uint32_t minRedBalls{std::numeric_limits<uint32_t>::max()};
+    uint32_t minBlueBalls{std::numeric_limits<uint32_t>::max()};
+
+    // TODO
+}
+
 // ---------- End of Private Methods ----------
 
 // ---------- Public Methods ----------
