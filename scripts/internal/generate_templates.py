@@ -81,7 +81,7 @@ def create_readme_for_day(root_dir: pathlib.Path, year: int, day: int, title: st
 def create_explanation_for_day(root_dir: pathlib.Path, year: int, day: int) -> None:
     # Generate file
     __generate_file_from_template(root_dir, "puzzles/year/day/EXPLANATION.md.j2", {
-                                  "DAY": day, "YEAR": year}, root_dir / f"puzzles/{year}/{day}/README.md")
+                                  "DAY": day, "YEAR": year}, root_dir / f"puzzles/{year}/{day}/EXPLANATION.md")
 
 
 # ----------- puzzles/year/day/sources -------------
