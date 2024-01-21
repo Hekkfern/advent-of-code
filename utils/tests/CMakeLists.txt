@@ -16,7 +16,9 @@ set(_TESTFILES_GEOMETRY2D
     geometry2d/Rectangle2DTests.cpp
     geometry2d/SquareDiamond2DTests.cpp
     geometry2d/Vector2DTests.cpp
-    geometry2d/Operations2DTests.cpp)
+    geometry2d/Operations2DTests.cpp
+        ../include/utils/geometry2d/Line2D.hpp
+        geometry2d/Line2DTests.cpp)
 set(_TESTFILES_GEOMETRY3D
     geometry3d/Point3DTests.cpp geometry3d/Vector3DTests.cpp
     geometry3d/Operations3DTests.cpp)

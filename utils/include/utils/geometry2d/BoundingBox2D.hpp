@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include <limits>
-
 #include "Direction2D.hpp"
 #include "Point2D.hpp"
 
@@ -14,6 +13,8 @@ namespace utils::geometry2d {
  * @details    In geometry, the minimum bounding box for a point set in N
  *             dimensions is the box with the smallest measure within which all
  *             the points lie.
+ *
+ * @tparam     T     Type of the coordinate values.
  */
 template <SignedIntegerType T = int32_t>
 class BoundingBox2D {

@@ -6,8 +6,10 @@
 namespace utils::geometry2d {
 
 /**
- * @brief      This interface describes the common methods for all the shapes in
- *             2D space.
+ * @brief      Describes an interface with the common methods for all the shapes
+ *             in 2D space.
+ *
+ * @tparam     T     Type of the coordinate values.
  */
 template <SignedIntegerType T = int32_t>
 class IShape2D {

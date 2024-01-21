@@ -7,6 +7,12 @@
 
 namespace utils::geometry2d {
 
+/**
+ * @brief      Implements several common operations between elements of a
+ *             2-dimension system.
+ *
+ * @tparam     T     Type of the coordinate values.
+ */
 template <SignedIntegerType T = int32_t>
 class Operations2D {
 public:

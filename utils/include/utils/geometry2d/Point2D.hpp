@@ -10,7 +10,9 @@
 namespace utils::geometry2d {
 
 /**
- * @brief      This class describes a point in 2D space.
+ * @brief      Describes a point in 2D space.
+ *
+ * @tparam     T     Type of the coordinate values.
  */
 template <SignedIntegerType T = int32_t>
 class Point2D {
@@ -90,7 +92,7 @@ public:
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] bool operator==(Point2D const& other) const
+    [[nodiscard]] bool operator==(Point2D<T> const& other) const
     {
         return mX == other.mX && mY == other.mY;
     }
@@ -102,7 +104,7 @@ public:
      *
      * @return     The result of the addition.
      */
-    [[nodiscard]] Point2D operator+(Point2D const& other) const
+    [[nodiscard]] Point2D<T> operator+(Point2D<T> const& other) const
     {
         return Point2D{mX + other.mX, mY + other.mY};
     }
@@ -111,7 +113,7 @@ public:
      *
      * @return     The result of the subtraction
      */
-    [[nodiscard]] Point2D operator-() const { return Point2D{-mX, -mY}; }
+    [[nodiscard]] Point2D<T> operator-() const { return Point2D<T>{-mX, -mY}; }
     /**
      * @brief      Subtraction operator.
      *
@@ -119,7 +121,7 @@ public:
      *
      * @return     The result of the subtraction
      */
-    [[nodiscard]] Point2D operator-(Point2D const& other) const
+    [[nodiscard]] Point2D<T> operator-(Point2D<T> const& other) const
     {
         return *this + (-other);
     }
@@ -135,9 +137,9 @@ public:
      * @return     New point.
      */
     template <std::integral U>
-    [[nodiscard]] static Point2D create(U x, U y)
+    [[nodiscard]] static Point2D<T> create(U x, U y)
     {
-        return Point2D{static_cast<T>(x), static_cast<T>(y)};
+        return Point2D<T>{static_cast<T>(x), static_cast<T>(y)};
     }
 
 private:
@@ -145,13 +147,13 @@ private:
      * @brief      "Insert string into stream" operator.
      *
      * @param[in]      os       The output stream.
-     * @param[in]  point2d  The point.
+     * @param[in]  obj  The object.
      *
      * @return     The updated output stream.
      */
-    friend std::ostream& operator<<(std::ostream& os, Point2D const& point2d)
+    friend std::ostream& operator<<(std::ostream& os, Point2D<T> const& obj)
     {
-        os << '(' << point2d.mX << ',' << point2d.mY << ')';
+        os << '(' << obj.mX << ',' << obj.mY << ')';
         return os;
     }
 

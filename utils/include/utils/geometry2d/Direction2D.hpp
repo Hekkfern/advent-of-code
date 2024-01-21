@@ -5,8 +5,8 @@
 namespace utils::geometry2d {
 
 /**
- * @brief      This class describes a direction in 2D space. It includes the
- *             four orthogonal directions as well as all their combinations.
+ * @brief      Describes a direction in 2D space. It includes the four
+ *             orthogonal directions as well as all their combinations.
  */
 class Direction2D {
 public:

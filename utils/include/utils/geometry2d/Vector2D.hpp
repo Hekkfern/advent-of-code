@@ -9,8 +9,10 @@
 namespace utils::geometry2d {
 
 /**
- * @brief      This class describes a Vector (i.e. a directional arrow) in 2D
+ * @brief      Describes a Vector (i.e. a directional arrow) in 2D
  *             space.
+ *
+ * @tparam     T     Type of the coordinate values.
  */
 template <SignedIntegerType T = int32_t>
 class Vector2D {
@@ -103,7 +105,7 @@ public:
     }
     /**
      * @brief      Modifies the vector so the lengths becomes one (positive or
-     * negative) up most, keeping the same direction.
+     *             negative) up most, keeping the same direction.
      */
     void normalize()
     {
@@ -145,13 +147,23 @@ public:
      */
     [[nodiscard]] bool isVertical() const { return mX == 0; }
     /**
+     * @brief      Determines if it is a diagonal vector, i.e. its coordinate X
+     *             is equal to its coordinate Y.
+     *
+     * @return     True if it is diagonal, False otherwise.
+     */
+    [[nodiscard]] bool isDiagonal() const
+    {
+        return mX == mY;
+    }
+    /**
      * @brief      Equality operator.
      *
      * @param[in]  other  The other object.
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] bool operator==(Vector2D const& other) const
+    [[nodiscard]] bool operator==(Vector2D<T> const& other) const
     {
         return (mX == other.mX) && (mY == other.mY);
     }
@@ -163,9 +175,9 @@ public:
      *
      * @return     The result of the addition.
      */
-    [[nodiscard]] Vector2D operator+(Vector2D const& other) const
+    [[nodiscard]] Vector2D operator+(Vector2D<T> const& other) const
     {
-        return Vector2D{mX + other.mX, mY + other.mY};
+        return Vector2D<T>{mX + other.mX, mY + other.mY};
     }
     /**
      * @brief      Negation operator, which inverts the sign of both coordinates
@@ -173,7 +185,7 @@ public:
      *
      * @return     The inverted vector.
      */
-    [[nodiscard]] Vector2D operator-() const { return Vector2D{-mX, -mY}; }
+    [[nodiscard]] Vector2D<T> operator-() const { return Vector2D<T>{-mX, -mY}; }
     /**
      * @brief      Subtraction operator, which subtracts the coordinates of
      *             both objects.
@@ -182,7 +194,7 @@ public:
      *
      * @return     The result of the subtraction.
      */
-    [[nodiscard]] Vector2D operator-(Vector2D const& other) const
+    [[nodiscard]] Vector2D<T> operator-(Vector2D<T> const& other) const
     {
         return *this + (-other);
     }
@@ -198,23 +210,23 @@ public:
      * @return     New vector.
      */
     template <std::integral U>
-    [[nodiscard]] static Vector2D create(U x, U y)
+    [[nodiscard]] static Vector2D<T> create(U x, U y)
     {
-        return Vector2D{static_cast<T>(x), static_cast<T>(y)};
+        return Vector2D<T>{static_cast<T>(x), static_cast<T>(y)};
     }
 
 private:
     /**
      * @brief      "Insert string into stream" operator.
      *
-     * @param      os        The output stream.
-     * @param[in]  vector2D  The vector.
+     * @param[in]      os        The output stream.
+     * @param[in]  obj  The object.
      *
      * @return     The updated output stream.
      */
-    friend std::ostream& operator<<(std::ostream& os, Vector2D const& vector2D)
+    friend std::ostream& operator<<(std::ostream& os, Vector2D<T> const& obj)
     {
-        os << '(' << vector2D.mX << ',' << vector2D.mY << ')';
+        os << '(' << obj.mX << ',' << obj.mY << ')';
         return os;
     }
 

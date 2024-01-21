@@ -4,14 +4,19 @@
 
 namespace utils::geometry2d {
 
+/**
+ * @brief      Describes spacial coordinates in a 2-dimension system.
+ *
+ * @tparam     T     Type of the coordinate values.
+ */
 template <SignedIntegerType T = int32_t>
 struct Coord2D {
     /**
-     * @brief Default constructor
+     * @brief      Default constructor
      */
     Coord2D() = default;
     /**
-     * @brief Parametrized constructor
+     * @brief      Parametrized constructor
      *
      * @param[in]  x     Coordinate X.
      * @param[in]  y     Coordinate Y.

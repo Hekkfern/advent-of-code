@@ -11,7 +11,9 @@
 namespace utils::geometry2d {
 
 /**
- * @brief      This class describes a Rectangle shape in 2D space.
+ * @brief      Describes a Rectangle shape in 2D space.
+ *
+ * @tparam     T     Type of the coordinate values.
  */
 template <SignedIntegerType T = int32_t>
 class Rectangle2D : public IShape2D<T> {

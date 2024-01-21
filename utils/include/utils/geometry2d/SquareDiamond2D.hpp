@@ -12,7 +12,9 @@
 namespace utils::geometry2d {
 
 /**
- * @brief      This class describes a Square Diamond shape in 2D space.
+ * @brief      Describes a Square Diamond shape in 2D space.
+ *
+ * @tparam     T     Type of the coordinate values.
  */
 template <SignedIntegerType T = int32_t>
 class SquareDiamond2D : public IShape2D<T> {
