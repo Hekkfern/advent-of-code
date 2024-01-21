@@ -78,5 +78,16 @@ readMatrixOfDigits(std::filesystem::path const& filePath);
 bool parseAndIterate(
     std::filesystem::path const& filePath,
     std::function<void(std::string_view line)> const& action);
+/**
+ * @brief      Reads a text file and executes the selected action in each line.
+ *
+ * @param[in]  filePath  The filename.
+ * @param[in]  action    Code to be executed for every line.
+ *
+ * @return     True if the file exists and can be opened. False, otherwise.
+ */
+bool parseAndIterateWithIndex(
+    std::filesystem::path const& filePath,
+    std::function<void(uint32_t index, std::string_view line)> const& action);
 
 } // namespace utils::file

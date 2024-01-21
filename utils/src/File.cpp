@@ -125,4 +125,23 @@ bool parseAndIterate(
     return true;
 }
 
+bool parseAndIterateWithIndex(
+    std::filesystem::path const& filePath,
+    std::function<void(uint32_t index, std::string_view line)> const& action)
+{
+    std::ifstream fileStream{filePath.string()};
+    if (!fileStream.is_open()) {
+        return false;
+    }
+
+    std::string line;
+    uint32_t index{0U};
+    while (std::getline(fileStream, line)) {
+        action(index, line);
+        ++index;
+    }
+
+    return true;
+}
+
 } // namespace utils::file
