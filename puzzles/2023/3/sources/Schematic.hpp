@@ -6,11 +6,10 @@
 namespace aoc_2023_3 {
 
 struct Part {
-    uint32_t partNumber{0};
+    uint32_t partNumber{0U};
     utils::geometry2d::Point2D<> startPosition;
     utils::geometry2d::Point2D<> endPosition;
 
-    Part() = default;
     Part(
         uint32_t pn,
         utils::geometry2d::Point2D<> start,

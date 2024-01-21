@@ -23,8 +23,8 @@ parseInputLine(uint32_t const rowIndex, std::string_view line) noexcept
             auto lastPos{substr.find_first_of('.')};
             if (lastPos == std::string_view::npos) {
                 schematic.parts.emplace_back(
-                    utils::string::toNumber<uint32_t>(
-                        std::string{beginIt, lastPos}),
+                    *utils::string::toNumber<uint32_t>(
+                        std::string{beginIt, beginIt + lastPos}),
                     utils::geometry2d::Point2D<>::create(colIndex, rowIndex),
                     utils::geometry2d::Point2D<>::create(
                         static_cast<uint32_t>(lastPos) - colIndex, rowIndex));
