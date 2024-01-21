@@ -1,7 +1,9 @@
 #include "solutions.hpp"
 
 #include "Game.h"
+#include <cstdint>
 #include <range/v3/algorithm/all_of.hpp>
+#include <range/v3/algorithm/for_each.hpp>
 #include <regex>
 #include <utils/File.hpp>
 #include <utils/String.hpp>
@@ -67,13 +69,28 @@ static bool isGamePossible(Game const& game) noexcept
     });
 }
 
+static void
+setMaxNumBalls(uint32_t& currentMinBalls, uint32_t const candidateMinBalls)
+{
+    currentMinBalls = std::max(currentMinBalls, candidateMinBalls);
+}
+
 static uint32_t calculateMinPower(Game const& game) noexcept
 {
-    uint32_t minGreenBalls{std::numeric_limits<uint32_t>::max()};
-    uint32_t minRedBalls{std::numeric_limits<uint32_t>::max()};
-    uint32_t minBlueBalls{std::numeric_limits<uint32_t>::max()};
+    uint32_t maxGreenBalls{0U};
+    uint32_t maxRedBalls{0U};
+    uint32_t maxBlueBalls{0U};
 
-    // TODO
+    ranges::for_each(
+        game.rounds,
+        [&maxGreenBalls, &maxRedBalls, &maxBlueBalls](
+            GameRound const& round) -> void {
+            setMaxNumBalls(maxGreenBalls, round.numGreenBalls);
+            setMaxNumBalls(maxRedBalls, round.numRedBalls);
+            setMaxNumBalls(maxBlueBalls, round.numBlueBalls);
+        });
+
+    return maxGreenBalls * maxRedBalls * maxBlueBalls;
 }
 
 // ---------- End of Private Methods ----------
@@ -86,7 +103,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
 
     utils::file::parseAndIterate(
         filePath, [&accumGameIds](std::string_view const line) -> void {
-            auto game{parseInputLine(line)};
+            auto const game{parseInputLine(line)};
             if (isGamePossible(game)) {
                 accumGameIds += game.gameId;
             }
@@ -97,8 +114,15 @@ std::string solvePart1(std::filesystem::path const& filePath)
 
 std::string solvePart2(std::filesystem::path const& filePath)
 {
-    (void)filePath;
-    return "";
+    uint32_t accumPower{0U};
+
+    utils::file::parseAndIterate(
+        filePath, [&accumPower](std::string_view const line) -> void {
+            auto const game{parseInputLine(line)};
+            accumPower += calculateMinPower(game);
+        });
+
+    return std::to_string(accumPower);
 }
 
 // ---------- End of Public Methods ----------
