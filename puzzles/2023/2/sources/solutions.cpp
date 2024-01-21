@@ -12,7 +12,7 @@ namespace aoc_2023_2 {
 
 // ---------- Private Methods ----------
 
-static Game parseInputLine(std::string_view const line) noexcept
+Game parseInputLine(std::string_view const line) noexcept
 {
     static constexpr auto IdSeparator{":"};
     static constexpr auto SpaceSeparator{" "};
@@ -56,7 +56,7 @@ static Game parseInputLine(std::string_view const line) noexcept
     return game;
 }
 
-static bool isGamePossible(Game const& game) noexcept
+bool isGamePossible(Game const& game) noexcept
 {
     static constexpr uint32_t MaxNumGreenBalls{13U};
     static constexpr uint32_t MaxNumRedBalls{12U};
@@ -69,13 +69,12 @@ static bool isGamePossible(Game const& game) noexcept
     });
 }
 
-static void
-setMaxNumBalls(uint32_t& currentMinBalls, uint32_t const candidateMinBalls)
+void setMaxNumBalls(uint32_t& currentMinBalls, uint32_t const candidateMinBalls)
 {
     currentMinBalls = std::max(currentMinBalls, candidateMinBalls);
 }
 
-static uint32_t calculateMinPower(Game const& game) noexcept
+uint32_t calculateMinPower(Game const& game) noexcept
 {
     uint32_t maxGreenBalls{0U};
     uint32_t maxRedBalls{0U};
