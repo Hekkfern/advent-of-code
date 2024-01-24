@@ -127,7 +127,7 @@ bool parseAndIterate(
 
 bool parseAndIterateWithIndex(
     std::filesystem::path const& filePath,
-    std::function<void(uint32_t index, std::string_view line)> const& action)
+    std::function<void(size_t index, std::string_view line)> const& action)
 {
     std::ifstream fileStream{filePath.string()};
     if (!fileStream.is_open()) {

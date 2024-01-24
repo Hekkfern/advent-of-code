@@ -4,11 +4,9 @@ namespace aoc_2023_3 {
 
 Part::Part(
     uint32_t pn,
-    utils::geometry2d::Point2D<> start,
-    utils::geometry2d::Point2D<> end)
+    utils::geometry2d::Line2D<> l)
     : partNumber{pn}
-    , startPosition{start}
-    , endPosition{end}
+    , line{l}
 {
 }
 
