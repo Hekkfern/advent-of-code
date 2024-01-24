@@ -4,6 +4,7 @@
 #include "Point2D.hpp"
 #include "Vector2D.hpp"
 #include <cstdint>
+#include <cstdlib>
 
 namespace utils::geometry2d {
 
@@ -32,7 +33,6 @@ public:
      */
     explicit Line2D(Point2D<T> const& vertex1, Point2D<T> const& vertex2)
         : mVertexes{vertex1, vertex2}
-        , mDistance{Vector2D<T>{mVertexes[0], mVertexes[1]}.distance()}
     {
     }
     /**
@@ -87,9 +87,9 @@ public:
      *
      * @return     List of vertexes.
      */
-    [[nodiscard]] std::vector<Point2D<T>> getVertexes() const
+    [[nodiscard]] std::array<Point2D<T>, NumberOfVertexes> getVertexes() const
     {
-        return std::vector<Point2D<T>>{mVertexes.begin(), mVertexes.end()};
+        return mVertexes;
     }
     /**
      * @brief      Determines if it is a horizontal vector, i.e. its coordinate
@@ -122,7 +122,8 @@ public:
     [[nodiscard]] bool isDiagonal() const
     {
         auto const thissize{this->size()};
-        return thissize[0] == thissize[1];
+        return std::abs(static_cast<std::intmax_t>(thissize[0]))
+            == std::abs(static_cast<std::intmax_t>(thissize[1]));
     }
     /**
      * @brief      Equality operator.
@@ -156,10 +157,6 @@ private:
      */
     std::array<Point2D<T>, NumberOfVertexes> mVertexes{
         Point2D<T>{}, Point2D<T>{}};
-    /**
-     * Stores the length of the line.
-     */
-    uint32_t mDistance{0ULL};
 };
 
 } // namespace utils::geometry2d

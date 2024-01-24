@@ -180,18 +180,62 @@ TEST_CASE("[Vector2D] isZero() method", "[utils][Vector2D]")
     }
     SECTION("Positive values")
     {
-        Vector2D const v2{2, 3};
-        CHECK_FALSE(v2.isZero());
+        Vector2D const v1{2, 3};
+        CHECK_FALSE(v1.isZero());
     }
     SECTION("Positive and negatives values")
     {
-        Vector2D const v3{-1, 2};
-        CHECK_FALSE(v3.isZero());
+        Vector2D const v1{-1, 2};
+        CHECK_FALSE(v1.isZero());
     }
     SECTION("Semi-zero vector")
     {
-        Vector2D const v4{0, -1};
-        CHECK_FALSE(v4.isZero());
+        Vector2D const v1{0, -1};
+        CHECK_FALSE(v1.isZero());
+    }
+}
+
+TEST_CASE(
+    "[Vector2D] isHorizontal(), isVertical() and isDiagonal() methods",
+    "[utils][Vector2D]")
+{
+    SECTION("Zero vector")
+    {
+        Vector2D<> const v1;
+        CHECK(v1.isHorizontal());
+        CHECK(v1.isVertical());
+        CHECK(v1.isDiagonal());
+    }
+    SECTION("Horizontal")
+    {
+        Vector2D const v1{2, 0};
+        CHECK(v1.isHorizontal());
+        CHECK_FALSE(v1.isVertical());
+        CHECK_FALSE(v1.isDiagonal());
+    }
+    SECTION("Vertical")
+    {
+        Vector2D const v1{0, 5};
+        CHECK_FALSE(v1.isHorizontal());
+        CHECK(v1.isVertical());
+        CHECK_FALSE(v1.isDiagonal());
+    }
+    SECTION("Diagonal")
+    {
+        SECTION("Ascending")
+        {
+            Vector2D const v1{2, 2};
+            CHECK_FALSE(v1.isHorizontal());
+            CHECK_FALSE(v1.isVertical());
+            CHECK(v1.isDiagonal());
+        }
+        SECTION("Descending")
+        {
+            Vector2D const v1{2, -2};
+            CHECK_FALSE(v1.isHorizontal());
+            CHECK_FALSE(v1.isVertical());
+            CHECK(v1.isDiagonal());
+        }
     }
 }
 

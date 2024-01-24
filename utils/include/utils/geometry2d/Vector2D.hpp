@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <array>
 #include <cstdint>
+#include <cstdlib>
 
 namespace utils::geometry2d {
 
@@ -154,7 +155,8 @@ public:
      */
     [[nodiscard]] bool isDiagonal() const
     {
-        return mX == mY;
+        return std::abs(static_cast<std::intmax_t>(mX))
+            == std::abs(static_cast<std::intmax_t>(mY));
     }
     /**
      * @brief      Equality operator.
@@ -185,7 +187,10 @@ public:
      *
      * @return     The inverted vector.
      */
-    [[nodiscard]] Vector2D<T> operator-() const { return Vector2D<T>{-mX, -mY}; }
+    [[nodiscard]] Vector2D<T> operator-() const
+    {
+        return Vector2D<T>{-mX, -mY};
+    }
     /**
      * @brief      Subtraction operator, which subtracts the coordinates of
      *             both objects.
