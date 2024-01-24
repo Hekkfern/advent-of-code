@@ -11,27 +11,26 @@ namespace aoc_2023_3 {
 
 // ---------- Private Methods ----------
 
-Schematic
-parseInputLine(size_t const rowIndex, std::string_view line) noexcept
+Schematic parseInputLine(size_t const rowIndex, std::string_view line) noexcept
 {
     Schematic schematic;
     for (size_t colIndex{0ULL}; colIndex < line.size();) {
         if (line[colIndex] == '.') {
             ++colIndex;
-            continue;
         } else if (std::isdigit(line[colIndex])) {
-            auto beginIt{std::begin(line) + colIndex};
-            std::string_view substr{beginIt, std::end(line)};
+            std::string_view substr{line.substr(colIndex)};
             auto lastPos{substr.find_first_of('.')};
-            lastPos = lastPos != std::string_view::npos ? lastPos : line.size();
+            lastPos = lastPos != std::string_view::npos
+                ? lastPos
+                : line.size() - colIndex;
             schematic.parts.emplace_back(
                 *utils::string::toNumber<uint32_t>(
-                    std::string{beginIt, beginIt + lastPos}),
+                    substr.substr(colIndex, lastPos)),
                 utils::geometry2d::Line2D<>{
                     utils::geometry2d::Point2D<>::create(colIndex, rowIndex),
                     utils::geometry2d::Point2D<>::create(
                         static_cast<uint32_t>(lastPos) - colIndex, rowIndex)});
-            colIndex = lastPos;
+            colIndex += lastPos;
         } else if (std::ispunct(line[colIndex])) {
             schematic.symbols.emplace_back(colIndex, rowIndex);
             ++colIndex;
@@ -45,8 +44,7 @@ Schematic parseInputFile(std::filesystem::path const& filePath) noexcept
     Schematic schematic;
     utils::file::parseAndIterateWithIndex(
         filePath,
-        [&schematic](
-            size_t const index, std::string_view const line) -> void {
+        [&schematic](size_t const index, std::string_view const line) -> void {
             auto tempSchematic{parseInputLine(index, line)};
             schematic.merge(std::move(tempSchematic));
         });
