@@ -75,7 +75,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
                                 -> bool {
                                 utils::geometry2d::Vector2D<> v{
                                     vertex, symbolPos};
-                                return v.distance() <= 1ULL;
+                                return v.range() <= 1ULL;
                             });
                     })) {
                 return accum + part.partNumber;
