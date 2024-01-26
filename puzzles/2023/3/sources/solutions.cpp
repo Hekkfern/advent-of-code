@@ -3,6 +3,7 @@
 #include "Schematic.hpp"
 #include <range/v3/algorithm/any_of.hpp>
 #include <range/v3/algorithm/fold_left.hpp>
+#include <range/v3/view/filter.hpp>
 #include <utils/File.hpp>
 #include <utils/String.hpp>
 #include <utils/geometry2d/Vector2D.hpp>
@@ -34,7 +35,9 @@ parseInputLine(std::size_t const rowIndex, std::string_view line) noexcept
                         lastPos + colIndex - 1U, rowIndex)});
             colIndex += lastPos;
         } else if (std::ispunct(line[colIndex])) {
-            schematic.symbols.emplace_back(colIndex, rowIndex);
+            schematic.symbols.emplace_back(
+                line[colIndex],
+                utils::geometry2d::Point2D<>::create(colIndex, rowIndex));
             ++colIndex;
         }
     }
@@ -65,16 +68,14 @@ std::string solvePart1(std::filesystem::path const& filePath)
         0ULL,
         [&schematic](uint64_t accum, Part const& part) -> uint64_t {
             if (ranges::any_of(
-                    schematic.symbols,
-                    [&part](
-                        utils::geometry2d::Point2D<> const& symbolPos) -> bool {
+                    schematic.symbols, [&part](Symbol const& symbol) -> bool {
                         return ranges::any_of(
                             part.line.getVertexes(),
-                            [&symbolPos](
+                            [&symbol](
                                 utils::geometry2d::Point2D<> const& vertex)
                                 -> bool {
                                 utils::geometry2d::Vector2D<> v{
-                                    vertex, symbolPos};
+                                    vertex, symbol.position};
                                 return v.range() <= 1ULL;
                             });
                     })) {
@@ -82,14 +83,24 @@ std::string solvePart1(std::filesystem::path const& filePath)
             }
             return accum;
         })};
-
     return std::to_string(accumPartNumbers);
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
 {
-    (void)filePath;
-    return "";
+    static constexpr char GearSymbol{'*'};
+
+    auto const schematic{parseInputFile(filePath)};
+    auto gears{
+        schematic.symbols
+        | ranges::cpp20::views::filter([](Symbol const& symbol) -> bool {
+              return symbol.character == GearSymbol;
+          })};
+    uint64_t accumGearRation{ranges::fold_left(
+        gears,
+        0ULL,
+        [](uint64_t accum, Symbol const& gear) -> uint64_t { return accum; })};
+    return std::to_string(accumGearRation);
 }
 
 // ---------- End of Public Methods ----------
