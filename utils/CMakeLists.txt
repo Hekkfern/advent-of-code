@@ -39,8 +39,9 @@ set(_SOURCES_UTILS_GRAPH
     include/utils/graph/Graph.hpp include/utils/graph/Vertex.hpp
     include/utils/graph/Algorithms.hpp)
 add_library(
-  ${_LIB_NAME} STATIC ${_SOURCES_UTILS} ${_SOURCES_UTILS_GEOMETRY2D}
-                      ${_SOURCES_UTILS_GEOMETRY3D} ${_SOURCES_UTILS_GRAPH})
+  ${_LIB_NAME} STATIC
+  ${_SOURCES_UTILS} ${_SOURCES_UTILS_GEOMETRY2D} ${_SOURCES_UTILS_GEOMETRY3D}
+  ${_SOURCES_UTILS_GRAPH} include/utils/Algorithms.hpp)
 set_cpp_standard(${_LIB_NAME})
 set_compiler_flags(${_LIB_NAME})
 set_vectorization_flags(${_LIB_NAME})

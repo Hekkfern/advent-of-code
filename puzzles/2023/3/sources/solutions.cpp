@@ -97,9 +97,9 @@ std::string solvePart2(std::filesystem::path const& filePath)
               return symbol.character == GearSymbol;
           })};
     uint64_t accumGearRation{ranges::fold_left(
-        gears,
-        0ULL,
-        [](uint64_t accum, Symbol const& gear) -> uint64_t { return accum; })};
+        gears, 0ULL, [](uint64_t accum, Symbol const& gear) -> uint64_t {
+            return accum;
+        })};
     return std::to_string(accumGearRation);
 }
 

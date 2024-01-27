@@ -17,15 +17,16 @@ set(_TESTFILES_GEOMETRY2D
     geometry2d/SquareDiamond2DTests.cpp
     geometry2d/Vector2DTests.cpp
     geometry2d/Operations2DTests.cpp
-        ../include/utils/geometry2d/Line2D.hpp
-        geometry2d/Line2DTests.cpp)
+    ../include/utils/geometry2d/Line2D.hpp
+    geometry2d/Line2DTests.cpp)
 set(_TESTFILES_GEOMETRY3D
     geometry3d/Point3DTests.cpp geometry3d/Vector3DTests.cpp
     geometry3d/Operations3DTests.cpp)
 set(_TESTFILES_GRAPH graph/GraphTests.cpp graph/VertexTests.cpp
                      graph/AlgorithmsTests.cpp)
-add_executable(${_EXEC_NAME} ${_TESTFILES} ${_TESTFILES_GEOMETRY2D}
-                             ${_TESTFILES_GEOMETRY3D} ${_TESTFILES_GRAPH})
+add_executable(
+  ${_EXEC_NAME} ${_TESTFILES} ${_TESTFILES_GEOMETRY2D} ${_TESTFILES_GEOMETRY3D}
+                ${_TESTFILES_GRAPH} AlgorithmsTests.cpp)
 set_cpp_standard(${_EXEC_NAME})
 set_compiler_flags(${_EXEC_NAME})
 set_vectorization_flags(${_EXEC_NAME})

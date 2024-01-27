@@ -1,9 +1,9 @@
 #pragma once
 
-#include <cstdint>
-#include <limits>
 #include "Direction2D.hpp"
 #include "Point2D.hpp"
+#include <cstdint>
+#include <limits>
 
 namespace utils::geometry2d {
 
