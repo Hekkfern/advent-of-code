@@ -1,11 +1,12 @@
 {
-    "name": "AdventOfCode C++ Dev Environment",
-    "dockerComposeFile": [
-        "docker-compose.yml"
-    ],
-    "service": "cpp",
-    "workspaceFolder": "/workspace",
-    "shutdownAction": "none",
+    "name": "aoc_cpp_devcontainer",
+    "image": "mcr.microsoft.com/devcontainers/cpp:ubuntu-22.04",
+    "features": {
+        "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
+            "packages": "clang-format,ccache,clang-tidy,ninja-build"
+        },
+        "ghcr.io/devcontainers/features/python:1": {}
+    },
     "customizations": {
         "vscode": {
             "settings": {
@@ -16,7 +17,9 @@
                 "ms-vscode.cpptools-themes",
                 "ms-vscode.cmake-tools",
                 "xaver.clang-format",
-                "twxs.cmake"
+                "twxs.cmake",
+                "yzhang.markdown-all-in-one",
+                "ms-python.python"
             ]
         }
     }
