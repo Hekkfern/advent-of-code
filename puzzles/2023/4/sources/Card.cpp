@@ -26,4 +26,10 @@ Card::Card(
 {
 }
 
+bool Card::operator==(Card const& other) const
+{
+    return cardId == other.cardId && winningNumbers == other.winningNumbers
+        && candidateNumbers == other.candidateNumbers;
+}
+
 } // namespace aoc_2023_4

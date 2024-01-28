@@ -1,13 +1,14 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 #include <set>
 
 namespace aoc_2023_4 {
 
-using CardId = uint8_t;
-
 struct Card {
+    using CardId = uint8_t;
+
     CardId cardId;
     std::set<uint8_t> winningNumbers;
     std::set<uint8_t> candidateNumbers;
@@ -18,6 +19,16 @@ struct Card {
         std::set<uint8_t>&& candidates);
 
     [[nodiscard]] uint32_t calculatePoints() const;
+
+    bool operator==(Card const& other) const;
 };
 
 } // namespace aoc_2023_4
+
+template <>
+struct std::hash<aoc_2023_4::Card> {
+    std::size_t operator()(aoc_2023_4::Card const& k) const noexcept
+    {
+        return std::hash<aoc_2023_4::Card::CardId>()(k);
+    }
+};
