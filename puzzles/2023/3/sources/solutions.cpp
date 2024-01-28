@@ -3,7 +3,9 @@
 #include "Schematic.hpp"
 #include <range/v3/algorithm/any_of.hpp>
 #include <range/v3/algorithm/fold_left.hpp>
+#include <range/v3/range/conversion.hpp>
 #include <range/v3/view/filter.hpp>
+#include <utils/Algorithms.hpp>
 #include <utils/File.hpp>
 #include <utils/String.hpp>
 #include <utils/geometry2d/Vector2D.hpp>
@@ -97,7 +99,29 @@ std::string solvePart2(std::filesystem::path const& filePath)
               return symbol.character == GearSymbol;
           })};
     uint64_t accumGearRation{ranges::fold_left(
-        gears, 0ULL, [](uint64_t accum, Symbol const& gear) -> uint64_t {
+        gears,
+        0ULL,
+        [&schematic = std::as_const(schematic)](
+            uint64_t accum, Symbol const& gear) -> uint64_t {
+            auto closeParts{
+                schematic.parts
+                | ranges::cpp20::views::filter(
+                    [&gear = std::as_const(gear)](Part const& part) -> bool {
+                        return ranges::any_of(
+                            part.line.getVertexes(),
+                            [&gear = std::as_const(gear)](
+                                const utils::geometry2d::Point2D<>& vertex)
+                                -> bool {
+                                utils::geometry2d::Vector2D<> v{
+                                    vertex, gear.position};
+                                return v.range() <= 1ULL;
+                            });
+                    })
+                | ranges::to<std::vector>};
+            if (closeParts.size() == 2) {
+                return accum
+                    + (closeParts[0].partNumber * closeParts[1].partNumber);
+            }
             return accum;
         })};
     return std::to_string(accumGearRation);
