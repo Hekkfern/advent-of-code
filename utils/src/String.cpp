@@ -1,6 +1,7 @@
 #include "String.hpp"
 
 #include <range/v3/algorithm/fold_left.hpp>
+#include <range/v3/algorithm/unique.hpp>
 #include <range/v3/range/conversion.hpp>
 #include <range/v3/view/split.hpp>
 #include <range/v3/view/transform.hpp>
@@ -72,6 +73,23 @@ std::vector<std::string> split(std::string_view str, std::string_view separator)
                    static_cast<std::size_t>(ranges::distance(rng)));
            })
         | ranges::to<std::vector>();
+}
+
+std::string remove_excess_whitespace(std::string s)
+{
+    static constexpr auto space_space =
+        [](unsigned char a, unsigned char b) -> bool {
+        return std::isspace(a) && std::isspace(b);
+    };
+
+    s.erase(ranges::unique(s, space_space), s.end());
+
+    // trim final space
+    if (!s.empty() && std::isspace(static_cast<unsigned char>(s.back()))) {
+        s.pop_back();
+    }
+
+    return s;
 }
 
 } // namespace utils::string

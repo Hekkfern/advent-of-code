@@ -37,25 +37,19 @@ Card parseInputLine(std::string_view line) noexcept
     return Card{std::move(winningNumbers), std::move(candidateNumbers)};
 }
 
-std::vector<Card> parseInputFile(std::filesystem::path const& filePath) noexcept
-{
-    std::vector<Card> cards;
-    utils::file::parseAndIterate(
-        filePath, [&cards](std::string_view const line) -> void {
-            auto card{parseInputLine(line)};
-            cards.emplace_back(card);
-        });
-    return cards;
-}
-
 // ---------- End of Private Methods ----------
 
 // ---------- Public Methods ----------
 
 std::string solvePart1(std::filesystem::path const& filePath)
 {
-    (void)filePath;
-    return "";
+    uint32_t accumPoints{0UL};
+    utils::file::parseAndIterate(
+        filePath, [&accumPoints](std::string_view const line) -> void {
+            auto card{parseInputLine(line)};
+            accumPoints += card.calculatePoints();
+        });
+    return std::to_string(accumPoints);
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)

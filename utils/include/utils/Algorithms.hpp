@@ -8,19 +8,22 @@
 namespace utils::algorithms {
 
 /**
- * @brief      Count the elements of a sequence for which a predicate is true.
+ * @brief      Count the elements of a sequence for which a predicate is true,
+ *             and it aborts the count if it reaches the count value @p
+ *             maxCount.
  *
- *  @param  first  An input iterator.
- *  @param  last   An input iterator.
- * @param[in]  value    The max count value that makes the algorithm to stop
- * counting.
- * @param[in]  pred     The predicate
+ * @param[in]  first     An input iterator.
+ * @param[in]  last      An input iterator.
+ * @param[in]  maxCount  The max count value that makes the algorithm to stop
+ *                       counting.
+ * @param[in]  pred      Unary predicate which returns true for the elements to
+ *                       count.
  *
- * @tparam     InputIt  { description }
- * @tparam     T        { description }
- * @tparam     Pred     { description }
+ * @tparam     InputIt   Type of the input iterator.
+ * @tparam     Pred      { description }
+ * @tparam     Proj      { description }
  *
- * @return     Number of until.
+ * @return     Number of counted items, or @p maxCount if the counter is higher.
  */
 template <class I, class S, class Pred, typename Proj = std::identity>
 requires std::input_iterator<I> && std::sentinel_for<S, I> && std::
@@ -44,6 +47,11 @@ constexpr typename std::iterator_traits<I>::difference_type clamped_count_if(
     return count;
 }
 
+/**
+ * @brief      Count the elements of a sequence for which a predicate is true,
+ *             and it aborts the count if it reaches the count value @p
+ *             maxCount.
+ */
 template <class Rng, class Pred, typename Proj = std::identity>
 requires std::ranges::input_range<Rng>
 constexpr typename std::iterator_traits<

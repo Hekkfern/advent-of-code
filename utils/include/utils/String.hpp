@@ -50,7 +50,7 @@ namespace utils::string {
 /**
  * @brief      Converts a string to a number.
  *
- * @param[in]  s   The string to convert to.
+ * @param[in]  s     The string to convert to.
  *
  * @tparam     T     Type of the resulting number.
  *
@@ -96,5 +96,13 @@ join(std::vector<std::string> const& strings, std::string_view delimiter = ",");
  */
 [[nodiscard]] std::vector<std::string>
 split(std::string_view str, std::string_view separator = " ");
+/**
+ * @brief      Removes all the duplicated space-like characters.
+ *
+ * @param[in]  str   The string to modify.
+ *
+ * @return     String without duplicated space-like characters.
+ */
+[[nodiscard]] std::string remove_excess_whitespace(std::string str);
 
 } // namespace utils::string

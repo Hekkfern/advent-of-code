@@ -98,3 +98,12 @@ TEST_CASE("[String] trim method", "[utils][String]")
     CHECK(utils::string::trim("helloworl d13518") == "helloworl d13518");
     CHECK(utils::string::ltrim("    ") == "");
 }
+
+TEST_CASE("[String] remove_excess_whitespace method", "[utils][String]")
+{
+    std::string const text{
+        "   Hello Geeks . Welcome   to  GeeksforGeeks   .    "};
+    CHECK(
+        utils::string::remove_excess_whitespace(text)
+        == " Hello Geeks . Welcome to GeeksforGeeks .");
+}
