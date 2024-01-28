@@ -25,7 +25,7 @@ namespace utils::algorithms {
 template <class I, class S, class Pred, typename Proj = std::identity>
 requires std::input_iterator<I> && std::sentinel_for<S, I> && std::
     indirect_unary_predicate<Pred, std::projected<I, Proj>>
-constexpr typename std::iterator_traits<I>::difference_type count_if_until(
+constexpr typename std::iterator_traits<I>::difference_type clamped_count_if(
     I first,
     S last,
     typename std::iterator_traits<I>::difference_type const maxCount,
@@ -48,14 +48,14 @@ template <class Rng, class Pred, typename Proj = std::identity>
 requires std::ranges::input_range<Rng>
 constexpr typename std::iterator_traits<
     std::ranges::iterator_t<Rng>>::difference_type
-count_if_until(
+clamped_count_if(
     Rng&& rng,
     typename std::iterator_traits<
         std::ranges::iterator_t<Rng>>::difference_type const maxCount,
     Pred pred,
     Proj proj = Proj{})
 {
-    return count_if_until(
+    return clamped_count_if(
         std::begin(rng),
         std::end(rng),
         std::move(maxCount),

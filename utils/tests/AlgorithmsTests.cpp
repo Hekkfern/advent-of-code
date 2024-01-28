@@ -10,7 +10,7 @@ TEST_CASE("[Algorithms] count_if_until method", "[utils][Algorithms]")
     {
         SECTION("Reach limit")
         {
-            auto result{utils::algorithms::count_if_until(
+            auto result{utils::algorithms::clamped_count_if(
                 data.begin(), data.end(), 2, [](int const item) -> bool {
                     return item < 10;
                 })};
@@ -18,7 +18,7 @@ TEST_CASE("[Algorithms] count_if_until method", "[utils][Algorithms]")
         }
         SECTION("Not reach limit")
         {
-            auto result{utils::algorithms::count_if_until(
+            auto result{utils::algorithms::clamped_count_if(
                 data.begin(), data.end(), 1000, [](int const item) -> bool {
                     return item < 10;
                 })};
@@ -29,13 +29,13 @@ TEST_CASE("[Algorithms] count_if_until method", "[utils][Algorithms]")
     {
         SECTION("Reach limit")
         {
-            auto result{utils::algorithms::count_if_until(
+            auto result{utils::algorithms::clamped_count_if(
                 data, 2, [](int const item) -> bool { return item < 10; })};
             CHECK(result == 2);
         }
         SECTION("Not reach limit")
         {
-            auto result{utils::algorithms::count_if_until(
+            auto result{utils::algorithms::clamped_count_if(
                 data, 1000, [](int const item) -> bool { return item < 10; })};
             CHECK(result == 10);
         }
