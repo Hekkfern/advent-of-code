@@ -18,8 +18,10 @@ uint32_t Card::calculatePoints() const
         : static_cast<uint32_t>(std::pow(2U, winningCount - 1));
 }
 
-Card::Card(std::set<uint8_t>&& winnings, std::set<uint8_t>&& candidates)
-    : winningNumbers{std::move(winnings)}
+Card::Card(
+    CardId id, std::set<uint8_t>&& winnings, std::set<uint8_t>&& candidates)
+    : cardId{id}
+    , winningNumbers{std::move(winnings)}
     , candidateNumbers{std::move(candidates)}
 {
 }

@@ -27,14 +27,17 @@ Card parseInputLine(std::string_view line) noexcept
     static constexpr auto CardSeparator{":"};
     static constexpr auto TypeSeparator{"|"};
 
+    auto cardData{utils::string::split(line, CardSeparator)};
+    CardId cardId{*utils::string::toNumber<CardId>(utils::string::split(
+        utils::string::remove_excess_whitespace(cardData[0]))[1])};
     auto numbers{utils::string::split(
         utils::string::remove_excess_whitespace(
-            utils::string::trim(utils::string::split(line, CardSeparator)[1])),
+            utils::string::trim(cardData[1])),
         TypeSeparator)};
     auto winningNumbers{parseNumbers(numbers[0])};
     auto candidateNumbers{parseNumbers(numbers[1])};
 
-    return Card{std::move(winningNumbers), std::move(candidateNumbers)};
+    return Card{cardId, std::move(winningNumbers), std::move(candidateNumbers)};
 }
 
 // ---------- End of Private Methods ----------
