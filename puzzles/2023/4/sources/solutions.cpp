@@ -70,8 +70,8 @@ std::string solvePart2(std::filesystem::path const& filePath)
             auto numMatchingNumbers{card.calculateMatchingNumbers()};
             if (numMatchingNumbers > 0UL) {
                 for (const auto index :
-                     ranges::views::iota(1UL, numMatchingNumbers)) {
-                    copies[card.cardId + static_cast<Card::CardId>(index)]
+                     ranges::views::iota(0UL, numMatchingNumbers)) {
+                    copies[card.cardId + static_cast<Card::CardId>(index + 1)]
                         += 1UL;
                 }
             }
