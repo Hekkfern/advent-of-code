@@ -24,16 +24,15 @@ void RangeMap::addSection(
     mSections.emplace_back(dest, src, length);
 }
 
-std::optional<uint32_t> RangeMap::get(uint32_t key) const noexcept
+uint32_t RangeMap::get(uint32_t key) const noexcept
 {
-    std::optional<uint32_t> result;
     for (auto const& section : mSections) {
         auto const value{section.get(key)};
         if (value) {
-            return value;
+            return *value;
         }
     }
-    return result;
+    return key;
 }
 
 } // namespace aoc_2023_5
