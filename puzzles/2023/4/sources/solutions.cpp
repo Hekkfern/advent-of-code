@@ -1,6 +1,7 @@
 #include "solutions.hpp"
 
 #include "Card.hpp"
+#include <range/v3/algorithm/fold_left.hpp>
 #include <range/v3/range/conversion.hpp>
 #include <range/v3/view/iota.hpp>
 #include <range/v3/view/transform.hpp>
@@ -67,13 +68,20 @@ std::string solvePart2(std::filesystem::path const& filePath)
             copies[card.cardId] += 1UL;
             // increase number of copies
             auto numMatchingNumbers{card.calculateMatchingNumbers()};
-            for (const auto index :
-                 ranges::views::iota(1UL, numMatchingNumbers)) {
-                copies[card.cardId + static_cast<Card::CardId>(index)] += 1UL;
+            if (numMatchingNumbers > 0UL) {
+                for (const auto index :
+                     ranges::views::iota(1UL, numMatchingNumbers)) {
+                    copies[card.cardId + static_cast<Card::CardId>(index)]
+                        += 1UL;
+                }
             }
         });
 
-    return std::to_string(1);
+    return std::to_string(ranges::fold_left(
+        copies,
+        0UL,
+        [](uint32_t accum, std::pair<Card::CardId, uint32_t> const& card)
+            -> uint32_t { return accum + card.second; }));
 }
 
 // ---------- End of Public Methods ----------
