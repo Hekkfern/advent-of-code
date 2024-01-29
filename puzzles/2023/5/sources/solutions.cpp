@@ -11,14 +11,12 @@ namespace aoc_2023_5 {
 
 // ---------- Private Methods ----------
 
-std::unordered_map<uint32_t, uint32_t> parseMapLine(std::string const& line)
+void parseMapLine(RangeMap& map, std::string const& line)
 {
     std::stringstream ss{line};
     uint32_t destinationStart, sourceStart, rangeLength;
     ss >> destinationStart >> sourceStart >> rangeLength;
-    std::unordered_map<uint32_t, uint32_t> map;
-    
-    return map;
+    map.addSection(destinationStart, sourceStart, rangeLength);
 }
 
 Almanac parseInputFile(std::filesystem::path const& filePath) noexcept
@@ -46,7 +44,7 @@ Almanac parseInputFile(std::filesystem::path const& filePath) noexcept
     std::getline(fileStream, line); // capture "seed-to-soil map:"
     do {
         std::getline(fileStream, line);
-
+        parseMapLine(almanac.seed2SoilMap, line);
     } while (!utils::string::trim(line).empty());
 
     return almanac;
