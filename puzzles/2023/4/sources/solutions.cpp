@@ -66,13 +66,14 @@ std::string solvePart2(std::filesystem::path const& filePath)
             auto card{parseInputLine(line)};
             // create new card
             copies[card.cardId] += 1UL;
-            // increase number of copies
+            // get number of matches
             auto numMatchingNumbers{card.calculateMatchingNumbers()};
+            // increase number of copies of the following cards
             if (numMatchingNumbers > 0UL) {
                 for (const auto index :
                      ranges::views::iota(0UL, numMatchingNumbers)) {
                     copies[card.cardId + static_cast<Card::CardId>(index + 1)]
-                        += 1UL;
+                        += copies[card.cardId];
                 }
             }
         });
