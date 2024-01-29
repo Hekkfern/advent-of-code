@@ -5,15 +5,10 @@
 
 namespace aoc_2023_4 {
 
-uint32_t Card::calculatePoints() const
+uint32_t Card::calculatePoints() const noexcept
 {
-    auto winningCount{ranges::count_if(
-        winningNumbers,
-        [&candidates = std::as_const(candidateNumbers)](
-            uint8_t const winningNumber) -> bool {
-            return candidates.contains(winningNumber);
-        })};
-    return winningCount == 0U
+    auto winningCount{calculateMatchingNumbers()};
+    return winningCount == 0UL
         ? 0UL
         : static_cast<uint32_t>(std::pow(2U, winningCount - 1));
 }
@@ -24,6 +19,16 @@ Card::Card(
     , winningNumbers{std::move(winnings)}
     , candidateNumbers{std::move(candidates)}
 {
+}
+
+uint32_t Card::calculateMatchingNumbers() const noexcept
+{
+    return ranges::count_if(
+        winningNumbers,
+        [&candidates = std::as_const(candidateNumbers)](
+            uint8_t const winningNumber) -> bool {
+            return candidates.contains(winningNumber);
+        });
 }
 
 bool Card::operator==(Card const& other) const

@@ -18,7 +18,9 @@ struct Card {
         std::set<uint8_t>&& winnings,
         std::set<uint8_t>&& candidates);
 
-    [[nodiscard]] uint32_t calculatePoints() const;
+    [[nodiscard]] uint32_t calculatePoints() const noexcept;
+
+    uint32_t calculateMatchingNumbers() const noexcept;
 
     bool operator==(Card const& other) const;
 };
@@ -29,6 +31,6 @@ template <>
 struct std::hash<aoc_2023_4::Card> {
     std::size_t operator()(aoc_2023_4::Card const& k) const noexcept
     {
-        return std::hash<aoc_2023_4::Card::CardId>()(k);
+        return std::hash<aoc_2023_4::Card::CardId>()(k.cardId);
     }
 };

@@ -2,6 +2,7 @@
 
 #include "Card.hpp"
 #include <range/v3/range/conversion.hpp>
+#include <range/v3/view/iota.hpp>
 #include <range/v3/view/transform.hpp>
 #include <utils/File.hpp>
 #include <utils/String.hpp>
@@ -28,7 +29,8 @@ Card parseInputLine(std::string_view line) noexcept
     static constexpr auto TypeSeparator{"|"};
 
     auto cardData{utils::string::split(line, CardSeparator)};
-    CardId cardId{*utils::string::toNumber<CardId>(utils::string::split(
+    Card::CardId cardId{*utils::string::toNumber<
+        Card::CardId>(utils::string::split(
         utils::string::remove_excess_whitespace(cardData[0]))[1])};
     auto numbers{utils::string::split(
         utils::string::remove_excess_whitespace(
@@ -57,8 +59,21 @@ std::string solvePart1(std::filesystem::path const& filePath)
 
 std::string solvePart2(std::filesystem::path const& filePath)
 {
-    (void)filePath;
-    return "";
+    std::unordered_map<Card::CardId, uint32_t> copies;
+    utils::file::parseAndIterate(
+        filePath, [&copies](std::string_view const line) -> void {
+            auto card{parseInputLine(line)};
+            // create new card
+            copies[card.cardId] += 1UL;
+            // increase number of copies
+            auto numMatchingNumbers{card.calculateMatchingNumbers()};
+            for (const auto index :
+                 ranges::views::iota(1UL, numMatchingNumbers)) {
+                copies[card.cardId + static_cast<Card::CardId>(index)] += 1UL;
+            }
+        });
+
+    return std::to_string(1);
 }
 
 // ---------- End of Public Methods ----------
