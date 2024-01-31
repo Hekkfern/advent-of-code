@@ -8,7 +8,7 @@ namespace aoc_2023_5 {
 
 class Almanac {
 public:
-    std::vector<uint32_t> seeds{};
+    std::vector<uint64_t> seeds{};
     RangeMap seed2SoilMap{};
     RangeMap soil2FertilizerMap{};
     RangeMap fertilizer2WaterMap{};
@@ -18,7 +18,7 @@ public:
     RangeMap humidity2LocationMap{};
 
     Almanac() = default;
-    [[nodiscard]] uint32_t getSeedLocation(uint32_t seed) const noexcept;
+    [[nodiscard]] uint64_t getSeedLocation(uint64_t seed) const noexcept;
 };
 
 } // namespace aoc_2023_5

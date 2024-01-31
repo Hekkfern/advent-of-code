@@ -15,7 +15,7 @@ namespace aoc_2023_5 {
 void parseRangeLine(RangeMap& map, std::string const& line)
 {
     std::stringstream ss{line};
-    uint32_t destinationStart, sourceStart, rangeLength;
+    uint64_t destinationStart, sourceStart, rangeLength;
     ss >> destinationStart >> sourceStart >> rangeLength;
     map.addSection(destinationStart, sourceStart, rangeLength);
 }
@@ -48,8 +48,8 @@ Almanac parseInputFile(std::filesystem::path const& filePath) noexcept
         SpaceSeparator)};
     almanac.seeds
         = seedNumbersStr
-        | ranges::views::transform([](std::string const& str) -> uint32_t {
-              return *utils::string::toNumber<uint32_t>(str);
+        | ranges::views::transform([](std::string const& str) -> uint64_t {
+              return *utils::string::toNumber<uint64_t>(str);
           })
         | ranges::to<std::vector>;
     std::getline(fileStream, line); // capture empty line
@@ -82,7 +82,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
     auto locations{
         almanac.seeds
         | ranges::views::transform(
-            [&almanac = std::as_const(almanac)](uint32_t const seed) {
+            [&almanac = std::as_const(almanac)](uint64_t const seed) {
                 return almanac.getSeedLocation(seed);
             })};
     return std::to_string(*ranges::min_element(locations));

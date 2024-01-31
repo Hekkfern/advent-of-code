@@ -2,7 +2,7 @@
 
 namespace aoc_2023_5 {
 
-uint32_t Almanac::getSeedLocation(uint32_t const seed) const noexcept
+uint64_t Almanac::getSeedLocation(uint64_t const seed) const noexcept
 {
     return humidity2LocationMap.get(temperature2HumidityMap.get(
         light2TemperatureMap.get(water2LightMap.get(fertilizer2WaterMap.get(
