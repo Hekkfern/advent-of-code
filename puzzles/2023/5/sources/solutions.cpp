@@ -33,26 +33,68 @@ void parseMap(std::ifstream& fileStream, RangeMap& map)
     }
 }
 
-Almanac parseInputFile(std::filesystem::path const& filePath) noexcept
+std::vector<uint64_t> parseIndividualSeeds(std::ifstream& fileStream)
 {
     constexpr auto SpaceSeparator{" "};
+
+    std::string line;
+    std::getline(fileStream, line);
+    auto seedNumbersStr{utils::string::split(
+        utils::string::trim(utils::string::split(line, ":")[1]),
+        SpaceSeparator)};
+    std::vector<uint64_t> seeds{
+        seedNumbersStr
+        | ranges::views::transform([](std::string const& str) -> uint64_t {
+              return *utils::string::toNumber<uint64_t>(str);
+          })
+        | ranges::to<std::vector>};
+    std::getline(fileStream, line); // capture empty line
+    return seeds;
+}
+
+std::vector<std::pair<uint64_t, uint64_t>>
+parseRangeSeeds(std::ifstream& fileStream)
+{
+    // todo
+}
+
+Almanac parseInputFileForPart1(std::filesystem::path const& filePath) noexcept
+{
 
     Almanac almanac;
     std::ifstream fileStream{filePath.string()};
     std::string line;
 
     // seeds
-    std::getline(fileStream, line);
-    auto seedNumbersStr{utils::string::split(
-        utils::string::trim(utils::string::split(line, ":")[1]),
-        SpaceSeparator)};
-    almanac.seeds
-        = seedNumbersStr
-        | ranges::views::transform([](std::string const& str) -> uint64_t {
-              return *utils::string::toNumber<uint64_t>(str);
-          })
-        | ranges::to<std::vector>;
-    std::getline(fileStream, line); // capture empty line
+    parseIndividualSeeds(fileStream);
+
+    // seed-to-soil
+    parseMap(fileStream, almanac.seed2SoilMap);
+    // soil-to-fertilizer
+    parseMap(fileStream, almanac.soil2FertilizerMap);
+    // fertilizer-to-water
+    parseMap(fileStream, almanac.fertilizer2WaterMap);
+    // water-to-light
+    parseMap(fileStream, almanac.water2LightMap);
+    // light-to-temperature
+    parseMap(fileStream, almanac.light2TemperatureMap);
+    // temperature-to-humidity
+    parseMap(fileStream, almanac.temperature2HumidityMap);
+    // humidity-to-location
+    parseMap(fileStream, almanac.humidity2LocationMap);
+
+    return almanac;
+}
+
+Almanac parseInputFileForPart2(std::filesystem::path const& filePath) noexcept
+{
+
+    Almanac almanac;
+    std::ifstream fileStream{filePath.string()};
+    std::string line;
+
+    // seeds
+    almanac.seeds = parseRangeSeeds(fileStream);
 
     // seed-to-soil
     parseMap(fileStream, almanac.seed2SoilMap);
@@ -78,7 +120,7 @@ Almanac parseInputFile(std::filesystem::path const& filePath) noexcept
 
 std::string solvePart1(std::filesystem::path const& filePath)
 {
-    auto const almanac{parseInputFile(filePath)};
+    auto const almanac{parseInputFileForPart1(filePath)};
     auto locations{
         almanac.seeds
         | ranges::views::transform(
