@@ -25,10 +25,11 @@ void parseMap(std::ifstream& fileStream, RangeMap& map)
     std::string line;
 
     std::getline(fileStream, line); // capture "XXXXXXX map:"
-    std::getline(fileStream, line);
-    while (!utils::string::trim(line).empty()) {
+
+    for (auto& res = std::getline(fileStream, line);
+         res && !utils::string::trim(line).empty();
+         std::getline(fileStream, line)) {
         parseRangeLine(map, line);
-        std::getline(fileStream, line);
     }
 }
 
