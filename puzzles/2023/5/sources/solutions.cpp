@@ -43,7 +43,7 @@ std::vector<uint64_t> parseIndividualSeeds(std::ifstream& fileStream)
     std::string dummy;
     ss >> dummy;
     uint64_t seed;
-    while(ss){
+    while (ss) {
         ss >> seed;
         seeds.emplace_back(seed);
     }
