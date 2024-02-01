@@ -35,19 +35,19 @@ void parseMap(std::ifstream& fileStream, RangeMap& map)
 
 std::vector<uint64_t> parseIndividualSeeds(std::ifstream& fileStream)
 {
-    constexpr auto SpaceSeparator{" "};
-
     std::string line;
-    std::getline(fileStream, line);
-    auto seedNumbersStr{utils::string::split(
-        utils::string::trim(utils::string::split(line, ":")[1]),
-        SpaceSeparator)};
-    std::vector<uint64_t> seeds{
-        seedNumbersStr
-        | ranges::views::transform([](std::string const& str) -> uint64_t {
-              return *utils::string::toNumber<uint64_t>(str);
-          })
-        | ranges::to<std::vector>};
+    std::getline(fileStream, line); // capture "seeds: XX XX XX"
+
+    std::stringstream ss{line};
+    std::vector<uint64_t> seeds;
+    std::string dummy;
+    ss >> dummy;
+    uint64_t seed;
+    while(ss){
+        ss >> seed;
+        seeds.emplace_back(seed);
+    }
+
     std::getline(fileStream, line); // capture empty line
     return seeds;
 }
