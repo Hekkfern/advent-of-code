@@ -16,6 +16,7 @@ std::optional<uint64_t> RangeMapSection::get(uint64_t const key) const noexcept
     }
     return mDestinationStart + (key - mSourceStart);
 }
+
 bool RangeMapSection::operator<(RangeMapSection const& other) const
 {
     return mSourceStart < other.mSourceStart;

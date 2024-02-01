@@ -1,9 +1,9 @@
 #include "solutions.hpp"
 
 #include "Almanac.hpp"
+#include "Almanac2.hpp"
 #include <fstream>
 #include <range/v3/algorithm/min_element.hpp>
-#include <range/v3/range/conversion.hpp>
 #include <range/v3/view/transform.hpp>
 #include <sstream>
 #include <utils/String.hpp>
@@ -52,6 +52,25 @@ std::vector<uint64_t> parseIndividualSeeds(std::ifstream& fileStream)
     return seeds;
 }
 
+std::vector<SeedRange> parseRangedSeeds(std::ifstream& fileStream)
+{
+    std::string line;
+    std::getline(fileStream, line); // capture "seeds: XX XX XX"
+
+    std::stringstream ss{line};
+    std::vector<SeedRange> seeds;
+    std::string dummy;
+    ss >> dummy;
+    uint64_t seedStart, seedLength;
+    while (ss) {
+        ss >> seedStart >> seedLength;
+        seeds.emplace_back(seedStart, seedLength);
+    }
+
+    std::getline(fileStream, line); // capture empty line
+    return seeds;
+}
+
 Almanac parseInputFileForPart1(std::filesystem::path const& filePath) noexcept
 {
     Almanac almanac;
@@ -79,6 +98,42 @@ Almanac parseInputFileForPart1(std::filesystem::path const& filePath) noexcept
     return almanac;
 }
 
+Almanac2 parseInputFileForPart2(std::filesystem::path const& filePath) noexcept
+{
+    Almanac2 almanac;
+    std::ifstream fileStream{filePath.string()};
+    std::string line;
+
+    // seeds
+    almanac.seeds = parseRangedSeeds(fileStream);
+
+    // seed-to-soil
+    parseMap(fileStream, almanac.seed2SoilMap);
+    // soil-to-fertilizer
+    parseMap(fileStream, almanac.soil2FertilizerMap);
+    // fertilizer-to-water
+    parseMap(fileStream, almanac.fertilizer2WaterMap);
+    // water-to-light
+    parseMap(fileStream, almanac.water2LightMap);
+    // light-to-temperature
+    parseMap(fileStream, almanac.light2TemperatureMap);
+    // temperature-to-humidity
+    parseMap(fileStream, almanac.temperature2HumidityMap);
+    // humidity-to-location
+    parseMap(fileStream, almanac.humidity2LocationMap);
+
+    // Sort all the maps
+    almanac.seed2SoilMap.sort();
+    almanac.soil2FertilizerMap.sort();
+    almanac.fertilizer2WaterMap.sort();
+    almanac.water2LightMap.sort();
+    almanac.light2TemperatureMap.sort();
+    almanac.temperature2HumidityMap.sort();
+    almanac.humidity2LocationMap.sort();
+
+    return almanac;
+}
+
 // ---------- End of Private Methods ----------
 
 // ---------- Public Methods ----------
@@ -97,7 +152,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
 
 std::string solvePart2(std::filesystem::path const& filePath)
 {
-    (void)filePath;
+    auto const almanac{parseInputFileForPart2(filePath)};
     return "";
 }
 

@@ -1,4 +1,5 @@
 #include "RangeMap.hpp"
+#include <range/v3/algorithm/sort.hpp>
 
 namespace aoc_2023_5 {
 
@@ -18,5 +19,7 @@ uint64_t RangeMap::get(uint64_t key) const noexcept
     }
     return key;
 }
+
+void RangeMap::sort() noexcept { ranges::sort(mSections, std::less<>{}); }
 
 } // namespace aoc_2023_5
