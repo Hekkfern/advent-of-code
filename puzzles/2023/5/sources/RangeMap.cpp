@@ -1,22 +1,6 @@
-
 #include "RangeMap.hpp"
 
 namespace aoc_2023_5 {
-
-RangeMapSection::RangeMapSection(uint64_t dest, uint64_t src, uint64_t length)
-    : mDestinationStart{dest}
-    , mSourceStart{src}
-    , mRangeLength{length}
-{
-}
-
-std::optional<uint64_t> RangeMapSection::get(uint64_t const key) const noexcept
-{
-    if (key < mSourceStart || key > (mSourceStart + mRangeLength)) {
-        return {};
-    }
-    return mDestinationStart + (key - mSourceStart);
-}
 
 void RangeMap::addSection(
     uint64_t const dest, uint64_t const src, uint64_t const length) noexcept
