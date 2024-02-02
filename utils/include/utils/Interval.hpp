@@ -2,9 +2,9 @@
 
 #include "Concepts.hpp"
 #include <algorithm>
+#include <cassert>
 #include <cstdint>
 #include <optional>
-#include <utility>
 
 namespace utils::interval {
 
@@ -26,11 +26,9 @@ public:
         : mMin{min}
         , mMax{max}
     {
-        if (mMin > mMax) {
-            throw std::runtime_error(
-                "The minimum value must be smaller or equal "
-                "than the maximum value.");
-        }
+        assert(
+            mMin <= mMax
+            && "The minimum value must be smaller or equal than the maximum value");
     }
     /**
      * @brief      Constructs a new instance.
@@ -48,8 +46,8 @@ public:
      *
      * @return     The result of the three-way comparison.
      */
-    [[nodiscard]] auto
-    operator<=>(Interval const& other) const noexcept = default;
+    [[nodiscard]] auto operator<=>(Interval const& other) const noexcept
+        = default;
     /**
      * @brief      Retrieves the length of the interval, i.e. the number of
      * different values between the minimum and maximum values (both included).
@@ -71,7 +69,7 @@ public:
     [[nodiscard]] constexpr std::optional<Interval>
     join(Interval<T> const& other) const noexcept
     {
-        return (overlaps(other) || areContiguous(other))
+        return overlaps(other) || areContiguous(other)
             ? std::make_optional<Interval<T>>(
                 std::min(other.mMin, mMin), std::max(other.mMax, mMax))
             : std::nullopt;
@@ -98,7 +96,7 @@ public:
         } else if (subsumes(other)) {
             return std::make_optional(other);
         } else {
-            return std::nullopt;
+            return {};
         }
     }
     /**
@@ -181,7 +179,7 @@ public:
     [[nodiscard]] constexpr bool
     areContiguous(Interval const& other) const noexcept
     {
-        return (other.mMin - mMax) == 1 || (mMin - other.mMax) == 1;
+        return other.mMin - mMax == 1 || mMin - other.mMax == 1;
     }
 
 private:

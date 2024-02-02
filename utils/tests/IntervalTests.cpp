@@ -20,10 +20,6 @@ TEST_CASE("[Interval] Constructor", "[utils][Interval]")
         CHECK(interval2.getMax() == 1);
         CHECK(interval2.get() == std::make_pair(-3, 1));
     }
-    SECTION("Left extreme value is greater than the right extreme value")
-    {
-        CHECK_THROWS(Interval{2, -3});
-    }
     SECTION("Static tests")
     {
         STATIC_CHECK(Interval{2, 3}.getMin() == 2);
