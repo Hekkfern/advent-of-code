@@ -20,7 +20,8 @@ set(_SOURCES_UTILS
     include/utils/MultiInterval.hpp
     include/utils/Concepts.hpp
     include/utils/IntegerMath.hpp
-    include/utils/ListExtensions.hpp)
+    include/utils/ListExtensions.hpp
+    include/utils/Algorithms.hpp)
 set(_SOURCES_UTILS_GEOMETRY2D
     include/utils/geometry2d/Direction2D.hpp
     include/utils/geometry2d/Point2D.hpp

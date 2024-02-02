@@ -1,7 +1,6 @@
 #pragma once
 
 #include <algorithm>
-#include <functional>
 #include <iterator>
 #include <ranges>
 
@@ -18,10 +17,6 @@ namespace utils::algorithms {
  *                       counting.
  * @param[in]  pred      Unary predicate which returns true for the elements to
  *                       count.
- *
- * @tparam     InputIt   Type of the input iterator.
- * @tparam     Pred      { description }
- * @tparam     Proj      { description }
  *
  * @return     Number of counted items, or @p maxCount if the counter is higher.
  */
@@ -51,6 +46,14 @@ constexpr typename std::iterator_traits<I>::difference_type clamped_count_if(
  * @brief      Count the elements of a sequence for which a predicate is true,
  *             and it aborts the count if it reaches the count value @p
  *             maxCount.
+ *
+ * @param[in]  rng       A range.
+ * @param[in]  maxCount  The max count value that makes the algorithm to stop
+ *                       counting.
+ * @param[in]  pred      Unary predicate which returns true for the elements to
+ *                       count.
+ *
+ * @return     Number of counted items, or @p maxCount if the counter is higher.
  */
 template <class Rng, class Pred, typename Proj = std::identity>
 requires std::ranges::input_range<Rng>
