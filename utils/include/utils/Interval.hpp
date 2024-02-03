@@ -9,26 +9,29 @@
 namespace utils::interval {
 
 /**
- * @brief      This class describes an interval of continuous integer values.
+ * @brief      This class describes an interval of continuous integer values,
+ * where both bound values are included in the interval.
  *
  * @tparam     T     Type of the values.
  */
 template <SignedIntegerType T = int32_t>
 class Interval {
 public:
+    enum class Location { Less = -1, Within = 0, Greater = 1 };
+    enum class Boundary { Start, End };
+
     /**
      * @brief      Constructs a new instance.
+     *
+     * @note  Always sets left as min and right as max to simplify assumptions.
      *
      * @param[in]  min   The minimum value.
      * @param[in]  max   The maximum value.
      */
-    constexpr explicit Interval(T min, T max)
-        : mMin{min}
-        , mMax{max}
+    constexpr explicit Interval(T a, T b)
+        : mMin{std::min(a, b)}
+        , mMax{std::max(a, b)}
     {
-        assert(
-            mMin <= mMax
-            && "The minimum value must be smaller or equal than the maximum value");
     }
     /**
      * @brief      Constructs a new instance.
@@ -71,7 +74,7 @@ public:
     {
         return overlaps(other) || areContiguous(other)
             ? std::make_optional<Interval<T>>(
-                std::min(other.mMin, mMin), std::max(other.mMax, mMax))
+                  std::min(other.mMin, mMin), std::max(other.mMax, mMax))
             : std::nullopt;
     }
     /**
@@ -172,6 +175,9 @@ public:
      *             difference between the minimum value of one interval and the
      *             maximum of the other interval is one, or vice-versa.
      *
+     * @details For example, intervals [1,2] and [3,4] are contiguous, but
+     * intervals [1,3] and [2,4] aren't.
+     *
      * @param[in]  other  The other object.
      *
      * @return     True if both intervals are contiguous. False, otherwise.
@@ -180,6 +186,54 @@ public:
     areContiguous(Interval const& other) const noexcept
     {
         return other.mMin - mMax == 1 || mMin - other.mMax == 1;
+    }
+    /**
+     * @brief Checks where the value is relative to the interval.
+     *
+     * @param[in] value Value to compare against the interval
+     *
+     * @return Enum with the result.
+     */
+    Location where(T const value) const
+    {
+        if (mMax < value) {
+            return Location::Greater;
+        }
+        if (value < mMin) {
+            return Location::Less;
+        }
+        return Location::Within;
+    }
+
+    void move(T const offset) const
+    {
+        mMin += offset;
+        mMax += offset;
+    }
+
+    T getRelativePosition(Boundary const boundary, T const value) const
+    {
+        switch (boundary) {
+        case Boundary::Start:
+            return value - mMin;
+            break;
+        case Boundary::End:
+            return value - mMax;
+            break;
+        }
+    }
+
+    template <class U>
+    static Interval createWithBounds(U const a, U const b)
+    {
+        return Interval{static_cast<T>(a), static_cast<T>(b)};
+    }
+
+    template <class U, class V>
+    static Interval createWithLength(U const a, V const l)
+    {
+        auto const start{static_cast<T>(a)};
+        return Interval{start, start + static_cast<T>(l)};
     }
 
 private:
