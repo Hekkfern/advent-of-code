@@ -6,17 +6,20 @@ find_package(range-v3 CONFIG REQUIRED)
 
 # aoc_2023_5_solutions
 set(_LIB_NAME "aoc_2023_5_solutions")
-add_library(${_LIB_NAME} STATIC solutions.cpp solutions.hpp
-        Almanac.hpp
-        Almanac.cpp
-        Almanac2.hpp
-        Almanac2.cpp
-        RangeMap.cpp
-        RangeMap.hpp
-        RangeMapSection.cpp
-        RangeMapSection.hpp
-        SeedRange.cpp
-        SeedRange.hpp)
+add_library(
+  ${_LIB_NAME} STATIC
+  solutions.cpp
+  solutions.hpp
+  Almanac.hpp
+  Almanac.cpp
+  Almanac2.hpp
+  Almanac2.cpp
+  RangeMap.cpp
+  RangeMap.hpp
+  RangeMapSection.cpp
+  RangeMapSection.hpp
+  SeedRange.cpp
+  SeedRange.hpp)
 setup_puzzle(${_LIB_NAME})
 target_link_libraries(${_LIB_NAME} PRIVATE aoc_utils)
 target_link_libraries(${_LIB_NAME} PRIVATE range-v3)

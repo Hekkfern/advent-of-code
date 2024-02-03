@@ -7,6 +7,7 @@ class SeedRange {
 public:
     SeedRange(uint64_t start, uint64_t size);
     bool operator<(SeedRange const& other) const;
+
 private:
     uint64_t mStart;
     uint64_t mSize;

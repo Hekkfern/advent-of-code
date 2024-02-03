@@ -17,7 +17,7 @@ set(_SOURCES_UTILS
     src/Time.cpp
     include/utils/Time.hpp
     include/utils/Interval.hpp
-    include/utils/MultiInterval.hpp
+    include/utils/IntervalSet.hpp
     include/utils/Concepts.hpp
     include/utils/IntegerMath.hpp
     include/utils/ListExtensions.hpp

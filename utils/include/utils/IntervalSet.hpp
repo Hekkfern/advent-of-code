@@ -16,18 +16,18 @@ namespace utils::interval {
  * @tparam     T     Type of the values.
  */
 template <SignedIntegerType T = int32_t>
-class MultiInterval {
+class IntervalSet {
 public:
     /**
      * @brief      Default constructor
      */
-    constexpr MultiInterval() noexcept = default;
+    constexpr IntervalSet() noexcept = default;
     /**
      * @brief      Move constructor
      *
      * @param[in]  intervals  The intervals.
      */
-    explicit MultiInterval(std::vector<Interval<T>>&& intervals) noexcept
+    explicit IntervalSet(std::vector<Interval<T>>&& intervals) noexcept
         : mIntervals{std::move(intervals)}
     {
         reduce();
@@ -37,7 +37,7 @@ public:
      *
      * @param[in]  intervals  The intervals.
      */
-    explicit MultiInterval(std::vector<Interval<T>> const& intervals) noexcept
+    explicit IntervalSet(std::vector<Interval<T>> const& intervals) noexcept
         : mIntervals{intervals}
     {
         reduce();
@@ -153,13 +153,13 @@ public:
      *
      * @return     The result of merging both intervals.
      */
-    [[nodiscard]] constexpr MultiInterval
-    join(MultiInterval const& other) const noexcept
+    [[nodiscard]] constexpr IntervalSet
+    join(IntervalSet const& other) const noexcept
     {
         std::vector<Interval<T>> joinedIntervals{mIntervals};
         joinedIntervals.reserve(mIntervals.size() + other.mIntervals.size());
         ranges::copy(other.mIntervals, std::back_inserter(joinedIntervals));
-        return MultiInterval{std::forward<T>(joinedIntervals)};
+        return IntervalSet{std::forward<T>(joinedIntervals)};
     }
     /**
      * @brief      Checks if another interval includes completely the range of
@@ -171,7 +171,7 @@ public:
      *             otherwise.
      */
     [[nodiscard]] constexpr bool
-    subsumes(MultiInterval const& other) const noexcept
+    subsumes(IntervalSet const& other) const noexcept
     {
         return ranges::all_of(
             other.mIntervals, [this](Interval<T> const& otherInterval) {
@@ -203,7 +203,7 @@ public:
      * @return     True if they overlap in any way. False, otherwise.
      */
     [[nodiscard]] constexpr bool
-    overlaps(MultiInterval const& other) const noexcept
+    overlaps(IntervalSet const& other) const noexcept
     {
         return ranges::any_of(
             other.mIntervals, [this](Interval<T> const& otherInterval) {
@@ -260,9 +260,9 @@ public:
      *
      * @return     A sub interval.
      */
-    [[nodiscard]] constexpr MultiInterval extract(T min, T max) const noexcept
+    [[nodiscard]] constexpr IntervalSet extract(T min, T max) const noexcept
     {
-        MultiInterval resultInterval{mIntervals};
+        IntervalSet resultInterval{mIntervals};
         resultInterval.remove(Interval{std::numeric_limits<T>::min(), min - 1});
         resultInterval.remove(Interval{max + 1, std::numeric_limits<T>::max()});
         return resultInterval;
@@ -301,10 +301,10 @@ private:
      * @return     The updated output stream.
      */
     friend std::ostream&
-    operator<<(std::ostream& os, MultiInterval<T> const& multiInterval)
+    operator<<(std::ostream& os, IntervalSet<T> const& IntervalSet)
     {
         std::vector<std::string> ranges;
-        for (auto const& interval : multiInterval.mIntervals) {
+        for (auto const& interval : IntervalSet.mIntervals) {
             ranges.emplace_back(
                 '[' + interval.mMin + ',' + interval.mMax + ']');
         }

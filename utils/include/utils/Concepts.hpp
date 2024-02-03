@@ -10,8 +10,7 @@
  * @tparam     T     Type to validate the concept against.
  */
 template <typename T>
-concept NumericType = requires(T param)
-{
+concept NumericType = requires(T param) {
     requires std::integral<T> || std::floating_point<T>;
     requires !std::is_same_v<bool, T>;
     requires std::is_arithmetic_v<decltype(param + 1)>;
@@ -24,8 +23,7 @@ concept NumericType = requires(T param)
  * @tparam     T     Type to validate the concept against.
  */
 template <typename T>
-concept UnsignedIntegerType = requires(T param)
-{
+concept UnsignedIntegerType = requires(T param) {
     requires std::unsigned_integral<T>;
     requires !std::is_same_v<bool, T>;
     requires std::is_arithmetic_v<decltype(param + 1)>;
@@ -38,8 +36,7 @@ concept UnsignedIntegerType = requires(T param)
  * @tparam     T     Type to validate the concept against.
  */
 template <typename T>
-concept SignedIntegerType = requires(T param)
-{
+concept SignedIntegerType = requires(T param) {
     requires std::signed_integral<T>;
     requires !std::is_same_v<bool, T>;
     requires std::is_arithmetic_v<decltype(param + 1)>;
@@ -52,8 +49,7 @@ concept SignedIntegerType = requires(T param)
  * @tparam     T     Type to validate the concept against.
  */
 template <typename T>
-concept IntegerType = requires(T param)
-{
+concept IntegerType = requires(T param) {
     requires std::integral<T>;
     requires !std::is_same_v<bool, T>;
     requires std::is_arithmetic_v<decltype(param + 1)>;
@@ -61,9 +57,8 @@ concept IntegerType = requires(T param)
 };
 
 template <typename T>
-concept Streamable = requires(std::ostream& os, T value)
-{
+concept Streamable = requires(std::ostream& os, T value) {
     {
         os << value
-        } -> std::convertible_to<std::ostream&>;
+    } -> std::convertible_to<std::ostream&>;
 };
