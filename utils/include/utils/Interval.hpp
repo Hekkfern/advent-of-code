@@ -10,7 +10,7 @@ namespace utils::interval {
 
 /**
  * @brief      This class describes an interval of continuous integer values,
- * where both bound values are included in the interval.
+ *             where both bound values are included in the interval.
  *
  * @tparam     T     Type of the values.
  */
@@ -23,10 +23,11 @@ public:
     /**
      * @brief      Constructs a new instance.
      *
-     * @note  Always sets left as min and right as max to simplify assumptions.
+     * @note       Always sets left as min and right as max to simplify
+     *             assumptions.
      *
-     * @param[in]  min   The minimum value.
-     * @param[in]  max   The maximum value.
+     * @param[in]  a     One boundary.
+     * @param[in]  b     Another boundary.
      */
     constexpr explicit Interval(T a, T b)
         : mMin{std::min(a, b)}
@@ -53,13 +54,14 @@ public:
         = default;
     /**
      * @brief      Retrieves the length of the interval, i.e. the number of
-     * different values between the minimum and maximum values (both included).
+     *             different values between the minimum and maximum values (both
+     *             included).
      *
      * @return     The length of the interval.
      */
-    [[nodiscard]] constexpr size_t length() const noexcept
+    [[nodiscard]] constexpr std::size_t length() const noexcept
     {
-        return static_cast<size_t>(mMax - mMin) + 1U;
+        return static_cast<std::size_t>(mMax - mMin) + 1U;
     }
     /**
      * @brief      Joins both intervals to create a new one with the highest
@@ -70,7 +72,7 @@ public:
      * @return     Joined interval if they overlap. std::nullopt, otherwise.
      */
     [[nodiscard]] constexpr std::optional<Interval>
-    join(Interval<T> const& other) const noexcept
+    join(Interval const& other) const noexcept
     {
         return overlaps(other) || areContiguous(other)
             ? std::make_optional<Interval<T>>(
@@ -175,8 +177,8 @@ public:
      *             difference between the minimum value of one interval and the
      *             maximum of the other interval is one, or vice-versa.
      *
-     * @details For example, intervals [1,2] and [3,4] are contiguous, but
-     * intervals [1,3] and [2,4] aren't.
+     * @details    For example, intervals [1,2] and [3,4] are contiguous, but
+     *             intervals [1,3] and [2,4] aren't.
      *
      * @param[in]  other  The other object.
      *
@@ -188,11 +190,11 @@ public:
         return other.mMin - mMax == 1 || mMin - other.mMax == 1;
     }
     /**
-     * @brief Checks where the value is relative to the interval.
+     * @brief      Checks where the value is relative to the interval.
      *
-     * @param[in] value Value to compare against the interval
+     * @param[in]  value  Value to compare against the interval
      *
-     * @return Enum with the result.
+     * @return     Enum with the result.
      */
     Location where(T const value) const
     {
@@ -205,12 +207,28 @@ public:
         return Location::Within;
     }
 
+    /**
+     * @brief      Shifts the interval by the selecter amount of positions.
+     *
+     * @param[in]  offset  The offset. Positive numbers moves it up, and
+     *                     negative numbers moves it down.
+     */
     void move(T const offset) const
     {
         mMin += offset;
         mMax += offset;
     }
 
+    /**
+     * @brief      Calculates the relative position of the selected value from
+     *             the boundary selected in @p boundary parameter.
+     *
+     * @param[in]  boundary  The boundary to compare to.
+     * @param[in]  value     The value to check.
+     *
+     * @return     The relative position. A positive value means it is higher
+     *             that the boundary, and a negative value means it is lower.
+     */
     T getRelativePosition(Boundary const boundary, T const value) const
     {
         switch (boundary) {
@@ -223,12 +241,34 @@ public:
         }
     }
 
-    template <class U>
-    static Interval createWithBounds(U const a, U const b)
+    /**
+     * @brief      Creates an interval by setting both boundaries.
+     *
+     * @param[in]  a     One boundary.
+     * @param[in]  b     Another boundary.
+     *
+     * @tparam     U     Type of the first boundary.
+     * @tparam     V     Type of the second boundary.
+     *
+     * @return     New interval.
+     */
+    template <class U, class V>
+    static Interval createWithBounds(U const a, V const b)
     {
         return Interval{static_cast<T>(a), static_cast<T>(b)};
     }
 
+    /**
+     * @brief      Creates an interval by setting one boundary and its length.
+     *
+     * @param[in]  a     One boundary.
+     * @param[in]  l     The length of the interval.
+     *
+     * @tparam     U     Type of the first boundary (the minimum).
+     * @tparam     V     Type of the length of the interval.
+     *
+     * @return     New interval.
+     */
     template <class U, class V>
     static Interval createWithLength(U const a, V const l)
     {
@@ -240,7 +280,7 @@ private:
     /**
      * @brief      "Insert string into stream" operator.
      *
-     * @param[in]      os       The output stream.
+     * @param[in]  os        The output stream.
      * @param[in]  interval  The interval.
      *
      * @return     The updated output stream.
@@ -253,11 +293,11 @@ private:
     }
 
     /**
-     * @brief      Minimum value.
+     * Minimum value.
      */
     T mMin;
     /**
-     * @brief      Maximum value.
+     * Maximum value.
      */
     T mMax;
 };
