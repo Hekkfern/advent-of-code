@@ -29,7 +29,7 @@ public:
      * @param[in]  a     One boundary.
      * @param[in]  b     Another boundary.
      */
-    constexpr explicit Interval(T a, T b)
+    constexpr explicit Interval(T const a, T const b)
         : mMin{std::min(a, b)}
         , mMax{std::max(a, b)}
     {
@@ -76,7 +76,7 @@ public:
     {
         return overlaps(other) || areContiguous(other)
             ? std::make_optional<Interval<T>>(
-                  std::min(other.mMin, mMin), std::max(other.mMax, mMax))
+                std::min(other.mMin, mMin), std::max(other.mMax, mMax))
             : std::nullopt;
     }
     /**
@@ -158,7 +158,7 @@ public:
      *
      * @return     True if the interval contains the value. False, otherwise.
      */
-    [[nodiscard]] constexpr bool contains(T value) const noexcept
+    [[nodiscard]] constexpr bool contains(T const value) const noexcept
     {
         return value >= mMin && value <= mMax;
     }
@@ -196,7 +196,7 @@ public:
      *
      * @return     Enum with the result.
      */
-    Location where(T const value) const
+    [[nodiscard]] constexpr Location where(T const value) const
     {
         if (mMax < value) {
             return Location::Greater;
@@ -213,7 +213,7 @@ public:
      * @param[in]  offset  The offset. Positive numbers moves it up, and
      *                     negative numbers moves it down.
      */
-    void move(T const offset) const
+    constexpr void move(T const offset) const
     {
         mMin += offset;
         mMax += offset;
@@ -229,7 +229,8 @@ public:
      * @return     The relative position. A positive value means it is higher
      *             that the boundary, and a negative value means it is lower.
      */
-    T getRelativePosition(Boundary const boundary, T const value) const
+    [[nodiscard]] constexpr T
+    getRelativePosition(Boundary const boundary, T const value) const
     {
         switch (boundary) {
         case Boundary::Start:
@@ -253,7 +254,8 @@ public:
      * @return     New interval.
      */
     template <class U, class V>
-    static Interval createWithBounds(U const a, V const b)
+    [[nodiscard]] constexpr static Interval
+    createWithBounds(U const a, V const b)
     {
         return Interval{static_cast<T>(a), static_cast<T>(b)};
     }
@@ -270,7 +272,8 @@ public:
      * @return     New interval.
      */
     template <class U, class V>
-    static Interval createWithLength(U const a, V const l)
+    [[nodiscard]] constexpr static Interval
+    createWithLength(U const a, V const l)
     {
         auto const start{static_cast<T>(a)};
         return Interval{start, start + static_cast<T>(l)};
@@ -303,3 +306,11 @@ private:
 };
 
 } // namespace utils::interval
+
+template <SignedIntegerType T>
+struct std::hash<utils::interval::Interval<T>> {
+    std::size_t operator()(utils::interval::Interval<T> const& k) const noexcept
+    {
+        return std::hash<T>()(k.getMin()) ^ std::hash<T>()(k.getMax());
+    }
+};
