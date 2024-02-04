@@ -16,12 +16,12 @@ set(_SOURCES_UTILS
     include/utils/String.hpp
     src/Time.cpp
     include/utils/Time.hpp
-    include/utils/Interval.hpp
-    include/utils/IntervalSet.hpp
     include/utils/Concepts.hpp
     include/utils/IntegerMath.hpp
     include/utils/ListExtensions.hpp
     include/utils/Algorithms.hpp)
+set(_SOURCES_UTILS_INTERVAL include/utils/interval/Interval.hpp
+                            include/utils/interval/IntervalSet.hpp)
 set(_SOURCES_UTILS_GEOMETRY2D
     include/utils/geometry2d/Direction2D.hpp
     include/utils/geometry2d/Point2D.hpp
@@ -41,8 +41,8 @@ set(_SOURCES_UTILS_GRAPH
     include/utils/graph/Algorithms.hpp)
 add_library(
   ${_LIB_NAME} STATIC
-  ${_SOURCES_UTILS} ${_SOURCES_UTILS_GEOMETRY2D} ${_SOURCES_UTILS_GEOMETRY3D}
-  ${_SOURCES_UTILS_GRAPH} include/utils/Algorithms.hpp)
+  ${_SOURCES_UTILS} ${_SOURCES_UTILS_INTERVAL} ${_SOURCES_UTILS_GEOMETRY2D}
+  ${_SOURCES_UTILS_GEOMETRY3D} ${_SOURCES_UTILS_GRAPH})
 set_cpp_standard(${_LIB_NAME})
 set_compiler_flags(${_LIB_NAME})
 set_vectorization_flags(${_LIB_NAME})
@@ -56,6 +56,7 @@ target_include_directories(
 target_link_libraries(${_LIB_NAME} PRIVATE range-v3)
 
 source_group("Source Files" FILES ${_SOURCES_UTILS})
+source_group("Source Files/interval" FILES ${_SOURCES_UTILS_INTERVAL})
 source_group("Source Files/geometry2d" FILES ${_SOURCES_UTILS_GEOMETRY2D})
 source_group("Source Files/geometry3d" FILES ${_SOURCES_UTILS_GEOMETRY3D})
 source_group("Source Files/graph" FILES ${_SOURCES_UTILS_GRAPH})

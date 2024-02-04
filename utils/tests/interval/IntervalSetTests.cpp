@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
 #include <sstream>
-#include <utils/IntervalSet.hpp>
+#include <utils/interval/IntervalSet.hpp>
 
 using namespace utils::interval;
 

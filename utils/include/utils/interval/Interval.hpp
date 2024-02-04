@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Concepts.hpp"
+#include <utils/Concepts.hpp>
 #include <algorithm>
 #include <cassert>
 #include <cstdint>
@@ -77,7 +77,7 @@ public:
     {
         return overlaps(other) || areContiguous(other)
             ? std::make_optional<Interval<T>>(
-                  std::min(other.mMin, mMin), std::max(other.mMax, mMax))
+                std::min(other.mMin, mMin), std::max(other.mMax, mMax))
             : std::nullopt;
     }
     /**
@@ -233,8 +233,8 @@ public:
 
     /**
      * @brief Increases both boundaries by the value in @p offset.
-*
-* @param[in] leftOffset Amount to expand. It cannot be a negative number.
+     *
+     * @param[in] leftOffset Amount to expand. It cannot be a negative number.
      * @param rightOffset Amount to expand. It cannot be a negative number.
      */
     void expand(std::size_t const leftOffset, std::size_t const rightOffset)
