@@ -10,8 +10,8 @@ TEST_CASE("[IntervalSet] Constructor", "[utils][IntervalSet]")
     {
         std::vector<Interval<int32_t>> const intervals{
             {Interval{1, 3}, Interval{-1, 4}, Interval{5, 7}}};
-        IntervalSet const IntervalSet{intervals};
-        auto const& result1{IntervalSet.get()};
+        IntervalSet const intervalSet{intervals};
+        auto const& result1{intervalSet.get()};
         REQUIRE(result1.size() == 1U);
         CHECK(result1[0] == Interval{-1, 7});
     }

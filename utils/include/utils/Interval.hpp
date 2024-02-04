@@ -8,6 +8,9 @@
 
 namespace utils::interval {
 
+enum class Location { Less = -1, Within = 0, Greater = 1 };
+enum class Boundary { Start, End };
+
 /**
  * @brief      This class describes an interval of continuous integer values,
  *             where both bound values are included in the interval.
@@ -17,9 +20,7 @@ namespace utils::interval {
 template <SignedIntegerType T = int32_t>
 class Interval {
 public:
-    enum class Location { Less = -1, Within = 0, Greater = 1 };
-    enum class Boundary { Start, End };
-
+    constexpr Interval() = default;
     /**
      * @brief      Constructs a new instance.
      *
@@ -76,7 +77,7 @@ public:
     {
         return overlaps(other) || areContiguous(other)
             ? std::make_optional<Interval<T>>(
-                std::min(other.mMin, mMin), std::max(other.mMax, mMax))
+                  std::min(other.mMin, mMin), std::max(other.mMax, mMax))
             : std::nullopt;
     }
     /**
@@ -213,7 +214,7 @@ public:
      * @param[in]  offset  The offset. Positive numbers moves it up, and
      *                     negative numbers moves it down.
      */
-    constexpr void move(T const offset) const
+    void move(T const offset)
     {
         mMin += offset;
         mMax += offset;
@@ -298,11 +299,11 @@ private:
     /**
      * Minimum value.
      */
-    T mMin;
+    T mMin{};
     /**
      * Maximum value.
      */
-    T mMax;
+    T mMax{};
 };
 
 } // namespace utils::interval

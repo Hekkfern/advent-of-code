@@ -1,11 +1,20 @@
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
+#include <iostream>
+#include <sstream>
 #include <utils/Interval.hpp>
 
 using namespace utils::interval;
 
 TEST_CASE("[Interval] Constructor", "[utils][Interval]")
 {
+    SECTION("Default")
+    {
+        Interval const interval1;
+        CHECK(interval1.getMin() == 0);
+        CHECK(interval1.getMax() == 0);
+        CHECK(interval1.get() == std::make_pair(0, 0));
+    }
     SECTION("Positive values")
     {
         Interval const interval1{2, 3};
@@ -22,9 +31,27 @@ TEST_CASE("[Interval] Constructor", "[utils][Interval]")
     }
     SECTION("Static tests")
     {
-        STATIC_CHECK(Interval{2, 3}.getMin() == 2);
-        STATIC_CHECK(Interval{2, 3}.getMax() == 3);
-        STATIC_CHECK(Interval{2, 3}.get() == std::pair(2, 3));
+        SECTION("Default")
+        {
+            constexpr Interval interval1{};
+            STATIC_CHECK(interval1.get() == std::make_pair(0, 0));
+            STATIC_CHECK(interval1.getMin() == 0);
+            STATIC_CHECK(interval1.getMax() == 0);
+        }
+        SECTION("Positive values")
+        {
+            constexpr Interval interval1{2, 3};
+            STATIC_CHECK(interval1.get() == std::make_pair(2, 3));
+            STATIC_CHECK(interval1.getMin() == 2);
+            STATIC_CHECK(interval1.getMax() == 3);
+        }
+        SECTION("Positive and negatives values")
+        {
+            constexpr Interval interval1{std::make_pair(-3, 1)};
+            STATIC_CHECK(interval1.get() == std::make_pair(-3, 1));
+            STATIC_CHECK(interval1.getMin() == -3);
+            STATIC_CHECK(interval1.getMax() == 1);
+        }
     }
 }
 
@@ -33,17 +60,17 @@ TEST_CASE("[Interval] length() method", "[utils][Interval]")
     SECTION("Positive values")
     {
         Interval const interval1{2, 3};
-        CHECK(interval1.length() == 2U);
+        CHECK(interval1.length() == 2ULL);
     }
     SECTION("Positive and negatives values")
     {
         Interval const interval2{-3, 1};
-        CHECK(interval2.length() == 5U);
+        CHECK(interval2.length() == 5ULL);
     }
     SECTION("Static tests")
     {
-        STATIC_CHECK(Interval{2, 3}.length() == 2U);
-        STATIC_CHECK(Interval{-3, 1}.length() == 5U);
+        STATIC_CHECK(Interval{2, 3}.length() == 2ULL);
+        STATIC_CHECK(Interval{-3, 1}.length() == 5ULL);
     }
 }
 
@@ -422,4 +449,117 @@ TEST_CASE("[Interval] Comparison operators", "[utils][Interval]")
             STATIC_CHECK(Interval{2, 7} != Interval{1, 5});
         }
     }
+}
+
+TEST_CASE("[Interval] where() method", "[utils][Interval]")
+{
+    constexpr Interval const interval1{2, 7};
+    SECTION("Outside left") { CHECK(interval1.where(-4) == Location::Less); }
+    SECTION("Outside right")
+    {
+        CHECK(interval1.where(10) == Location::Greater);
+    }
+    SECTION("Within") { CHECK(interval1.where(3) == Location::Within); }
+    SECTION("Static tests")
+    {
+        SECTION("Outside left")
+        {
+            STATIC_CHECK(interval1.where(-4) == Location::Less);
+        }
+        SECTION("Outside right")
+        {
+            STATIC_CHECK(interval1.where(10) == Location::Greater);
+        }
+        SECTION("Within")
+        {
+            STATIC_CHECK(interval1.where(3) == Location::Within);
+        }
+    }
+}
+
+TEST_CASE("[Interval] move() method", "[utils][Interval]")
+{
+    Interval interval1{2, 7};
+    SECTION("Positive movement")
+    {
+        interval1.move(2);
+        CHECK(interval1.get() == std::make_pair(4, 9));
+    }
+    SECTION("Negative movement")
+    {
+        interval1.move(-3);
+        CHECK(interval1.get() == std::make_pair(-1, 4));
+    }
+    SECTION("Zero movement")
+    {
+        interval1.move(0);
+        CHECK(interval1.get() == std::make_pair(2, 7));
+    }
+}
+
+TEST_CASE("[Interval] getRelativePosition() method", "[utils][Interval]")
+{
+    constexpr Interval const interval1{2, 7};
+    SECTION("Runtime tests")
+    {
+        SECTION("Outside left")
+        {
+            CHECK(interval1.getRelativePosition(Boundary::Start, -4) == -6);
+            CHECK(interval1.getRelativePosition(Boundary::End, -4) == -11);
+        }
+        SECTION("Outside right")
+        {
+            CHECK(interval1.getRelativePosition(Boundary::Start, 10) == 8);
+            CHECK(interval1.getRelativePosition(Boundary::End, 10) == 3);
+        }
+        SECTION("Within")
+        {
+            CHECK(interval1.getRelativePosition(Boundary::Start, 3) == 1);
+            CHECK(interval1.getRelativePosition(Boundary::End, 3) == -4);
+        }
+    }
+    SECTION("Static tests")
+    {
+        SECTION("Outside left")
+        {
+            STATIC_CHECK(
+                interval1.getRelativePosition(Boundary::Start, -4) == -6);
+            STATIC_CHECK(
+                interval1.getRelativePosition(Boundary::End, -4) == -11);
+        }
+        SECTION("Outside right")
+        {
+            STATIC_CHECK(
+                interval1.getRelativePosition(Boundary::Start, 10) == 8);
+            STATIC_CHECK(interval1.getRelativePosition(Boundary::End, 10) == 3);
+        }
+        SECTION("Within")
+        {
+            STATIC_CHECK(
+                interval1.getRelativePosition(Boundary::Start, 3) == 1);
+            STATIC_CHECK(interval1.getRelativePosition(Boundary::End, 3) == -4);
+        }
+    }
+}
+
+TEST_CASE("[Interval] createWithBounds() method", "[utils][Interval]") { }
+
+TEST_CASE("[Interval] createWithLength() method", "[utils][Interval]") { }
+
+TEST_CASE("[Interval] Output string operator", "[utils][Interval]")
+{
+    std::stringstream buffer;
+    // Redirect std::cout to buffer
+    std::streambuf* prevcoutbuf = std::cout.rdbuf(buffer.rdbuf());
+
+    Interval const interval1{2, 7};
+    std::cout << interval1 << std::endl;
+
+    // Use the string value of buffer to compare against expected output
+    std::string text = buffer.str();
+
+    // Restore original buffer before exiting
+    std::cout.rdbuf(prevcoutbuf);
+
+    CHECK(text == "[2,7]");
 }
