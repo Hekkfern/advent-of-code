@@ -126,7 +126,7 @@ public:
         tempIntervals.reserve(mIntervals.size());
         for (auto const& innerInterval : mIntervals) {
             if (innerInterval.subsumes(eraseInterval)) {
-                // this interval is split in half because of the erase
+                // this interval is split in half because of the erased value
                 tempIntervals.emplace_back(
                     innerInterval.getMin(), eraseInterval.getMin() - 1);
                 tempIntervals.emplace_back(
@@ -134,15 +134,15 @@ public:
             } else if (
                 eraseInterval.getMin() >= innerInterval.getMin()
                 && eraseInterval.getMin() <= innerInterval.getMax()) {
-                // this interval is not totally subsumed so it is deleted
-                // partially
+                // this interval is not totally subsumed, so it is partially
+                // deleted
                 tempIntervals.emplace_back(
                     innerInterval.getMin(), eraseInterval.getMin() - 1);
             } else if (
                 eraseInterval.getMax() >= innerInterval.getMin()
                 && eraseInterval.getMax() <= innerInterval.getMax()) {
-                // this interval is not totally subsumed so it is deleted
-                // partially
+                // this interval is not totally subsumed so it is partially
+                // deleted
                 tempIntervals.emplace_back(
                     eraseInterval.getMax() + 1, innerInterval.getMax());
             } else if (!eraseInterval.subsumes(innerInterval)) {
@@ -259,7 +259,7 @@ public:
     }
     /**
      * @brief      Extracts a sub @ref IntervalSet contained between the
-     * selected values.
+     *             selected values.
      *
      * @param[in]  min   The minimum value of the range to extract from.
      * @param[in]  max   The maximum value of the range to extract from.
@@ -274,11 +274,11 @@ public:
         return resultInterval;
     }
     /**
-     * @brief Gets the sub @ref Interval that contains the selected value
+     * @brief      Gets the sub @ref Interval that contains the selected value
      *
-     * @param[in] value The value.
+     * @param[in]  value  The value.
      *
-     * @return The interval containing this value, or std::nullopt.
+     * @return     The interval containing this value, or std::nullopt.
      */
     [[nodiscard]] constexpr Interval<T> getIntervalFor(T const value)
     {
@@ -292,9 +292,9 @@ public:
         return *it;
     }
     /**
-     * @brief Implicit conversion operator to @ref std::string
+     * @brief      Implicit conversion operator to @ref std::string
      *
-     * @return String representing this class.
+     * @return     String representing this class.
      */
     explicit operator std::string() const
     {
@@ -338,8 +338,8 @@ private:
     /**
      * @brief      "Insert string into stream" operator.
      *
-     * @param[in]      os       The output stream.
-     * @param[in]  interval  The interval.
+     * @param[in]  os           The output stream.
+     * @param[in]  IntervalSet  The interval.
      *
      * @return     The updated output stream.
      */
