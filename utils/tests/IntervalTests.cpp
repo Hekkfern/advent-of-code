@@ -482,6 +482,26 @@ TEST_CASE("[Interval] move() method", "[utils][Interval]")
     }
 }
 
+TEST_CASE("[Interval] expand() method", "[utils][Interval]")
+{
+    Interval interval1{2, 7};
+    SECTION("Equal offset")
+    {
+        interval1.expand(2);
+        CHECK(interval1.get() == std::make_pair(0, 9));
+    }
+    SECTION("Different offset")
+    {
+        interval1.expand(2, 3);
+        CHECK(interval1.get() == std::make_pair(0, 10));
+    }
+    SECTION("Zero offset")
+    {
+        interval1.expand(0);
+        CHECK(interval1.get() == std::make_pair(2, 7));
+    }
+}
+
 TEST_CASE("[Interval] getRelativePosition() method", "[utils][Interval]")
 {
     constexpr Interval const interval1{2, 7};
@@ -560,6 +580,32 @@ TEST_CASE("[Interval] createWithLength() method", "[utils][Interval]")
         STATIC_CHECK(interval1.getMin() == 2);
         STATIC_CHECK(interval1.getMax() == 5);
         STATIC_CHECK(interval1.get() == std::make_pair(2, 5));
+    }
+}
+
+TEST_CASE("[Interval] createWhole() method", "[utils][Interval]")
+{
+    SECTION("Runtime tests")
+    {
+        auto const interval1{Interval<int>::createWhole()};
+        CHECK(interval1.getMin() == std::numeric_limits<int>::min());
+        CHECK(interval1.getMax() == std::numeric_limits<int>::max());
+        CHECK(
+            interval1.get()
+            == std::make_pair(
+                std::numeric_limits<int>::min(),
+                std::numeric_limits<int>::max()));
+    }
+    SECTION("Static tests")
+    {
+        constexpr auto const interval1{Interval<int>::createWhole()};
+        STATIC_CHECK(interval1.getMin() == std::numeric_limits<int>::min());
+        STATIC_CHECK(interval1.getMax() == std::numeric_limits<int>::max());
+        STATIC_CHECK(
+            interval1.get()
+            == std::make_pair(
+                std::numeric_limits<int>::min(),
+                std::numeric_limits<int>::max()));
     }
 }
 

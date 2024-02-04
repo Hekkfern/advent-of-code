@@ -221,6 +221,29 @@ public:
     }
 
     /**
+     * @brief Increases both boundaries by the value in @p offset.
+     *
+     * @param[in] offset Amount to expand. It cannot be a negative number.
+     */
+    void expand(std::size_t const offset)
+    {
+        mMin -= offset;
+        mMax += offset;
+    }
+
+    /**
+     * @brief Increases both boundaries by the value in @p offset.
+*
+* @param[in] leftOffset Amount to expand. It cannot be a negative number.
+     * @param rightOffset Amount to expand. It cannot be a negative number.
+     */
+    void expand(std::size_t const leftOffset, std::size_t const rightOffset)
+    {
+        mMin -= leftOffset;
+        mMax += rightOffset;
+    }
+
+    /**
      * @brief      Calculates the relative position of the selected value from
      *             the boundary selected in @p boundary parameter.
      *
@@ -278,6 +301,16 @@ public:
     {
         auto const start{static_cast<T>(a)};
         return Interval{start, start + static_cast<T>(l)};
+    }
+    /**
+     * @brief Creates an interval with the maximum allowed values.
+     *
+     * @return New interval.
+     */
+    [[nodiscard]] constexpr static Interval<T> createWhole()
+    {
+        return Interval{
+            std::numeric_limits<T>::min(), std::numeric_limits<T>::max()};
     }
     /**
      * @brief Implicit conversion operator to @ref std::string
