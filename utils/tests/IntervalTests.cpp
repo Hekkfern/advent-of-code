@@ -7,13 +7,6 @@ using namespace utils::interval;
 
 TEST_CASE("[Interval] Constructor", "[utils][Interval]")
 {
-    SECTION("Default")
-    {
-        Interval const interval1;
-        CHECK(interval1.getMin() == 0);
-        CHECK(interval1.getMax() == 0);
-        CHECK(interval1.get() == std::make_pair(0, 0));
-    }
     SECTION("Positive values")
     {
         Interval const interval1{2, 3};
@@ -30,13 +23,6 @@ TEST_CASE("[Interval] Constructor", "[utils][Interval]")
     }
     SECTION("Static tests")
     {
-        SECTION("Default")
-        {
-            constexpr Interval interval1{};
-            STATIC_CHECK(interval1.get() == std::make_pair(0, 0));
-            STATIC_CHECK(interval1.getMin() == 0);
-            STATIC_CHECK(interval1.getMax() == 0);
-        }
         SECTION("Positive values")
         {
             constexpr Interval interval1{2, 3};
@@ -541,9 +527,41 @@ TEST_CASE("[Interval] getRelativePosition() method", "[utils][Interval]")
     }
 }
 
-TEST_CASE("[Interval] createWithBounds() method", "[utils][Interval]") { }
+TEST_CASE("[Interval] createWithBounds() method", "[utils][Interval]")
+{
+    SECTION("Runtime tests")
+    {
+        auto const interval1{Interval<int>::createWithBounds(2, 3)};
+        CHECK(interval1.getMin() == 2);
+        CHECK(interval1.getMax() == 3);
+        CHECK(interval1.get() == std::make_pair(2, 3));
+    }
+    SECTION("Static tests")
+    {
+        constexpr auto const interval1{Interval<int>::createWithBounds(2, 3)};
+        STATIC_CHECK(interval1.getMin() == 2);
+        STATIC_CHECK(interval1.getMax() == 3);
+        STATIC_CHECK(interval1.get() == std::make_pair(2, 3));
+    }
+}
 
-TEST_CASE("[Interval] createWithLength() method", "[utils][Interval]") { }
+TEST_CASE("[Interval] createWithLength() method", "[utils][Interval]")
+{
+    SECTION("Runtime tests")
+    {
+        auto const interval1{Interval<int>::createWithLength(2, 3)};
+        CHECK(interval1.getMin() == 2);
+        CHECK(interval1.getMax() == 5);
+        CHECK(interval1.get() == std::make_pair(2, 5));
+    }
+    SECTION("Static tests")
+    {
+        constexpr auto const interval1{Interval<int>::createWithLength(2, 3)};
+        STATIC_CHECK(interval1.getMin() == 2);
+        STATIC_CHECK(interval1.getMax() == 5);
+        STATIC_CHECK(interval1.get() == std::make_pair(2, 5));
+    }
+}
 
 TEST_CASE(
     "[Interval] std::string Implicit conversion operator", "[utils][Interval]")

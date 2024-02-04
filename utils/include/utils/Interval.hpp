@@ -21,7 +21,6 @@ enum class Boundary { Start, End };
 template <SignedIntegerType T = int32_t>
 class Interval {
 public:
-    constexpr Interval() = default;
     /**
      * @brief      Constructs a new instance.
      *
@@ -309,11 +308,11 @@ private:
     /**
      * Minimum value.
      */
-    T mMin{};
+    T mMin;
     /**
      * Maximum value.
      */
-    T mMax{};
+    T mMax;
 };
 
 } // namespace utils::interval
