@@ -1,15 +1,15 @@
 #pragma once
 
 #include "RangeMap.hpp"
-#include "SeedRange.hpp"
 #include <cstdint>
+#include <utils/interval/IntervalSet.hpp>
 #include <vector>
 
 namespace aoc_2023_5 {
 
 class Almanac2 {
 public:
-    std::vector<SeedRange> seeds{};
+    utils::interval::IntervalSet<int64_t> seeds{};
     RangeMap seed2SoilMap{};
     RangeMap soil2FertilizerMap{};
     RangeMap fertilizer2WaterMap{};

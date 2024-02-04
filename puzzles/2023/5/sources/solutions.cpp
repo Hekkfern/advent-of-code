@@ -7,6 +7,7 @@
 #include <range/v3/view/transform.hpp>
 #include <sstream>
 #include <utils/String.hpp>
+#include <utils/interval/IntervalSet.hpp>
 
 namespace aoc_2023_5 {
 
@@ -52,13 +53,13 @@ std::vector<uint64_t> parseIndividualSeeds(std::ifstream& fileStream)
     return seeds;
 }
 
-std::vector<SeedRange> parseRangedSeeds(std::ifstream& fileStream)
+utils::interval::IntervalSet<int64_t> parseRangedSeeds(std::ifstream& fileStream)
 {
     std::string line;
     std::getline(fileStream, line); // capture "seeds: XX XX XX"
 
     std::stringstream ss{line};
-    std::vector<SeedRange> seeds;
+    std::vector<utils::interval::Interval<int64_t>> seeds;
     std::string dummy;
     ss >> dummy;
     uint64_t seedStart, seedLength;
