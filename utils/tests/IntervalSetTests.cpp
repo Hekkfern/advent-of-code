@@ -1,5 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
+#include <sstream>
 #include <utils/IntervalSet.hpp>
 
 using namespace utils::interval;
@@ -85,9 +86,7 @@ TEST_CASE("[IntervalSet] add() method", "[utils][IntervalSet]")
     }
 }
 
-TEST_CASE(
-    "[IntervalSet] remove() method"
-    "[utils][IntervalSet]")
+TEST_CASE("[IntervalSet] remove() method", "[utils][IntervalSet]")
 {
     SECTION("Single value")
     {
@@ -205,5 +204,47 @@ TEST_CASE("[IntervalSet] extract() method", "[utils][IntervalSet]")
         REQUIRE(result1.size() == 2U);
         CHECK(result1[0] == Interval{2, 2});
         CHECK(result1[1] == Interval{5, 5});
+    }
+}
+
+TEST_CASE(
+    "[IntervalSet] std::string Implicit conversion operator",
+    "[utils][IntervalSet]")
+{
+    IntervalSet const interval1{{Interval{1, 2}, Interval{5, 7}}};
+    CHECK(static_cast<std::string>(interval1) == "[1,2],[5,7]");
+}
+
+TEST_CASE("[IntervalSet] Output stream operator", "[utils][IntervalSet]")
+{
+    std::stringstream buffer;
+    // Redirect std::cout to buffer
+    std::streambuf* prevcoutbuf = std::cout.rdbuf(buffer.rdbuf());
+
+    SECTION("Empty")
+    {
+        IntervalSet interval1{};
+        std::cout << interval1;
+
+        // Use the string value of buffer to compare against expected output
+        std::string text = buffer.str();
+
+        // Restore original buffer before exiting
+        std::cout.rdbuf(prevcoutbuf);
+
+        CHECK(text == "[]");
+    }
+    SECTION("Non empty")
+    {
+        IntervalSet interval1{{Interval{1, 2}, Interval{5, 7}}};
+        std::cout << interval1;
+
+        // Use the string value of buffer to compare against expected output
+        std::string text = buffer.str();
+
+        // Restore original buffer before exiting
+        std::cout.rdbuf(prevcoutbuf);
+
+        CHECK(text == "[1,2],[5,7]");
     }
 }

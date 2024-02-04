@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cstdint>
+#include <iostream>
 #include <optional>
 
 namespace utils::interval {
@@ -279,6 +280,15 @@ public:
         auto const start{static_cast<T>(a)};
         return Interval{start, start + static_cast<T>(l)};
     }
+    /**
+     * @brief Implicit conversion operator to @ref std::string
+     *
+     * @return String representing this class.
+     */
+    explicit operator std::string() const
+    {
+        return "[" + std::to_string(mMin) + "," + std::to_string(mMax) + "]";
+    }
 
 private:
     /**
@@ -292,7 +302,7 @@ private:
     friend std::ostream&
     operator<<(std::ostream& os, Interval<T> const& interval)
     {
-        os << '[' << interval.mMin << ',' << interval.mMax << ']';
+        os << static_cast<std::string>(interval);
         return os;
     }
 

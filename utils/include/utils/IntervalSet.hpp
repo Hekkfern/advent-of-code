@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Interval.hpp"
+#include <iostream>
 #include <range/v3/algorithm/all_of.hpp>
 #include <range/v3/algorithm/any_of.hpp>
 #include <range/v3/algorithm/copy.hpp>
@@ -52,7 +53,7 @@ public:
      *
      * @return     The intervals.
      */
-    [[nodiscard]]  std::vector<Interval<T>> get() const noexcept
+    [[nodiscard]] std::vector<Interval<T>> get() const noexcept
     {
         return mIntervals;
     }
@@ -290,6 +291,25 @@ public:
         }
         return *it;
     }
+    /**
+     * @brief Implicit conversion operator to @ref std::string
+     *
+     * @return String representing this class.
+     */
+    explicit operator std::string() const
+    {
+        if (mIntervals.empty()) {
+            return "[]";
+        }
+        return ranges::fold_left(
+            mIntervals.begin() + 1,
+            mIntervals.end(),
+            static_cast<std::string>(mIntervals[0]),
+            [](std::string const& accum,
+               Interval<T> const& item) -> std::string {
+                return accum + "," + static_cast<std::string>(item);
+            });
+    }
 
 private:
     /**
@@ -326,12 +346,7 @@ private:
     friend std::ostream&
     operator<<(std::ostream& os, IntervalSet const& IntervalSet)
     {
-        std::vector<std::string> ranges;
-        for (auto const& interval : IntervalSet.mIntervals) {
-            ranges.emplace_back(
-                '[' + interval.mMin + ',' + interval.mMax + ']');
-        }
-        os << utils::string::join(ranges, ",");
+        os << static_cast<std::string>(IntervalSet);
         return os;
     }
 

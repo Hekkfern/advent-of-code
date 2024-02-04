@@ -1,6 +1,5 @@
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
-#include <iostream>
 #include <sstream>
 #include <utils/Interval.hpp>
 
@@ -546,14 +545,21 @@ TEST_CASE("[Interval] createWithBounds() method", "[utils][Interval]") { }
 
 TEST_CASE("[Interval] createWithLength() method", "[utils][Interval]") { }
 
-TEST_CASE("[Interval] Output string operator", "[utils][Interval]")
+TEST_CASE(
+    "[Interval] std::string Implicit conversion operator", "[utils][Interval]")
+{
+    constexpr Interval const interval1{2, 7};
+    CHECK(static_cast<std::string>(interval1) == "[2,7]");
+}
+
+TEST_CASE("[Interval] Output stream operator", "[utils][Interval]")
 {
     std::stringstream buffer;
     // Redirect std::cout to buffer
     std::streambuf* prevcoutbuf = std::cout.rdbuf(buffer.rdbuf());
 
     Interval const interval1{2, 7};
-    std::cout << interval1 << std::endl;
+    std::cout << static_cast<std::string>(interval1);
 
     // Use the string value of buffer to compare against expected output
     std::string text = buffer.str();
