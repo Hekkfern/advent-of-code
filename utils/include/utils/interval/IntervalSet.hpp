@@ -304,7 +304,7 @@ public:
         return ranges::fold_left(
             mIntervals.begin() + 1,
             mIntervals.end(),
-            static_cast<std::string>(mIntervals[0]),
+            mIntervals[0].toString(),
             [](std::string const& accum,
                Interval<T> const& item) -> std::string {
                 return accum + "," + static_cast<std::string>(item);

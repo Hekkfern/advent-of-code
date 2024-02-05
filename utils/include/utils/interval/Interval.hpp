@@ -1,7 +1,6 @@
 #pragma once
 
 #include <algorithm>
-#include <cassert>
 #include <cstdint>
 #include <iostream>
 #include <optional>
@@ -77,7 +76,7 @@ public:
     {
         return overlaps(other) || areContiguous(other)
             ? std::make_optional<Interval<T>>(
-                  std::min(other.mMin, mMin), std::max(other.mMax, mMax))
+                std::min(other.mMin, mMin), std::max(other.mMax, mMax))
             : std::nullopt;
     }
     /**
@@ -367,11 +366,11 @@ public:
             std::numeric_limits<T>::min(), std::numeric_limits<T>::max()};
     }
     /**
-     * @brief Implicit conversion operator to @ref std::string
+     * @brief Represents this class as a @ref std::string
      *
      * @return String representing this class.
      */
-    explicit operator std::string() const
+    [[nodiscard]] constexpr std::string toString() const
     {
         return "[" + std::to_string(mMin) + "," + std::to_string(mMax) + "]";
     }
@@ -388,7 +387,7 @@ private:
     friend std::ostream&
     operator<<(std::ostream& os, Interval<T> const& interval)
     {
-        os << static_cast<std::string>(interval);
+        os << interval.toString();
         return os;
     }
 

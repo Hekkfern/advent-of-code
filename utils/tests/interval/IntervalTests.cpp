@@ -438,7 +438,7 @@ TEST_CASE("[Interval] Comparison operators", "[utils][Interval]")
 
 TEST_CASE("[Interval] where() method", "[utils][Interval]")
 {
-    constexpr Interval const interval1{2, 7};
+    Interval const interval1{2, 7};
     SECTION("Outside left") { CHECK(interval1.where(-4) == Location::Less); }
     SECTION("Outside right")
     {
@@ -464,7 +464,7 @@ TEST_CASE("[Interval] where() method", "[utils][Interval]")
 
 TEST_CASE("[Interval] move() method", "[utils][Interval]")
 {
-    constexpr Interval const interval1{2, 7};
+    Interval const interval1{2, 7};
     SECTION("Positive movement")
     {
         auto const interval2{interval1.move(2)};
@@ -484,7 +484,7 @@ TEST_CASE("[Interval] move() method", "[utils][Interval]")
 
 TEST_CASE("[Interval] expand() method", "[utils][Interval]")
 {
-    constexpr Interval const interval1{2, 7};
+    constexpr Interval interval1{2, 7};
     SECTION("Equal offset")
     {
         auto const interval2{interval1.expand(2)};
@@ -504,7 +504,7 @@ TEST_CASE("[Interval] expand() method", "[utils][Interval]")
 
 TEST_CASE("[Interval] getRelativePosition() method", "[utils][Interval]")
 {
-    constexpr Interval const interval1{2, 7};
+    constexpr Interval interval1{2, 7};
     SECTION("Runtime tests")
     {
         SECTION("Outside left")
@@ -558,7 +558,7 @@ TEST_CASE("[Interval] createWithBounds() method", "[utils][Interval]")
     }
     SECTION("Static tests")
     {
-        constexpr auto const interval1{Interval<int>::createWithBounds(2, 3)};
+        constexpr auto interval1{Interval<int>::createWithBounds(2, 3)};
         STATIC_CHECK(interval1.getMin() == 2);
         STATIC_CHECK(interval1.getMax() == 3);
         STATIC_CHECK(interval1.get() == std::make_pair(2, 3));
@@ -576,7 +576,7 @@ TEST_CASE("[Interval] createWithLength() method", "[utils][Interval]")
     }
     SECTION("Static tests")
     {
-        constexpr auto const interval1{Interval<int>::createWithLength(2, 3)};
+        constexpr auto interval1{Interval<int>::createWithLength(2, 3)};
         STATIC_CHECK(interval1.getMin() == 2);
         STATIC_CHECK(interval1.getMax() == 5);
         STATIC_CHECK(interval1.get() == std::make_pair(2, 5));
@@ -598,7 +598,7 @@ TEST_CASE("[Interval] createWhole() method", "[utils][Interval]")
     }
     SECTION("Static tests")
     {
-        constexpr auto const interval1{Interval<int>::createWhole()};
+        constexpr auto interval1{Interval<int>::createWhole()};
         STATIC_CHECK(interval1.getMin() == std::numeric_limits<int>::min());
         STATIC_CHECK(interval1.getMax() == std::numeric_limits<int>::max());
         STATIC_CHECK(
@@ -609,11 +609,10 @@ TEST_CASE("[Interval] createWhole() method", "[utils][Interval]")
     }
 }
 
-TEST_CASE(
-    "[Interval] std::string Implicit conversion operator", "[utils][Interval]")
+TEST_CASE("[Interval] toString() method", "[utils][Interval]")
 {
-    constexpr Interval const interval1{2, 7};
-    CHECK(static_cast<std::string>(interval1) == "[2,7]");
+    constexpr Interval interval1{2, 7};
+    CHECK(interval1.toString() == "[2,7]");
 }
 
 TEST_CASE("[Interval] Output stream operator", "[utils][Interval]")
@@ -623,7 +622,7 @@ TEST_CASE("[Interval] Output stream operator", "[utils][Interval]")
     std::streambuf* prevcoutbuf = std::cout.rdbuf(buffer.rdbuf());
 
     Interval const interval1{2, 7};
-    std::cout << static_cast<std::string>(interval1);
+    std::cout << interval1.toString();
 
     // Use the string value of buffer to compare against expected output
     std::string text = buffer.str();
