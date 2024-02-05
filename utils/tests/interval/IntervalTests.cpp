@@ -464,21 +464,21 @@ TEST_CASE("[Interval] where() method", "[utils][Interval]")
 
 TEST_CASE("[Interval] move() method", "[utils][Interval]")
 {
-    Interval interval1{2, 7};
+    constexpr Interval const interval1{2, 7};
     SECTION("Positive movement")
     {
-        interval1.move(2);
-        CHECK(interval1.get() == std::make_pair(4, 9));
+        auto const interval2{interval1.move(2)};
+        CHECK(interval2.get() == std::make_pair(4, 9));
     }
     SECTION("Negative movement")
     {
-        interval1.move(-3);
-        CHECK(interval1.get() == std::make_pair(-1, 4));
+        auto const interval2{interval1.move(-3)};
+        CHECK(interval2.get() == std::make_pair(-1, 4));
     }
     SECTION("Zero movement")
     {
-        interval1.move(0);
-        CHECK(interval1.get() == std::make_pair(2, 7));
+        auto const interval2{interval1.move(0)};
+        CHECK(interval2.get() == std::make_pair(2, 7));
     }
 }
 

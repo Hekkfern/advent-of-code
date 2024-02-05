@@ -1,11 +1,11 @@
 #pragma once
 
-#include <utils/Concepts.hpp>
 #include <algorithm>
 #include <cassert>
 #include <cstdint>
 #include <iostream>
 #include <optional>
+#include <utils/Concepts.hpp>
 
 namespace utils::interval {
 
@@ -197,7 +197,7 @@ public:
      *
      * @return     Enum with the result.
      */
-    [[nodiscard]] constexpr Location where(T const value) const
+    [[nodiscard]] constexpr Location where(T const value) const noexcept
     {
         if (mMax < value) {
             return Location::Greater;
@@ -209,15 +209,33 @@ public:
     }
 
     /**
-     * @brief      Shifts the interval by the selecter amount of positions.
+     * @brief      Shifts the interval by the selected amount of positions, in a
+     *             single direction.
      *
      * @param[in]  offset  The offset. Positive numbers moves it up, and
      *                     negative numbers moves it down.
      */
-    void move(T const offset)
+    [[nodiscard]] Interval move(T const offset) const& noexcept
     {
-        mMin += offset;
-        mMax += offset;
+        Interval result{*this};
+        result.mMin += offset;
+        result.mMax += offset;
+        return result;
+    }
+
+    /**
+     * @brief      Shifts the interval by the selected amount of positions, in a
+     *             single direction.
+     *
+     * @param[in]  offset  The offset. Positive numbers moves it up, and
+     *                     negative numbers moves it down.
+     */
+    [[nodiscard]] Interval move(T const offset) && noexcept
+    {
+        Interval result{std::move(*this)};
+        result.mMin += offset;
+        result.mMax += offset;
+        return result;
     }
 
     /**
@@ -227,8 +245,8 @@ public:
      */
     void expand(std::size_t const offset)
     {
-        mMin -= offset;
-        mMax += offset;
+        mMin -= static_cast<T>(offset);
+        mMax += static_cast<T>(offset);
     }
 
     /**
@@ -239,8 +257,8 @@ public:
      */
     void expand(std::size_t const leftOffset, std::size_t const rightOffset)
     {
-        mMin -= leftOffset;
-        mMax += rightOffset;
+        mMin -= static_cast<T>(leftOffset);
+        mMax += static_cast<T>(rightOffset);
     }
 
     /**
@@ -264,6 +282,7 @@ public:
             return value - mMax;
             break;
         }
+        return T{0};
     }
 
     /**
