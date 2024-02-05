@@ -305,10 +305,8 @@ public:
             mIntervals.begin() + 1,
             mIntervals.end(),
             mIntervals[0].toString(),
-            [](std::string const& accum,
-               Interval<T> const& item) -> std::string {
-                return accum + "," + static_cast<std::string>(item);
-            });
+            [](std::string const& accum, Interval<T> const& item)
+                -> std::string { return accum + "," + item.toString(); });
     }
 
 private:
