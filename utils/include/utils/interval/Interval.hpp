@@ -77,7 +77,7 @@ public:
     {
         return overlaps(other) || areContiguous(other)
             ? std::make_optional<Interval<T>>(
-                std::min(other.mMin, mMin), std::max(other.mMax, mMax))
+                  std::min(other.mMin, mMin), std::max(other.mMax, mMax))
             : std::nullopt;
     }
     /**
@@ -215,11 +215,11 @@ public:
      * @param[in]  offset  The offset. Positive numbers moves it up, and
      *                     negative numbers moves it down.
      */
-    [[nodiscard]] Interval move(T const offset) const& noexcept
+    [[nodiscard]] constexpr Interval move(int64_t const offset) const& noexcept
     {
         Interval result{*this};
-        result.mMin += offset;
-        result.mMax += offset;
+        result.mMin += static_cast<T>(offset);
+        result.mMax += static_cast<T>(offset);
         return result;
     }
 
@@ -230,11 +230,11 @@ public:
      * @param[in]  offset  The offset. Positive numbers moves it up, and
      *                     negative numbers moves it down.
      */
-    [[nodiscard]] Interval move(T const offset) && noexcept
+    [[nodiscard]] constexpr Interval move(std::int64_t const offset) && noexcept
     {
         Interval result{std::move(*this)};
-        result.mMin += offset;
-        result.mMax += offset;
+        result.mMin += static_cast<T>(offset);
+        result.mMax += static_cast<T>(offset);
         return result;
     }
 
@@ -243,22 +243,57 @@ public:
      *
      * @param[in] offset Amount to expand. It cannot be a negative number.
      */
-    void expand(std::size_t const offset)
+    [[nodiscard]] constexpr Interval
+    expand(std::size_t const offset) const& noexcept
     {
-        mMin -= static_cast<T>(offset);
-        mMax += static_cast<T>(offset);
+        Interval result{*this};
+        result.mMin -= static_cast<T>(offset);
+        result.mMax += static_cast<T>(offset);
+        return result;
+    }
+
+    /**
+     * @brief Increases both boundaries by the value in @p offset.
+     *
+     * @param[in] offset Amount to expand. It cannot be a negative number.
+     */
+    [[nodiscard]] constexpr Interval
+    expand(std::size_t const offset) && noexcept
+    {
+        Interval result{std::move(*this)};
+        result.mMin -= static_cast<T>(offset);
+        result.mMax += static_cast<T>(offset);
+        return result;
     }
 
     /**
      * @brief Increases both boundaries by the value in @p offset.
      *
      * @param[in] leftOffset Amount to expand. It cannot be a negative number.
-     * @param rightOffset Amount to expand. It cannot be a negative number.
+     * @param[in] rightOffset Amount to expand. It cannot be a negative number.
      */
-    void expand(std::size_t const leftOffset, std::size_t const rightOffset)
+    [[nodiscard]] constexpr Interval
+    expand(std::size_t const leftOffset, std::size_t const rightOffset) const&
     {
-        mMin -= static_cast<T>(leftOffset);
-        mMax += static_cast<T>(rightOffset);
+        Interval result{*this};
+        result.mMin -= static_cast<T>(leftOffset);
+        result.mMax += static_cast<T>(rightOffset);
+        return result;
+    }
+
+    /**
+     * @brief Increases both boundaries by the value in @p offset.
+     *
+     * @param[in] leftOffset Amount to expand. It cannot be a negative number.
+     * @param[in] rightOffset Amount to expand. It cannot be a negative number.
+     */
+    [[nodiscard]] constexpr Interval
+    expand(std::size_t const leftOffset, std::size_t const rightOffset) &&
+    {
+        Interval result{std::move(*this)};
+        result.mMin -= static_cast<T>(leftOffset);
+        result.mMax += static_cast<T>(rightOffset);
+        return result;
     }
 
     /**

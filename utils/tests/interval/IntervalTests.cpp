@@ -484,21 +484,21 @@ TEST_CASE("[Interval] move() method", "[utils][Interval]")
 
 TEST_CASE("[Interval] expand() method", "[utils][Interval]")
 {
-    Interval interval1{2, 7};
+    constexpr Interval const interval1{2, 7};
     SECTION("Equal offset")
     {
-        interval1.expand(2);
-        CHECK(interval1.get() == std::make_pair(0, 9));
+        auto const interval2{interval1.expand(2)};
+        CHECK(interval2.get() == std::make_pair(0, 9));
     }
     SECTION("Different offset")
     {
-        interval1.expand(2, 3);
-        CHECK(interval1.get() == std::make_pair(0, 10));
+        auto const interval2{interval1.expand(2, 3)};
+        CHECK(interval2.get() == std::make_pair(0, 10));
     }
     SECTION("Zero offset")
     {
-        interval1.expand(0);
-        CHECK(interval1.get() == std::make_pair(2, 7));
+        auto const interval2{interval1.expand(0)};
+        CHECK(interval2.get() == std::make_pair(2, 7));
     }
 }
 
