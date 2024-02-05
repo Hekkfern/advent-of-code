@@ -370,7 +370,7 @@ public:
      *
      * @return String representing this class.
      */
-    [[nodiscard]] constexpr std::string toString() const
+    [[nodiscard]] std::string toString() const
     {
         return "[" + std::to_string(mMin) + "," + std::to_string(mMax) + "]";
     }
