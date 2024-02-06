@@ -186,6 +186,39 @@ TEST_CASE("[IntervalSet] remove() method", "[utils][IntervalSet]")
     }
 }
 
+TEST_CASE("[IntervalSet] join() method", "[utils][IntervalSet]")
+{
+    SECTION("Non-overlapping intervals")
+    {
+        IntervalSet const intervalSet1{{Interval{1, 1}}};
+        IntervalSet const intervalSet2{{Interval{3, 3}}};
+        CHECK(
+            intervalSet1.join(intervalSet2)
+            == IntervalSet{{Interval{1, 1}, Interval{3, 3}}});
+    }
+    SECTION("Overlapping intervals")
+    {
+        IntervalSet const intervalSet1{{Interval{1, 4}}};
+        IntervalSet const intervalSet2{{Interval{3, 3}}};
+        CHECK(intervalSet1.join(intervalSet2) == IntervalSet{{Interval{1, 4}}});
+    }
+}
+
+TEST_CASE("[IntervalSet] subsumes() method", "[utils][IntervalSet]")
+{
+    // TODO
+}
+
+TEST_CASE("[IntervalSet] overlaps() method", "[utils][IntervalSet]")
+{
+    // TODO
+}
+
+TEST_CASE("[IntervalSet] contains() method", "[utils][IntervalSet]")
+{
+    // TODO
+}
+
 TEST_CASE("[IntervalSet] count() method", "[utils][IntervalSet]")
 {
     SECTION("With single-value intervals")
@@ -211,6 +244,11 @@ TEST_CASE("[IntervalSet] extract() method", "[utils][IntervalSet]")
         CHECK(result1[0] == Interval{2, 2});
         CHECK(result1[1] == Interval{5, 5});
     }
+}
+
+TEST_CASE("[IntervalSet] getIntervalFor() method", "[utils][IntervalSet]")
+{
+    // TODO
 }
 
 TEST_CASE("[IntervalSet] toString() method", "[utils][IntervalSet]")

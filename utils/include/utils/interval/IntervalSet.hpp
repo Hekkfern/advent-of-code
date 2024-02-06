@@ -163,8 +163,7 @@ public:
         std::vector<Interval<T>> joinedIntervals{mIntervals};
         joinedIntervals.reserve(mIntervals.size() + other.mIntervals.size());
         ranges::copy(other.mIntervals, std::back_inserter(joinedIntervals));
-        return IntervalSet{
-            std::forward<decltype(joinedIntervals)>(joinedIntervals)};
+        return IntervalSet{joinedIntervals};
     }
     /**
      * @brief      Checks if another interval includes completely the range of
@@ -303,6 +302,17 @@ public:
             mIntervals[0].toString(),
             [](std::string const& accum, Interval<T> const& item)
                 -> std::string { return accum + "," + item.toString(); });
+    }
+    /**
+     * @brief      Equality operator.
+     *
+     * @param[in]  other  The other object.
+     *
+     * @return     The result of the equality.
+     */
+    [[nodiscard]] bool operator==(IntervalSet const& other) const
+    {
+        return mIntervals == other.mIntervals;
     }
 
 private:
