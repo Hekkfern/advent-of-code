@@ -7,20 +7,26 @@ using namespace utils::interval;
 
 TEST_CASE("[IntervalSet] Constructor", "[utils][IntervalSet]")
 {
-    SECTION("Normal constructor")
+    SECTION("Default constructor")
     {
-        std::vector<Interval<int32_t>> const intervals{
+        IntervalSet const intervalSet;
+        auto const result1{intervalSet.get()};
+        REQUIRE(result1.empty());
+    }
+    SECTION("Parametrized constructor 1")
+    {
+        std::vector<Interval<>> const intervals{
             {Interval{1, 3}, Interval{-1, 4}, Interval{5, 7}}};
         IntervalSet const intervalSet{intervals};
-        auto const& result1{intervalSet.get()};
+        auto const result1{intervalSet.get()};
         REQUIRE(result1.size() == 1U);
         CHECK(result1[0] == Interval{-1, 7});
     }
-    SECTION("Move constructor")
+    SECTION("Parametrized constructor 2")
     {
         IntervalSet const interval1{
             {Interval{1, 3}, Interval{-1, 4}, Interval{5, 7}}};
-        auto const& result1{interval1.get()};
+        auto const result1{interval1.get()};
         REQUIRE(result1.size() == 1U);
         CHECK(result1[0] == Interval{-1, 7});
     }
