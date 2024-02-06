@@ -8,7 +8,6 @@
 #include <range/v3/algorithm/find_if.hpp>
 #include <range/v3/algorithm/fold_left.hpp>
 #include <range/v3/algorithm/sort.hpp>
-#include <sstream>
 #include <string>
 #include <utils/String.hpp>
 #include <vector>
@@ -165,7 +164,8 @@ public:
         std::vector<Interval<T>> joinedIntervals{mIntervals};
         joinedIntervals.reserve(mIntervals.size() + other.mIntervals.size());
         ranges::copy(other.mIntervals, std::back_inserter(joinedIntervals));
-        return IntervalSet{std::forward(joinedIntervals)};
+        return IntervalSet{
+            std::forward<decltype(joinedIntervals)>(joinedIntervals)};
     }
     /**
      * @brief      Checks if another interval includes completely the range of
@@ -280,7 +280,8 @@ public:
      *
      * @return     The interval containing this value, or std::nullopt.
      */
-    [[nodiscard]] constexpr Interval<T> getIntervalFor(T const value)
+    [[nodiscard]] constexpr std::optional<Interval<T>>
+    getIntervalFor(T const value) const noexcept
     {
         auto const it{ranges::find_if(
             mIntervals, [value](Interval<T> const& interval) -> bool {
@@ -296,7 +297,7 @@ public:
      *
      * @return     String representing this class.
      */
-    explicit operator std::string() const
+    [[nodiscard]] std::string toString() const noexcept
     {
         if (mIntervals.empty()) {
             return "[]";
@@ -337,14 +338,14 @@ private:
      * @brief      "Insert string into stream" operator.
      *
      * @param[in]  os           The output stream.
-     * @param[in]  IntervalSet  The interval.
+     * @param[in]  intervalSet  The interval.
      *
      * @return     The updated output stream.
      */
     friend std::ostream&
-    operator<<(std::ostream& os, IntervalSet const& IntervalSet)
+    operator<<(std::ostream& os, IntervalSet const& intervalSet)
     {
-        os << static_cast<std::string>(IntervalSet);
+        os << intervalSet.toString();
         return os;
     }
 
@@ -354,8 +355,8 @@ private:
      * @note       No interval is overlapped.
      * @note       All the intervals are sorted by ascending order of its
      *             minimal value.
-     * @note       Two contiguous intervals mean that there is a gap between
-     *             them of, at least, one value.
+     * @note       Two contiguous intervals mean that there is a gap in-between
+     *             of, at least, one value.
      */
     std::vector<Interval<T>> mIntervals{};
 };

@@ -207,12 +207,10 @@ TEST_CASE("[IntervalSet] extract() method", "[utils][IntervalSet]")
     }
 }
 
-TEST_CASE(
-    "[IntervalSet] std::string Implicit conversion operator",
-    "[utils][IntervalSet]")
+TEST_CASE("[IntervalSet] toString() method", "[utils][IntervalSet]")
 {
     IntervalSet const interval1{{Interval{1, 2}, Interval{5, 7}}};
-    CHECK(static_cast<std::string>(interval1) == "[1,2],[5,7]");
+    CHECK(interval1.toString() == "[1,2],[5,7]");
 }
 
 TEST_CASE("[IntervalSet] Output stream operator", "[utils][IntervalSet]")
