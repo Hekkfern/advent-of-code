@@ -32,7 +32,8 @@ public:
      *
      * @param[in]  intervals  The intervals.
      */
-    explicit IntervalSet(std::vector<Interval<T>>&& intervals) noexcept
+    constexpr explicit IntervalSet(
+        std::vector<Interval<T>>&& intervals) noexcept
         : mIntervals{std::move(intervals)}
     {
         reduce();
@@ -42,7 +43,8 @@ public:
      *
      * @param[in]  intervals  The intervals.
      */
-    explicit IntervalSet(std::vector<Interval<T>> const& intervals) noexcept
+    constexpr explicit IntervalSet(
+        std::vector<Interval<T>> const& intervals) noexcept
         : mIntervals{intervals}
     {
         reduce();
@@ -52,7 +54,7 @@ public:
      *
      * @return     The intervals.
      */
-    [[nodiscard]] std::vector<Interval<T>> get() const noexcept
+    [[nodiscard]] constexpr std::vector<Interval<T>> get() const noexcept
     {
         return mIntervals;
     }
@@ -61,7 +63,7 @@ public:
      *
      * @param[in]  interval  The interval to add.
      */
-    constexpr void add(Interval<T> const& interval) noexcept
+    void add(Interval<T> const& interval) noexcept
     {
         mIntervals.emplace_back(interval);
         reduce();
@@ -71,7 +73,7 @@ public:
      *
      * @param[in]  interval  The interval to add.
      */
-    constexpr void add(Interval<T>&& interval) noexcept
+    void add(Interval<T>&& interval) noexcept
     {
         mIntervals.emplace_back(std::move(interval));
         reduce();
@@ -81,7 +83,7 @@ public:
      *
      * @param[in]  value  The value to add.
      */
-    constexpr void add(T const value) noexcept
+    void add(T const value) noexcept
     {
         mIntervals.emplace_back(value, value);
         reduce();
@@ -91,7 +93,7 @@ public:
      *
      * @param      value  The value to remove.
      */
-    constexpr void remove(T const value) noexcept
+    void remove(T const value) noexcept
     {
         std::vector<Interval<T>> tempIntervals;
         tempIntervals.reserve(mIntervals.size());
@@ -119,7 +121,7 @@ public:
      *
      * @param[in]  eraseInterval  The interval to remove.
      */
-    constexpr void remove(Interval<T> const& eraseInterval) noexcept
+    void remove(Interval<T> const& eraseInterval) noexcept
     {
         std::vector<Interval<T>> tempIntervals;
         tempIntervals.reserve(mIntervals.size());

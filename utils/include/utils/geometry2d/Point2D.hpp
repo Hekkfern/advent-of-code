@@ -2,7 +2,6 @@
 
 #include "../Concepts.hpp"
 #include "Coord2D.hpp"
-#include <array>
 #include <cstdint>
 #include <ostream>
 #include <vector>
