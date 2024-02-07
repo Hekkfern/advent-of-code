@@ -2,24 +2,25 @@
 
 namespace aoc_2023_5 {
 
-RangeMapSection::RangeMapSection(uint64_t dest, uint64_t src, uint64_t length)
-    : mDestinationStart{dest}
-    , mSourceStart{src}
-    , mRangeLength{length}
+RangeMapSection::RangeMapSection(
+    int64_t const dest, int64_t const src, int64_t const length)
+    : mDestination{utils::interval::Interval<int64_t>::createWithLength(
+          dest, length)}
+    , mSource{utils::interval::Interval<int64_t>::createWithLength(src, length)}
 {
 }
 
-std::optional<uint64_t> RangeMapSection::get(uint64_t const key) const noexcept
+std::optional<int64_t> RangeMapSection::get(int64_t const key) const noexcept
 {
-    if (key < mSourceStart || key > (mSourceStart + mRangeLength)) {
+    if (!mSource.contains(key)) {
         return {};
     }
-    return mDestinationStart + (key - mSourceStart);
+    return mDestination.getMin() + (key - mSource.getMin());
 }
 
 bool RangeMapSection::operator<(RangeMapSection const& other) const
 {
-    return mSourceStart < other.mSourceStart;
+    return mSource < other.mSource;
 }
 
 } // namespace aoc_2023_5

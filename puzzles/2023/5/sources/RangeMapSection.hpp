@@ -2,19 +2,19 @@
 
 #include <cstdint>
 #include <optional>
+#include <utils/interval/Interval.hpp>
 
 namespace aoc_2023_5 {
 
 class RangeMapSection {
 public:
-    RangeMapSection(uint64_t dest, uint64_t src, uint64_t length);
-    [[nodiscard]] std::optional<uint64_t> get(uint64_t key) const noexcept;
+    RangeMapSection(int64_t dest, int64_t src, int64_t length);
+    [[nodiscard]] std::optional<int64_t> get(int64_t key) const noexcept;
     bool operator<(RangeMapSection const& other) const;
 
 private:
-    uint64_t mDestinationStart;
-    uint64_t mSourceStart;
-    uint64_t mRangeLength;
+    utils::interval::Interval<int64_t> mDestination;
+    utils::interval::Interval<int64_t> mSource;
 };
 
 } // namespace aoc_2023_5

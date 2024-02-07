@@ -16,7 +16,7 @@ namespace aoc_2023_5 {
 void parseRangeLine(RangeMap& map, std::string const& line)
 {
     std::stringstream ss{line};
-    uint64_t destinationStart, sourceStart, rangeLength;
+    int64_t destinationStart, sourceStart, rangeLength;
     ss >> destinationStart >> sourceStart >> rangeLength;
     map.addSection(destinationStart, sourceStart, rangeLength);
 }
@@ -34,16 +34,16 @@ void parseMap(std::ifstream& fileStream, RangeMap& map)
     }
 }
 
-std::vector<uint64_t> parseIndividualSeeds(std::ifstream& fileStream)
+std::vector<int64_t> parseIndividualSeeds(std::ifstream& fileStream)
 {
     std::string line;
     std::getline(fileStream, line); // capture "seeds: XX XX XX"
 
     std::stringstream ss{line};
-    std::vector<uint64_t> seeds;
+    std::vector<int64_t> seeds;
     std::string dummy;
     ss >> dummy;
-    uint64_t seed;
+    int64_t seed;
     while (ss) {
         ss >> seed;
         seeds.emplace_back(seed);
@@ -63,7 +63,7 @@ parseRangedSeeds(std::ifstream& fileStream)
     std::vector<utils::interval::Interval<int64_t>> seeds;
     std::string dummy;
     ss >> dummy;
-    uint64_t seedStart, seedLength;
+    int64_t seedStart, seedLength;
     while (ss) {
         ss >> seedStart >> seedLength;
         if (seedLength == 0) {
@@ -149,7 +149,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
     auto locations{
         almanac.seeds
         | ranges::views::transform(
-            [&almanac = std::as_const(almanac)](uint64_t const seed) {
+            [&almanac = std::as_const(almanac)](int64_t const seed) {
                 return almanac.getSeedLocation(seed);
             })};
     return std::to_string(*ranges::min_element(locations));

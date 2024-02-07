@@ -9,8 +9,8 @@ namespace aoc_2023_5 {
 class RangeMap {
 public:
     RangeMap() = default;
-    [[nodiscard]] uint64_t get(uint64_t key) const noexcept;
-    void addSection(uint64_t dest, uint64_t src, uint64_t length) noexcept;
+    [[nodiscard]] int64_t get(int64_t key) const noexcept;
+    void addSection(int64_t dest, int64_t src, int64_t length) noexcept;
     void sort() noexcept;
 
 private:
