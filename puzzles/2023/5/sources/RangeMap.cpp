@@ -1,4 +1,5 @@
 #include "RangeMap.hpp"
+
 #include <range/v3/algorithm/sort.hpp>
 
 namespace aoc_2023_5 {
@@ -18,6 +19,19 @@ int64_t RangeMap::convert(int64_t const key) const noexcept
         }
     }
     return key;
+}
+
+utils::interval::IntervalSet<int64_t> RangeMap::convert(
+    utils::interval::Interval<int64_t> const& keyInterval) const noexcept
+{
+    utils::interval::IntervalSet<int64_t> result;
+    for (auto const& section : mSections) {
+        auto const value{section.convert(keyInterval)};
+        if (value) {
+            result.add(*value);
+        }
+    }
+    return result;
 }
 
 void RangeMap::sort() noexcept { ranges::sort(mSections, std::less{}); }

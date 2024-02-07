@@ -2,8 +2,9 @@
 
 #include <algorithm>
 #include <cstdint>
-#include <iostream>
 #include <optional>
+#include <ostream>
+#include <string>
 #include <utils/Concepts.hpp>
 
 namespace utils::interval {

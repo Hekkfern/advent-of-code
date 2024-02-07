@@ -3,7 +3,6 @@
 #include "RangeMap.hpp"
 #include <cstdint>
 #include <utils/interval/IntervalSet.hpp>
-#include <vector>
 
 namespace aoc_2023_5 {
 

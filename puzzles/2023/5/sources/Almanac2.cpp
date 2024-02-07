@@ -2,16 +2,13 @@
 
 namespace aoc_2023_5 {
 
-utils::interval::IntervalSet<int64_t> convert(
-    utils::interval::IntervalSet<int64_t> const& input,
-    aoc_2023_5::RangeMap const& map)
+utils::interval::IntervalSet<int64_t>
+convert(utils::interval::IntervalSet<int64_t> const& input, RangeMap const& map)
 {
     utils::interval::IntervalSet<int64_t> output;
     // For each input range in the input (the ranges are already sorted)
     for (auto const& inputInterval : input.get()) {
-        // TODO
-        (void)inputInterval;
-        (void)map;
+        output = output.join(map.convert(inputInterval));
     }
     return output;
 }

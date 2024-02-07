@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Interval.hpp"
-#include <iostream>
+#include <ostream>
 #include <range/v3/algorithm/all_of.hpp>
 #include <range/v3/algorithm/any_of.hpp>
 #include <range/v3/algorithm/copy.hpp>
