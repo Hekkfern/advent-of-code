@@ -10,13 +10,13 @@ TEST_CASE("[Point2D] create() method", "[utils][Point2D]")
     {
         SECTION("Positive values")
         {
-            Point2D<> const point2D{Point2D<>::create(2, 4)};
+            Point2D const point2D{Point2D<>::create(2, 4)};
             CHECK(point2D.getX() == 2);
             CHECK(point2D.getY() == 4);
         }
         SECTION("Positive and negatives values")
         {
-            Point2D<> const point2D{Point2D<>::create(-2, 3)};
+            Point2D const point2D{Point2D<>::create(-2, 3)};
             CHECK(point2D.getX() == -2);
             CHECK(point2D.getY() == 3);
         }
@@ -40,7 +40,7 @@ TEST_CASE("[Point2D] Constructor", "[Point2D]")
         {
             SECTION("Positive values")
             {
-                Point2D<> const point2D{2, 4};
+                Point2D const point2D{2, 4};
                 CHECK(point2D.getX() == 2);
                 CHECK(point2D.getY() == 4);
                 auto const coords{point2D.getCoordinates()};
@@ -49,7 +49,7 @@ TEST_CASE("[Point2D] Constructor", "[Point2D]")
             }
             SECTION("Positive and negatives values")
             {
-                Point2D<> const point2D{-2, 3};
+                Point2D const point2D{-2, 3};
                 CHECK(point2D.getX() == -2);
                 CHECK(point2D.getY() == 3);
                 auto const coords{point2D.getCoordinates()};
@@ -61,7 +61,7 @@ TEST_CASE("[Point2D] Constructor", "[Point2D]")
         {
             SECTION("Positive values")
             {
-                Point2D<> const point2D{Coord2D<>{2, 4}};
+                Point2D const point2D{Coord2D{2, 4}};
                 CHECK(point2D.getX() == 2);
                 CHECK(point2D.getY() == 4);
                 auto const coords{point2D.getCoordinates()};
@@ -70,7 +70,7 @@ TEST_CASE("[Point2D] Constructor", "[Point2D]")
             }
             SECTION("Positive and negatives values")
             {
-                Point2D<> const point2D{Coord2D<>{-2, 3}};
+                Point2D const point2D{Coord2D{-2, 3}};
                 CHECK(point2D.getX() == -2);
                 CHECK(point2D.getY() == 3);
                 auto const coords{point2D.getCoordinates()};
@@ -100,7 +100,7 @@ TEST_CASE("[Point2D] getNeighbors() method", "[utils][Point2D]")
 {
     SECTION("Runtime tests")
     {
-        Point2D<> const point2D{Coord2D<>{2, 4}};
+        Point2D const point2D{Coord2D{2, 4}};
         auto const neighbors{point2D.getNeighbors()};
         CHECK(neighbors.size() == 4U);
     }

@@ -21,14 +21,14 @@ public:
     /**
      * @brief      Default constructor.
      */
-    explicit Vector2D() = default;
+    constexpr explicit Vector2D() noexcept = default;
     /**
      * @brief      Constructs a new instance.
      *
      * @param[in]  x     Coordinate X.
      * @param[in]  y     Coordinate Y.
      */
-    explicit Vector2D(T x, T y)
+    constexpr explicit Vector2D(const T x, const T y)
         : mX{x}
         , mY{y}
     {
@@ -39,7 +39,8 @@ public:
      * @param[in]  origin       The origin point.
      * @param[in]  destination  The destination point.
      */
-    explicit Vector2D(Point2D<T> const& origin, Point2D<T> const& destination)
+    constexpr explicit Vector2D(
+        Point2D<T> const& origin, Point2D<T> const& destination) noexcept
         : mX{destination.getX() - origin.getX()}
         , mY{destination.getY() - origin.getY()}
     {
@@ -49,7 +50,7 @@ public:
      *
      * @param[in]  coords  Coordinates.
      */
-    explicit Vector2D(Coord2D<T> const coords)
+    constexpr explicit Vector2D(Coord2D<T> const coords) noexcept
         : mX{coords.getX()}
         , mY{coords.getY()}
     {
@@ -59,7 +60,7 @@ public:
      *
      * @return     The coordinates as a pair (X,Y).
      */
-    [[nodiscard]] Coord2D<T> getCoordinates() const
+    [[nodiscard]] constexpr Coord2D<T> getCoordinates() const noexcept
     {
         return Coord2D<T>{mX, mY};
     }
@@ -68,19 +69,19 @@ public:
      *
      * @return     The coordinate X.
      */
-    [[nodiscard]] T getX() const { return mX; }
+    [[nodiscard]] constexpr T getX() const noexcept { return mX; }
     /**
      * @brief      Gets the coordinate Y.
      *
      * @return     The coordinate Y.
      */
-    [[nodiscard]] T getY() const { return mY; }
+    [[nodiscard]] constexpr T getY() const noexcept { return mY; }
     /**
      * @brief      Gets the absolute length of each coordinate.
      *
      * @return     Pair of absolute coordinates (X,Y).
      */
-    [[nodiscard]] std::array<uint64_t, 2U> size() const
+    [[nodiscard]] constexpr std::array<uint64_t, 2ULL> size() const noexcept
     {
         return {
             static_cast<uint64_t>(std::abs(mX)),
@@ -91,7 +92,7 @@ public:
      *
      * @return     { description_of_the_return_value }
      */
-    [[nodiscard]] uint64_t range() const
+    [[nodiscard]] constexpr uint64_t range() const noexcept
     {
         return static_cast<uint64_t>(std::max(std::abs(mX), std::abs(mY)));
     }
@@ -102,61 +103,72 @@ public:
      *
      * @see        https://en.wikipedia.org/wiki/Taxicab_geometry
      */
-    [[nodiscard]] uint64_t distance() const
+    [[nodiscard]] constexpr uint64_t distance() const noexcept
     {
         return static_cast<uint64_t>(std::abs(mX))
             + static_cast<uint64_t>(std::abs(mY));
     }
     /**
-     * @brief      Modifies the vector so the lengths becomes one (positive or
+     * @brief       Modifies the vector so the lengths becomes one (positive or
      *             negative) up most, keeping the same direction.
-     */
-    void normalize()
-    {
-        // saturate X
-        mX = std::clamp(mX, -1, 1);
-        // saturate Y
-        mY = std::clamp(mY, -1, 1);
-    }
-    /**
-     * @brief      Creates a normalized vector from this one.
      *
      * @return     The normalized vector.
+     *
+     * @{
      */
-    [[nodiscard]] Vector2D getNormalized() const
+    [[nodiscard]] constexpr Vector2D normalize() const& noexcept
     {
-        Vector2D vector2D(*this);
-        vector2D.normalize();
-        return vector2D;
+        Vector2D result{*this};
+        // saturate X
+        result.mX = std::clamp(mX, -1, 1);
+        // saturate Y
+        result.mY = std::clamp(mY, -1, 1);
+        return result;
     }
+    [[nodiscard]] constexpr Vector2D normalize() && noexcept
+    {
+        Vector2D result{std::move(*this)};
+        // saturate X
+        result.mX = std::clamp(mX, -1, 1);
+        // saturate Y
+        result.mY = std::clamp(mY, -1, 1);
+        return result;
+    }
+    /** @} */
     /**
      * @brief      Determines if the vector is empty, i.e., both coordinates are
      *             zero.
      *
      * @return     True if it is empty, False otherwise.
      */
-    [[nodiscard]] bool isZero() const { return mX == 0 && mY == 0; }
+    [[nodiscard]] constexpr bool isZero() const noexcept
+    {
+        return mX == 0 && mY == 0;
+    }
     /**
      * @brief      Determines if it is a horizontal vector, i.e. its coordinate
      *             Y is zero.
      *
      * @return     True if it is horizontal, False otherwise.
      */
-    [[nodiscard]] bool isHorizontal() const { return mY == 0; }
+    [[nodiscard]] constexpr bool isHorizontal() const noexcept
+    {
+        return mY == 0;
+    }
     /**
      * @brief      Determines if it is a vertical vector, i.e. its coordinate X
      *             is zero.
      *
      * @return     True if it is vertical, False otherwise.
      */
-    [[nodiscard]] bool isVertical() const { return mX == 0; }
+    [[nodiscard]] constexpr bool isVertical() const noexcept { return mX == 0; }
     /**
      * @brief      Determines if it is a diagonal vector, i.e. its coordinate X
      *             is equal to its coordinate Y.
      *
      * @return     True if it is diagonal, False otherwise.
      */
-    [[nodiscard]] bool isDiagonal() const
+    [[nodiscard]] constexpr bool isDiagonal() const noexcept
     {
         return std::abs(static_cast<std::intmax_t>(mX))
             == std::abs(static_cast<std::intmax_t>(mY));
@@ -168,7 +180,8 @@ public:
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] bool operator==(Vector2D<T> const& other) const
+    [[nodiscard]] constexpr bool
+    operator==(Vector2D<T> const& other) const noexcept
     {
         return (mX == other.mX) && (mY == other.mY);
     }
@@ -180,9 +193,10 @@ public:
      *
      * @return     The result of the addition.
      */
-    [[nodiscard]] Vector2D operator+(Vector2D<T> const& other) const
+    [[nodiscard]] constexpr Vector2D
+    operator+(Vector2D const& other) const noexcept
     {
-        return Vector2D<T>{mX + other.mX, mY + other.mY};
+        return Vector2D{mX + other.mX, mY + other.mY};
     }
     /**
      * @brief      Negation operator, which inverts the sign of both coordinates
@@ -190,9 +204,9 @@ public:
      *
      * @return     The inverted vector.
      */
-    [[nodiscard]] Vector2D<T> operator-() const
+    [[nodiscard]] constexpr Vector2D operator-() const noexcept
     {
-        return Vector2D<T>{-mX, -mY};
+        return Vector2D{-mX, -mY};
     }
     /**
      * @brief      Subtraction operator, which subtracts the coordinates of
@@ -202,7 +216,8 @@ public:
      *
      * @return     The result of the subtraction.
      */
-    [[nodiscard]] Vector2D<T> operator-(Vector2D<T> const& other) const
+    [[nodiscard]] constexpr Vector2D
+    operator-(Vector2D<T> const& other) const noexcept
     {
         return *this + (-other);
     }
@@ -218,7 +233,7 @@ public:
      * @return     New vector.
      */
     template <std::integral U>
-    [[nodiscard]] static Vector2D<T> create(U x, U y)
+    [[nodiscard]] constexpr static Vector2D<T> create(U x, U y) noexcept
     {
         return Vector2D<T>{static_cast<T>(x), static_cast<T>(y)};
     }
@@ -232,7 +247,8 @@ private:
      *
      * @return     The updated output stream.
      */
-    friend std::ostream& operator<<(std::ostream& os, Vector2D<T> const& obj)
+    friend std::ostream&
+    operator<<(std::ostream& os, Vector2D<T> const& obj) noexcept
     {
         os << '(' << obj.mX << ',' << obj.mY << ')';
         return os;
@@ -258,8 +274,8 @@ private:
  * @return     Scaled vector by a scalar.
  */
 template <SignedIntegerType T>
-[[nodiscard]] Vector2D<T>
-operator*(Vector2D<T> const& vector2d, int32_t const value)
+[[nodiscard]] constexpr Vector2D<T>
+operator*(Vector2D<T> const& vector2d, int32_t const value) noexcept
 {
     return Vector2D<T>{value * vector2d.getX(), value * vector2d.getY()};
 }
@@ -273,8 +289,8 @@ operator*(Vector2D<T> const& vector2d, int32_t const value)
  * @return     Scaled vector by a scalar.
  */
 template <SignedIntegerType T>
-[[nodiscard]] Vector2D<T>
-operator*(int32_t const value, Vector2D<T> const& vector2d)
+[[nodiscard]] constexpr Vector2D<T>
+operator*(int32_t const value, Vector2D<T> const& vector2d) noexcept
 {
     return vector2d * value;
 }
