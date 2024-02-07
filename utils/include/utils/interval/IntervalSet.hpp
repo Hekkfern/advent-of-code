@@ -304,7 +304,7 @@ public:
                 -> std::string { return accum + "," + item.toString(); });
     }
     /**
-     * @brief      Equality operator.
+     * @brief      Equality operator
      *
      * @param[in]  other  The other object.
      *

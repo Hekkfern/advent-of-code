@@ -206,17 +206,111 @@ TEST_CASE("[IntervalSet] join() method", "[utils][IntervalSet]")
 
 TEST_CASE("[IntervalSet] subsumes() method", "[utils][IntervalSet]")
 {
-    // TODO
+    IntervalSet const intervalSet1{{Interval{1, 2}}};
+    SECTION("Another IntervalSet")
+    {
+        SECTION("Completely")
+        {
+            IntervalSet const intervalSet2{{Interval{0, 4}}};
+            CHECK_FALSE(intervalSet1.subsumes(intervalSet2));
+            CHECK(intervalSet2.subsumes(intervalSet1));
+        }
+        SECTION("Equal intervals")
+        {
+            IntervalSet const intervalSet2{{Interval{1, 2}}};
+            CHECK(intervalSet1.subsumes(intervalSet2));
+            CHECK(intervalSet2.subsumes(intervalSet1));
+        }
+        SECTION("Different intervals")
+        {
+            IntervalSet const intervalSet2{{Interval{4, 4}}};
+            CHECK_FALSE(intervalSet1.subsumes(intervalSet2));
+            CHECK_FALSE(intervalSet2.subsumes(intervalSet1));
+        }
+    }
+    SECTION("Another Interval")
+    {
+        SECTION("Completely")
+        {
+            Interval const interval2{0, 4};
+            CHECK_FALSE(intervalSet1.subsumes(interval2));
+        }
+        SECTION("Equal intervals")
+        {
+            Interval const interval2{1, 2};
+            CHECK(intervalSet1.subsumes(interval2));
+        }
+        SECTION("Different intervals")
+        {
+            Interval const interval2{4, 4};
+            CHECK_FALSE(intervalSet1.subsumes(interval2));
+        }
+    }
 }
 
 TEST_CASE("[IntervalSet] overlaps() method", "[utils][IntervalSet]")
 {
-    // TODO
+    IntervalSet const intervalSet1{{Interval{1, 2}}};
+    SECTION("Another IntervalSet")
+    {
+        SECTION("Completely")
+        {
+            IntervalSet const intervalSet2{{Interval{0, 4}}};
+            CHECK(intervalSet1.overlaps(intervalSet2));
+            CHECK(intervalSet2.overlaps(intervalSet1));
+        }
+        SECTION("Equal intervals")
+        {
+            IntervalSet const intervalSet2{{Interval{1, 2}}};
+            CHECK(intervalSet1.overlaps(intervalSet2));
+            CHECK(intervalSet2.overlaps(intervalSet1));
+        }
+        SECTION("Different intervals")
+        {
+            IntervalSet const intervalSet2{{Interval{4, 4}}};
+            CHECK_FALSE(intervalSet1.overlaps(intervalSet2));
+            CHECK_FALSE(intervalSet2.overlaps(intervalSet1));
+        }
+        SECTION("Touch one boundary")
+        {
+            IntervalSet const intervalSet2{{Interval{0, 1}}};
+            CHECK(intervalSet1.overlaps(intervalSet2));
+            CHECK(intervalSet2.overlaps(intervalSet1));
+        }
+    }
+    SECTION("Another Interval")
+    {
+        SECTION("Completely")
+        {
+            Interval const interval2{0, 4};
+            CHECK(intervalSet1.overlaps(interval2));
+        }
+        SECTION("Equal intervals")
+        {
+            Interval const interval2{1, 2};
+            CHECK(intervalSet1.overlaps(interval2));
+        }
+        SECTION("Different intervals")
+        {
+            Interval const interval2{4, 4};
+            CHECK_FALSE(intervalSet1.overlaps(interval2));
+        }
+        SECTION("Touch one boundary")
+        {
+            Interval const interval2{0, 1};
+            CHECK(intervalSet1.overlaps(interval2));
+        }
+    }
 }
 
 TEST_CASE("[IntervalSet] contains() method", "[utils][IntervalSet]")
 {
-    // TODO
+    IntervalSet const intervalSet1{{Interval{1, 4}}};
+    CHECK_FALSE(intervalSet1.contains(-1));
+    CHECK(intervalSet1.contains(1));
+    CHECK(intervalSet1.contains(2));
+    CHECK(intervalSet1.contains(4));
+    CHECK_FALSE(intervalSet1.contains(7));
 }
 
 TEST_CASE("[IntervalSet] count() method", "[utils][IntervalSet]")
@@ -248,13 +342,52 @@ TEST_CASE("[IntervalSet] extract() method", "[utils][IntervalSet]")
 
 TEST_CASE("[IntervalSet] getIntervalFor() method", "[utils][IntervalSet]")
 {
-    // TODO
+    IntervalSet const intervalSet1{{Interval{1, 4}, Interval{7, 10}}};
+    SECTION("Value is contained")
+    {
+        auto const result{intervalSet1.getIntervalFor(2)};
+        REQUIRE(result);
+        CHECK(*result == Interval{1, 4});
+    }
+    SECTION("Value is not contained")
+    {
+        auto const result{intervalSet1.getIntervalFor(-7)};
+        REQUIRE_FALSE(result);
+    }
 }
 
 TEST_CASE("[IntervalSet] toString() method", "[utils][IntervalSet]")
 {
     IntervalSet const interval1{{Interval{1, 2}, Interval{5, 7}}};
     CHECK(interval1.toString() == "[1,2],[5,7]");
+}
+
+TEST_CASE("[IntervalSet] Equality operator", "[utils][IntervalSet]")
+{
+    SECTION("Empty IntervalSet")
+    {
+        IntervalSet const interval1;
+        IntervalSet const interval2;
+        CHECK(interval1 == interval2);
+        CHECK_FALSE(interval1 != interval2);
+    }
+    SECTION("Non-empty IntervalSet")
+    {
+        SECTION("Equal")
+        {
+            IntervalSet const interval1{{Interval{1, 2}, Interval{5, 7}}};
+            IntervalSet const interval2{{Interval{1, 2}, Interval{5, 7}}};
+            CHECK(interval1 == interval2);
+            CHECK_FALSE(interval1 != interval2);
+        }
+        SECTION("Different")
+        {
+            IntervalSet const interval1{{Interval{1, 2}, Interval{5, 7}}};
+            IntervalSet const interval2{{Interval{4, 7}}};
+            CHECK_FALSE(interval1 == interval2);
+            CHECK(interval1 != interval2);
+        }
+    }
 }
 
 TEST_CASE("[IntervalSet] Output stream operator", "[utils][IntervalSet]")
