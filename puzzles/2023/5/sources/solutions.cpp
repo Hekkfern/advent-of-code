@@ -53,7 +53,8 @@ std::vector<uint64_t> parseIndividualSeeds(std::ifstream& fileStream)
     return seeds;
 }
 
-utils::interval::IntervalSet<int64_t> parseRangedSeeds(std::ifstream& fileStream)
+utils::interval::IntervalSet<int64_t>
+parseRangedSeeds(std::ifstream& fileStream)
 {
     std::string line;
     std::getline(fileStream, line); // capture "seeds: XX XX XX"
@@ -65,11 +66,14 @@ utils::interval::IntervalSet<int64_t> parseRangedSeeds(std::ifstream& fileStream
     uint64_t seedStart, seedLength;
     while (ss) {
         ss >> seedStart >> seedLength;
-        seeds.emplace_back(seedStart, seedLength);
+        if (seedLength == 0) {
+            continue;
+        }
+        seeds.emplace_back(seedStart, seedStart + seedLength);
     }
 
     std::getline(fileStream, line); // capture empty line
-    return utils::interval::IntervalSet{seeds};
+    return utils::interval::IntervalSet{std::move(seeds)};
 }
 
 Almanac parseInputFileForPart1(std::filesystem::path const& filePath) noexcept

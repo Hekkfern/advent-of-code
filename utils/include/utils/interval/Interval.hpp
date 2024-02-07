@@ -8,8 +8,9 @@
 
 namespace utils::interval {
 
-enum class Location { Less = -1, Within = 0, Greater = 1 };
+enum class Location { Less, Within, Greater };
 enum class Boundary { Start, End };
+enum class Relationship { Subsumed, Overlapped, Isolated };
 
 /**
  * @brief      This class describes an interval of continuous integer values,
@@ -76,7 +77,7 @@ public:
     {
         return overlaps(other) || areContiguous(other)
             ? std::make_optional<Interval<T>>(
-                std::min(other.mMin, mMin), std::max(other.mMax, mMax))
+                  std::min(other.mMin, mMin), std::max(other.mMax, mMax))
             : std::nullopt;
     }
     /**
@@ -105,8 +106,10 @@ public:
         }
     }
     /**
-     * @brief      Checks if another interval includes completely the range of
-     *             this one.
+     * @brief      Checks if this interval includes completely the range of
+     *             another one.
+     *
+     * @details    For example, [0,10] subsumes [2,4].
      *
      * @param[in]  other  The other object.
      *
@@ -115,7 +118,7 @@ public:
      */
     [[nodiscard]] constexpr bool subsumes(Interval const& other) const noexcept
     {
-        return other.mMin >= mMin && other.mMax <= mMax;
+        return mMin <= other.mMin && other.mMax <= mMax;
     }
     /**
      * @brief      Checks if both intervals overlap partial or totally.
@@ -207,13 +210,31 @@ public:
         return Location::Within;
     }
     /**
+     * @brief      Calculates the relationship with another interval.
+     *
+     * @param[in]  other  The other object.
+     *
+     * @return     Enum describing the relationship between both instances.
+     */
+    [[nodiscard]] constexpr Relationship
+    relates(Interval const& other) const noexcept
+    {
+        if (subsumes(other)) {
+            return Relationship::Subsumed;
+        } else if (overlaps(other)) {
+            return Relationship::Overlapped;
+        } else {
+            return Relationship::Isolated;
+        }
+    }
+    /**
      * @brief      Shifts the interval by the selected amount of positions, in a
      *             single direction.
      *
      * @param[in]  offset  The offset. Positive numbers moves it up, and
      *                     negative numbers moves it down.
      *
-     *                     @{
+     * @{
      */
     [[nodiscard]] constexpr Interval move(int64_t const offset) const& noexcept
     {

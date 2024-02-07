@@ -30,6 +30,9 @@ public:
     /**
      * @brief      Parametrized constructor
      *
+     * @note       The intervals are compacted and sorted when this instance is
+     *             constructed.
+     *
      * @param[in]  intervals  The intervals.
      */
     explicit IntervalSet(std::vector<Interval<T>>&& intervals) noexcept
@@ -39,6 +42,9 @@ public:
     }
     /**
      * @brief      Parametrized constructor
+     *
+     * @note       The intervals are compacted and sorted when this instance is
+     *             constructed.
      *
      * @param[in]  intervals  The intervals.
      */

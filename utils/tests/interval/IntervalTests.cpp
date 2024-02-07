@@ -271,16 +271,15 @@ TEST_CASE("[Interval] subsumes() method", "[utils][Interval]")
 {
     SECTION("Runtime tests")
     {
+        Interval const interval1{2, 3};
         SECTION("One interval includes the other one totally")
         {
-            Interval const interval1{2, 3};
             Interval const interval2{-3, 6};
             CHECK_FALSE(interval1.subsumes(interval2));
             CHECK(interval2.subsumes(interval1));
         }
         SECTION("Contiguous intervals")
         {
-            Interval const interval1{2, 3};
             Interval const interval2{-3, 1};
             CHECK_FALSE(interval1.subsumes(interval2));
             CHECK_FALSE(interval2.subsumes(interval1));
@@ -289,14 +288,12 @@ TEST_CASE("[Interval] subsumes() method", "[utils][Interval]")
         {
             SECTION("Left extreme")
             {
-                Interval const interval1{1, 3};
-                Interval const interval2{1, 5};
+                Interval const interval2{2, 5};
                 CHECK(interval2.subsumes(interval1));
                 CHECK_FALSE(interval1.subsumes(interval2));
             }
             SECTION("Right extreme")
             {
-                Interval const interval1{2, 3};
                 Interval const interval2{-3, 3};
                 CHECK(interval2.subsumes(interval1));
                 CHECK_FALSE(interval1.subsumes(interval2));
@@ -359,7 +356,7 @@ TEST_CASE("[Interval] overlaps() method", "[utils][Interval]")
 
 TEST_CASE("[Interval] contains() method", "[utils][Interval]")
 {
-    
+
     SECTION("Runtime tests")
     {
         Interval const interval1{2, 7};
@@ -632,6 +629,60 @@ TEST_CASE("[Interval] getRelativePosition() method", "[utils][Interval]")
             STATIC_CHECK(
                 interval1.getRelativePosition(Boundary::Start, 3) == 1);
             STATIC_CHECK(interval1.getRelativePosition(Boundary::End, 3) == -4);
+        }
+    }
+}
+
+TEST_CASE("[Interval] relates() method", "[utils][Interval]")
+{
+    SECTION("Runtime tests")
+    {
+        Interval const interval1{2, 3};
+        SECTION("One interval includes the other one totally")
+        {
+            Interval const interval2{-3, 6};
+            CHECK(interval1.relates(interval2) == Relationship::Overlapped);
+            CHECK(interval2.relates(interval1) == Relationship::Subsumed);
+        }
+        SECTION("Isolated intervals")
+        {
+            Interval const interval2{-3, 1};
+            CHECK(interval1.relates(interval2) == Relationship::Isolated);
+            CHECK(interval2.relates(interval1) == Relationship::Isolated);
+        }
+        SECTION("Overlapped intervals")
+        {
+            Interval const interval2{-3, 2};
+            CHECK(interval1.relates(interval2) == Relationship::Overlapped);
+            CHECK(interval2.relates(interval1) == Relationship::Overlapped);
+        }
+    }
+    SECTION("Static tests")
+    {
+        constexpr Interval interval1{2, 3};
+        SECTION("One interval includes the other one totally")
+        {
+            constexpr Interval interval2{-3, 6};
+            STATIC_CHECK(
+                interval1.relates(interval2) == Relationship::Overlapped);
+            STATIC_CHECK(
+                interval2.relates(interval1) == Relationship::Subsumed);
+        }
+        SECTION("Isolated intervals")
+        {
+            constexpr Interval interval2{-3, 1};
+            STATIC_CHECK(
+                interval1.relates(interval2) == Relationship::Isolated);
+            STATIC_CHECK(
+                interval2.relates(interval1) == Relationship::Isolated);
+        }
+        SECTION("Overlapped intervals")
+        {
+            constexpr Interval interval2{-3, 2};
+            STATIC_CHECK(
+                interval1.relates(interval2) == Relationship::Overlapped);
+            STATIC_CHECK(
+                interval2.relates(interval1) == Relationship::Overlapped);
         }
     }
 }
