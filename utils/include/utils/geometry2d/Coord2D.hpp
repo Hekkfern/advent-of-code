@@ -48,7 +48,15 @@ public:
     {
         return mX == other.mX && mY == other.mY;
     }
-
+    /**
+     * @brief Represents this class as a @ref std::string
+     *
+     * @return String representing this class.
+     */
+    [[nodiscard]] std::string toString() const
+    {
+        return "[" + std::to_string(mX) + "," + std::to_string(mY) + "]";
+    }
     /**
      * \brief Getter for structured binding
      * \tparam N
@@ -65,6 +73,20 @@ public:
     }
 
 private:
+    /**
+     * @brief      "Insert string into stream" operator.
+     *
+     * @param[in]  os        The output stream.
+     * @param[in]  obj  The instance.
+     *
+     * @return     The updated output stream.
+     */
+    friend std::ostream& operator<<(std::ostream& os, Coord2D const& obj)
+    {
+        os << obj.toString();
+        return os;
+    }
+
     /**
      * Stores coordinate X.
      */

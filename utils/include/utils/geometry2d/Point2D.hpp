@@ -2,9 +2,9 @@
 
 #include "../Concepts.hpp"
 #include "Coord2D.hpp"
+#include <array>
 #include <cstdint>
 #include <ostream>
-#include <vector>
 
 namespace utils::geometry2d {
 
@@ -19,14 +19,14 @@ public:
     /**
      * @brief      Default constructor.
      */
-    constexpr explicit Point2D() = default;
+    constexpr explicit Point2D() noexcept = default;
     /**
      * @brief      Constructs a new instance.
      *
      * @param[in]  x     Coordinate X.
      * @param[in]  y     Coordinate Y.
      */
-    constexpr explicit Point2D(T const x, T const y)
+    constexpr explicit Point2D(T const x, T const y) noexcept
         : mX{x}
         , mY{y}
     {
@@ -36,7 +36,7 @@ public:
      *
      * @param[in]  coords  Coordinates.
      */
-    constexpr explicit Point2D(Coord2D<T> const coords)
+    constexpr explicit Point2D(Coord2D<T> const coords) noexcept
         : mX{coords.getX()}
         , mY{coords.getY()}
     {
@@ -46,7 +46,7 @@ public:
      *
      * @return     The coordinates as a pair (X,Y).
      */
-    [[nodiscard]] Coord2D<T> getCoordinates() const
+    [[nodiscard]] constexpr Coord2D<T> getCoordinates() const noexcept
     {
         return Coord2D<T>{mX, mY};
     }
@@ -55,21 +55,22 @@ public:
      *
      * @return     The coordinate X.
      */
-    [[nodiscard]] T getX() const { return mX; }
+    [[nodiscard]] constexpr T getX() const noexcept { return mX; }
     /**
      * @brief      Gets the coordinate Y.
      *
      * @return     The coordinate Y.
      */
-    [[nodiscard]] T getY() const { return mY; }
+    [[nodiscard]] constexpr T getY() const noexcept { return mY; }
     /**
      * @brief Gets a list of all the colliding points.
      *
      * @return List of colliding points.
      */
-    [[nodiscard]] std::vector<Point2D<T>> getNeighbors() const noexcept
+    [[nodiscard]] constexpr std::array<Point2D, 4ULL>
+    getNeighbors() const noexcept
     {
-        return std::vector<Point2D<T>>{
+        return {
             Point2D{mX, mY + 1},
             Point2D{mX + 1, mY},
             Point2D{mX, mY - 1},
@@ -79,14 +80,42 @@ public:
      * @brief      Sets the coordinate X.
      *
      * @param[in]  x     The coordinate X.
+     *
+     * @{
      */
-    void setX(T const x) { mX = x; }
+    [[nodiscard]] constexpr Point2D setX(T const x) const& noexcept
+    {
+        Point2D result{*this};
+        result.mX = x;
+        return result;
+    }
+    [[nodiscard]] constexpr Point2D setX(T const x) && noexcept
+    {
+        Point2D result{std::move(*this)};
+        result.mX = x;
+        return result;
+    }
+    /** @} */
     /**
      * @brief      Sets the coordinate Y.
      *
      * @param[in]  y     The coordinate Y.
+     *
+     * @{
      */
-    void setY(T const y) { mY = y; }
+    [[nodiscard]] constexpr Point2D setY(T const y) const& noexcept
+    {
+        Point2D result{*this};
+        result.mY = y;
+        return result;
+    }
+    [[nodiscard]] constexpr Point2D setY(T const y) && noexcept
+    {
+        Point2D result{std::move(*this)};
+        result.mY = y;
+        return result;
+    }
+    /** @} */
     /**
      * @brief      Equality operator.
      *
@@ -94,7 +123,8 @@ public:
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] bool operator==(Point2D<T> const& other) const
+    [[nodiscard]] constexpr bool
+    operator==(Point2D<T> const& other) const noexcept
     {
         return mX == other.mX && mY == other.mY;
     }
@@ -106,7 +136,8 @@ public:
      *
      * @return     The result of the addition.
      */
-    [[nodiscard]] Point2D<T> operator+(Point2D<T> const& other) const
+    [[nodiscard]] constexpr Point2D
+    operator+(Point2D const& other) const noexcept
     {
         return Point2D{mX + other.mX, mY + other.mY};
     }
@@ -115,7 +146,10 @@ public:
      *
      * @return     The result of the subtraction
      */
-    [[nodiscard]] Point2D<T> operator-() const { return Point2D<T>{-mX, -mY}; }
+    [[nodiscard]] constexpr Point2D operator-() const noexcept
+    {
+        return Point2D{-mX, -mY};
+    }
     /**
      * @brief      Subtraction operator.
      *
@@ -123,7 +157,8 @@ public:
      *
      * @return     The result of the subtraction
      */
-    [[nodiscard]] Point2D<T> operator-(Point2D<T> const& other) const
+    [[nodiscard]] constexpr Point2D
+    operator-(Point2D const& other) const noexcept
     {
         return *this + (-other);
     }
@@ -139,9 +174,18 @@ public:
      * @return     New point.
      */
     template <std::integral U>
-    [[nodiscard]] static Point2D<T> create(U x, U y)
+    [[nodiscard]] constexpr static Point2D<T> create(U x, U y) noexcept
     {
-        return Point2D<T>{static_cast<T>(x), static_cast<T>(y)};
+        return Point2D{static_cast<T>(x), static_cast<T>(y)};
+    }
+    /**
+     * @brief Represents this class as a @ref std::string
+     *
+     * @return String representing this class.
+     */
+    [[nodiscard]] std::string toString() const
+    {
+        return "[" + std::to_string(mX) + "," + std::to_string(mY) + "]";
     }
 
 private:
@@ -153,9 +197,10 @@ private:
      *
      * @return     The updated output stream.
      */
-    friend std::ostream& operator<<(std::ostream& os, Point2D<T> const& obj)
+    friend std::ostream&
+    operator<<(std::ostream& os, Point2D<T> const& obj) noexcept
     {
-        os << '(' << obj.mX << ',' << obj.mY << ')';
+        os << obj.toString();
         return os;
     }
 

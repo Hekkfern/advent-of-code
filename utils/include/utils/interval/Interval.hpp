@@ -206,13 +206,14 @@ public:
         }
         return Location::Within;
     }
-
     /**
      * @brief      Shifts the interval by the selected amount of positions, in a
      *             single direction.
      *
      * @param[in]  offset  The offset. Positive numbers moves it up, and
      *                     negative numbers moves it down.
+     *
+     *                     @{
      */
     [[nodiscard]] constexpr Interval move(int64_t const offset) const& noexcept
     {
@@ -221,14 +222,6 @@ public:
         result.mMax += static_cast<T>(offset);
         return result;
     }
-
-    /**
-     * @brief      Shifts the interval by the selected amount of positions, in a
-     *             single direction.
-     *
-     * @param[in]  offset  The offset. Positive numbers moves it up, and
-     *                     negative numbers moves it down.
-     */
     [[nodiscard]] constexpr Interval move(std::int64_t const offset) && noexcept
     {
         Interval result{std::move(*this)};
@@ -236,11 +229,13 @@ public:
         result.mMax += static_cast<T>(offset);
         return result;
     }
-
+    /** @} */
     /**
      * @brief Increases both boundaries by the value in @p offset.
      *
      * @param[in] offset Amount to expand. It cannot be a negative number.
+     *
+     * @{
      */
     [[nodiscard]] constexpr Interval
     expand(std::size_t const offset) const& noexcept
@@ -250,12 +245,6 @@ public:
         result.mMax += static_cast<T>(offset);
         return result;
     }
-
-    /**
-     * @brief Increases both boundaries by the value in @p offset.
-     *
-     * @param[in] offset Amount to expand. It cannot be a negative number.
-     */
     [[nodiscard]] constexpr Interval
     expand(std::size_t const offset) && noexcept
     {
@@ -264,12 +253,14 @@ public:
         result.mMax += static_cast<T>(offset);
         return result;
     }
-
+    /** @} */
     /**
      * @brief Increases both boundaries by the value in @p offset.
      *
      * @param[in] leftOffset Amount to expand. It cannot be a negative number.
      * @param[in] rightOffset Amount to expand. It cannot be a negative number.
+     *
+     * @{
      */
     [[nodiscard]] constexpr Interval
     expand(std::size_t const leftOffset, std::size_t const rightOffset) const&
@@ -279,13 +270,6 @@ public:
         result.mMax += static_cast<T>(rightOffset);
         return result;
     }
-
-    /**
-     * @brief Increases both boundaries by the value in @p offset.
-     *
-     * @param[in] leftOffset Amount to expand. It cannot be a negative number.
-     * @param[in] rightOffset Amount to expand. It cannot be a negative number.
-     */
     [[nodiscard]] constexpr Interval
     expand(std::size_t const leftOffset, std::size_t const rightOffset) &&
     {
@@ -294,7 +278,7 @@ public:
         result.mMax += static_cast<T>(rightOffset);
         return result;
     }
-
+    /** @} */
     /**
      * @brief      Calculates the relative position of the selected value from
      *             the boundary selected in @p boundary parameter.
@@ -318,7 +302,6 @@ public:
         }
         return T{0};
     }
-
     /**
      * @brief      Creates an interval by setting both boundaries.
      *
@@ -336,7 +319,6 @@ public:
     {
         return Interval{static_cast<T>(a), static_cast<T>(b)};
     }
-
     /**
      * @brief      Creates an interval by setting one boundary and its length.
      *
@@ -380,14 +362,13 @@ private:
      * @brief      "Insert string into stream" operator.
      *
      * @param[in]  os        The output stream.
-     * @param[in]  interval  The interval.
+     * @param[in]  obj  The instance.
      *
      * @return     The updated output stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& os, Interval<T> const& interval)
+    friend std::ostream& operator<<(std::ostream& os, Interval<T> const& obj)
     {
-        os << interval.toString();
+        os << obj.toString();
         return os;
     }
 

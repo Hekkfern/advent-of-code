@@ -6,151 +6,216 @@ using namespace utils::geometry2d;
 
 TEST_CASE("[Point2D] create() method", "[utils][Point2D]")
 {
-    SECTION("Positive values")
+    SECTION("Runtime tests")
     {
-        Point2D<> const point2D{Point2D<>::create(2, 4)};
-        CHECK(point2D.getX() == 2);
-        CHECK(point2D.getY() == 4);
-    }
-    SECTION("Positive and negatives values")
-    {
-        Point2D<> const point2D{Point2D<>::create(-2, 3)};
-        CHECK(point2D.getX() == -2);
-        CHECK(point2D.getY() == 3);
+        SECTION("Positive values")
+        {
+            Point2D<> const point2D{Point2D<>::create(2, 4)};
+            CHECK(point2D.getX() == 2);
+            CHECK(point2D.getY() == 4);
+        }
+        SECTION("Positive and negatives values")
+        {
+            Point2D<> const point2D{Point2D<>::create(-2, 3)};
+            CHECK(point2D.getX() == -2);
+            CHECK(point2D.getY() == 3);
+        }
     }
 }
 
 TEST_CASE("[Point2D] Constructor", "[Point2D]")
 {
-    SECTION("Default constructor")
+    SECTION("Runtime tests")
     {
-        Point2D<> const point2D;
-        CHECK(point2D.getX() == 0);
-        CHECK(point2D.getY() == 0);
-        auto const coords{point2D.getCoordinates()};
-        CHECK(coords.getX() == 0);
-        CHECK(coords.getY() == 0);
-    }
-    SECTION("Parametrized constructor")
-    {
-        SECTION("Positive values")
+        SECTION("Default constructor")
         {
-            Point2D<> const point2D{2, 4};
-            CHECK(point2D.getX() == 2);
-            CHECK(point2D.getY() == 4);
+            Point2D<> const point2D;
+            CHECK(point2D.getX() == 0);
+            CHECK(point2D.getY() == 0);
             auto const coords{point2D.getCoordinates()};
-            CHECK(coords.getX() == 2);
-            CHECK(coords.getY() == 4);
+            CHECK(coords.getX() == 0);
+            CHECK(coords.getY() == 0);
         }
-        SECTION("Positive and negatives values")
+        SECTION("Parametrized constructor")
         {
-            Point2D<> const point2D{-2, 3};
-            CHECK(point2D.getX() == -2);
-            CHECK(point2D.getY() == 3);
-            auto const coords{point2D.getCoordinates()};
-            CHECK(coords.getX() == -2);
-            CHECK(coords.getY() == 3);
+            SECTION("Positive values")
+            {
+                Point2D<> const point2D{2, 4};
+                CHECK(point2D.getX() == 2);
+                CHECK(point2D.getY() == 4);
+                auto const coords{point2D.getCoordinates()};
+                CHECK(coords.getX() == 2);
+                CHECK(coords.getY() == 4);
+            }
+            SECTION("Positive and negatives values")
+            {
+                Point2D<> const point2D{-2, 3};
+                CHECK(point2D.getX() == -2);
+                CHECK(point2D.getY() == 3);
+                auto const coords{point2D.getCoordinates()};
+                CHECK(coords.getX() == -2);
+                CHECK(coords.getY() == 3);
+            }
         }
-    }
-    SECTION("Group constructor")
-    {
-        SECTION("Positive values")
+        SECTION("Group constructor")
         {
-            Point2D<> const point2D{Coord2D<>{2, 4}};
-            CHECK(point2D.getX() == 2);
-            CHECK(point2D.getY() == 4);
-            auto const coords{point2D.getCoordinates()};
-            CHECK(coords.getX() == 2);
-            CHECK(coords.getY() == 4);
-        }
-        SECTION("Positive and negatives values")
-        {
-            Point2D<> const point2D{Coord2D<>{-2, 3}};
-            CHECK(point2D.getX() == -2);
-            CHECK(point2D.getY() == 3);
-            auto const coords{point2D.getCoordinates()};
-            CHECK(coords.getX() == -2);
-            CHECK(coords.getY() == 3);
+            SECTION("Positive values")
+            {
+                Point2D<> const point2D{Coord2D<>{2, 4}};
+                CHECK(point2D.getX() == 2);
+                CHECK(point2D.getY() == 4);
+                auto const coords{point2D.getCoordinates()};
+                CHECK(coords.getX() == 2);
+                CHECK(coords.getY() == 4);
+            }
+            SECTION("Positive and negatives values")
+            {
+                Point2D<> const point2D{Coord2D<>{-2, 3}};
+                CHECK(point2D.getX() == -2);
+                CHECK(point2D.getY() == 3);
+                auto const coords{point2D.getCoordinates()};
+                CHECK(coords.getX() == -2);
+                CHECK(coords.getY() == 3);
+            }
         }
     }
 }
 
 TEST_CASE("[Point2D] Constructor and containers", "[Point2D]")
 {
-    SECTION("Array")
+    SECTION("Runtime tests")
     {
-        std::array<Point2D<int32_t>, 2U> const points;
-        for (auto const& p : points) {
-            REQUIRE(p.getX() == 0);
-            REQUIRE(p.getY() == 0);
+        SECTION("Array")
+        {
+            std::array<Point2D<int32_t>, 2U> const points;
+            for (auto const& p : points) {
+                CHECK(p.getX() == 0);
+                CHECK(p.getY() == 0);
+            }
         }
     }
 }
 
 TEST_CASE("[Point2D] getNeighbors() method", "[utils][Point2D]")
 {
-    Point2D<> const point2D{Coord2D<>{2, 4}};
-    auto const neighbors{point2D.getNeighbors()};
-    CHECK(neighbors.size() == 4U);
+    SECTION("Runtime tests")
+    {
+        Point2D<> const point2D{Coord2D<>{2, 4}};
+        auto const neighbors{point2D.getNeighbors()};
+        CHECK(neighbors.size() == 4U);
+    }
 }
 
 TEST_CASE("[Point2D] Setter methods", "[utils][Point2D]")
 {
-    Point2D<> point2D{2, 4};
-    REQUIRE(point2D.getX() == 2);
-    REQUIRE(point2D.getY() == 4);
-    SECTION("Set X")
+    SECTION("Runtime tests")
     {
-        point2D.setX(3);
-        REQUIRE(point2D.getX() == 3);
-        REQUIRE(point2D.getY() == 4);
+        Point2D const point2D{2, 4};
+        SECTION("Set X")
+        {
+            auto const p2{point2D.setX(3)};
+            CHECK(p2.getX() == 3);
+            CHECK(p2.getY() == 4);
+        }
+        SECTION("Set Y")
+        {
+            auto const p2{point2D.setY(5)};
+            CHECK(p2.getX() == 2);
+            CHECK(p2.getY() == 5);
+        }
     }
-    SECTION("Set Y")
+    SECTION("Static tests")
     {
-        point2D.setY(5);
-        REQUIRE(point2D.getX() == 2);
-        REQUIRE(point2D.getY() == 5);
+        constexpr Point2D point2D{2, 4};
+        SECTION("Set X")
+        {
+            constexpr auto p2{point2D.setX(3)};
+            STATIC_CHECK(p2.getX() == 3);
+            STATIC_CHECK(p2.getY() == 4);
+        }
+        SECTION("Set Y")
+        {
+            constexpr auto p2{point2D.setY(5)};
+            STATIC_CHECK(p2.getX() == 2);
+            STATIC_CHECK(p2.getY() == 5);
+        }
     }
 }
 
 TEST_CASE("[Point2D] Equality operator", "[utils][Point2D]")
 {
-    SECTION("Different")
+    SECTION("Runtime tests")
     {
-        Point2D const p1{2, 3};
-        Point2D const p2{-4, 2};
-        CHECK_FALSE(p1 == p2);
-        CHECK(p1 != p2);
+        SECTION("Different")
+        {
+            Point2D const p1{2, 3};
+            Point2D const p2{-4, 2};
+            CHECK_FALSE(p1 == p2);
+            CHECK(p1 != p2);
+        }
+        SECTION("Equal")
+        {
+            Point2D const p1{2, 3};
+            Point2D const p2{2, 3};
+            CHECK(p1 == p2);
+            CHECK_FALSE(p1 != p2);
+        }
     }
-    SECTION("Equal")
+    SECTION("Static tests")
     {
-        Point2D const p1{2, 3};
-        Point2D const p2{2, 3};
-        CHECK(p1 == p2);
-        CHECK_FALSE(p1 != p2);
+        SECTION("Different")
+        {
+            constexpr Point2D p1{2, 3};
+            constexpr Point2D p2{-4, 2};
+            STATIC_CHECK_FALSE(p1 == p2);
+            STATIC_CHECK(p1 != p2);
+        }
+        SECTION("Equal")
+        {
+            constexpr Point2D p1{2, 3};
+            constexpr Point2D p2{2, 3};
+            STATIC_CHECK(p1 == p2);
+            STATIC_CHECK_FALSE(p1 != p2);
+        }
     }
 }
 
 TEST_CASE("[Point2D] Addition operator", "[utils][Point2D]")
 {
-    Point2D const p1{-2, 3};
-    Point2D const p2{4, 2};
-    CHECK((p1 + p2) == Point2D{2, 5});
-    CHECK((p2 + p1) == Point2D{2, 5});
+    SECTION("Runtime tests")
+    {
+        Point2D const p1{-2, 3};
+        Point2D const p2{4, 2};
+        CHECK((p1 + p2) == Point2D{2, 5});
+        CHECK((p2 + p1) == Point2D{2, 5});
+    }
 }
 
 TEST_CASE("[Point2D] Negation operator", "[utils][Point2D]")
 {
-    Point2D const p1{-2, 3};
-    Point2D const p2{4, -2};
-    CHECK(-p1 == Point2D{2, -3});
-    CHECK(-p2 == Point2D{-4, 2});
+    SECTION("Runtime tests")
+    {
+        Point2D const p1{-2, 3};
+        Point2D const p2{4, -2};
+        CHECK(-p1 == Point2D{2, -3});
+        CHECK(-p2 == Point2D{-4, 2});
+    }
+    SECTION("Static tests")
+    {
+        constexpr Point2D p1{-2, 3};
+        constexpr Point2D p2{4, -2};
+        STATIC_CHECK(-p1 == Point2D{2, -3});
+        STATIC_CHECK(-p2 == Point2D{-4, 2});
+    }
 }
 
 TEST_CASE("[Point2D] Subtraction operator", "[utils][Point2D]")
 {
-    Point2D const p1{-2, 3};
-    Point2D const p2{4, 2};
-    CHECK((p1 - p2) == Point2D{-6, 1});
-    CHECK((p2 - p1) == Point2D{6, -1});
+    SECTION("Runtime tests")
+    {
+        Point2D const p1{-2, 3};
+        Point2D const p2{4, 2};
+        CHECK((p1 - p2) == Point2D{-6, 1});
+        CHECK((p2 - p1) == Point2D{6, -1});
+    }
 }
