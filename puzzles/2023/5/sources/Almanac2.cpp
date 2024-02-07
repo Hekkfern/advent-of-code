@@ -4,10 +4,11 @@
 
 namespace aoc_2023_5 {
 
-std::vector<SeedRange>
-convert(std::vector<SeedRange> const& input, aoc_2023_5::RangeMap const& map)
+utils::interval::IntervalSet<int64_t> convert(
+    utils::interval::IntervalSet<int64_t> const& input,
+    aoc_2023_5::RangeMap const& map)
 {
-    std::vector<SeedRange> output;
+    utils::interval::IntervalSet<int64_t> output;
 
     // Get the first relevant map
     auto it = ranges::upper_bound(
@@ -43,15 +44,27 @@ convert(std::vector<SeedRange> const& input, aoc_2023_5::RangeMap const& map)
             }
         }
     }
-    std::ranges::sort(output, std::less<>{});
     return output;
 }
 
-std::vector<SeedRange>
-Almanac2::getSeedRangeLocations(SeedRange seedRange) const noexcept
+utils::interval::IntervalSet<int64_t> Almanac2::getSeedRangeLocations(
+    utils::interval::IntervalSet<int64_t> const& seedRange) const noexcept
 {
-    // todo
-    return std::vector<SeedRange>();
+    return convert(
+        convert(
+            convert(
+                convert(
+                    convert(
+                        convert(
+                            convert(
+                                convert(seedRange, seed2SoilMap),
+                                soil2FertilizerMap),
+                            soil2FertilizerMap),
+                        fertilizer2WaterMap),
+                    water2LightMap),
+                light2TemperatureMap),
+            temperature2HumidityMap),
+        humidity2LocationMap);
 }
 
 } // namespace aoc_2023_5
