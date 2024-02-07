@@ -293,6 +293,25 @@ public:
         return *it;
     }
     /**
+     * @brief      Calculates the overlapping parts of both provided intervals.
+     *
+     * @param[in]  other  The other object.
+     *
+     * @return     A new @ref IntervalSet with the overlapped fragment.
+     */
+    [[nodiscard]] constexpr IntervalSet
+    intersect(Interval<T> const& other) const noexcept
+    {
+        std::vector<Interval<T>> overlappedIntervals;
+        for (Interval<T> const& internalInterval : mIntervals) {
+            auto const result{internalInterval.intersect(other)};
+            if (result) {
+                overlappedIntervals.emplace_back(*result);
+            }
+        }
+        return IntervalSet{overlappedIntervals};
+    }
+    /**
      * @brief      Implicit conversion operator to @ref std::string
      *
      * @return     String representing this class.
@@ -309,6 +328,12 @@ public:
             [](std::string const& accum, Interval<T> const& item)
                 -> std::string { return accum + "," + item.toString(); });
     }
+    /**
+     * @brief      Checks if there is any interval.
+     *
+     * @return     True if the interval set is empty. False, otherwise.
+     */
+    [[nodiscard]] bool empty() const noexcept { return mIntervals.empty(); }
     /**
      * @brief      Equality operator
      *
@@ -328,6 +353,9 @@ private:
      */
     void reduce() noexcept
     {
+        if (mIntervals.empty()) {
+            return;
+        }
         // order the intervals
         ranges::sort(mIntervals);
         // try to join intervals

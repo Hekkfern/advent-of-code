@@ -15,20 +15,39 @@ TEST_CASE("[IntervalSet] Constructor", "[utils][IntervalSet]")
     }
     SECTION("Parametrized constructor 1")
     {
-        std::vector<Interval<>> const intervals{
-            {Interval{1, 3}, Interval{-1, 4}, Interval{5, 7}}};
-        IntervalSet const intervalSet{intervals};
-        auto const result1{intervalSet.get()};
-        REQUIRE(result1.size() == 1U);
-        CHECK(result1[0] == Interval{-1, 7});
+        SECTION("Empty")
+        {
+            std::vector<Interval<>> const intervals;
+            IntervalSet const intervalSet{intervals};
+            auto const result1{intervalSet.get()};
+            REQUIRE(result1.empty());
+        }
+        SECTION("Non-empty")
+        {
+            std::vector<Interval<>> const intervals{
+                {Interval{1, 3}, Interval{-1, 4}, Interval{5, 7}}};
+            IntervalSet const intervalSet{intervals};
+            auto const result1{intervalSet.get()};
+            REQUIRE(result1.size() == 1U);
+            CHECK(result1[0] == Interval{-1, 7});
+        }
     }
     SECTION("Parametrized constructor 2")
     {
-        IntervalSet const interval1{
-            {Interval{1, 3}, Interval{-1, 4}, Interval{5, 7}}};
-        auto const result1{interval1.get()};
-        REQUIRE(result1.size() == 1U);
-        CHECK(result1[0] == Interval{-1, 7});
+        SECTION("Empty")
+        {
+            IntervalSet const interval1{{}};
+            auto const result1{interval1.get()};
+            REQUIRE(result1.empty());
+        }
+        SECTION("Non-empty")
+        {
+            IntervalSet const interval1{
+                {Interval{1, 3}, Interval{-1, 4}, Interval{5, 7}}};
+            auto const result1{interval1.get()};
+            REQUIRE(result1.size() == 1U);
+            CHECK(result1[0] == Interval{-1, 7});
+        }
     }
 }
 
@@ -353,6 +372,58 @@ TEST_CASE("[IntervalSet] getIntervalFor() method", "[utils][IntervalSet]")
     {
         auto const result{intervalSet1.getIntervalFor(-7)};
         REQUIRE_FALSE(result);
+    }
+}
+
+TEST_CASE("[IntervalSet] intersect() method", "[utils][IntervalSet]")
+{
+    IntervalSet const intervalSet1{{Interval{1, 4}, Interval{7, 10}}};
+    SECTION("Subsumed")
+    {
+        Interval const interval2{8, 9};
+        auto const result{intervalSet1.intersect(interval2)};
+        REQUIRE_FALSE(result.empty());
+        auto const& intersectedIntervals{result.get()};
+        REQUIRE(intersectedIntervals.size() == 1);
+        CHECK(intersectedIntervals[0] == Interval{8, 9});
+    }
+    SECTION("Equal intervals")
+    {
+        Interval const interval2{1, 4};
+        auto const result{intervalSet1.intersect(interval2)};
+        REQUIRE_FALSE(result.empty());
+        auto const& intersectedIntervals{result.get()};
+        REQUIRE(intersectedIntervals.size() == 1);
+        CHECK(intersectedIntervals[0] == Interval{1, 4});
+    }
+    SECTION("Isolated")
+    {
+        Interval const interval2{5, 5};
+        auto const result{intervalSet1.intersect(interval2)};
+        REQUIRE(result.empty());
+    }
+    SECTION("Touch one boundary")
+    {
+        Interval const interval2{0, 1};
+        auto const result{intervalSet1.intersect(interval2)};
+        REQUIRE_FALSE(result.empty());
+        auto const& intersectedIntervals{result.get()};
+        REQUIRE(intersectedIntervals.size() == 1);
+        CHECK(intersectedIntervals[0] == Interval{1, 1});
+    }
+}
+
+TEST_CASE("[IntervalSet] empty() method", "[utils][IntervalSet]")
+{
+    SECTION("Empty")
+    {
+        IntervalSet const intervalSet1;
+        CHECK(intervalSet1.empty());
+    }
+    SECTION("Non-empty")
+    {
+        IntervalSet const intervalSet1{{Interval{1, 4}, Interval{7, 10}}};
+        CHECK_FALSE(intervalSet1.empty());
     }
 }
 
