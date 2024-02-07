@@ -19,14 +19,14 @@ public:
     /**
      * @brief      Default constructor.
      */
-    explicit Point2D() = default;
+    constexpr explicit Point2D() = default;
     /**
      * @brief      Constructs a new instance.
      *
      * @param[in]  x     Coordinate X.
      * @param[in]  y     Coordinate Y.
      */
-    explicit Point2D(T const x, T const y)
+    constexpr explicit Point2D(T const x, T const y)
         : mX{x}
         , mY{y}
     {
@@ -36,9 +36,9 @@ public:
      *
      * @param[in]  coords  Coordinates.
      */
-    explicit Point2D(Coord2D<T> const coords)
-        : mX{coords.mX}
-        , mY{coords.mY}
+    constexpr explicit Point2D(Coord2D<T> const coords)
+        : mX{coords.getX()}
+        , mY{coords.getY()}
     {
     }
     /**
@@ -46,7 +46,10 @@ public:
      *
      * @return     The coordinates as a pair (X,Y).
      */
-    [[nodiscard]] Coord2D<T> getCoordinates() const { return {mX, mY}; }
+    [[nodiscard]] Coord2D<T> getCoordinates() const
+    {
+        return Coord2D<T>{mX, mY};
+    }
     /**
      * @brief      Gets the coordinate X.
      *

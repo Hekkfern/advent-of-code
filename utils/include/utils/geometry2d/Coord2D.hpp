@@ -10,22 +10,33 @@ namespace utils::geometry2d {
  * @tparam     T     Type of the coordinate values.
  */
 template <SignedIntegerType T = int32_t>
-struct Coord2D {
+class Coord2D {
+public:
     /**
      * @brief      Default constructor
      */
-    Coord2D() = default;
+    constexpr explicit Coord2D() noexcept = default;
     /**
      * @brief      Parametrized constructor
      *
      * @param[in]  x     Coordinate X.
      * @param[in]  y     Coordinate Y.
      */
-    Coord2D(T x, T y)
+    constexpr explicit Coord2D(T x, T y) noexcept
         : mX{x}
         , mY{y}
     {
     }
+    /**
+     * \brief
+     * \return
+     */
+    [[nodiscard]] constexpr T getX() const noexcept { return mX; }
+    /**
+     * \brief
+     * \return
+     */
+    [[nodiscard]] constexpr T getY() const noexcept { return mY; }
     /**
      * @brief      Equality operator.
      *
@@ -33,18 +44,54 @@ struct Coord2D {
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] bool operator==(Coord2D<> const& other) const
+    [[nodiscard]] constexpr bool operator==(Coord2D const& other) const noexcept
     {
         return mX == other.mX && mY == other.mY;
     }
+
+    /**
+     * \brief Getter for structured binding
+     * \tparam N
+     * \return
+     */
+    template <std::size_t N>
+    [[nodiscard]] decltype(auto) get() const
+    {
+        if constexpr (N == 0) {
+            return mX;
+        } else if constexpr (N == 1) {
+            return mY;
+        }
+    }
+
+private:
     /**
      * Stores coordinate X.
      */
-    T const mX{0};
+    T mX{0};
     /**
      * Stores coordinate Y.
      */
-    T const mY{0};
+    T mY{0};
 };
 
 } // namespace utils::geometry2d
+
+namespace std {
+
+/* Support for structured binding */
+template <class T>
+struct tuple_size<utils::geometry2d::Coord2D<T>>
+    : std::integral_constant<std::size_t, 2> { };
+/* Support for structured binding */
+template <class T>
+struct tuple_element<0, utils::geometry2d::Coord2D<T>> {
+    using type = T;
+};
+/* Support for structured binding */
+template <class T>
+struct tuple_element<1, utils::geometry2d::Coord2D<T>> {
+    using type = T;
+};
+
+} // namespace std

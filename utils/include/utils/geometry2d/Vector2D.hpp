@@ -50,8 +50,8 @@ public:
      * @param[in]  coords  Coordinates.
      */
     explicit Vector2D(Coord2D<T> const coords)
-        : mX{coords.mX}
-        , mY{coords.mY}
+        : mX{coords.getX()}
+        , mY{coords.getY()}
     {
     }
     /**
@@ -59,7 +59,10 @@ public:
      *
      * @return     The coordinates as a pair (X,Y).
      */
-    [[nodiscard]] Coord2D<T> getCoordinates() const { return {mX, mY}; }
+    [[nodiscard]] Coord2D<T> getCoordinates() const
+    {
+        return Coord2D<T>{mX, mY};
+    }
     /**
      * @brief      Gets the coordinate X.
      *
