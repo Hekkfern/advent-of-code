@@ -27,7 +27,7 @@ public:
      * @param[in]  x     Coordinate X.
      * @param[in]  y     Coordinate Y.
      */
-    constexpr explicit Vector2D(const T x, const T y)
+    constexpr explicit Vector2D(T const x, T const y)
         : mX{x}
         , mY{y}
     {

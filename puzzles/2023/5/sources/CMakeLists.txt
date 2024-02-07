@@ -17,8 +17,7 @@ add_library(
   RangeMap.cpp
   RangeMap.hpp
   RangeMapSection.cpp
-  RangeMapSection.hpp
-)
+  RangeMapSection.hpp)
 setup_puzzle(${_LIB_NAME})
 target_link_libraries(${_LIB_NAME} PRIVATE aoc_utils)
 target_link_libraries(${_LIB_NAME} PRIVATE range-v3)

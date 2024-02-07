@@ -77,7 +77,7 @@ public:
     {
         return overlaps(other) || areContiguous(other)
             ? std::make_optional<Interval<T>>(
-                  std::min(other.mMin, mMin), std::max(other.mMax, mMax))
+                std::min(other.mMin, mMin), std::max(other.mMax, mMax))
             : std::nullopt;
     }
     /**

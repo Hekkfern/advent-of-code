@@ -19,10 +19,8 @@ public:
     RangeMap humidity2LocationMap{};
 
     Almanac2() = default;
-    [[nodiscard]] utils::interval::IntervalSet<int64_t>
-    getSeedRangeLocations(const
-        utils::interval::IntervalSet<int64_t>& seedRange)
-        const noexcept;
+    [[nodiscard]] utils::interval::IntervalSet<int64_t> getSeedRangeLocations(
+        utils::interval::IntervalSet<int64_t> const& seedRange) const noexcept;
 };
 
 } // namespace aoc_2023_5

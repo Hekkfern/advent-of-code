@@ -9,10 +9,10 @@ void RangeMap::addSection(
     mSections.emplace_back(dest, src, length);
 }
 
-int64_t RangeMap::get(int64_t const key) const noexcept
+int64_t RangeMap::convert(int64_t const key) const noexcept
 {
     for (auto const& section : mSections) {
-        auto const value{section.get(key)};
+        auto const value{section.convert(key)};
         if (value) {
             return *value;
         }

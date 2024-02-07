@@ -9,7 +9,7 @@ utils::interval::IntervalSet<int64_t> convert(
     utils::interval::IntervalSet<int64_t> output;
     // For each input range in the input (the ranges are already sorted)
     for (auto const& inputInterval : input.get()) {
-        //TODO
+        // TODO
         (void)inputInterval;
         (void)map;
     }
