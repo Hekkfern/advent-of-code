@@ -158,7 +158,8 @@ std::string solvePart1(std::filesystem::path const& filePath)
 std::string solvePart2(std::filesystem::path const& filePath)
 {
     auto const almanac{parseInputFileForPart2(filePath)};
-    return "";
+    auto const locations{almanac.getSeedRangeLocations(almanac.seeds)};
+    return std::to_string(locations.get()[0].getMin());
 }
 
 // ---------- End of Public Methods ----------

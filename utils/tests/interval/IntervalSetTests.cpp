@@ -1,5 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
+#include <iostream>
 #include <sstream>
 #include <utils/interval/IntervalSet.hpp>
 
@@ -9,7 +10,7 @@ TEST_CASE("[IntervalSet] Constructor", "[utils][IntervalSet]")
 {
     SECTION("Default constructor")
     {
-        IntervalSet const intervalSet;
+        IntervalSet<> const intervalSet;
         auto const result1{intervalSet.get()};
         REQUIRE(result1.empty());
     }
@@ -209,17 +210,19 @@ TEST_CASE("[IntervalSet] join() method", "[utils][IntervalSet]")
 {
     SECTION("Non-overlapping intervals")
     {
-        IntervalSet const intervalSet1{{Interval{1, 1}}};
+        IntervalSet const intervalSet1{{Interval{1, 1}, Interval{7, 8}}};
         IntervalSet const intervalSet2{{Interval{3, 3}}};
         CHECK(
             intervalSet1.join(intervalSet2)
-            == IntervalSet{{Interval{1, 1}, Interval{3, 3}}});
+            == IntervalSet{{Interval{1, 1}, Interval{3, 3}, Interval{7, 8}}});
     }
     SECTION("Overlapping intervals")
     {
-        IntervalSet const intervalSet1{{Interval{1, 4}}};
+        IntervalSet const intervalSet1{{Interval{1, 4}, Interval{7, 8}}};
         IntervalSet const intervalSet2{{Interval{3, 3}}};
-        CHECK(intervalSet1.join(intervalSet2) == IntervalSet{{Interval{1, 4}}});
+        CHECK(
+            intervalSet1.join(intervalSet2)
+            == IntervalSet{{Interval{1, 4}, Interval{7, 8}}});
     }
 }
 
@@ -417,7 +420,7 @@ TEST_CASE("[IntervalSet] empty() method", "[utils][IntervalSet]")
 {
     SECTION("Empty")
     {
-        IntervalSet const intervalSet1;
+        IntervalSet<> const intervalSet1;
         CHECK(intervalSet1.empty());
     }
     SECTION("Non-empty")
@@ -437,8 +440,8 @@ TEST_CASE("[IntervalSet] Equality operator", "[utils][IntervalSet]")
 {
     SECTION("Empty IntervalSet")
     {
-        IntervalSet const interval1;
-        IntervalSet const interval2;
+        IntervalSet<> const interval1;
+        IntervalSet<> const interval2;
         CHECK(interval1 == interval2);
         CHECK_FALSE(interval1 != interval2);
     }
