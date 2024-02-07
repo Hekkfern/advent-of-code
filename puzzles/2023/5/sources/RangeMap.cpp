@@ -20,6 +20,6 @@ int64_t RangeMap::get(int64_t const key) const noexcept
     return key;
 }
 
-void RangeMap::sort() noexcept { ranges::sort(mSections, std::less<>{}); }
+void RangeMap::sort() noexcept { ranges::sort(mSections, std::less{}); }
 
 } // namespace aoc_2023_5
