@@ -359,9 +359,10 @@ TEST_CASE("[Interval] overlaps() method", "[utils][Interval]")
 
 TEST_CASE("[Interval] contains() method", "[utils][Interval]")
 {
-    Interval const interval1{2, 7};
+    
     SECTION("Runtime tests")
     {
+        Interval const interval1{2, 7};
         SECTION("Left extreme value") { CHECK(interval1.contains(2)); }
         SECTION("Intermediate value") { CHECK(interval1.contains(5)); }
         SECTION("Right extreme value") { CHECK(interval1.contains(7)); }
