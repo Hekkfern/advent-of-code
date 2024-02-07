@@ -18,7 +18,7 @@ void parseRangeLine(RangeMap& map, std::string const& line)
     std::stringstream ss{line};
     int64_t destinationStart, sourceStart, rangeLength;
     ss >> destinationStart >> sourceStart >> rangeLength;
-    map.addSection(destinationStart, sourceStart, rangeLength);
+    map.addSection(destinationStart, sourceStart, rangeLength - 1LL);
 }
 
 void parseMap(std::ifstream& fileStream, RangeMap& map)
