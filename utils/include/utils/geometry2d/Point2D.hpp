@@ -63,9 +63,9 @@ public:
      */
     [[nodiscard]] constexpr T getY() const noexcept { return mY; }
     /**
-     * @brief Gets a list of all the colliding points.
+     * @brief      Gets a list of all the colliding points.
      *
-     * @return List of colliding points.
+     * @return     List of colliding points.
      */
     [[nodiscard]] constexpr std::array<Point2D, 4ULL>
     getNeighbors() const noexcept
@@ -80,6 +80,8 @@ public:
      * @brief      Sets the coordinate X.
      *
      * @param[in]  x     The coordinate X.
+     *
+     * @return     New instance with the new coordinate.
      *
      * @{
      */
@@ -100,6 +102,8 @@ public:
      * @brief      Sets the coordinate Y.
      *
      * @param[in]  y     The coordinate Y.
+     *
+     * @return     New instance with the new coordinate.
      *
      * @{
      */
@@ -179,9 +183,9 @@ public:
         return Point2D{static_cast<T>(x), static_cast<T>(y)};
     }
     /**
-     * @brief Represents this class as a @ref std::string
+     * @brief      Represents this class as a @ref std::string
      *
-     * @return String representing this class.
+     * @return     String representing this class.
      */
     [[nodiscard]] std::string toString() const
     {
@@ -192,8 +196,8 @@ private:
     /**
      * @brief      "Insert string into stream" operator.
      *
-     * @param[in]      os       The output stream.
-     * @param[in]  obj  The object.
+     * @param[in]  os    The output stream.
+     * @param[in]  obj   The object.
      *
      * @return     The updated output stream.
      */

@@ -28,13 +28,15 @@ public:
     {
     }
     /**
-     * \brief
-     * \return
+     * @brief      Gets the coordinate X.
+     *
+     * @return     The coordinate X.
      */
     [[nodiscard]] constexpr T getX() const noexcept { return mX; }
     /**
-     * \brief
-     * \return
+     * @brief      Gets the coordinate Y.
+     *
+     * @return     The coordinate Y.
      */
     [[nodiscard]] constexpr T getY() const noexcept { return mY; }
     /**
@@ -49,18 +51,20 @@ public:
         return mX == other.mX && mY == other.mY;
     }
     /**
-     * @brief Represents this class as a @ref std::string
+     * @brief      Represents this class as a @ref std::string
      *
-     * @return String representing this class.
+     * @return     String representing this class.
      */
     [[nodiscard]] std::string toString() const
     {
         return "[" + std::to_string(mX) + "," + std::to_string(mY) + "]";
     }
     /**
-     * \brief Getter for structured binding
-     * \tparam N
-     * \return
+     * @brief      Getter for structured binding
+     *
+     * @tparam     N     Number of tuple-like parameters.
+     *
+     * @return     The value of the internal variable, according to @p N.
      */
     template <std::size_t N>
     [[nodiscard]] decltype(auto) get() const
@@ -76,8 +80,8 @@ private:
     /**
      * @brief      "Insert string into stream" operator.
      *
-     * @param[in]  os        The output stream.
-     * @param[in]  obj  The instance.
+     * @param[in]  os    The output stream.
+     * @param[in]  obj   The instance.
      *
      * @return     The updated output stream.
      */

@@ -10,8 +10,7 @@
 namespace utils::geometry2d {
 
 /**
- * @brief      Describes a Vector (i.e. a directional arrow) in 2D
- *             space.
+ * @brief      Describes a Vector (i.e. a directional arrow) in 2D space.
  *
  * @tparam     T     Type of the coordinate values.
  */
@@ -88,9 +87,9 @@ public:
             static_cast<uint64_t>(std::abs(mY))};
     }
     /**
-     * @brief      { function_description }
+     * @brief      Gets the maximum, absolute coordinate between X and Y.
      *
-     * @return     { description_of_the_return_value }
+     * @return     The maximum, absolute coordinate value.
      */
     [[nodiscard]] constexpr uint64_t range() const noexcept
     {
@@ -109,7 +108,7 @@ public:
             + static_cast<uint64_t>(std::abs(mY));
     }
     /**
-     * @brief       Modifies the vector so the lengths becomes one (positive or
+     * @brief      Modifies the vector so the lengths becomes one (positive or
      *             negative) up most, keeping the same direction.
      *
      * @return     The normalized vector.
@@ -209,8 +208,8 @@ public:
         return Vector2D{-mX, -mY};
     }
     /**
-     * @brief      Subtraction operator, which subtracts the coordinates of
-     *             both objects.
+     * @brief      Subtraction operator, which subtracts the coordinates of both
+     *             objects.
      *
      * @param[in]  other  The other object.
      *
@@ -242,8 +241,8 @@ private:
     /**
      * @brief      "Insert string into stream" operator.
      *
-     * @param[in]      os        The output stream.
-     * @param[in]  obj  The object.
+     * @param[in]  os    The output stream.
+     * @param[in]  obj   The object.
      *
      * @return     The updated output stream.
      */
@@ -271,6 +270,8 @@ private:
  * @param[in]  vector2d  The vector to scale.
  * @param[in]  value     The scalar value to scale by.
  *
+ * @tparam     T         Type of the coordinate values.
+ *
  * @return     Scaled vector by a scalar.
  */
 template <SignedIntegerType T>
@@ -285,6 +286,8 @@ operator*(Vector2D<T> const& vector2d, int32_t const value) noexcept
  *
  * @param[in]  value     The scalar value to scale by.
  * @param[in]  vector2d  The vector to scale.
+ *
+ * @tparam     T         Type of the coordinate values.
  *
  * @return     Scaled vector by a scalar.
  */
