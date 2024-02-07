@@ -26,7 +26,7 @@ public:
     /**
      * @brief      Default constructor
      */
-    IntervalSet() noexcept = default;
+    explicit IntervalSet() noexcept = default;
     /**
      * @brief      Parametrized constructor
      *

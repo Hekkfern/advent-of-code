@@ -69,7 +69,7 @@ utils::interval::IntervalSet<int64_t> parseRangedSeeds(std::ifstream& fileStream
     }
 
     std::getline(fileStream, line); // capture empty line
-    return seeds;
+    return utils::interval::IntervalSet{seeds};
 }
 
 Almanac parseInputFileForPart1(std::filesystem::path const& filePath) noexcept
