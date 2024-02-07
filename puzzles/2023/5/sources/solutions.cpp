@@ -69,7 +69,7 @@ parseRangedSeeds(std::ifstream& fileStream)
         if (seedLength == 0) {
             continue;
         }
-        seeds.emplace_back(seedStart, seedStart + seedLength);
+        seeds.emplace_back(seedStart, seedStart + seedLength - 1LL);
     }
 
     std::getline(fileStream, line); // capture empty line
