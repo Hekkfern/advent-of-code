@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <iterator>
 #include <optional>
 #include <ostream>
 #include <range/v3/algorithm/sort.hpp>
@@ -36,6 +37,7 @@ public:
     constexpr explicit Interval(T const a, T const b)
         : mMin{std::min(a, b)}
         , mMax{std::max(a, b)}
+        , mIter{ConstBidIterator(mMin, mMax)}
     {
     }
     /**
@@ -48,14 +50,33 @@ public:
     {
     }
     /**
+     * @brief      Equality comparison operator.
+     *
+     * @param[in]  other  The other object to compare to.
+     *
+     * @return     The result of the comparison.
+     */
+    [[nodiscard]] constexpr bool
+    operator==(Interval const& other) const noexcept
+    {
+        return mMin == other.mMin && mMax == other.mMax;
+    }
+    /**
      * @brief      Three-way comparison operator.
      *
      * @param[in]  other  The other object to compare to.
      *
      * @return     The result of the three-way comparison.
      */
-    [[nodiscard]] auto operator<=>(Interval const& other) const noexcept
-        = default;
+    [[nodiscard]] constexpr auto
+    operator<=>(Interval const& other) const noexcept
+    {
+        if (auto cmp = mMin <=> other.mMin; cmp != 0) {
+            return cmp;
+        } else {
+            return mMax <=> other.mMax;
+        }
+    }
     /**
      * @brief      Retrieves the length of the interval, i.e. the number of
      *             different values between the minimum and maximum values (both
@@ -367,10 +388,8 @@ public:
         switch (boundary) {
         case Boundary::Start:
             return value - mMin;
-            break;
         case Boundary::End:
             return value - mMax;
-            break;
         }
         return T{0};
     }
@@ -429,6 +448,75 @@ public:
         return "[" + std::to_string(mMin) + "," + std::to_string(mMax) + "]";
     }
 
+    class ConstBidIterator {
+    public:
+        using difference_type = std::size_t;
+        using element_type = T;
+        using pointer = element_type*;
+        using reference = element_type&;
+
+        ConstBidIterator() { throw std::runtime_error("Not implemented"); }
+
+        ConstBidIterator(T const start, T const end) noexcept
+            : mCurrentValue{start}
+            , mStart{start}
+            , mSentinel{end + 1}
+        {
+        }
+
+        [[nodiscard]] const reference operator*() const noexcept
+        {
+            return mCurrentValue;
+        }
+
+        // Prefix increment
+        ConstBidIterator& operator++() noexcept
+        {
+            mCurrentValue++;
+            return *this;
+        }
+
+        // Postfix increment
+        ConstBidIterator operator++(int) noexcept
+        {
+            ConstBidIterator tmp = *this;
+            ++(*this);
+            return tmp;
+        }
+
+        // Prefix decrement
+        ConstBidIterator& operator--() noexcept
+        {
+            mCurrentValue--;
+            return *this;
+        }
+
+        // Postfix decrement
+        ConstBidIterator operator--(int) noexcept
+        {
+            ConstBidIterator tmp = *this;
+            --(*this);
+            return tmp;
+        }
+
+        [[nodiscard]] bool
+        operator==(ConstBidIterator const& other) const noexcept
+        {
+            return mCurrentValue == other.mCurrentValue;
+        }
+
+        T cbegin() { return mStart; }
+        T cend() { return mSentinel; }
+
+    private:
+        T mCurrentValue, mStart, mSentinel;
+        static_assert(
+            std::sentinel_for<decltype(mSentinel), decltype(mCurrentValue)>);
+    };
+
+    [[nodiscard]] ConstBidIterator cbegin() { return mIter.cbegin(); }
+    [[nodiscard]] ConstBidIterator cend() { return mIter.cend(); }
+
 private:
     /**
      * @brief      "Insert string into stream" operator.
@@ -452,6 +540,10 @@ private:
      * Maximum value.
      */
     T mMax;
+    /**
+     * ???
+     */
+    ConstBidIterator mIter;
 };
 
 } // namespace utils::interval
