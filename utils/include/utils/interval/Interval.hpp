@@ -131,12 +131,6 @@ public:
             other.mMin < mMin && mMin <= other.mMax && other.mMax < mMax) {
             results.emplace_back(other.mMin, mMin - 1);
             results.emplace_back(other.mMax + 1, mMax);
-        } else if (other.subsumes(*this)) {
-            results.emplace_back(other.mMin, mMin - 1);
-            results.emplace_back(mMax + 1, other.mMax);
-        } else if (subsumes(other)) {
-            results.emplace_back(mMin, other.mMin - 1);
-            results.emplace_back(other.mMax + 1, mMax);
         } else if (mMin == other.mMin) {
             if (mMax < other.mMax) {
                 results.emplace_back(mMax + 1, other.mMax);
@@ -149,6 +143,12 @@ public:
             } else if (other.mMin < mMin) {
                 results.emplace_back(other.mMin + 1, mMin);
             }
+        } else if (other.subsumes(*this)) {
+            results.emplace_back(other.mMin, mMin - 1);
+            results.emplace_back(mMax + 1, other.mMax);
+        } else if (subsumes(other)) {
+            results.emplace_back(mMin, other.mMin - 1);
+            results.emplace_back(other.mMax + 1, mMax);
         } else {
             results.emplace_back(*this);
             results.emplace_back(other);

@@ -270,81 +270,95 @@ TEST_CASE("[Interval] intersect() method", "[utils][Interval]")
 
 TEST_CASE("[Interval] difference() method", "[utils][Interval]")
 {
+    Interval const interval1{0, 5};
     SECTION("No overlap")
     {
-        Interval const interval1{2, 3};
-        Interval const interval2{-3, 1};
-        auto const result{interval1.difference(interval2)};
-        REQUIRE(result.size() == 2);
-        CHECK(result[0] == Interval{-3, 1});
-        CHECK(result[1] == Interval{2, 3});
-        auto const result2{interval2.difference(interval1)};
-        REQUIRE(result2.size() == 2);
-        CHECK(result[0] == Interval{-3, 1});
-        CHECK(result[1] == Interval{2, 3});
+        Interval const interval2{-3, -1};
+        {
+            auto const result{interval1.difference(interval2)};
+            REQUIRE(result.size() == 2);
+            CHECK(result[0] == Interval{-3, -1});
+            CHECK(result[1] == Interval{0, 5});
+        }
+        {
+            auto const result{interval2.difference(interval1)};
+            REQUIRE(result.size() == 2);
+            CHECK(result[0] == Interval{-3, -1});
+            CHECK(result[1] == Interval{0, 5});
+        }
     }
     SECTION("One interval is fully contained in the other one")
     {
-        Interval const interval1{2, 3};
-        Interval const interval2{-3, 4};
-        auto const result{interval1.difference(interval2)};
-        REQUIRE(result.size() == 2);
-        CHECK(result[0] == Interval{-3, 1});
-        CHECK(result[1] == Interval{4, 4});
-        auto const result2{interval2.difference(interval1)};
-        REQUIRE(result.size() == 2);
-        CHECK(result[0] == Interval{-3, 1});
-        CHECK(result[1] == Interval{4, 4});
+        Interval const interval2{-3, 7};
+        {
+            auto const result{interval1.difference(interval2)};
+            REQUIRE(result.size() == 2);
+            CHECK(result[0] == Interval{-3, -1});
+            CHECK(result[1] == Interval{6, 7});
+        }
+        {
+            auto const result{interval2.difference(interval1)};
+            REQUIRE(result.size() == 2);
+            CHECK(result[0] == Interval{-3, -1});
+            CHECK(result[1] == Interval{6, 7});
+        }
     }
-    SECTION("Left overlap")
+    SECTION("Equal intervals")
     {
-        Interval const interval1{-3, 4};
-        Interval const interval2{-5, -1};
-        auto const result{interval1.difference(interval2)};
-        REQUIRE(result.size() == 2);
-        CHECK(result[0] == Interval{-5, -4});
-        CHECK(result[1] == Interval{0, 4});
-        auto const result2{interval2.difference(interval1)};
-        REQUIRE(result.size() == 2);
-        CHECK(result[0] == Interval{-5, -4});
-        CHECK(result[1] == Interval{0, 4});
+        {
+            auto const result{interval1.difference(interval1)};
+            REQUIRE(result.empty());
+        }
+        {
+            auto const result{interval1.difference(interval1)};
+            REQUIRE(result.empty());
+        }
     }
-    SECTION("Right overlap")
+    SECTION("Overlap")
     {
-        Interval const interval1{-3, 4};
-        Interval const interval2{2, 7};
-        auto const result{interval1.difference(interval2)};
-        REQUIRE(result.size() == 2);
-        CHECK(result[0] == Interval{-3, 1});
-        CHECK(result[1] == Interval{5, 7});
-        auto const result2{interval2.difference(interval1)};
-        REQUIRE(result.size() == 2);
-        CHECK(result[0] == Interval{-3, 1});
-        CHECK(result[1] == Interval{5, 7});
+        Interval const interval2{-5, 1};
+        {
+            auto const result{interval1.difference(interval2)};
+            REQUIRE(result.size() == 2);
+            CHECK(result[0] == Interval{-5, -1});
+            CHECK(result[1] == Interval{2, 5});
+        }
+        {
+            auto const result{interval2.difference(interval1)};
+            REQUIRE(result.size() == 2);
+            CHECK(result[0] == Interval{-5, -1});
+            CHECK(result[1] == Interval{2, 5});
+        }
     }
     SECTION("Intervals share one extreme value")
     {
         SECTION("Left extreme")
         {
-            Interval const interval1{-3, 1};
-            Interval const interval2{-3, 4};
-            auto const result{interval1.difference(interval2)};
-            REQUIRE(result.size() == 1);
-            CHECK(result[0] == Interval{2, 4});
-            auto const result2{interval2.difference(interval1)};
-            REQUIRE(result.size() == 1);
-            CHECK(result[0] == Interval{2, 4});
+            Interval const interval2{0, 3};
+            {
+                auto const result{interval1.difference(interval2)};
+                REQUIRE(result.size() == 1);
+                CHECK(result[0] == Interval{4, 5});
+            }
+            {
+                auto const result{interval2.difference(interval1)};
+                REQUIRE(result.size() == 1);
+                CHECK(result[0] == Interval{4, 5});
+            }
         }
         SECTION("Right extreme")
         {
-            Interval const interval1{1, 4};
-            Interval const interval2{-3, 4};
-            auto const result{interval1.difference(interval2)};
-            REQUIRE(result.size() == 1);
-            CHECK(result[0] == Interval{-3, 0});
-            auto const result2{interval2.difference(interval1)};
-            REQUIRE(result.size() == 1);
-            CHECK(result[0] == Interval{-3, 0});
+            Interval const interval2{-3, 5};
+            {
+                auto const result{interval1.difference(interval2)};
+                REQUIRE(result.size() == 1);
+                CHECK(result[0] == Interval{-3, -1});
+            }
+            {
+                auto const result{interval2.difference(interval1)};
+                REQUIRE(result.size() == 1);
+                CHECK(result[0] == Interval{-3, -1});
+            }
         }
     }
 }
@@ -353,13 +367,14 @@ TEST_CASE("[Interval] subsumes() method", "[utils][Interval]")
 {
     SECTION("Runtime tests")
     {
-        Interval const interval1{2, 3};
-        SECTION("One interval includes the other one totally")
+        Interval const interval1{2, 5};
+        SECTION("One interval includes the other one from both sides")
         {
-            Interval const interval2{-3, 6};
+            Interval const interval2{-3, 7};
             CHECK_FALSE(interval1.subsumes(interval2));
             CHECK(interval2.subsumes(interval1));
         }
+        SECTION("Equal intervals") { CHECK(interval1.subsumes(interval1)); }
         SECTION("Contiguous intervals")
         {
             Interval const interval2{-3, 1};
@@ -370,16 +385,22 @@ TEST_CASE("[Interval] subsumes() method", "[utils][Interval]")
         {
             SECTION("Left extreme")
             {
-                Interval const interval2{2, 5};
+                Interval const interval2{2, 9};
                 CHECK(interval2.subsumes(interval1));
                 CHECK_FALSE(interval1.subsumes(interval2));
             }
             SECTION("Right extreme")
             {
-                Interval const interval2{-3, 3};
+                Interval const interval2{-3, 5};
                 CHECK(interval2.subsumes(interval1));
                 CHECK_FALSE(interval1.subsumes(interval2));
             }
+        }
+        SECTION("Intervals overlap")
+        {
+            Interval const interval2{-3, 3};
+            CHECK_FALSE(interval2.subsumes(interval1));
+            CHECK_FALSE(interval1.subsumes(interval2));
         }
     }
     SECTION("Static tests")
@@ -393,37 +414,34 @@ TEST_CASE("[Interval] overlaps() method", "[utils][Interval]")
 {
     SECTION("Runtime tests")
     {
+        Interval const interval1{2, 6};
         SECTION("Left overlap")
         {
-            Interval const interval1{2, 6};
             Interval const interval2{1, 3};
             CHECK(interval1.overlaps(interval2));
             CHECK(interval2.overlaps(interval1));
         }
         SECTION("Right overlap")
         {
-            Interval const interval1{2, 6};
             Interval const interval2{5, 7};
             CHECK(interval1.overlaps(interval2));
             CHECK(interval2.overlaps(interval1));
         }
-        SECTION("One interval includes the other one totally")
+        SECTION("One interval includes the other one from both sides")
         {
-            Interval const interval1{2, 6};
             Interval const interval2{4, 5};
             CHECK(interval2.overlaps(interval1));
             CHECK(interval1.overlaps(interval2));
         }
+        SECTION("Equal intervals") { CHECK(interval1.subsumes(interval1)); }
         SECTION("Their left extremes touch")
         {
-            Interval const interval1{2, 6};
             Interval const interval2{1, 2};
             CHECK(interval1.overlaps(interval2));
             CHECK(interval2.overlaps(interval1));
         }
         SECTION("Their right extremes touch")
         {
-            Interval const interval1{2, 6};
             Interval const interval2{6, 7};
             CHECK(interval1.overlaps(interval2));
             CHECK(interval2.overlaps(interval1));
