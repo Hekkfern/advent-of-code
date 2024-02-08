@@ -566,6 +566,14 @@ TEST_CASE("[Interval] Comparison operators", "[utils][Interval]")
             STATIC_CHECK_FALSE(Interval{2, 7} != Interval{2, 7});
             STATIC_CHECK(Interval{2, 7} != Interval{1, 5});
         }
+        SECTION("Greater and less than")
+        {
+            STATIC_CHECK_FALSE(Interval{1, 3} > Interval{1, 3});
+            STATIC_CHECK(Interval{1, 3} < Interval{1, 5});
+            STATIC_CHECK(Interval{1, 3} < Interval{2, 3});
+            STATIC_CHECK(Interval{1, 5} > Interval{1, 3});
+            STATIC_CHECK(Interval{1, 5} < Interval{2, 3});
+        }
     }
 }
 

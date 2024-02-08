@@ -54,7 +54,8 @@ public:
      *
      * @return     The result of the three-way comparison.
      */
-    [[nodiscard]] auto operator<=>(Interval const& other) const noexcept
+    [[nodiscard]] constexpr auto
+    operator<=>(Interval const& other) const noexcept
         = default;
     /**
      * @brief      Retrieves the length of the interval, i.e. the number of
