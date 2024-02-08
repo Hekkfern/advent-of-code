@@ -455,29 +455,29 @@ public:
         using pointer = element_type*;
         using reference = element_type&;
 
-        ConstBidIterator() { throw std::runtime_error("Not implemented"); }
+        constexpr ConstBidIterator() = delete;
 
-        ConstBidIterator(T const start, T const end) noexcept
+        constexpr explicit ConstBidIterator(T const start, T const end) noexcept
             : mCurrentValue{start}
             , mStart{start}
             , mSentinel{end + 1}
         {
         }
 
-        [[nodiscard]] const reference operator*() const noexcept
+        [[nodiscard]] constexpr const reference operator*() const noexcept
         {
             return mCurrentValue;
         }
 
         // Prefix increment
-        ConstBidIterator& operator++() noexcept
+        constexpr ConstBidIterator& operator++() noexcept
         {
             mCurrentValue++;
             return *this;
         }
 
         // Postfix increment
-        ConstBidIterator operator++(int) noexcept
+        constexpr ConstBidIterator operator++(int) noexcept
         {
             ConstBidIterator tmp = *this;
             ++(*this);
@@ -485,37 +485,35 @@ public:
         }
 
         // Prefix decrement
-        ConstBidIterator& operator--() noexcept
+        constexpr ConstBidIterator& operator--() noexcept
         {
             mCurrentValue--;
             return *this;
         }
 
         // Postfix decrement
-        ConstBidIterator operator--(int) noexcept
+        constexpr ConstBidIterator operator--(int) noexcept
         {
             ConstBidIterator tmp = *this;
             --(*this);
             return tmp;
         }
 
-        [[nodiscard]] bool
+        [[nodiscard]] bool constexpr
         operator==(ConstBidIterator const& other) const noexcept
         {
             return mCurrentValue == other.mCurrentValue;
         }
 
-        T cbegin() { return mStart; }
-        T cend() { return mSentinel; }
+        constexpr T cbegin() { return mStart; }
+        constexpr T cend() { return mSentinel; }
 
     private:
         T mCurrentValue, mStart, mSentinel;
-        static_assert(
-            std::sentinel_for<decltype(mSentinel), decltype(mCurrentValue)>);
     };
 
-    [[nodiscard]] ConstBidIterator cbegin() { return mIter.cbegin(); }
-    [[nodiscard]] ConstBidIterator cend() { return mIter.cend(); }
+    [[nodiscard]] constexpr ConstBidIterator cbegin() { return mIter.cbegin(); }
+    [[nodiscard]] constexpr ConstBidIterator cend() { return mIter.cend(); }
 
 private:
     /**
