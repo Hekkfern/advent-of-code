@@ -6,6 +6,7 @@
 #include <ostream>
 #include <string>
 #include <utils/Concepts.hpp>
+#include <vector>
 
 namespace utils::interval {
 
@@ -82,13 +83,15 @@ public:
             : std::nullopt;
     }
     /**
-     * @brief      Creates an interval which contains the overlapping parts of
-     *             both provided intervals.
+     * @brief      Creates an interval containing the overlapping parts of both
+     *             provided intervals.
      *
      * @param[in]  other  The other object.
      *
-     * @return     std::nullopt if they don't overlap. If so, a new interval
+     * @return     std::nullopt if they don't overlap. Otherwise, a new interval
      *             with the overlapped fragment.
+     *
+     * @note       It is the opposite of @ref difference method.
      */
     [[nodiscard]] constexpr std::optional<Interval>
     intersect(Interval const& other) const noexcept
@@ -99,9 +102,43 @@ public:
             other.mMin <= mMin && other.mMax >= mMin && other.mMax <= mMax) {
             return Interval{mMin, other.mMax};
         } else if (other.subsumes(*this)) {
-            return std::make_optional(*this);
+            return *this;
         } else if (subsumes(other)) {
-            return std::make_optional(other);
+            return other;
+        }
+        return {};
+    }
+    /**
+     * @brief      Creates an interval containing the non-common parts of both
+     *             provided intervals.
+     *
+     * @param[in]  other  The other object.
+     *
+     * @return     std::nullopt if they are equal. Otherwise, a list of
+     *             intervals with the non-common parts.
+     *
+     * @note       It is the opposite of @ref intersect method.
+     */
+    [[nodiscard]] std::vector<Interval>
+    difference(Interval const& other) const noexcept
+    {
+        if (other.mMin >= mMin && other.mMin <= mMax && other.mMax >= mMax) {
+            return std::vector<Interval>{
+                Interval{mMin, other.mMin}, Interval{mMax, other.mMax}};
+        } else if (
+            other.mMin <= mMin && other.mMax >= mMin && other.mMax <= mMax) {
+            return std::vector<Interval>{
+                Interval{other.mMin, mMin}, Interval{other.mMax, mMax}};
+        } else if (other.subsumes(*this)) {
+            return std::vector<Interval>{
+                Interval{other.mMin, mMin}, Interval{mMax, other.mMax}};
+        } else if (subsumes(other)) {
+            return std::vector<Interval>{
+                Interval{mMin, other.mMin}, Interval{other.mMax, mMax}};
+        } else if (mMin == other.mMin) {
+            return std::vector<Interval>{Interval{mMax, other.mMax}};
+        } else if (mMax == other.mMax) {
+            return std::vector<Interval>{Interval{mMin, other.mMin}};
         } else {
             return {};
         }
