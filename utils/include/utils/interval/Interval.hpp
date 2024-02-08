@@ -139,9 +139,9 @@ public:
             }
         } else if (mMax == other.mMax) {
             if (mMin < other.mMin) {
-                results.emplace_back(mMin + 1, other.mMin);
+                results.emplace_back(mMin, other.mMin - 1);
             } else if (other.mMin < mMin) {
-                results.emplace_back(other.mMin + 1, mMin);
+                results.emplace_back(other.mMin, mMin - 1);
             }
         } else if (other.subsumes(*this)) {
             results.emplace_back(other.mMin, mMin - 1);
