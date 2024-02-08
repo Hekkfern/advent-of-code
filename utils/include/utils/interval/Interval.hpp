@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <optional>
 #include <ostream>
+#include <range/v3/algorithm/sort.hpp>
 #include <string>
 #include <utils/Concepts.hpp>
 #include <vector>
@@ -122,26 +123,38 @@ public:
     [[nodiscard]] std::vector<Interval>
     difference(Interval const& other) const noexcept
     {
-        if (other.mMin >= mMin && other.mMin <= mMax && other.mMax >= mMax) {
-            return std::vector<Interval>{
-                Interval{mMin, other.mMin}, Interval{mMax, other.mMax}};
+        std::vector<Interval> results;
+        if (mMin < other.mMin && other.mMin <= mMax && mMax < other.mMax) {
+            results.emplace_back(mMin, other.mMin - 1);
+            results.emplace_back(mMax + 1, other.mMax);
         } else if (
-            other.mMin <= mMin && other.mMax >= mMin && other.mMax <= mMax) {
-            return std::vector<Interval>{
-                Interval{other.mMin, mMin}, Interval{other.mMax, mMax}};
+            other.mMin < mMin && mMin <= other.mMax && other.mMax < mMax) {
+            results.emplace_back(other.mMin, mMin - 1);
+            results.emplace_back(other.mMax + 1, mMax);
         } else if (other.subsumes(*this)) {
-            return std::vector<Interval>{
-                Interval{other.mMin, mMin}, Interval{mMax, other.mMax}};
+            results.emplace_back(other.mMin, mMin - 1);
+            results.emplace_back(mMax + 1, other.mMax);
         } else if (subsumes(other)) {
-            return std::vector<Interval>{
-                Interval{mMin, other.mMin}, Interval{other.mMax, mMax}};
+            results.emplace_back(mMin, other.mMin - 1);
+            results.emplace_back(other.mMax + 1, mMax);
         } else if (mMin == other.mMin) {
-            return std::vector<Interval>{Interval{mMax, other.mMax}};
+            if (mMax < other.mMax) {
+                results.emplace_back(mMax + 1, other.mMax);
+            } else if (other.mMax < mMax) {
+                results.emplace_back(other.mMax + 1, mMax);
+            }
         } else if (mMax == other.mMax) {
-            return std::vector<Interval>{Interval{mMin, other.mMin}};
+            if (mMin < other.mMin) {
+                results.emplace_back(mMin + 1, other.mMin);
+            } else if (other.mMin < mMin) {
+                results.emplace_back(other.mMin + 1, mMin);
+            }
         } else {
-            return {};
+            results.emplace_back(*this);
+            results.emplace_back(other);
         }
+        ranges::sort(results);
+        return results;
     }
     /**
      * @brief      Checks if this interval includes completely the range of
