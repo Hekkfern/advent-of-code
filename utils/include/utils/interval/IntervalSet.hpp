@@ -8,6 +8,7 @@
 #include <range/v3/algorithm/find_if.hpp>
 #include <range/v3/algorithm/fold_left.hpp>
 #include <range/v3/algorithm/sort.hpp>
+#include <set>
 #include <string>
 #include <utils/String.hpp>
 #include <vector>
@@ -62,7 +63,22 @@ public:
      * @param[in]  intervals  The intervals.
      */
     explicit IntervalSet(std::vector<Interval<T>> const& intervals) noexcept
-        : mIntervals{std::set<T>{intervals.cbegin(), intervals.cend()}}
+        : mIntervals{
+              std::set<Interval<T>>{intervals.cbegin(), intervals.cend()}}
+    {
+        reduce();
+    }
+    /**
+     * @brief      Parametrized constructor
+     *
+     * @note       The intervals are compacted and sorted when this instance is
+     *             constructed.
+     *
+     * @param[in]  intervals  The intervals.
+     */
+    explicit IntervalSet(std::vector<Interval<T>>&& intervals) noexcept
+        : mIntervals{
+              std::set<Interval<T>>{intervals.cbegin(), intervals.cend()}}
     {
         reduce();
     }
@@ -73,7 +89,7 @@ public:
      */
     [[nodiscard]] std::vector<Interval<T>> get() const noexcept
     {
-        return mIntervals;
+        return std::vector<Interval<T>>{mIntervals.cbegin(), mIntervals.cend()};
     }
     /**
      * @brief      Adds the specified interval.
@@ -82,7 +98,7 @@ public:
      */
     void add(Interval<T> const& interval) noexcept
     {
-        mIntervals.emplace_back(interval);
+        mIntervals.emplace(interval);
         reduce();
     }
     /**
@@ -92,7 +108,7 @@ public:
      */
     void add(Interval<T>&& interval) noexcept
     {
-        mIntervals.emplace_back(std::move(interval));
+        mIntervals.emplace(std::move(interval));
         reduce();
     }
     /**
@@ -102,7 +118,7 @@ public:
      */
     void add(T const value) noexcept
     {
-        mIntervals.emplace_back(value, value);
+        mIntervals.emplace(value, value);
         reduce();
     }
     /**
@@ -112,22 +128,21 @@ public:
      */
     void remove(T const value) noexcept
     {
-        std::vector<Interval<T>> tempIntervals;
-        tempIntervals.reserve(mIntervals.size());
+        std::set<Interval<T>> tempIntervals;
         for (auto const& item : mIntervals) {
             if (item.contains(value)) {
                 if (!item.hasOneValue()) {
                     if (item.getMin() == value) {
-                        tempIntervals.emplace_back(value + 1, item.getMax());
+                        tempIntervals.emplace(value + 1, item.getMax());
                     } else if (item.getMax() == value) {
-                        tempIntervals.emplace_back(item.getMin(), value - 1);
+                        tempIntervals.emplace(item.getMin(), value - 1);
                     } else {
-                        tempIntervals.emplace_back(item.getMin(), value - 1);
-                        tempIntervals.emplace_back(value + 1, item.getMax());
+                        tempIntervals.emplace(item.getMin(), value - 1);
+                        tempIntervals.emplace(value + 1, item.getMax());
                     }
                 }
             } else {
-                tempIntervals.emplace_back(item);
+                tempIntervals.emplace(item);
             }
         }
         mIntervals = tempIntervals;
@@ -140,31 +155,30 @@ public:
      */
     void remove(Interval<T> const& eraseInterval) noexcept
     {
-        std::vector<Interval<T>> tempIntervals;
-        tempIntervals.reserve(mIntervals.size());
+        std::set<Interval<T>> tempIntervals;
         for (auto const& innerInterval : mIntervals) {
             if (innerInterval.subsumes(eraseInterval)) {
                 // this interval is split in half because of the erased value
-                tempIntervals.emplace_back(
+                tempIntervals.emplace(
                     innerInterval.getMin(), eraseInterval.getMin() - 1);
-                tempIntervals.emplace_back(
+                tempIntervals.emplace(
                     eraseInterval.getMax() + 1, innerInterval.getMax());
             } else if (
                 eraseInterval.getMin() >= innerInterval.getMin()
                 && eraseInterval.getMin() <= innerInterval.getMax()) {
                 // this interval is not totally subsumed, so it is partially
                 // deleted
-                tempIntervals.emplace_back(
+                tempIntervals.emplace(
                     innerInterval.getMin(), eraseInterval.getMin() - 1);
             } else if (
                 eraseInterval.getMax() >= innerInterval.getMin()
                 && eraseInterval.getMax() <= innerInterval.getMax()) {
                 // this interval is not totally subsumed so it is partially
                 // deleted
-                tempIntervals.emplace_back(
+                tempIntervals.emplace(
                     eraseInterval.getMax() + 1, innerInterval.getMax());
             } else if (!eraseInterval.subsumes(innerInterval)) {
-                tempIntervals.emplace_back(innerInterval);
+                tempIntervals.emplace(innerInterval);
             }
         }
         mIntervals = tempIntervals;
@@ -179,9 +193,10 @@ public:
      */
     [[nodiscard]] IntervalSet join(IntervalSet const& other) const noexcept
     {
-        std::vector<Interval<T>> joinedIntervals{mIntervals};
-        joinedIntervals.reserve(mIntervals.size() + other.mIntervals.size());
-        ranges::copy(other.mIntervals, std::back_inserter(joinedIntervals));
+        std::set<Interval<T>> joinedIntervals{mIntervals};
+        for (auto const& item : other.mIntervals) {
+            joinedIntervals.emplace(item);
+        }
         return IntervalSet{joinedIntervals};
     }
     /**
@@ -315,11 +330,11 @@ public:
     [[nodiscard]] constexpr IntervalSet
     intersect(Interval<T> const& other) const noexcept
     {
-        std::vector<Interval<T>> overlappedIntervals;
+        std::set<Interval<T>> overlappedIntervals;
         for (Interval<T> const& internalInterval : mIntervals) {
             auto const result{internalInterval.intersect(other)};
             if (result) {
-                overlappedIntervals.emplace_back(*result);
+                overlappedIntervals.emplace(*result);
             }
         }
         return IntervalSet{overlappedIntervals};
@@ -369,21 +384,19 @@ private:
         if (mIntervals.empty()) {
             return;
         }
-        // order the intervals
-        ranges::sort(mIntervals);
         // try to join intervals
-        std::vector<Interval<T>> newIntervals{};
-        Interval<T> accumulatedInterval{mIntervals[0]};
+        std::set<Interval<T>> newIntervals;
+        Interval<T> accumulatedInterval{*mIntervals.begin()};
         for (auto const& item : mIntervals) {
             auto newInterval{accumulatedInterval.join(item)};
             if (!newInterval) {
-                newIntervals.emplace_back(accumulatedInterval);
+                newIntervals.emplace(accumulatedInterval);
                 accumulatedInterval = item;
             } else {
                 accumulatedInterval = *newInterval;
             }
         }
-        newIntervals.emplace_back(accumulatedInterval);
+        newIntervals.emplace(accumulatedInterval);
         mIntervals = newIntervals;
     }
     /**
