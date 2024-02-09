@@ -799,14 +799,14 @@ TEST_CASE("[Interval] createWithBounds() method", "[utils][Interval]")
 {
     SECTION("Runtime tests")
     {
-        auto const interval1{Interval<int>::createWithBounds(2, 3)};
+        auto const interval1{Interval<>::createWithBounds(2, 3)};
         CHECK(interval1.getMin() == 2);
         CHECK(interval1.getMax() == 3);
         CHECK(interval1.get() == std::make_pair(2, 3));
     }
     SECTION("Static tests")
     {
-        constexpr auto interval1{Interval<int>::createWithBounds(2, 3)};
+        constexpr auto interval1{Interval<>::createWithBounds(2, 3)};
         STATIC_CHECK(interval1.getMin() == 2);
         STATIC_CHECK(interval1.getMax() == 3);
         STATIC_CHECK(interval1.get() == std::make_pair(2, 3));
@@ -817,14 +817,14 @@ TEST_CASE("[Interval] createWithLength() method", "[utils][Interval]")
 {
     SECTION("Runtime tests")
     {
-        auto const interval1{Interval<int>::createWithLength(2, 3)};
+        auto const interval1{Interval<>::createWithLength(2, 3)};
         CHECK(interval1.getMin() == 2);
         CHECK(interval1.getMax() == 5);
         CHECK(interval1.get() == std::make_pair(2, 5));
     }
     SECTION("Static tests")
     {
-        constexpr auto interval1{Interval<int>::createWithLength(2, 3)};
+        constexpr auto interval1{Interval<>::createWithLength(2, 3)};
         STATIC_CHECK(interval1.getMin() == 2);
         STATIC_CHECK(interval1.getMax() == 5);
         STATIC_CHECK(interval1.get() == std::make_pair(2, 5));
@@ -835,7 +835,7 @@ TEST_CASE("[Interval] createWhole() method", "[utils][Interval]")
 {
     SECTION("Runtime tests")
     {
-        auto const interval1{Interval<int>::createWhole()};
+        auto const interval1{Interval<>::createWhole()};
         CHECK(interval1.getMin() == std::numeric_limits<int>::min());
         CHECK(interval1.getMax() == std::numeric_limits<int>::max());
         CHECK(
@@ -846,7 +846,7 @@ TEST_CASE("[Interval] createWhole() method", "[utils][Interval]")
     }
     SECTION("Static tests")
     {
-        constexpr auto interval1{Interval<int>::createWhole()};
+        constexpr auto interval1{Interval<>::createWhole()};
         STATIC_CHECK(interval1.getMin() == std::numeric_limits<int>::min());
         STATIC_CHECK(interval1.getMax() == std::numeric_limits<int>::max());
         STATIC_CHECK(

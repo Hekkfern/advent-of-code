@@ -35,7 +35,20 @@ public:
      *
      * @param[in]  intervals  The intervals.
      */
-    explicit IntervalSet(std::vector<Interval<T>>&& intervals) noexcept
+    explicit IntervalSet(std::set<Interval<T>> const& intervals) noexcept
+        : mIntervals{intervals}
+    {
+        reduce();
+    }
+    /**
+     * @brief      Parametrized constructor
+     *
+     * @note       The intervals are compacted and sorted when this instance is
+     *             constructed.
+     *
+     * @param[in]  intervals  The intervals.
+     */
+    explicit IntervalSet(std::set<Interval<T>>&& intervals) noexcept
         : mIntervals{std::move(intervals)}
     {
         reduce();
@@ -49,7 +62,7 @@ public:
      * @param[in]  intervals  The intervals.
      */
     explicit IntervalSet(std::vector<Interval<T>> const& intervals) noexcept
-        : mIntervals{intervals}
+        : mIntervals{std::set<T>{intervals.cbegin(), intervals.cend()}}
     {
         reduce();
     }
@@ -322,9 +335,9 @@ public:
             return "[]";
         }
         return ranges::fold_left(
-            mIntervals.begin() + 1,
+            std::advance(mIntervals.begin(), 1),
             mIntervals.end(),
-            mIntervals[0].toString(),
+            mIntervals.begin()->toString(),
             [](std::string const& accum, Interval<T> const& item)
                 -> std::string { return accum + "," + item.toString(); });
     }
@@ -397,7 +410,7 @@ private:
      * @note       Two contiguous intervals mean that there is a gap in-between
      *             of, at least, one value.
      */
-    std::vector<Interval<T>> mIntervals{};
+    std::set<Interval<T>> mIntervals{};
 };
 
 } // namespace utils::interval
