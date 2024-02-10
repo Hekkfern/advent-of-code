@@ -112,10 +112,8 @@ public:
      *             negative) up most, keeping the same direction.
      *
      * @return     The normalized vector.
-     *
-     * @{
      */
-    [[nodiscard]] constexpr Vector2D normalize() const& noexcept
+    [[nodiscard]] constexpr Vector2D normalize() const noexcept
     {
         Vector2D result{*this};
         // saturate X
@@ -124,16 +122,6 @@ public:
         result.mY = std::clamp(mY, -1, 1);
         return result;
     }
-    [[nodiscard]] constexpr Vector2D normalize() && noexcept
-    {
-        Vector2D result{std::move(*this)};
-        // saturate X
-        result.mX = std::clamp(mX, -1, 1);
-        // saturate Y
-        result.mY = std::clamp(mY, -1, 1);
-        return result;
-    }
-    /** @} */
     /**
      * @brief      Determines if the vector is empty, i.e., both coordinates are
      *             zero.

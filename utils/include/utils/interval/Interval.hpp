@@ -285,73 +285,41 @@ public:
      *
      * @param[in]  offset  The offset. Positive numbers moves it up, and
      *                     negative numbers moves it down.
-     *
-     * @{
      */
-    [[nodiscard]] constexpr Interval move(int64_t const offset) const& noexcept
+    [[nodiscard]] constexpr Interval move(int64_t const offset) const noexcept
     {
         Interval result{*this};
         result.mMin += static_cast<T>(offset);
         result.mMax += static_cast<T>(offset);
         return result;
     }
-    [[nodiscard]] constexpr Interval move(std::int64_t const offset) && noexcept
-    {
-        Interval result{std::move(*this)};
-        result.mMin += static_cast<T>(offset);
-        result.mMax += static_cast<T>(offset);
-        return result;
-    }
-    /** @} */
     /**
      * @brief Increases both boundaries by the value in @p offset.
      *
      * @param[in] offset Amount to expand. It cannot be a negative number.
-     *
-     * @{
      */
     [[nodiscard]] constexpr Interval
-    expand(std::size_t const offset) const& noexcept
+    expand(std::size_t const offset) const noexcept
     {
         Interval result{*this};
         result.mMin -= static_cast<T>(offset);
         result.mMax += static_cast<T>(offset);
         return result;
     }
-    [[nodiscard]] constexpr Interval
-    expand(std::size_t const offset) && noexcept
-    {
-        Interval result{std::move(*this)};
-        result.mMin -= static_cast<T>(offset);
-        result.mMax += static_cast<T>(offset);
-        return result;
-    }
-    /** @} */
     /**
      * @brief Increases both boundaries by the value in @p offset.
      *
      * @param[in] leftOffset Amount to expand. It cannot be a negative number.
      * @param[in] rightOffset Amount to expand. It cannot be a negative number.
-     *
-     * @{
      */
     [[nodiscard]] constexpr Interval
-    expand(std::size_t const leftOffset, std::size_t const rightOffset) const&
+    expand(std::size_t const leftOffset, std::size_t const rightOffset) const
     {
         Interval result{*this};
         result.mMin -= static_cast<T>(leftOffset);
         result.mMax += static_cast<T>(rightOffset);
         return result;
     }
-    [[nodiscard]] constexpr Interval
-    expand(std::size_t const leftOffset, std::size_t const rightOffset) &&
-    {
-        Interval result{std::move(*this)};
-        result.mMin -= static_cast<T>(leftOffset);
-        result.mMax += static_cast<T>(rightOffset);
-        return result;
-    }
-    /** @} */
     /**
      * @brief      Calculates the relative position of the selected value from
      *             the boundary selected in @p boundary parameter.

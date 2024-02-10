@@ -82,44 +82,26 @@ public:
      * @param[in]  x     The coordinate X.
      *
      * @return     New instance with the new coordinate.
-     *
-     * @{
      */
-    [[nodiscard]] constexpr Point2D setX(T const x) const& noexcept
+    [[nodiscard]] constexpr Point2D setX(T const x) const noexcept
     {
         Point2D result{*this};
         result.mX = x;
         return result;
     }
-    [[nodiscard]] constexpr Point2D setX(T const x) && noexcept
-    {
-        Point2D result{std::move(*this)};
-        result.mX = x;
-        return result;
-    }
-    /** @} */
     /**
      * @brief      Sets the coordinate Y.
      *
      * @param[in]  y     The coordinate Y.
      *
      * @return     New instance with the new coordinate.
-     *
-     * @{
      */
-    [[nodiscard]] constexpr Point2D setY(T const y) const& noexcept
+    [[nodiscard]] constexpr Point2D setY(T const y) const noexcept
     {
         Point2D result{*this};
         result.mY = y;
         return result;
     }
-    [[nodiscard]] constexpr Point2D setY(T const y) && noexcept
-    {
-        Point2D result{std::move(*this)};
-        result.mY = y;
-        return result;
-    }
-    /** @} */
     /**
      * @brief      Equality operator.
      *
