@@ -8,6 +8,8 @@
 #include <range/v3/algorithm/find_if.hpp>
 #include <range/v3/algorithm/fold_left.hpp>
 #include <range/v3/algorithm/sort.hpp>
+#include <range/v3/range/conversion.hpp>
+#include <range/v3/view/transform.hpp>
 #include <set>
 #include <string>
 #include <utils/String.hpp>
@@ -347,14 +349,16 @@ public:
     [[nodiscard]] std::string toString() const noexcept
     {
         if (mIntervals.empty()) {
-            return "[]";
+            return "";
         }
-        return ranges::fold_left(
-            std::advance(mIntervals.begin(), 1),
-            mIntervals.end(),
-            mIntervals.begin()->toString(),
-            [](std::string const& accum, Interval<T> const& item)
-                -> std::string { return accum + "," + item.toString(); });
+        auto const intervalsStr
+            = mIntervals
+            | ranges::views::
+                transform([](Interval<T> const& item) -> std::string {
+                    return item.toString();
+                })
+            | ranges::to<std::vector>;
+        return utils::string::join(intervalsStr, ",");
     }
     /**
      * @brief      Checks if there is any interval.

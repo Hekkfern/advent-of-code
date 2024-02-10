@@ -243,19 +243,22 @@ TEST_CASE("[IntervalSet] subsumes() method", "[utils][IntervalSet]")
     {
         SECTION("Completely")
         {
-            IntervalSet const intervalSet2{std::vector<Interval<>>{Interval{0, 4}}};
+            IntervalSet const intervalSet2{
+                std::vector<Interval<>>{Interval{0, 4}}};
             CHECK_FALSE(intervalSet1.subsumes(intervalSet2));
             CHECK(intervalSet2.subsumes(intervalSet1));
         }
         SECTION("Equal intervals")
         {
-            IntervalSet const intervalSet2{std::vector<Interval<>>{Interval{1, 2}}};
+            IntervalSet const intervalSet2{
+                std::vector<Interval<>>{Interval{1, 2}}};
             CHECK(intervalSet1.subsumes(intervalSet2));
             CHECK(intervalSet2.subsumes(intervalSet1));
         }
         SECTION("Different intervals")
         {
-            IntervalSet const intervalSet2{std::vector<Interval<>>{Interval{4, 4}}};
+            IntervalSet const intervalSet2{
+                std::vector<Interval<>>{Interval{4, 4}}};
             CHECK_FALSE(intervalSet1.subsumes(intervalSet2));
             CHECK_FALSE(intervalSet2.subsumes(intervalSet1));
         }
@@ -287,25 +290,29 @@ TEST_CASE("[IntervalSet] overlaps() method", "[utils][IntervalSet]")
     {
         SECTION("Completely")
         {
-            IntervalSet const intervalSet2{std::vector<Interval<>>{Interval{0, 4}}};
+            IntervalSet const intervalSet2{
+                std::vector<Interval<>>{Interval{0, 4}}};
             CHECK(intervalSet1.overlaps(intervalSet2));
             CHECK(intervalSet2.overlaps(intervalSet1));
         }
         SECTION("Equal intervals")
         {
-            IntervalSet const intervalSet2{std::vector<Interval<>>{Interval{1, 2}}};
+            IntervalSet const intervalSet2{
+                std::vector<Interval<>>{Interval{1, 2}}};
             CHECK(intervalSet1.overlaps(intervalSet2));
             CHECK(intervalSet2.overlaps(intervalSet1));
         }
         SECTION("Different intervals")
         {
-            IntervalSet const intervalSet2{std::vector<Interval<>>{Interval{4, 4}}};
+            IntervalSet const intervalSet2{
+                std::vector<Interval<>>{Interval{4, 4}}};
             CHECK_FALSE(intervalSet1.overlaps(intervalSet2));
             CHECK_FALSE(intervalSet2.overlaps(intervalSet1));
         }
         SECTION("Touch one boundary")
         {
-            IntervalSet const intervalSet2{std::vector<Interval<>>{Interval{0, 1}}};
+            IntervalSet const intervalSet2{
+                std::vector<Interval<>>{Interval{0, 1}}};
             CHECK(intervalSet1.overlaps(intervalSet2));
             CHECK(intervalSet2.overlaps(intervalSet1));
         }
@@ -354,7 +361,8 @@ TEST_CASE("[IntervalSet] count() method", "[utils][IntervalSet]")
     }
     SECTION("With multiple intervals")
     {
-        IntervalSet const interval1{std::vector<Interval<>>{Interval{1, 2}, Interval{5, 7}}};
+        IntervalSet const interval1{
+            std::vector<Interval<>>{Interval{1, 2}, Interval{5, 7}}};
         CHECK(interval1.count() == 5U);
     }
 }
@@ -363,7 +371,8 @@ TEST_CASE("[IntervalSet] extract() method", "[utils][IntervalSet]")
 {
     SECTION("With multiple intervals")
     {
-        IntervalSet interval1{std::vector<Interval<>>{Interval{1, 2}, Interval{5, 7}}};
+        IntervalSet interval1{
+            std::vector<Interval<>>{Interval{1, 2}, Interval{5, 7}}};
         IntervalSet interval2{interval1.extract(2, 5)};
         auto const& result1{interval2.get()};
         REQUIRE(result1.size() == 2U);
@@ -374,7 +383,8 @@ TEST_CASE("[IntervalSet] extract() method", "[utils][IntervalSet]")
 
 TEST_CASE("[IntervalSet] getIntervalFor() method", "[utils][IntervalSet]")
 {
-    IntervalSet const intervalSet1{std::vector<Interval<>>{Interval{1, 4}, Interval{7, 10}}};
+    IntervalSet const intervalSet1{
+        std::vector<Interval<>>{Interval{1, 4}, Interval{7, 10}}};
     SECTION("Value is contained")
     {
         auto const result{intervalSet1.getIntervalFor(2)};
@@ -390,7 +400,8 @@ TEST_CASE("[IntervalSet] getIntervalFor() method", "[utils][IntervalSet]")
 
 TEST_CASE("[IntervalSet] intersect() method", "[utils][IntervalSet]")
 {
-    IntervalSet const intervalSet1{std::vector<Interval<>>{Interval{1, 4}, Interval{7, 10}}};
+    IntervalSet const intervalSet1{
+        std::vector<Interval<>>{Interval{1, 4}, Interval{7, 10}}};
     SECTION("Subsumed")
     {
         Interval const interval2{8, 9};
@@ -435,15 +446,25 @@ TEST_CASE("[IntervalSet] empty() method", "[utils][IntervalSet]")
     }
     SECTION("Non-empty")
     {
-        IntervalSet const intervalSet1{std::vector<Interval<>>{Interval{1, 4}, Interval{7, 10}}};
+        IntervalSet const intervalSet1{
+            std::vector<Interval<>>{Interval{1, 4}, Interval{7, 10}}};
         CHECK_FALSE(intervalSet1.empty());
     }
 }
 
 TEST_CASE("[IntervalSet] toString() method", "[utils][IntervalSet]")
 {
-    IntervalSet const interval1{std::vector<Interval<>>{Interval{1, 2}, Interval{5, 7}}};
-    CHECK(interval1.toString() == "[1,2],[5,7]");
+    SECTION("Empty")
+    {
+        IntervalSet const interval1;
+        CHECK(interval1.toString().empty());
+    }
+    SECTION("Non empty")
+    {
+        IntervalSet const interval1{
+            std::vector<Interval<>>{Interval{1, 2}, Interval{5, 7}}};
+        CHECK(interval1.toString() == "[1,2],[5,7]");
+    }
 }
 
 TEST_CASE("[IntervalSet] Equality operator", "[utils][IntervalSet]")
@@ -459,15 +480,19 @@ TEST_CASE("[IntervalSet] Equality operator", "[utils][IntervalSet]")
     {
         SECTION("Equal")
         {
-            IntervalSet const interval1{std::vector<Interval<>>{Interval{1, 2}, Interval{5, 7}}};
-            IntervalSet const interval2{std::vector<Interval<>>{Interval{1, 2}, Interval{5, 7}}};
+            IntervalSet const interval1{
+                std::vector<Interval<>>{Interval{1, 2}, Interval{5, 7}}};
+            IntervalSet const interval2{
+                std::vector<Interval<>>{Interval{1, 2}, Interval{5, 7}}};
             CHECK(interval1 == interval2);
             CHECK_FALSE(interval1 != interval2);
         }
         SECTION("Different")
         {
-            IntervalSet const interval1{std::vector<Interval<>>{Interval{1, 2}, Interval{5, 7}}};
-            IntervalSet const interval2{std::vector<Interval<>>{Interval{4, 7}}};
+            IntervalSet const interval1{
+                std::vector<Interval<>>{Interval{1, 2}, Interval{5, 7}}};
+            IntervalSet const interval2{
+                std::vector<Interval<>>{Interval{4, 7}}};
             CHECK_FALSE(interval1 == interval2);
             CHECK(interval1 != interval2);
         }
@@ -491,11 +516,12 @@ TEST_CASE("[IntervalSet] Output stream operator", "[utils][IntervalSet]")
         // Restore original buffer before exiting
         std::cout.rdbuf(prevcoutbuf);
 
-        CHECK(text == "[]");
+        CHECK(text.empty());
     }
     SECTION("Non empty")
     {
-        IntervalSet interval1{std::vector<Interval<>>{Interval{1, 2}, Interval{5, 7}}};
+        IntervalSet interval1{
+            std::vector<Interval<>>{Interval{1, 2}, Interval{5, 7}}};
         std::cout << interval1;
 
         // Use the string value of buffer to compare against expected output
