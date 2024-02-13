@@ -533,3 +533,50 @@ TEST_CASE("[IntervalSet] Output stream operator", "[utils][IntervalSet]")
         CHECK(text == "[1,2],[5,7]");
     }
 }
+
+TEST_CASE("[IntervalSet] Iterators", "[utils][IntervalSet]")
+{
+    SECTION("Non-const")
+    {
+        IntervalSet interval1{
+            std::vector<Interval<>>{Interval{1, 2}, Interval{5, 7}}};
+        int count{0};
+        SECTION("With FOR-RANGE loop")
+        {
+            for (auto& item : interval1) {
+                (void)item;
+                ++count;
+            }
+        }
+        SECTION("With normal FOR loop")
+        {
+            for (auto it = interval1.begin(), end = interval1.end(); it != end;
+                 ++it) {
+                ++count;
+            }
+        }
+        REQUIRE(count == 2);
+    }
+    SECTION("Const")
+    {
+        IntervalSet const interval1{
+            std::vector<Interval<>>{Interval{1, 2}, Interval{5, 7}}};
+        int count{0};
+        SECTION("With FOR-RANGE loop")
+        {
+            for (auto const& item : interval1) {
+                (void)item;
+                ++count;
+            }
+        }
+        SECTION("With normal FOR loop")
+        {
+            for (
+                auto it = interval1.cbegin(), end = interval1.cend(); it != end;
+                ++it) {
+                ++count;
+            }
+        }
+        REQUIRE(count == 2);
+    }
+}

@@ -378,6 +378,13 @@ public:
         return mIntervals == other.mIntervals;
     }
 
+    auto begin() { return mIntervals.begin(); }
+    auto end() { return mIntervals.end(); }
+    auto cbegin() const { return mIntervals.cbegin(); }
+    auto cend() const { return mIntervals.cend(); }
+    auto begin() const { return mIntervals.begin(); }
+    auto end() const { return mIntervals.end(); }
+
 private:
     /**
      * @brief      Sorts the list of intervals, and merges contiguous intervals
