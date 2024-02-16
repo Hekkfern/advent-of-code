@@ -439,3 +439,19 @@ private:
 };
 
 } // namespace utils::interval
+
+template <SignedIntegerType T>
+struct std::hash<utils::interval::IntervalSet<T>> {
+    std::size_t
+    operator()(utils::interval::Interval<T> const& item) const noexcept
+    {
+        std::size_t hashValue = 0;
+        for (auto const& interval : item.getIntervals()) {
+            // Combine the hash of each interval using a bitwise XOR operation
+            // and a prime number to reduce the chance of hash collisions.
+            hashValue ^= std::hash<utils::interval::Interval<T>>{}(interval)
+                + 0x9e3779b9 + (hashValue << 6) + (hashValue >> 2);
+        }
+        return hashValue;
+    }
+};
