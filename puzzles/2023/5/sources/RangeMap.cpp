@@ -1,6 +1,7 @@
 #include "RangeMap.hpp"
 
 #include <range/v3/algorithm/sort.hpp>
+#include <range/v3/algorithm/upper_bound.hpp>
 
 namespace aoc_2023_5 {
 
@@ -25,20 +26,15 @@ utils::interval::IntervalSet<int64_t> RangeMap::convert(
     utils::interval::Interval<int64_t> const& keyInterval) const noexcept
 {
     utils::interval::IntervalSet<int64_t> result;
-    std::size_t numConvertedItems{0ULL};
-    // check all the sections for matching conversions of the input interval
-    for (auto const& section : mSections) {
-        auto const value{section.convert(keyInterval)};
-        if (value) {
-            numConvertedItems = value->length();
-            result.add(*value);
-        }
+    // Get the first relevant map
+    RangeMapSection const a{0, keyInterval.getMin(), 1};
+    auto it = ranges::upper_bound(mSections, a, std::less{});
+    if (it != mSections.cbegin()) {
+        it = std::prev(it);
     }
-    // check if all the input interval was converted
-    if (numConvertedItems <= keyInterval.length()){
-        // fill the remaining with 1-to-1 mapping
-        //TODO
-    }
+
+    // TODO
+
     return result;
 }
 

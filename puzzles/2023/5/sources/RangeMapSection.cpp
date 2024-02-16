@@ -36,4 +36,9 @@ bool RangeMapSection::operator<(RangeMapSection const& other) const noexcept
     return mSource < other.mSource;
 }
 
+bool RangeMapSection::operator==(RangeMapSection const& other) const noexcept
+{
+    return mSource == other.mSource;
+}
+
 } // namespace aoc_2023_5

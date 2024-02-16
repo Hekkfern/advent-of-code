@@ -13,7 +13,8 @@ public:
     [[nodiscard]] std::optional<int64_t> convert(int64_t key) const noexcept;
     [[nodiscard]] std::optional<utils::interval::Interval<int64_t>>
     convert(utils::interval::Interval<int64_t> const& key) const noexcept;
-    bool operator<(RangeMapSection const& other) const noexcept;
+    [[nodiscard]] bool operator<(RangeMapSection const& other) const noexcept;
+    [[nodiscard]] bool operator==(RangeMapSection const& other) const noexcept;
 
 private:
     utils::interval::Interval<int64_t> mDestination;
