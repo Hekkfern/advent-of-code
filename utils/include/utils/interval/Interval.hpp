@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <functional>
 #include <optional>
 #include <ostream>
 #include <range/v3/algorithm/sort.hpp>
@@ -42,11 +43,18 @@ public:
      * @brief      Constructs a new instance.
      *
      * @param[in]  values  A pair of values (Min, Max).
+     *
+     * @{
      */
     constexpr explicit Interval(std::pair<T, T> const& values)
         : Interval{values.first, values.second}
     {
     }
+    constexpr explicit Interval(std::pair<T, T>&& values)
+        : Interval{values.first, values.second}
+    {
+    }
+    /** @} */
     /**
      * @brief      Three-way comparison operator.
      *
@@ -81,7 +89,7 @@ public:
     {
         return overlaps(other) || areContiguous(other)
             ? std::make_optional<Interval<T>>(
-                std::min(other.mMin, mMin), std::max(other.mMax, mMax))
+                  std::min(other.mMin, mMin), std::max(other.mMax, mMax))
             : std::nullopt;
     }
     /**
@@ -294,9 +302,11 @@ public:
         return result;
     }
     /**
-     * @brief Increases both boundaries by the value in @p offset.
+     * @brief      Increases both boundaries by the value in @p offset.
      *
-     * @param[in] offset Amount to expand. It cannot be a negative number.
+     * @param[in]  offset  Amount to expand. It cannot be a negative number.
+     *
+     * @return     New expanded interval.
      */
     [[nodiscard]] constexpr Interval
     expand(std::size_t const offset) const noexcept
@@ -307,10 +317,14 @@ public:
         return result;
     }
     /**
-     * @brief Increases both boundaries by the value in @p offset.
+     * @brief      Increases both boundaries by the value in @p offset.
      *
-     * @param[in] leftOffset Amount to expand. It cannot be a negative number.
-     * @param[in] rightOffset Amount to expand. It cannot be a negative number.
+     * @param[in]  leftOffset   Amount to expand down. It cannot be a negative
+     *                          number.
+     * @param[in]  rightOffset  Amount to expand up. It cannot be a negative
+     *                          number.
+     *
+     * @return     New expanded interval.
      */
     [[nodiscard]] constexpr Interval
     expand(std::size_t const leftOffset, std::size_t const rightOffset) const
@@ -379,9 +393,9 @@ public:
         return Interval{start, start + static_cast<T>(l)};
     }
     /**
-     * @brief Creates an interval with the maximum allowed values.
+     * @brief      Creates the widest possible interval for type T.
      *
-     * @return New interval.
+     * @return     New interval.
      */
     [[nodiscard]] constexpr static Interval<T> createWhole()
     {
@@ -389,21 +403,32 @@ public:
             std::numeric_limits<T>::min(), std::numeric_limits<T>::max()};
     }
     /**
-     * @brief Represents this class as a @ref std::string
+     * @brief      Represents this class as a @ref std::string
      *
-     * @return String representing this class.
+     * @return     String representing this class.
      */
     [[nodiscard]] std::string toString() const
     {
-        return "[" + std::to_string(mMin) + "," + std::to_string(mMax) + "]";
+        // Estimate: Up to 20 chars for 64-bit int, 2 for brackets, 1 for comma
+        constexpr size_t estimateSize = 20 + 20 + 2 + 1;
+        std::string result;
+        result.reserve(estimateSize); // Pre-allocate memory
+
+        result += '[';
+        result += std::to_string(mMin);
+        result += ',';
+        result += std::to_string(mMax);
+        result += ']';
+
+        return result;
     }
 
 private:
     /**
      * @brief      "Insert string into stream" operator.
      *
-     * @param[in]  os        The output stream.
-     * @param[in]  obj  The instance.
+     * @param[in]  os    The output stream.
+     * @param[in]  obj   The instance.
      *
      * @return     The updated output stream.
      */
@@ -427,8 +452,17 @@ private:
 
 template <SignedIntegerType T>
 struct std::hash<utils::interval::Interval<T>> {
-    std::size_t operator()(utils::interval::Interval<T> const& k) const noexcept
+    std::size_t
+    operator()(utils::interval::Interval<T> const& item) const noexcept
     {
-        return std::hash<T>()(k.getMin()) ^ std::hash<T>()(k.getMax());
+        // A prime number for hash combination
+        static constexpr std::size_t prime = 31;
+        std::size_t const hash1 = std::hash<T>()(item.getMin());
+        std::size_t const hash2 = std::hash<T>()(item.getMax());
+
+        // Combine hashes with a prime number and bitwise operations
+        std::size_t combinedHash = hash1
+            ^ (hash2 * prime + 0x9e3779b9 + (hash1 << 6) + (hash1 >> 2));
+        return combinedHash;
     }
 };

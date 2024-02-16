@@ -392,23 +392,38 @@ private:
      */
     void reduce() noexcept
     {
-        if (mIntervals.empty()) {
-            return;
-        }
-        // try to join intervals
-        std::set<Interval<T>> newIntervals;
-        Interval<T> accumulatedInterval{*mIntervals.begin()};
-        for (auto const& item : mIntervals) {
-            auto newInterval{accumulatedInterval.join(item)};
-            if (!newInterval) {
-                newIntervals.emplace(accumulatedInterval);
-                accumulatedInterval = item;
+        if (mIntervals.empty())
+            return; // Early return if there are no intervals to reduce
+
+        // Temporary container for merged intervals
+        std::vector<Interval<T>> mergedIntervals;
+
+        // Initialize the process with the first interval in the set
+        auto currentInterval = *mIntervals.begin();
+
+        // Iterate through the set starting from the second interval
+        for (auto it = std::next(mIntervals.begin()); it != mIntervals.end();
+             ++it) {
+            // Check if the current interval overlaps with or is adjacent to the
+            // next one
+            if (currentInterval.getMax() >= it->getMin() - 1) {
+                // Merge the current interval with the next one
+                currentInterval = Interval<T>(
+                    currentInterval.getMin(),
+                    std::max(currentInterval.getMax(), it->getMax()));
             } else {
-                accumulatedInterval = *newInterval;
+                // If they don't overlap, save the current interval and update
+                // it to the next one
+                mergedIntervals.push_back(currentInterval);
+                currentInterval = *it;
             }
         }
-        newIntervals.emplace(accumulatedInterval);
-        mIntervals = newIntervals;
+        // Add the last interval to the merged list
+        mergedIntervals.push_back(currentInterval);
+
+        // Rebuild the set from the merged intervals
+        mIntervals = std::set<Interval<T>>(
+            mergedIntervals.begin(), mergedIntervals.end());
     }
     /**
      * @brief      "Insert string into stream" operator.
