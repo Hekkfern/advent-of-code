@@ -403,7 +403,7 @@ public:
             std::numeric_limits<T>::min(), std::numeric_limits<T>::max()};
     }
     /**
-     * @brief      Represents this class as a @ref std::string
+     * @brief      Represents this class as a @ref std::string.
      *
      * @return     String representing this class.
      */

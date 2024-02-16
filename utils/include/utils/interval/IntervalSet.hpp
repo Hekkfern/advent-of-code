@@ -18,51 +18,48 @@
 namespace utils::interval {
 
 /**
- * @brief      This class describes an interval of non-continuous integer
- *             values.
+ * @brief      Represents a set of non-overlapping intervals.
+ * @details    This class provides operations to add and remove intervals or
+ *             individual values, automatically merging overlapping intervals to
+ *             maintain a set of non-overlapping intervals.
  *
- * @tparam     T     Type of the values.
+ * @tparam     T     The type of the interval boundaries, must satisfy
+ *                   SignedIntegerType concept.
  */
 template <SignedIntegerType T = int32_t>
 class IntervalSet {
 public:
     /**
-     * @brief      Default constructor
+     * @brief      Default constructor. Initializes an empty IntervalSet.
      */
     explicit IntervalSet() noexcept = default;
     /**
-     * @brief      Parametrized constructor
+     * @brief      Constructs an IntervalSet from a set of intervals.
+     *             Overlapping intervals are merged.
      *
-     * @note       The intervals are compacted and sorted when this instance is
-     *             constructed.
+     * @param[in]  intervals  A set of intervals to initialize the IntervalSet.
      *
-     * @param[in]  intervals  The intervals.
+     * @{
      */
     explicit IntervalSet(std::set<Interval<T>> const& intervals) noexcept
         : mIntervals{intervals}
     {
         reduce();
     }
-    /**
-     * @brief      Parametrized constructor
-     *
-     * @note       The intervals are compacted and sorted when this instance is
-     *             constructed.
-     *
-     * @param[in]  intervals  The intervals.
-     */
     explicit IntervalSet(std::set<Interval<T>>&& intervals) noexcept
         : mIntervals{std::move(intervals)}
     {
         reduce();
     }
+    /** }@ */
     /**
-     * @brief      Parametrized constructor
+     * @brief      Constructs an IntervalSet from a vector of intervals, merging
+     *             overlaps.
      *
-     * @note       The intervals are compacted and sorted when this instance is
-     *             constructed.
+     * @param[in]  intervals  A vector of intervals to initialize the
+     *                        IntervalSet.
      *
-     * @param[in]  intervals  The intervals.
+     * @{
      */
     explicit IntervalSet(std::vector<Interval<T>> const& intervals) noexcept
         : mIntervals{
@@ -70,20 +67,13 @@ public:
     {
         reduce();
     }
-    /**
-     * @brief      Parametrized constructor
-     *
-     * @note       The intervals are compacted and sorted when this instance is
-     *             constructed.
-     *
-     * @param[in]  intervals  The intervals.
-     */
     explicit IntervalSet(std::vector<Interval<T>>&& intervals) noexcept
         : mIntervals{
               std::set<Interval<T>>{intervals.cbegin(), intervals.cend()}}
     {
         reduce();
     }
+    /** }@ */
     /**
      * @brief      Gets the intervals.
      *
@@ -94,29 +84,30 @@ public:
         return std::vector<Interval<T>>{mIntervals.cbegin(), mIntervals.cend()};
     }
     /**
-     * @brief      Adds the specified interval.
+     * @brief      Adds an interval, merging it with any overlapping intervals.
      *
      * @param[in]  interval  The interval to add.
+     *
+     * @{
      */
     void add(Interval<T> const& interval) noexcept
     {
         mIntervals.emplace(interval);
         reduce();
     }
-    /**
-     * @brief      Adds the specified interval.
-     *
-     * @param[in]  interval  The interval to add.
-     */
     void add(Interval<T>&& interval) noexcept
     {
         mIntervals.emplace(std::move(interval));
         reduce();
     }
+    /** }@ */
     /**
-     * @brief      Adds the specified value.
+     * @brief      Adds a new interval defined by a single value.
      *
-     * @param[in]  value  The value to add.
+     * @details    This is equivalent to adding an interval where both
+     *             boundaries are this value.
+     *
+     * @param[in]  value  The value to add as a single-value interval.
      */
     void add(T const value) noexcept
     {
@@ -124,9 +115,9 @@ public:
         reduce();
     }
     /**
-     * @brief      Removes the specified value, if it is contained.
+     * @brief      Removes a specific value, splitting intervals as necessary.
      *
-     * @param      value  The value to remove.
+     * @param[in]  value  The value to remove.
      */
     void remove(T const value) noexcept
     {
@@ -151,7 +142,8 @@ public:
         reduce();
     }
     /**
-     * @brief      Removes the specified interval.
+     * @brief      Removes an interval, adjusting or splitting intervals as
+     *             needed.
      *
      * @param[in]  eraseInterval  The interval to remove.
      */
@@ -342,7 +334,7 @@ public:
         return IntervalSet{overlappedIntervals};
     }
     /**
-     * @brief      Implicit conversion operator to @ref std::string
+     * @brief      Represents this class as a @ref std::string.
      *
      * @return     String representing this class.
      */
@@ -387,8 +379,8 @@ public:
 
 private:
     /**
-     * @brief      Sorts the list of intervals, and merges contiguous intervals
-     *             to try to reduce the total of intervals in the list.
+     * @brief      Merges overlapping intervals within the set to maintain the
+     *             non-overlapping invariant.
      */
     void reduce() noexcept
     {
@@ -441,13 +433,7 @@ private:
     }
 
     /**
-     * List of intervals.
-     *
-     * @note       No interval is overlapped.
-     * @note       All the intervals are sorted by ascending order of its
-     *             minimal value.
-     * @note       Two contiguous intervals mean that there is a gap in-between
-     *             of, at least, one value.
+     * Stores intervals, ensuring no overlaps and sorted order.
      */
     std::set<Interval<T>> mIntervals{};
 };
