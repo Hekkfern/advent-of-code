@@ -210,7 +210,7 @@ public:
      *
      * @return     Pair with both the minimum and the maximum values.
      */
-    [[nodiscard]] constexpr std::pair<T, T> get() const noexcept
+    [[nodiscard]] constexpr std::pair<T, T> getBoundaries() const noexcept
     {
         return std::make_pair(mMin, mMax);
     }
@@ -422,6 +422,22 @@ public:
 
         return result;
     }
+    /**
+     * @brief      Getter for structured binding
+     *
+     * @tparam     N     Number of tuple-like parameters.
+     *
+     * @return     The value of the internal variable, according to @p N.
+     */
+    template <std::size_t N>
+    [[nodiscard]] decltype(auto) get() const
+    {
+        if constexpr (N == 0) {
+            return mMin;
+        } else if constexpr (N == 1) {
+            return mMax;
+        }
+    }
 
 private:
     /**
@@ -449,6 +465,25 @@ private:
 };
 
 } // namespace utils::interval
+
+namespace std {
+
+/* Support for structured binding */
+template <class T>
+struct tuple_size<utils::interval::Interval<T>>
+    : std::integral_constant<std::size_t, 2> { };
+/* Support for structured binding */
+template <class T>
+struct tuple_element<0, utils::interval::Interval<T>> {
+    using type = T;
+};
+/* Support for structured binding */
+template <class T>
+struct tuple_element<1, utils::interval::Interval<T>> {
+    using type = T;
+};
+
+} // namespace std
 
 template <SignedIntegerType T>
 struct std::hash<utils::interval::Interval<T>> {

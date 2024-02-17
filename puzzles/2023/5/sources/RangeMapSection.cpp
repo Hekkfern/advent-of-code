@@ -19,18 +19,6 @@ RangeMapSection::convert(int64_t const key) const noexcept
     return mDestination.getMin() + (key - mSource.getMin());
 }
 
-std::optional<utils::interval::Interval<int64_t>> RangeMapSection::convert(
-    utils::interval::Interval<int64_t> const& keyInterval) const noexcept
-{
-    auto const intersectedSource{keyInterval.intersect(mSource)};
-    if (!intersectedSource) {
-        return {};
-    }
-    return utils::interval::Interval<int64_t>{
-        *convert(intersectedSource->getMin()),
-        *convert(intersectedSource->getMax())};
-}
-
 bool RangeMapSection::operator<(RangeMapSection const& other) const noexcept
 {
     return mSource < other.mSource;
@@ -39,6 +27,11 @@ bool RangeMapSection::operator<(RangeMapSection const& other) const noexcept
 bool RangeMapSection::operator==(RangeMapSection const& other) const noexcept
 {
     return mSource == other.mSource;
+}
+
+utils::interval::Interval<int64_t> const& RangeMapSection::getSource() const
+{
+    return mSource;
 }
 
 } // namespace aoc_2023_5

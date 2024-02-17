@@ -15,14 +15,14 @@ TEST_CASE("[Interval] Constructor", "[utils][Interval]")
             Interval const interval1{2, 3};
             CHECK(interval1.getMin() == 2);
             CHECK(interval1.getMax() == 3);
-            CHECK(interval1.get() == std::make_pair(2, 3));
+            CHECK(interval1.getBoundaries() == std::make_pair(2, 3));
         }
         SECTION("Positive and negatives values")
         {
             Interval const interval2{-3, 1};
             CHECK(interval2.getMin() == -3);
             CHECK(interval2.getMax() == 1);
-            CHECK(interval2.get() == std::make_pair(-3, 1));
+            CHECK(interval2.getBoundaries() == std::make_pair(-3, 1));
         }
     }
     SECTION("Static tests")
@@ -30,14 +30,14 @@ TEST_CASE("[Interval] Constructor", "[utils][Interval]")
         SECTION("Positive values")
         {
             constexpr Interval interval1{2, 3};
-            STATIC_CHECK(interval1.get() == std::make_pair(2, 3));
+            STATIC_CHECK(interval1.getBoundaries() == std::make_pair(2, 3));
             STATIC_CHECK(interval1.getMin() == 2);
             STATIC_CHECK(interval1.getMax() == 3);
         }
         SECTION("Positive and negatives values")
         {
             constexpr Interval interval1{std::make_pair(-3, 1)};
-            STATIC_CHECK(interval1.get() == std::make_pair(-3, 1));
+            STATIC_CHECK(interval1.getBoundaries() == std::make_pair(-3, 1));
             STATIC_CHECK(interval1.getMin() == -3);
             STATIC_CHECK(interval1.getMax() == 1);
         }
@@ -76,7 +76,7 @@ TEST_CASE("[Interval] join() method", "[utils][Interval]")
             Interval const interval2{-3, 1};
             std::optional<Interval<>> const result1{interval1.join(interval2)};
             CHECK(result1);
-            CHECK(result1->get() == std::make_pair(-3, 4));
+            CHECK(result1->getBoundaries() == std::make_pair(-3, 4));
         }
         SECTION("One interval contains the other")
         {
@@ -84,7 +84,7 @@ TEST_CASE("[Interval] join() method", "[utils][Interval]")
             Interval const interval2{3, 6};
             std::optional<Interval<>> const result2{interval1.join(interval2)};
             CHECK(result2);
-            CHECK(result2->get() == std::make_pair(2, 6));
+            CHECK(result2->getBoundaries() == std::make_pair(2, 6));
         }
         SECTION("Left overlap")
         {
@@ -92,7 +92,7 @@ TEST_CASE("[Interval] join() method", "[utils][Interval]")
             Interval const interval2{-3, 1};
             std::optional<Interval<>> const result1{interval1.join(interval2)};
             CHECK(result1);
-            CHECK(result1->get() == std::make_pair(-3, 4));
+            CHECK(result1->getBoundaries() == std::make_pair(-3, 4));
         }
         SECTION("Right overlap")
         {
@@ -100,7 +100,7 @@ TEST_CASE("[Interval] join() method", "[utils][Interval]")
             Interval const interval2{3, 6};
             std::optional<Interval<>> const result2{interval1.join(interval2)};
             CHECK(result2);
-            CHECK(result2->get() == std::make_pair(2, 6));
+            CHECK(result2->getBoundaries() == std::make_pair(2, 6));
         }
         SECTION("They don't overlap")
         {
@@ -108,7 +108,7 @@ TEST_CASE("[Interval] join() method", "[utils][Interval]")
             Interval const interval2{-3, 3};
             std::optional<Interval<>> const result1{interval1.join(interval2)};
             CHECK(result1);
-            CHECK(result1->get() == std::make_pair(-3, 4));
+            CHECK(result1->getBoundaries() == std::make_pair(-3, 4));
         }
         SECTION("The other interval is a single-value interval")
         {
@@ -119,7 +119,7 @@ TEST_CASE("[Interval] join() method", "[utils][Interval]")
                 std::optional<Interval<>> const result1{
                     interval1.join(interval2)};
                 CHECK(result1);
-                CHECK(result1->get() == std::make_pair(2, 4));
+                CHECK(result1->getBoundaries() == std::make_pair(2, 4));
             }
             SECTION("Right extreme")
             {
@@ -128,7 +128,7 @@ TEST_CASE("[Interval] join() method", "[utils][Interval]")
                 std::optional<Interval<>> const result1{
                     interval1.join(interval2)};
                 CHECK(result1);
-                CHECK(result1->get() == std::make_pair(2, 4));
+                CHECK(result1->getBoundaries() == std::make_pair(2, 4));
             }
             SECTION("In the middle")
             {
@@ -137,7 +137,7 @@ TEST_CASE("[Interval] join() method", "[utils][Interval]")
                 std::optional<Interval<>> const result1{
                     interval1.join(interval2)};
                 CHECK(result1);
-                CHECK(result1->get() == std::make_pair(-1, 4));
+                CHECK(result1->getBoundaries() == std::make_pair(-1, 4));
             }
             SECTION("Outside on the left side")
             {
@@ -148,7 +148,7 @@ TEST_CASE("[Interval] join() method", "[utils][Interval]")
                     std::optional<Interval<>> const result2{
                         interval1.join(interval2)};
                     CHECK(result2);
-                    CHECK(result2->get() == std::make_pair(1, 4));
+                    CHECK(result2->getBoundaries() == std::make_pair(1, 4));
                 }
                 SECTION("Non-contiguous")
                 {
@@ -168,7 +168,7 @@ TEST_CASE("[Interval] join() method", "[utils][Interval]")
                     std::optional<Interval<>> const result2{
                         interval1.join(interval2)};
                     CHECK(result2);
-                    CHECK(result2->get() == std::make_pair(2, 5));
+                    CHECK(result2->getBoundaries() == std::make_pair(2, 5));
                 }
                 SECTION("Non-contiguous")
                 {
@@ -207,10 +207,10 @@ TEST_CASE("[Interval] intersect() method", "[utils][Interval]")
             Interval const interval2{-3, 4};
             auto const result{interval1.intersect(interval2)};
             CHECK(result);
-            CHECK(result->get() == std::make_pair(2, 3));
+            CHECK(result->getBoundaries() == std::make_pair(2, 3));
             auto const result2{interval2.intersect(interval1)};
             CHECK(result2);
-            CHECK(result2->get() == std::make_pair(2, 3));
+            CHECK(result2->getBoundaries() == std::make_pair(2, 3));
         }
         SECTION("Left overlap")
         {
@@ -218,10 +218,10 @@ TEST_CASE("[Interval] intersect() method", "[utils][Interval]")
             Interval const interval2{-5, -1};
             auto const result{interval1.intersect(interval2)};
             CHECK(result);
-            CHECK(result->get() == std::make_pair(-3, -1));
+            CHECK(result->getBoundaries() == std::make_pair(-3, -1));
             auto const result2{interval2.intersect(interval1)};
             CHECK(result2);
-            CHECK(result2->get() == std::make_pair(-3, -1));
+            CHECK(result2->getBoundaries() == std::make_pair(-3, -1));
         }
         SECTION("Right overlap")
         {
@@ -229,10 +229,10 @@ TEST_CASE("[Interval] intersect() method", "[utils][Interval]")
             Interval const interval2{2, 7};
             auto const result{interval1.intersect(interval2)};
             CHECK(result);
-            CHECK(result->get() == std::make_pair(2, 4));
+            CHECK(result->getBoundaries() == std::make_pair(2, 4));
             auto const result2{interval2.intersect(interval1)};
             CHECK(result2);
-            CHECK(result2->get() == std::make_pair(2, 4));
+            CHECK(result2->getBoundaries() == std::make_pair(2, 4));
         }
         SECTION("Intervals share one extreme value")
         {
@@ -242,10 +242,10 @@ TEST_CASE("[Interval] intersect() method", "[utils][Interval]")
                 Interval const interval2{-3, 4};
                 auto const result{interval1.intersect(interval2)};
                 CHECK(result);
-                CHECK(result->get() == std::make_pair(-3, 1));
+                CHECK(result->getBoundaries() == std::make_pair(-3, 1));
                 auto const result2{interval2.intersect(interval1)};
                 CHECK(result2);
-                CHECK(result2->get() == std::make_pair(-3, 1));
+                CHECK(result2->getBoundaries() == std::make_pair(-3, 1));
             }
             SECTION("Right extreme")
             {
@@ -253,10 +253,10 @@ TEST_CASE("[Interval] intersect() method", "[utils][Interval]")
                 Interval const interval2{-3, 4};
                 auto const result{interval1.intersect(interval2)};
                 CHECK(result);
-                CHECK(result->get() == std::make_pair(1, 4));
+                CHECK(result->getBoundaries() == std::make_pair(1, 4));
                 auto const result2{interval2.intersect(interval1)};
                 CHECK(result2);
-                CHECK(result2->get() == std::make_pair(1, 4));
+                CHECK(result2->getBoundaries() == std::make_pair(1, 4));
             }
         }
     }
@@ -618,17 +618,17 @@ TEST_CASE("[Interval] move() method", "[utils][Interval]")
         SECTION("Positive movement")
         {
             auto const interval2{interval1.move(2)};
-            CHECK(interval2.get() == std::make_pair(4, 9));
+            CHECK(interval2.getBoundaries() == std::make_pair(4, 9));
         }
         SECTION("Negative movement")
         {
             auto const interval2{interval1.move(-3)};
-            CHECK(interval2.get() == std::make_pair(-1, 4));
+            CHECK(interval2.getBoundaries() == std::make_pair(-1, 4));
         }
         SECTION("Zero movement")
         {
             auto const interval2{interval1.move(0)};
-            CHECK(interval2.get() == std::make_pair(2, 7));
+            CHECK(interval2.getBoundaries() == std::make_pair(2, 7));
         }
     }
     SECTION("Static tests")
@@ -637,17 +637,17 @@ TEST_CASE("[Interval] move() method", "[utils][Interval]")
         SECTION("Positive movement")
         {
             constexpr auto interval2{interval1.move(2)};
-            STATIC_CHECK(interval2.get() == std::make_pair(4, 9));
+            STATIC_CHECK(interval2.getBoundaries() == std::make_pair(4, 9));
         }
         SECTION("Negative movement")
         {
             constexpr auto interval2{interval1.move(-3)};
-            STATIC_CHECK(interval2.get() == std::make_pair(-1, 4));
+            STATIC_CHECK(interval2.getBoundaries() == std::make_pair(-1, 4));
         }
         SECTION("Zero movement")
         {
             constexpr auto interval2{interval1.move(0)};
-            STATIC_CHECK(interval2.get() == std::make_pair(2, 7));
+            STATIC_CHECK(interval2.getBoundaries() == std::make_pair(2, 7));
         }
     }
 }
@@ -660,17 +660,17 @@ TEST_CASE("[Interval] expand() method", "[utils][Interval]")
         SECTION("Equal offset")
         {
             auto const interval2{interval1.expand(2)};
-            CHECK(interval2.get() == std::make_pair(0, 9));
+            CHECK(interval2.getBoundaries() == std::make_pair(0, 9));
         }
         SECTION("Different offset")
         {
             auto const interval2{interval1.expand(2, 3)};
-            CHECK(interval2.get() == std::make_pair(0, 10));
+            CHECK(interval2.getBoundaries() == std::make_pair(0, 10));
         }
         SECTION("Zero offset")
         {
             auto const interval2{interval1.expand(0)};
-            CHECK(interval2.get() == std::make_pair(2, 7));
+            CHECK(interval2.getBoundaries() == std::make_pair(2, 7));
         }
     }
     SECTION("Static tests")
@@ -679,17 +679,17 @@ TEST_CASE("[Interval] expand() method", "[utils][Interval]")
         SECTION("Equal offset")
         {
             constexpr auto interval2{interval1.expand(2)};
-            STATIC_CHECK(interval2.get() == std::make_pair(0, 9));
+            STATIC_CHECK(interval2.getBoundaries() == std::make_pair(0, 9));
         }
         SECTION("Different offset")
         {
             constexpr auto interval2{interval1.expand(2, 3)};
-            STATIC_CHECK(interval2.get() == std::make_pair(0, 10));
+            STATIC_CHECK(interval2.getBoundaries() == std::make_pair(0, 10));
         }
         SECTION("Zero offset")
         {
             constexpr auto interval2{interval1.expand(0)};
-            STATIC_CHECK(interval2.get() == std::make_pair(2, 7));
+            STATIC_CHECK(interval2.getBoundaries() == std::make_pair(2, 7));
         }
     }
 }
@@ -802,14 +802,14 @@ TEST_CASE("[Interval] createWithBounds() method", "[utils][Interval]")
         auto const interval1{Interval<>::createWithBounds(2, 3)};
         CHECK(interval1.getMin() == 2);
         CHECK(interval1.getMax() == 3);
-        CHECK(interval1.get() == std::make_pair(2, 3));
+        CHECK(interval1.getBoundaries() == std::make_pair(2, 3));
     }
     SECTION("Static tests")
     {
         constexpr auto interval1{Interval<>::createWithBounds(2, 3)};
         STATIC_CHECK(interval1.getMin() == 2);
         STATIC_CHECK(interval1.getMax() == 3);
-        STATIC_CHECK(interval1.get() == std::make_pair(2, 3));
+        STATIC_CHECK(interval1.getBoundaries() == std::make_pair(2, 3));
     }
 }
 
@@ -820,14 +820,14 @@ TEST_CASE("[Interval] createWithLength() method", "[utils][Interval]")
         auto const interval1{Interval<>::createWithLength(2, 3)};
         CHECK(interval1.getMin() == 2);
         CHECK(interval1.getMax() == 5);
-        CHECK(interval1.get() == std::make_pair(2, 5));
+        CHECK(interval1.getBoundaries() == std::make_pair(2, 5));
     }
     SECTION("Static tests")
     {
         constexpr auto interval1{Interval<>::createWithLength(2, 3)};
         STATIC_CHECK(interval1.getMin() == 2);
         STATIC_CHECK(interval1.getMax() == 5);
-        STATIC_CHECK(interval1.get() == std::make_pair(2, 5));
+        STATIC_CHECK(interval1.getBoundaries() == std::make_pair(2, 5));
     }
 }
 
@@ -839,7 +839,7 @@ TEST_CASE("[Interval] createWhole() method", "[utils][Interval]")
         CHECK(interval1.getMin() == std::numeric_limits<int>::min());
         CHECK(interval1.getMax() == std::numeric_limits<int>::max());
         CHECK(
-            interval1.get()
+            interval1.getBoundaries()
             == std::make_pair(
                 std::numeric_limits<int>::min(),
                 std::numeric_limits<int>::max()));
@@ -850,7 +850,7 @@ TEST_CASE("[Interval] createWhole() method", "[utils][Interval]")
         STATIC_CHECK(interval1.getMin() == std::numeric_limits<int>::min());
         STATIC_CHECK(interval1.getMax() == std::numeric_limits<int>::max());
         STATIC_CHECK(
-            interval1.get()
+            interval1.getBoundaries()
             == std::make_pair(
                 std::numeric_limits<int>::min(),
                 std::numeric_limits<int>::max()));
@@ -879,4 +879,12 @@ TEST_CASE("[Interval] Output stream operator", "[utils][Interval]")
     std::cout.rdbuf(prevcoutbuf);
 
     CHECK(text == "[2,7]");
+}
+
+TEST_CASE("[Interval] Structured binding", "[utils][Interval]")
+{
+    Interval const interval1{1, 2};
+    auto const [x, y]{interval1};
+    CHECK(x == 1);
+    CHECK(y == 2);
 }
