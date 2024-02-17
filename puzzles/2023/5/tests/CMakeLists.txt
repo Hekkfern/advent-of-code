@@ -6,7 +6,7 @@ find_package(Catch2 3 CONFIG REQUIRED)
 
 # aoc_2023_5_tests
 set(_EXEC_NAME "aoc_2023_5_tests")
-add_executable(${_EXEC_NAME} unittests.cpp)
+add_executable(${_EXEC_NAME} unittests.cpp RangeMapTests.cpp)
 setup_test(${_EXEC_NAME})
 target_link_libraries(
   ${_EXEC_NAME}

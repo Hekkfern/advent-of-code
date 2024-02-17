@@ -10,7 +10,7 @@
 
 TEST_CASE(
     "[2023_5] Use example input for Part 1",
-    "[2023, 2023_5, part1, 2023_5_part1]")
+    "[2023][2023_5][part1][2023_5_part1]")
 {
     constexpr auto InputFile{"input1_test.txt"};
 
@@ -23,7 +23,7 @@ TEST_CASE(
 
 TEST_CASE(
     "[2023_5] Use example input for Part 2",
-    "[2023, 2023_5, part2, 2023_5_part2]")
+    "[2023][2023_5][part2][2023_5_part2]")
 {
     constexpr auto InputFile{"input2_test.txt"};
 
@@ -35,7 +35,7 @@ TEST_CASE(
 }
 
 TEST_CASE(
-    "[2023_5] Use real input for Part 1", "[2023, 2023_5, part1, 2023_5_part1]")
+    "[2023_5] Use real input for Part 1", "[2023][2023_5][part1][2023_5_part1]")
 {
     constexpr auto InputFile{"input.txt"};
 
@@ -47,7 +47,7 @@ TEST_CASE(
 }
 
 TEST_CASE(
-    "[2023_5] Use real input for Part 2", "[2023, 2023_5, part1, 2023_5_part2]")
+    "[2023_5] Use real input for Part 2", "[2023][2023_5][part1][2023_5_part2]")
 {
     constexpr auto InputFile{"input.txt"};
 
