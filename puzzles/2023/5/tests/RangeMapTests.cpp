@@ -3,12 +3,13 @@
 #include <catch.hpp>
 
 using namespace aoc_2023_5;
+using namespace utils::interval;
 
 TEST_CASE("[RangeMap] Convert single key", "[2023][2023_5][RangeMap]")
 {
     RangeMap rangeMap;
     SECTION("Empty map") { REQUIRE(rangeMap.convert(12LL) == 12LL); }
-    SECTION("Non-empty map")
+    SECTION("Map with one single item")
     {
         rangeMap.addSection(100, 20, 10);
         SECTION("Key is contained in the map")
@@ -18,6 +19,68 @@ TEST_CASE("[RangeMap] Convert single key", "[2023][2023_5][RangeMap]")
         SECTION("Key is not contained in the map")
         {
             REQUIRE(rangeMap.convert(12LL) == 12LL);
+        }
+    }
+    SECTION("Map with multiple items")
+    {
+        rangeMap.addSection(100, 20, 10);
+        rangeMap.addSection(55, 35, 10);
+        SECTION("Key is contained in the map")
+        {
+            REQUIRE(rangeMap.convert(27LL) == 107LL);
+            REQUIRE(rangeMap.convert(36LL) == 56LL);
+        }
+        SECTION("Key is not contained in the map")
+        {
+            REQUIRE(rangeMap.convert(12LL) == 12LL);
+        }
+    }
+}
+
+TEST_CASE("[RangeMap] Convert interval key", "[2023][2023_5][RangeMap]")
+{
+    RangeMap rangeMap;
+    SECTION("Empty map") { REQUIRE(rangeMap.convert(12LL) == 12LL); }
+    SECTION("Map with one single item")
+    {
+        rangeMap.addSection(100, 20, 10);
+        SECTION("Key is contained in the map")
+        {
+            auto const result{rangeMap.convert(Interval{27LL, 28LL})};
+            REQUIRE(result.get().size() == 1);
+            REQUIRE(result.get()[0] == Interval{107LL, 108LL});
+        }
+        SECTION("Key is not contained in the map")
+        {
+            auto const result{rangeMap.convert(Interval{12LL, 13LL})};
+            REQUIRE(result.get().size() == 1);
+            REQUIRE(result.get()[0] == Interval{12LL, 13LL});
+        }
+    }
+    SECTION("Map with multiple items")
+    {
+        rangeMap.addSection(100, 20, 10);
+        rangeMap.addSection(55, 35, 10);
+        SECTION("Key is contained in the map")
+        {
+            SECTION("In first range")
+            {
+                auto const result{rangeMap.convert(Interval{27LL, 28LL})};
+                REQUIRE(result.get().size() == 1);
+                REQUIRE(result.get()[0] == Interval{107LL, 108LL});
+            }
+            SECTION("In second range")
+            {
+                auto const result{rangeMap.convert(Interval{36LL, 37LL})};
+                REQUIRE(result.get().size() == 1);
+                REQUIRE(result.get()[0] == Interval{56LL, 57LL});
+            }
+        }
+        SECTION("Key is not contained in the map")
+        {
+            auto const result{rangeMap.convert(Interval{12LL, 13LL})};
+            REQUIRE(result.get().size() == 1);
+            REQUIRE(result.get()[0] == Interval{12LL, 13LL});
         }
     }
 }
