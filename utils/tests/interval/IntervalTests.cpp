@@ -795,36 +795,36 @@ TEST_CASE("[Interval] relates() method", "[utils][Interval]")
     }
 }
 
-TEST_CASE("[Interval] createWithBounds() method", "[utils][Interval]")
+TEST_CASE("[Interval] createWithBoundaries() method", "[utils][Interval]")
 {
     SECTION("Runtime tests")
     {
-        auto const interval1{Interval<>::createWithBounds(2, 3)};
+        auto const interval1{Interval<>::createWithBoundaries(2, 3)};
         CHECK(interval1.getMin() == 2);
         CHECK(interval1.getMax() == 3);
         CHECK(interval1.getBoundaries() == std::make_pair(2, 3));
     }
     SECTION("Static tests")
     {
-        constexpr auto interval1{Interval<>::createWithBounds(2, 3)};
+        constexpr auto interval1{Interval<>::createWithBoundaries(2, 3)};
         STATIC_CHECK(interval1.getMin() == 2);
         STATIC_CHECK(interval1.getMax() == 3);
         STATIC_CHECK(interval1.getBoundaries() == std::make_pair(2, 3));
     }
 }
 
-TEST_CASE("[Interval] createWithLength() method", "[utils][Interval]")
+TEST_CASE("[Interval] createWithSize() method", "[utils][Interval]")
 {
     SECTION("Runtime tests")
     {
-        auto const interval1{Interval<>::createWithLength(2, 3)};
+        auto const interval1{Interval<>::createWithSize(2, 3)};
         CHECK(interval1.getMin() == 2);
         CHECK(interval1.getMax() == 4);
         CHECK(interval1.getBoundaries() == std::make_pair(2, 4));
     }
     SECTION("Static tests")
     {
-        constexpr auto interval1{Interval<>::createWithLength(2, 3)};
+        constexpr auto interval1{Interval<>::createWithSize(2, 3)};
         STATIC_CHECK(interval1.getMin() == 2);
         STATIC_CHECK(interval1.getMax() == 4);
         STATIC_CHECK(interval1.getBoundaries() == std::make_pair(2, 4));

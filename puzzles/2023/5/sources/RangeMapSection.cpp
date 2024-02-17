@@ -4,9 +4,9 @@ namespace aoc_2023_5 {
 
 RangeMapSection::RangeMapSection(
     int64_t const dest, int64_t const src, int64_t const length) noexcept
-    : mDestination{utils::interval::Interval<int64_t>::createWithLength(
+    : mDestination{utils::interval::Interval<int64_t>::createWithSize(
           dest, length)}
-    , mSource{utils::interval::Interval<int64_t>::createWithLength(src, length)}
+    , mSource{utils::interval::Interval<int64_t>::createWithSize(src, length)}
 {
 }
 

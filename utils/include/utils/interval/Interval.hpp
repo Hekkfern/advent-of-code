@@ -370,7 +370,7 @@ public:
      */
     template <class U, class V>
     [[nodiscard]] constexpr static Interval
-    createWithBounds(U const a, V const b)
+    createWithBoundaries(U const a, V const b)
     {
         return Interval{static_cast<T>(a), static_cast<T>(b)};
     }
@@ -388,7 +388,7 @@ public:
      */
     template <class U, class V>
     [[nodiscard]] constexpr static Interval
-    createWithLength(U const a, V const l)
+    createWithSize(U const a, V const l)
     {
         auto const start{static_cast<T>(a)};
         return Interval{start, start + static_cast<T>(l) - 1};
