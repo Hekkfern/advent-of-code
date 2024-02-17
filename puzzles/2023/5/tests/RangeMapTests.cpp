@@ -67,8 +67,8 @@ TEST_CASE("[RangeMap] Convert interval key", "[2023][2023_5][RangeMap]")
         {
             auto const result{rangeMap.convert(Interval{28LL, 33LL})};
             REQUIRE(result.get().size() == 2);
-            CHECK(result.get()[0] == Interval{108LL, 110LL});
-            CHECK(result.get()[1] == Interval{31LL, 32LL});
+            CHECK(result.get()[0] == Interval{30LL, 33LL});
+            CHECK(result.get()[1] == Interval{108LL, 109LL});
         }
     }
     SECTION("Map with multiple items")
@@ -95,6 +95,20 @@ TEST_CASE("[RangeMap] Convert interval key", "[2023][2023_5][RangeMap]")
             auto const result{rangeMap.convert(Interval{12LL, 13LL})};
             REQUIRE(result.get().size() == 1);
             CHECK(result.get()[0] == Interval{12LL, 13LL});
+        }
+        SECTION("Key is semi-contained (left) in the map")
+        {
+            auto const result{rangeMap.convert(Interval{18LL, 22LL})};
+            REQUIRE(result.get().size() == 2);
+            CHECK(result.get()[0] == Interval{18LL, 19LL});
+            CHECK(result.get()[1] == Interval{100LL, 102LL});
+        }
+        SECTION("Key is semi-contained (right) in the map")
+        {
+            auto const result{rangeMap.convert(Interval{28LL, 33LL})};
+            REQUIRE(result.get().size() == 2);
+            CHECK(result.get()[0] == Interval{30LL, 33LL});
+            CHECK(result.get()[1] == Interval{108LL, 109LL});
         }
     }
 }
