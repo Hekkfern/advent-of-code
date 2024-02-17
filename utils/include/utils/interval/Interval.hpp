@@ -378,7 +378,8 @@ public:
      * @brief      Creates an interval by setting one boundary and its length.
      *
      * @param[in]  a     One boundary.
-     * @param[in]  l     The length of the interval.
+     * @param[in]  l     The length of the interval, including the starting
+     * number.
      *
      * @tparam     U     Type of the first boundary (the minimum).
      * @tparam     V     Type of the length of the interval.
@@ -390,7 +391,7 @@ public:
     createWithLength(U const a, V const l)
     {
         auto const start{static_cast<T>(a)};
-        return Interval{start, start + static_cast<T>(l)};
+        return Interval{start, start + static_cast<T>(l) - 1};
     }
     /**
      * @brief      Creates the widest possible interval for type T.

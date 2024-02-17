@@ -29,8 +29,13 @@ IntervalSet<int64_t>
 RangeMap::convert(Interval<int64_t> const& keyInterval) const noexcept
 {
     IntervalSet<int64_t> result;
+
+    if (mSections.empty()) {
+        return result;
+    }
+
     // Get the first relevant map section
-    RangeMapSection const a{0, keyInterval.getMin(), 1};
+    RangeMapSection const a{0, keyInterval.getMin(), 0};
     auto it = ranges::upper_bound(mSections, a, std::less{});
     if (it != mSections.begin()) {
         it = std::prev(it);
@@ -38,8 +43,8 @@ RangeMap::convert(Interval<int64_t> const& keyInterval) const noexcept
 
     auto start{keyInterval.getMin()};
     auto length{static_cast<int64_t>(keyInterval.length())};
-    auto const mapStart{it->getSource().getMin()};
-    auto const mapLength{static_cast<int64_t>(it->getSource().length())};
+    auto mapStart{it->getSource().getMin()};
+    auto mapLength{static_cast<int64_t>(it->getSource().length())};
     while (length > 0) {
         if (it == mSections.end()) {
             // No conversion, no more mappings
@@ -48,19 +53,28 @@ RangeMap::convert(Interval<int64_t> const& keyInterval) const noexcept
         } else if (start < mapStart) {
             // No conversion
             // (initial part of the range not covered by a mapping)
-            int64_t actual = std::min(length, mapStart - start);
-            result.add(Interval{start, actual});
-            start += actual;
-            length -= actual;
-        } else if (start - mapStart >= mapLength) {
+            int64_t const actualLength = std::min(length, mapStart - start);
+            result.add(
+                Interval<int64_t>::createWithLength(start, actualLength));
+            start += actualLength;
+            length -= actualLength;
+        } else if ((start - mapStart) >= mapLength) {
             // The current mapping is no longer relevant
             ++it;
+            mapStart = it->getSource().getMin();
+            mapLength = static_cast<int64_t>(it->getSource().length());
         } else {
             // Actual conversion
-            int64_t actual = std::min((mapStart + mapLength) - start, length);
-            result.add(Interval{convert(start - mapStart), actual});
-            start += actual;
-            length -= actual;
+            int64_t const actualLength = std::min(
+                static_cast<int64_t>(
+                    Interval<int64_t>::createWithLength(
+                        start, it->getSource().getMax())
+                        .length()),
+                length);
+            result.add(Interval<int64_t>::createWithLength(
+                convert(start), actualLength));
+            start += actualLength;
+            length -= actualLength;
         }
     }
 

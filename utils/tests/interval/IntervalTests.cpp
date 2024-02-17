@@ -819,15 +819,15 @@ TEST_CASE("[Interval] createWithLength() method", "[utils][Interval]")
     {
         auto const interval1{Interval<>::createWithLength(2, 3)};
         CHECK(interval1.getMin() == 2);
-        CHECK(interval1.getMax() == 5);
-        CHECK(interval1.getBoundaries() == std::make_pair(2, 5));
+        CHECK(interval1.getMax() == 4);
+        CHECK(interval1.getBoundaries() == std::make_pair(2, 4));
     }
     SECTION("Static tests")
     {
         constexpr auto interval1{Interval<>::createWithLength(2, 3)};
         STATIC_CHECK(interval1.getMin() == 2);
-        STATIC_CHECK(interval1.getMax() == 5);
-        STATIC_CHECK(interval1.getBoundaries() == std::make_pair(2, 5));
+        STATIC_CHECK(interval1.getMax() == 4);
+        STATIC_CHECK(interval1.getBoundaries() == std::make_pair(2, 4));
     }
 }
 
