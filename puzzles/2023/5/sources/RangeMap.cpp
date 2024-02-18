@@ -54,8 +54,7 @@ RangeMap::convert(Interval<int64_t> const& keyInterval) const noexcept
             // No conversion
             // (initial part of the range not covered by a mapping)
             int64_t const actualLength = std::min(length, mapStart - start);
-            result.add(
-                Interval<int64_t>::createWithSize(start, actualLength));
+            result.add(Interval<int64_t>::createWithSize(start, actualLength));
             start += actualLength;
             length -= actualLength;
         } else if ((start - mapStart) >= mapLength) {
