@@ -46,26 +46,34 @@ TEST_CASE("[RangeMap] Convert interval key", "[2023][2023_5][RangeMap]")
         rangeMap.addSection(100, 20, 10);
         SECTION("Key is contained in the map")
         {
-            auto const result{rangeMap.convert(Interval{27LL, 28LL})};
+            Interval const input{27LL, 28LL};
+            auto const result{rangeMap.convert(input)};
+            REQUIRE(input.length() == result.count());
             REQUIRE(result.get().size() == 1);
             CHECK(result.get()[0] == Interval{107LL, 108LL});
         }
         SECTION("Key is not contained in the map")
         {
-            auto const result{rangeMap.convert(Interval{12LL, 13LL})};
+            Interval const input{12LL, 13LL};
+            auto const result{rangeMap.convert(input)};
+            REQUIRE(input.length() == result.count());
             REQUIRE(result.get().size() == 1);
             CHECK(result.get()[0] == Interval{12LL, 13LL});
         }
         SECTION("Key is semi-contained (left) in the map")
         {
-            auto const result{rangeMap.convert(Interval{18LL, 22LL})};
+            Interval const input{18LL, 22LL};
+            auto const result{rangeMap.convert(input)};
+            REQUIRE(input.length() == result.count());
             REQUIRE(result.get().size() == 2);
             CHECK(result.get()[0] == Interval{18LL, 19LL});
             CHECK(result.get()[1] == Interval{100LL, 102LL});
         }
         SECTION("Key is semi-contained (right) in the map")
         {
-            auto const result{rangeMap.convert(Interval{28LL, 33LL})};
+            Interval const input{28LL, 33LL};
+            auto const result{rangeMap.convert(input)};
+            REQUIRE(input.length() == result.count());
             REQUIRE(result.get().size() == 2);
             CHECK(result.get()[0] == Interval{30LL, 33LL});
             CHECK(result.get()[1] == Interval{108LL, 109LL});
@@ -75,37 +83,48 @@ TEST_CASE("[RangeMap] Convert interval key", "[2023][2023_5][RangeMap]")
     {
         rangeMap.addSection(100, 20, 10);
         rangeMap.addSection(55, 35, 10);
+        rangeMap.sort();
         SECTION("Key is contained in the map")
         {
             SECTION("In first range")
             {
-                auto const result{rangeMap.convert(Interval{27LL, 28LL})};
+                Interval const input{27LL, 28LL};
+                auto const result{rangeMap.convert(input)};
+                REQUIRE(input.length() == result.count());
                 REQUIRE(result.get().size() == 1);
                 CHECK(result.get()[0] == Interval{107LL, 108LL});
             }
             SECTION("In second range")
             {
-                auto const result{rangeMap.convert(Interval{36LL, 37LL})};
+                Interval const input{36LL, 37LL};
+                auto const result{rangeMap.convert(input)};
+                REQUIRE(input.length() == result.count());
                 REQUIRE(result.get().size() == 1);
                 CHECK(result.get()[0] == Interval{56LL, 57LL});
             }
         }
         SECTION("Key is not contained in the map")
         {
-            auto const result{rangeMap.convert(Interval{12LL, 13LL})};
+            Interval const input{12LL, 13LL};
+            auto const result{rangeMap.convert(input)};
+            REQUIRE(input.length() == result.count());
             REQUIRE(result.get().size() == 1);
             CHECK(result.get()[0] == Interval{12LL, 13LL});
         }
         SECTION("Key is semi-contained (left) in the map")
         {
-            auto const result{rangeMap.convert(Interval{18LL, 22LL})};
+            Interval const input{18LL, 22LL};
+            auto const result{rangeMap.convert(input)};
+            REQUIRE(input.length() == result.count());
             REQUIRE(result.get().size() == 2);
             CHECK(result.get()[0] == Interval{18LL, 19LL});
             CHECK(result.get()[1] == Interval{100LL, 102LL});
         }
         SECTION("Key is semi-contained (right) in the map")
         {
-            auto const result{rangeMap.convert(Interval{28LL, 33LL})};
+            Interval const input{28LL, 33LL};
+            auto const result{rangeMap.convert(input)};
+            REQUIRE(input.length() == result.count());
             REQUIRE(result.get().size() == 2);
             CHECK(result.get()[0] == Interval{30LL, 33LL});
             CHECK(result.get()[1] == Interval{108LL, 109LL});
