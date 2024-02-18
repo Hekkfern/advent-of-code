@@ -327,12 +327,12 @@ TEST_CASE(
     }
     REQUIRE(result3.count() == result4.count());
     REQUIRE(result4.get().size() == 13);
-    CHECK(result4.get()[0] == Interval{1241652326LL, 1265336918LL});
-    CHECK(result4.get()[1] == Interval{1671792383LL, 1682254854LL});
-    CHECK(result4.get()[2] == Interval{2938947829LL, 2939723111LL});
-    CHECK(result4.get()[3] == Interval{3046199289LL, 3077581199LL});
-    CHECK(result4.get()[4] == Interval{3180663553LL, 3242064104LL});
-    CHECK(result4.get()[5] == Interval{327329286LL, 357092013LL});
+    CHECK(result4.get()[0] == Interval{327329286LL, 357092013LL});
+    CHECK(result4.get()[1] == Interval{1241652326LL, 1265336918LL});
+    CHECK(result4.get()[2] == Interval{1671792383LL, 1682254854LL});
+    CHECK(result4.get()[3] == Interval{2938947829LL, 2939723111LL});
+    CHECK(result4.get()[4] == Interval{3046199289LL, 3077581199LL});
+    CHECK(result4.get()[5] == Interval{3180663553LL, 3242064104LL});
     CHECK(result4.get()[6] == Interval{3276338251LL, 3290662498LL});
     CHECK(result4.get()[7] == Interval{3290662499LL, 3310668972LL});
     CHECK(result4.get()[8] == Interval{3330448155LL, 3336500695LL});
