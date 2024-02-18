@@ -42,9 +42,9 @@ RangeMap::convert(Interval<int64_t> const& keyInterval) const noexcept
     }
 
     auto start{keyInterval.getMin()};
-    auto length{static_cast<int64_t>(keyInterval.length())};
+    auto length{static_cast<int64_t>(keyInterval.size())};
     auto mapStart{it->getSource().getMin()};
-    auto mapLength{static_cast<int64_t>(it->getSource().length())};
+    auto mapLength{static_cast<int64_t>(it->getSource().size())};
     while (length > 0) {
         if (it == mSections.end()) {
             // No conversion, no more mappings
@@ -62,14 +62,14 @@ RangeMap::convert(Interval<int64_t> const& keyInterval) const noexcept
             // The current mapping is no longer relevant
             ++it;
             mapStart = it->getSource().getMin();
-            mapLength = static_cast<int64_t>(it->getSource().length());
+            mapLength = static_cast<int64_t>(it->getSource().size());
         } else {
             // Actual conversion
             int64_t const actualLength = std::min(
                 static_cast<int64_t>(
                     Interval<int64_t>::createWithBoundaries(
                         start, it->getSource().getMax())
-                        .length()),
+                        .size()),
                 length);
             result.add(Interval<int64_t>::createWithSize(
                 convert(start), actualLength));

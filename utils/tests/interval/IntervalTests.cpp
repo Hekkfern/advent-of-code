@@ -44,25 +44,25 @@ TEST_CASE("[Interval] Constructor", "[utils][Interval]")
     }
 }
 
-TEST_CASE("[Interval] length() method", "[utils][Interval]")
+TEST_CASE("[Interval] size() method", "[utils][Interval]")
 {
     SECTION("Runtime tests")
     {
         SECTION("Positive values")
         {
             Interval const interval1{2, 3};
-            CHECK(interval1.length() == 2ULL);
+            CHECK(interval1.size() == 2ULL);
         }
         SECTION("Positive and negatives values")
         {
             Interval const interval2{-3, 1};
-            CHECK(interval2.length() == 5ULL);
+            CHECK(interval2.size() == 5ULL);
         }
     }
     SECTION("Static tests")
     {
-        STATIC_CHECK(Interval{2, 3}.length() == 2ULL);
-        STATIC_CHECK(Interval{-3, 1}.length() == 5ULL);
+        STATIC_CHECK(Interval{2, 3}.size() == 2ULL);
+        STATIC_CHECK(Interval{-3, 1}.size() == 5ULL);
     }
 }
 

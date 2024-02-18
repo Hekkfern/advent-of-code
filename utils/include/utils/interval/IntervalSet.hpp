@@ -276,7 +276,7 @@ public:
     {
         return ranges::fold_left(
             mIntervals, 0U, [](size_t const sum, Interval<T> const& interval) {
-                return sum + interval.length();
+                return sum + interval.size();
             });
     }
     /**

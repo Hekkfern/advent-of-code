@@ -66,13 +66,13 @@ public:
     operator<=>(Interval const& other) const noexcept
         = default;
     /**
-     * @brief      Retrieves the length of the interval, i.e. the number of
+     * @brief      Retrieves the length/size of the interval, i.e. the number of
      *             different values between the minimum and maximum values (both
      *             included).
      *
      * @return     The length of the interval.
      */
-    [[nodiscard]] constexpr std::size_t length() const noexcept
+    [[nodiscard]] constexpr std::size_t size() const noexcept
     {
         return static_cast<std::size_t>(mMax - mMin) + 1U;
     }
