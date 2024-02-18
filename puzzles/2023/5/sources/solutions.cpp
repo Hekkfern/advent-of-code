@@ -18,7 +18,7 @@ void parseRangeLine(RangeMap& map, std::string const& line)
     std::stringstream ss{line};
     int64_t destinationStart, sourceStart, rangeLength;
     ss >> destinationStart >> sourceStart >> rangeLength;
-    map.addSection(destinationStart, sourceStart, rangeLength - 1LL);
+    map.addSection(destinationStart, sourceStart, rangeLength);
 }
 
 void parseMap(std::ifstream& fileStream, RangeMap& map)
@@ -69,7 +69,8 @@ parseRangedSeeds(std::ifstream& fileStream)
         if (seedLength == 0) {
             continue;
         }
-        seeds.emplace_back(seedStart, seedStart + seedLength - 1LL);
+        seeds.emplace_back(utils::interval::Interval<int64_t>::createWithSize(
+            seedStart, seedLength));
     }
 
     std::getline(fileStream, line); // capture empty line

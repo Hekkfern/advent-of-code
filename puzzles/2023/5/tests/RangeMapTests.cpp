@@ -133,7 +133,7 @@ TEST_CASE("[RangeMap] Convert interval key", "[2023][2023_5][RangeMap]")
 }
 
 TEST_CASE(
-    "[RangeMap] Real scenario with seed range number 7",
+    "[RangeMap] Real scenario for Part 2 with seed range number 7",
     "[2023][2023_5][RangeMap]")
 {
     // Stage 1
@@ -194,19 +194,19 @@ TEST_CASE(
 
     // Stage 2
     RangeMap rangeMap2;
-    rangeMap2.addSection(2937874770LL, 2957653952LL, 339980892);
-    rangeMap2.addSection(1886469734LL, 2145122669LL, 192293654);
-    rangeMap2.addSection(3277855662LL, 822424488LL, 19779182);
-    rangeMap2.addSection(2622882196LL, 2393077006LL, 314992574);
-    rangeMap2.addSection(3449876679LL, 3769116301LL, 525850995);
-    rangeMap2.addSection(583550735LL, 842203670LL, 1302918999);
-    rangeMap2.addSection(2145755543LL, 345297835LL, 477126653);
-    rangeMap2.addSection(2078763388LL, 2890661797LL, 66992155);
-    rangeMap2.addSection(2650514LL, 2708069580LL, 182592217);
-    rangeMap2.addSection(0LL, 2337416323LL, 2650514);
-    rangeMap2.addSection(530540566LL, 2340066837LL, 53010169);
-    rangeMap2.addSection(185242731LL, 0LL, 345297835);
-    rangeMap2.addSection(3975727674LL, 3449876679LL, 319239622);
+    rangeMap2.addSection(2937874770LL, 2957653952LL, 339980892LL);
+    rangeMap2.addSection(1886469734LL, 2145122669LL, 192293654LL);
+    rangeMap2.addSection(3277855662LL, 822424488LL, 19779182LL);
+    rangeMap2.addSection(2622882196LL, 2393077006LL, 314992574LL);
+    rangeMap2.addSection(3449876679LL, 3769116301LL, 525850995LL);
+    rangeMap2.addSection(583550735LL, 842203670LL, 1302918999LL);
+    rangeMap2.addSection(2145755543LL, 345297835LL, 477126653LL);
+    rangeMap2.addSection(2078763388LL, 2890661797LL, 66992155LL);
+    rangeMap2.addSection(2650514LL, 2708069580LL, 182592217LL);
+    rangeMap2.addSection(0LL, 2337416323LL, 2650514LL);
+    rangeMap2.addSection(530540566LL, 2340066837LL, 53010169LL);
+    rangeMap2.addSection(185242731LL, 0LL, 345297835LL);
+    rangeMap2.addSection(3975727674LL, 3449876679LL, 319239622LL);
     rangeMap2.sort();
     utils::interval::IntervalSet<int64_t> result2;
     for (auto const& item : result1) {
@@ -219,4 +219,125 @@ TEST_CASE(
     CHECK(result2.get()[2] == Interval{3297634844LL, 3303687384LL});
     CHECK(result2.get()[3] == Interval{3784694066LL, 3837427913LL});
     CHECK(result2.get()[4] == Interval{4153761989LL, 4209279258LL});
+
+    // Stage 3
+    RangeMap rangeMap3;
+    rangeMap3.addSection(861477134LL, 5168332LL, 68211907LL);
+    rangeMap3.addSection(136969509LL, 2229711837LL, 29094441LL);
+    rangeMap3.addSection(2823248929LL, 1150509810LL, 118368045LL);
+    rangeMap3.addSection(3678888284LL, 3073610919LL, 53498438LL);
+    rangeMap3.addSection(3948051821LL, 3682691325LL, 96234592LL);
+    rangeMap3.addSection(1302827191LL, 2387840795LL, 504257794LL);
+    rangeMap3.addSection(1198743248LL, 1926818347LL, 104083943LL);
+    rangeMap3.addSection(1807084985LL, 1104177008LL, 46332802LL);
+    rangeMap3.addSection(2143096098LL, 619653304LL, 259805223LL);
+    rangeMap3.addSection(2063436946LL, 2385211148LL, 2629647LL);
+    rangeMap3.addSection(2066066593LL, 445026117LL, 35759449LL);
+    rangeMap3.addSection(358008423LL, 537865723LL, 81787581LL);
+    rangeMap3.addSection(621204445LL, 0LL, 5168332LL);
+    rangeMap3.addSection(2724438904LL, 1861632296LL, 65186051LL);
+    rangeMap3.addSection(1853417787LL, 2258806278LL, 126404870LL);
+    rangeMap3.addSection(3933311080LL, 4141091197LL, 14740741LL);
+    rangeMap3.addSection(851739278LL, 2892098589LL, 9737856LL);
+    rangeMap3.addSection(4044286413LL, 3029323079LL, 44287840LL);
+    rangeMap3.addSection(1979822657LL, 1778018007LL, 83614289LL);
+    rangeMap3.addSection(2101826042LL, 2084781230LL, 3070511LL);
+    rangeMap3.addSection(4088574253LL, 4268409625LL, 26557671LL);
+    rangeMap3.addSection(929689041LL, 111346117LL, 211974050LL);
+    rangeMap3.addSection(3566310597LL, 4155831938LL, 112577687LL);
+    rangeMap3.addSection(439796004LL, 2030902290LL, 53878940LL);
+    rangeMap3.addSection(166063950LL, 1490707297LL, 191944473LL);
+    rangeMap3.addSection(8760514LL, 888219041LL, 128208995LL);
+    rangeMap3.addSection(3794695843LL, 3778925917LL, 57203243LL);
+    rangeMap3.addSection(3029323079LL, 3127109357LL, 409045756LL);
+    rangeMap3.addSection(2792635116LL, 77722143LL, 30613813LL);
+    rangeMap3.addSection(3438368835LL, 4013149435LL, 127941762LL);
+    rangeMap3.addSection(3732386722LL, 3620382204LL, 62309121LL);
+    rangeMap3.addSection(2402901321LL, 1682651770LL, 95366237LL);
+    rangeMap3.addSection(0LL, 879458527LL, 8760514LL);
+    rangeMap3.addSection(493674944LL, 2901836445LL, 39780529LL);
+    rangeMap3.addSection(3851899086LL, 3536155113LL, 81411994LL);
+    rangeMap3.addSection(2498267558LL, 1268877855LL, 221829442LL);
+    rangeMap3.addSection(4117947021LL, 3836129160LL, 177020275LL);
+    rangeMap3.addSection(2789624955LL, 108335956LL, 3010161LL);
+    rangeMap3.addSection(1141663091LL, 480785566LL, 57080157LL);
+    rangeMap3.addSection(2104896553LL, 406826572LL, 38199545LL);
+    rangeMap3.addSection(533455473LL, 1016428036LL, 87748972LL);
+    rangeMap3.addSection(626372777LL, 2087851741LL, 141860096LL);
+    rangeMap3.addSection(2720097000LL, 73380239LL, 4341904LL);
+    rangeMap3.addSection(4115131924LL, 3617567107LL, 2815097LL);
+    rangeMap3.addSection(768232873LL, 323320167LL, 83506405LL);
+    rangeMap3.sort();
+    utils::interval::IntervalSet<int64_t> result3;
+    for (auto const& item : result2) {
+        result3 = result3.join(rangeMap3.convert(item));
+    }
+    REQUIRE(result2.count() == result3.count());
+    REQUIRE(result3.get().size() == 8);
+    CHECK(result3.get()[3] == Interval{3678888284LL, 3693987814LL});
+    CHECK(result3.get()[6] == Interval{4073190512LL, 4088574252LL});
+    CHECK(result3.get()[1] == Interval{3199848566LL, 3205901106LL});
+    CHECK(result3.get()[0] == Interval{3098662358LL, 3180069383LL});
+    CHECK(result3.get()[5] == Interval{3945981872LL, 3948051820LL});
+    CHECK(result3.get()[2] == Interval{3566310597LL, 3619757917LL});
+    CHECK(result3.get()[4] == Interval{3800463992LL, 3851899085LL});
+    CHECK(result3.get()[7] == Interval{4117947021LL, 4119245774LL});
+
+    // Stage 4
+    RangeMap rangeMap4;
+    rangeMap4.addSection(3846882465LL, 367033980LL, 98093832LL);
+    rangeMap4.addSection(1878565977LL, 3292746518LL, 62917983LL);
+    rangeMap4.addSection(4255729420LL, 661438934LL, 39237876LL);
+    rangeMap4.addSection(469590509LL, 2191298319LL, 301681796LL);
+    rangeMap4.addSection(381948234LL, 1999013894LL, 87642275LL);
+    rangeMap4.addSection(3688496086LL, 199351627LL, 156562666LL);
+    rangeMap4.addSection(1300818753LL, 2086656169LL, 104642150LL);
+    rangeMap4.addSection(806539912LL, 2798447654LL, 224466318LL);
+    rangeMap4.addSection(1265336919LL, 355914293LL, 11119687LL);
+    rangeMap4.addSection(1405460903LL, 1914042148LL, 28882526LL);
+    rangeMap4.addSection(2577391070LL, 1942924674LL, 56089220LL);
+    rangeMap4.addSection(3680239306LL, 4136990116LL, 8256780LL);
+    rangeMap4.addSection(1941483960LL, 700676810LL, 607954854LL);
+    rangeMap4.addSection(3845058752LL, 3022913972LL, 1823713LL);
+    rangeMap4.addSection(4239658038LL, 1308631664LL, 16071382LL);
+    rangeMap4.addSection(2566162195LL, 4254580741LL, 11228875LL);
+    rangeMap4.addSection(1671792383LL, 3831845903LL, 10462472LL);
+    rangeMap4.addSection(3944976297LL, 3842308375LL, 294681741LL);
+    rangeMap4.addSection(3290662499LL, 3160062910LL, 132683608LL);
+    rangeMap4.addSection(2549438814LL, 1324703046LL, 16723381LL);
+    rangeMap4.addSection(3423346107LL, 1341426427LL, 27108304LL);
+    rangeMap4.addSection(1031006230LL, 3355664501LL, 234330689LL);
+    rangeMap4.addSection(1276456606LL, 4145246896LL, 24362147LL);
+    rangeMap4.addSection(3450454411LL, 54538430LL, 144813197LL);
+    rangeMap4.addSection(1682254855LL, 465127812LL, 196311122LL);
+    rangeMap4.addSection(54538430LL, 1403802338LL, 272790856LL);
+    rangeMap4.addSection(2633480290LL, 2492980115LL, 305467539LL);
+    rangeMap4.addSection(3595267608LL, 4169609043LL, 84971698LL);
+    rangeMap4.addSection(3242064105LL, 3644614138LL, 48598394LL);
+    rangeMap4.addSection(3077581200LL, 4265809616LL, 29157680LL);
+    rangeMap4.addSection(771272305LL, 1368534731LL, 35267607LL);
+    rangeMap4.addSection(1434343429LL, 1676593194LL, 237448954LL);
+    rangeMap4.addSection(327329286LL, 3589995190LL, 54618948LL);
+    rangeMap4.addSection(3106738880LL, 3024737685LL, 135325225LL);
+    rangeMap4.addSection(2938947829LL, 3693212532LL, 138633371LL);
+    rangeMap4.sort();
+    utils::interval::IntervalSet<int64_t> result4;
+    for (auto const& item : result3) {
+        result4 = result4.join(rangeMap4.convert(item));
+    }
+    REQUIRE(result3.count() == result4.count());
+    REQUIRE(result4.get().size() == 13);
+    CHECK(result4.get()[0] == Interval{1241652326LL, 1265336918LL});
+    CHECK(result4.get()[1] == Interval{1671792383LL, 1682254854LL});
+    CHECK(result4.get()[2] == Interval{2938947829LL, 2939723111LL});
+    CHECK(result4.get()[3] == Interval{3046199289LL, 3077581199LL});
+    CHECK(result4.get()[4] == Interval{3180663553LL, 3242064104LL});
+    CHECK(result4.get()[5] == Interval{327329286LL, 357092013LL});
+    CHECK(result4.get()[6] == Interval{3276338251LL, 3290662498LL});
+    CHECK(result4.get()[7] == Interval{3290662499LL, 3310668972LL});
+    CHECK(result4.get()[8] == Interval{3330448155LL, 3336500695LL});
+    CHECK(result4.get()[9] == Interval{3944976297LL, 3954567007LL});
+    CHECK(result4.get()[10] == Interval{4048649794LL, 4050719742LL});
+    CHECK(result4.get()[11] == Interval{4175858434LL, 4191242174LL});
+    CHECK(result4.get()[12] == Interval{4220614943LL, 4221913696LL});
 }
