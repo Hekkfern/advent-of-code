@@ -2,7 +2,7 @@
 
 #include "RangeMapSection.hpp"
 #include <cstdint>
-#include <vector>
+#include <set>
 
 namespace aoc_2023_5 {
 
@@ -13,10 +13,9 @@ public:
     [[nodiscard]] utils::interval::IntervalSet<int64_t> convert(
         utils::interval::Interval<int64_t> const& keyInterval) const noexcept;
     void addSection(int64_t dest, int64_t src, int64_t length) noexcept;
-    void sort() noexcept;
 
 private:
-    std::vector<RangeMapSection> mSections{};
+    std::set<RangeMapSection> mSections{};
 };
 
 } // namespace aoc_2023_5

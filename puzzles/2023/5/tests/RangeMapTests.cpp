@@ -83,7 +83,6 @@ TEST_CASE("[RangeMap] Convert interval key", "[2023][2023_5][RangeMap]")
     {
         rangeMap.addSection(100, 20, 10);
         rangeMap.addSection(55, 35, 10);
-        rangeMap.sort();
         SECTION("Key is contained in the map")
         {
             SECTION("In first range")
@@ -181,7 +180,6 @@ TEST_CASE(
     rangeMap1.addSection(3559056495LL, 3262463009LL, 46531696LL);
     rangeMap1.addSection(3123264054LL, 3308994705LL, 11732133LL);
     rangeMap1.addSection(3303687385LL, 3759870274LL, 225700702LL);
-    rangeMap1.sort();
     Interval const input1{
         Interval<int64_t>::createWithSize(2129467491LL, 226193957LL)};
     auto const result1{rangeMap1.convert(input1)};
@@ -207,7 +205,6 @@ TEST_CASE(
     rangeMap2.addSection(530540566LL, 2340066837LL, 53010169LL);
     rangeMap2.addSection(185242731LL, 0LL, 345297835LL);
     rangeMap2.addSection(3975727674LL, 3449876679LL, 319239622LL);
-    rangeMap2.sort();
     utils::interval::IntervalSet<int64_t> result2;
     for (auto const& item : result1) {
         result2 = result2.join(rangeMap2.convert(item));
@@ -267,7 +264,6 @@ TEST_CASE(
     rangeMap3.addSection(2720097000LL, 73380239LL, 4341904LL);
     rangeMap3.addSection(4115131924LL, 3617567107LL, 2815097LL);
     rangeMap3.addSection(768232873LL, 323320167LL, 83506405LL);
-    rangeMap3.sort();
     utils::interval::IntervalSet<int64_t> result3;
     for (auto const& item : result2) {
         result3 = result3.join(rangeMap3.convert(item));
@@ -320,7 +316,6 @@ TEST_CASE(
     rangeMap4.addSection(327329286LL, 3589995190LL, 54618948LL);
     rangeMap4.addSection(3106738880LL, 3024737685LL, 135325225LL);
     rangeMap4.addSection(2938947829LL, 3693212532LL, 138633371LL);
-    rangeMap4.sort();
     utils::interval::IntervalSet<int64_t> result4;
     for (auto const& item : result3) {
         result4 = result4.join(rangeMap4.convert(item));

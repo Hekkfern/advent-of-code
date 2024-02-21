@@ -11,7 +11,7 @@ namespace aoc_2023_5 {
 void RangeMap::addSection(
     int64_t const dest, int64_t const src, int64_t const length) noexcept
 {
-    mSections.emplace_back(dest, src, length);
+    mSections.emplace(dest, src, length);
 }
 
 int64_t RangeMap::convert(int64_t const key) const noexcept
@@ -79,7 +79,5 @@ RangeMap::convert(Interval<int64_t> const& keyInterval) const noexcept
 
     return result;
 }
-
-void RangeMap::sort() noexcept { ranges::sort(mSections, std::less{}); }
 
 } // namespace aoc_2023_5

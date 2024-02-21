@@ -128,15 +128,6 @@ Almanac2 parseInputFileForPart2(std::filesystem::path const& filePath) noexcept
     // humidity-to-location
     parseMap(fileStream, almanac.humidity2LocationMap);
 
-    // Sort all the maps
-    almanac.seed2SoilMap.sort();
-    almanac.soil2FertilizerMap.sort();
-    almanac.fertilizer2WaterMap.sort();
-    almanac.water2LightMap.sort();
-    almanac.light2TemperatureMap.sort();
-    almanac.temperature2HumidityMap.sort();
-    almanac.humidity2LocationMap.sort();
-
     return almanac;
 }
 
