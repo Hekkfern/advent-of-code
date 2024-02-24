@@ -46,37 +46,37 @@ TEST_CASE("[RangeMap] Convert interval key", "[2023][2023_5][RangeMap]")
         rangeMap.addSection(100, 20, 10);
         SECTION("Key is contained in the map")
         {
-            Interval const input{27LL, 28LL};
+            Interval<int64_t> const input{27LL, 28LL};
             auto const result{rangeMap.convert(input)};
             REQUIRE(input.size() == result.count());
             REQUIRE(result.get().size() == 1);
-            CHECK(result.get()[0] == Interval{107LL, 108LL});
+            CHECK(result.get()[0] == Interval<int64_t>{107LL, 108LL});
         }
         SECTION("Key is not contained in the map")
         {
-            Interval const input{12LL, 13LL};
+            Interval<int64_t> const input{12LL, 13LL};
             auto const result{rangeMap.convert(input)};
             REQUIRE(input.size() == result.count());
             REQUIRE(result.get().size() == 1);
-            CHECK(result.get()[0] == Interval{12LL, 13LL});
+            CHECK(result.get()[0] == Interval<int64_t>{12LL, 13LL});
         }
         SECTION("Key is semi-contained (left) in the map")
         {
-            Interval const input{18LL, 22LL};
+            Interval<int64_t> const input{18LL, 22LL};
             auto const result{rangeMap.convert(input)};
             REQUIRE(input.size() == result.count());
             REQUIRE(result.get().size() == 2);
-            CHECK(result.get()[0] == Interval{18LL, 19LL});
-            CHECK(result.get()[1] == Interval{100LL, 102LL});
+            CHECK(result.get()[0] == Interval<int64_t>{18LL, 19LL});
+            CHECK(result.get()[1] == Interval<int64_t>{100LL, 102LL});
         }
         SECTION("Key is semi-contained (right) in the map")
         {
-            Interval const input{28LL, 33LL};
+            Interval<int64_t> const input{28LL, 33LL};
             auto const result{rangeMap.convert(input)};
             REQUIRE(input.size() == result.count());
             REQUIRE(result.get().size() == 2);
-            CHECK(result.get()[0] == Interval{30LL, 33LL});
-            CHECK(result.get()[1] == Interval{108LL, 109LL});
+            CHECK(result.get()[0] == Interval<int64_t>{30LL, 33LL});
+            CHECK(result.get()[1] == Interval<int64_t>{108LL, 109LL});
         }
     }
     SECTION("Map with multiple items")
@@ -87,46 +87,46 @@ TEST_CASE("[RangeMap] Convert interval key", "[2023][2023_5][RangeMap]")
         {
             SECTION("In first range")
             {
-                Interval const input{27LL, 28LL};
+                Interval<int64_t> const input{27LL, 28LL};
                 auto const result{rangeMap.convert(input)};
                 REQUIRE(input.size() == result.count());
                 REQUIRE(result.get().size() == 1);
-                CHECK(result.get()[0] == Interval{107LL, 108LL});
+                CHECK(result.get()[0] == Interval<int64_t>{107LL, 108LL});
             }
             SECTION("In second range")
             {
-                Interval const input{36LL, 37LL};
+                Interval<int64_t> const input{36LL, 37LL};
                 auto const result{rangeMap.convert(input)};
                 REQUIRE(input.size() == result.count());
                 REQUIRE(result.get().size() == 1);
-                CHECK(result.get()[0] == Interval{56LL, 57LL});
+                CHECK(result.get()[0] == Interval<int64_t>{56LL, 57LL});
             }
         }
         SECTION("Key is not contained in the map")
         {
-            Interval const input{12LL, 13LL};
+            Interval<int64_t> const input{12LL, 13LL};
             auto const result{rangeMap.convert(input)};
             REQUIRE(input.size() == result.count());
             REQUIRE(result.get().size() == 1);
-            CHECK(result.get()[0] == Interval{12LL, 13LL});
+            CHECK(result.get()[0] == Interval<int64_t>{12LL, 13LL});
         }
         SECTION("Key is semi-contained (left) in the map")
         {
-            Interval const input{18LL, 22LL};
+            Interval<int64_t> const input{18LL, 22LL};
             auto const result{rangeMap.convert(input)};
             REQUIRE(input.size() == result.count());
             REQUIRE(result.get().size() == 2);
-            CHECK(result.get()[0] == Interval{18LL, 19LL});
-            CHECK(result.get()[1] == Interval{100LL, 102LL});
+            CHECK(result.get()[0] == Interval<int64_t>{18LL, 19LL});
+            CHECK(result.get()[1] == Interval<int64_t>{100LL, 102LL});
         }
         SECTION("Key is semi-contained (right) in the map")
         {
-            Interval const input{28LL, 33LL};
+            Interval<int64_t> const input{28LL, 33LL};
             auto const result{rangeMap.convert(input)};
             REQUIRE(input.size() == result.count());
             REQUIRE(result.get().size() == 2);
-            CHECK(result.get()[0] == Interval{30LL, 33LL});
-            CHECK(result.get()[1] == Interval{108LL, 109LL});
+            CHECK(result.get()[0] == Interval<int64_t>{30LL, 33LL});
+            CHECK(result.get()[1] == Interval<int64_t>{108LL, 109LL});
         }
     }
 }
@@ -180,15 +180,15 @@ TEST_CASE(
     rangeMap1.addSection(3559056495LL, 3262463009LL, 46531696LL);
     rangeMap1.addSection(3123264054LL, 3308994705LL, 11732133LL);
     rangeMap1.addSection(3303687385LL, 3759870274LL, 225700702LL);
-    Interval const input1{
+    Interval<int64_t> const input1{
         Interval<int64_t>::createWithSize(2129467491LL, 226193957LL)};
     auto const result1{rangeMap1.convert(input1)};
     REQUIRE(input1.size() == result1.count());
     REQUIRE(result1.get().size() == 4);
-    CHECK(result1.get()[0] == Interval{3078006360LL, 3108489631LL});
-    CHECK(result1.get()[1] == Interval{3216227818LL, 3303687384LL});
-    CHECK(result1.get()[2] == Interval{3627910994LL, 3683428263LL});
-    CHECK(result1.get()[3] == Interval{4103933688LL, 4156667535LL});
+    CHECK(result1.get()[0] == Interval<int64_t>{3078006360LL, 3108489631LL});
+    CHECK(result1.get()[1] == Interval<int64_t>{3216227818LL, 3303687384LL});
+    CHECK(result1.get()[2] == Interval<int64_t>{3627910994LL, 3683428263LL});
+    CHECK(result1.get()[3] == Interval<int64_t>{4103933688LL, 4156667535LL});
 
     // Stage 2
     RangeMap rangeMap2;
@@ -205,17 +205,17 @@ TEST_CASE(
     rangeMap2.addSection(530540566LL, 2340066837LL, 53010169LL);
     rangeMap2.addSection(185242731LL, 0LL, 345297835LL);
     rangeMap2.addSection(3975727674LL, 3449876679LL, 319239622LL);
-    utils::interval::IntervalSet<int64_t> result2;
+    IntervalSet<int64_t> result2;
     for (auto const& item : result1) {
         result2 = result2.join(rangeMap2.convert(item));
     }
     REQUIRE(result1.count() == result2.count());
     REQUIRE(result2.get().size() == 5);
-    CHECK(result2.get()[0] == Interval{3058227178LL, 3088710449LL});
-    CHECK(result2.get()[1] == Interval{3196448636LL, 3277855661LL});
-    CHECK(result2.get()[2] == Interval{3297634844LL, 3303687384LL});
-    CHECK(result2.get()[3] == Interval{3784694066LL, 3837427913LL});
-    CHECK(result2.get()[4] == Interval{4153761989LL, 4209279258LL});
+    CHECK(result2.get()[0] == Interval<int64_t>{3058227178LL, 3088710449LL});
+    CHECK(result2.get()[1] == Interval<int64_t>{3196448636LL, 3277855661LL});
+    CHECK(result2.get()[2] == Interval<int64_t>{3297634844LL, 3303687384LL});
+    CHECK(result2.get()[3] == Interval<int64_t>{3784694066LL, 3837427913LL});
+    CHECK(result2.get()[4] == Interval<int64_t>{4153761989LL, 4209279258LL});
 
     // Stage 3
     RangeMap rangeMap3;
@@ -264,20 +264,20 @@ TEST_CASE(
     rangeMap3.addSection(2720097000LL, 73380239LL, 4341904LL);
     rangeMap3.addSection(4115131924LL, 3617567107LL, 2815097LL);
     rangeMap3.addSection(768232873LL, 323320167LL, 83506405LL);
-    utils::interval::IntervalSet<int64_t> result3;
+    IntervalSet<int64_t> result3;
     for (auto const& item : result2) {
         result3 = result3.join(rangeMap3.convert(item));
     }
     REQUIRE(result2.count() == result3.count());
     REQUIRE(result3.get().size() == 8);
-    CHECK(result3.get()[3] == Interval{3678888284LL, 3693987814LL});
-    CHECK(result3.get()[6] == Interval{4073190512LL, 4088574252LL});
-    CHECK(result3.get()[1] == Interval{3199848566LL, 3205901106LL});
-    CHECK(result3.get()[0] == Interval{3098662358LL, 3180069383LL});
-    CHECK(result3.get()[5] == Interval{3945981872LL, 3948051820LL});
-    CHECK(result3.get()[2] == Interval{3566310597LL, 3619757917LL});
-    CHECK(result3.get()[4] == Interval{3800463992LL, 3851899085LL});
-    CHECK(result3.get()[7] == Interval{4117947021LL, 4119245774LL});
+    CHECK(result3.get()[3] == Interval<int64_t>{3678888284LL, 3693987814LL});
+    CHECK(result3.get()[6] == Interval<int64_t>{4073190512LL, 4088574252LL});
+    CHECK(result3.get()[1] == Interval<int64_t>{3199848566LL, 3205901106LL});
+    CHECK(result3.get()[0] == Interval<int64_t>{3098662358LL, 3180069383LL});
+    CHECK(result3.get()[5] == Interval<int64_t>{3945981872LL, 3948051820LL});
+    CHECK(result3.get()[2] == Interval<int64_t>{3566310597LL, 3619757917LL});
+    CHECK(result3.get()[4] == Interval<int64_t>{3800463992LL, 3851899085LL});
+    CHECK(result3.get()[7] == Interval<int64_t>{4117947021LL, 4119245774LL});
 
     // Stage 4
     RangeMap rangeMap4;
@@ -316,23 +316,23 @@ TEST_CASE(
     rangeMap4.addSection(327329286LL, 3589995190LL, 54618948LL);
     rangeMap4.addSection(3106738880LL, 3024737685LL, 135325225LL);
     rangeMap4.addSection(2938947829LL, 3693212532LL, 138633371LL);
-    utils::interval::IntervalSet<int64_t> result4;
+    IntervalSet<int64_t> result4;
     for (auto const& item : result3) {
         result4 = result4.join(rangeMap4.convert(item));
     }
     REQUIRE(result3.count() == result4.count());
     REQUIRE(result4.get().size() == 13);
-    CHECK(result4.get()[0] == Interval{327329286LL, 357092013LL});
-    CHECK(result4.get()[1] == Interval{1241652326LL, 1265336918LL});
-    CHECK(result4.get()[2] == Interval{1671792383LL, 1682254854LL});
-    CHECK(result4.get()[3] == Interval{2938947829LL, 2939723111LL});
-    CHECK(result4.get()[4] == Interval{3046199289LL, 3077581199LL});
-    CHECK(result4.get()[5] == Interval{3180663553LL, 3242064104LL});
-    CHECK(result4.get()[6] == Interval{3276338251LL, 3290662498LL});
-    CHECK(result4.get()[7] == Interval{3290662499LL, 3310668972LL});
-    CHECK(result4.get()[8] == Interval{3330448155LL, 3336500695LL});
-    CHECK(result4.get()[9] == Interval{3944976297LL, 3954567007LL});
-    CHECK(result4.get()[10] == Interval{4048649794LL, 4050719742LL});
-    CHECK(result4.get()[11] == Interval{4175858434LL, 4191242174LL});
-    CHECK(result4.get()[12] == Interval{4220614943LL, 4221913696LL});
+    CHECK(result4.get()[0] == Interval<int64_t>{327329286LL, 357092013LL});
+    CHECK(result4.get()[1] == Interval<int64_t>{1241652326LL, 1265336918LL});
+    CHECK(result4.get()[2] == Interval<int64_t>{1671792383LL, 1682254854LL});
+    CHECK(result4.get()[3] == Interval<int64_t>{2938947829LL, 2939723111LL});
+    CHECK(result4.get()[4] == Interval<int64_t>{3046199289LL, 3077581199LL});
+    CHECK(result4.get()[5] == Interval<int64_t>{3180663553LL, 3242064104LL});
+    CHECK(result4.get()[6] == Interval<int64_t>{3276338251LL, 3290662498LL});
+    CHECK(result4.get()[7] == Interval<int64_t>{3290662499LL, 3310668972LL});
+    CHECK(result4.get()[8] == Interval<int64_t>{3330448155LL, 3336500695LL});
+    CHECK(result4.get()[9] == Interval<int64_t>{3944976297LL, 3954567007LL});
+    CHECK(result4.get()[10] == Interval<int64_t>{4048649794LL, 4050719742LL});
+    CHECK(result4.get()[11] == Interval<int64_t>{4175858434LL, 4191242174LL});
+    CHECK(result4.get()[12] == Interval<int64_t>{4220614943LL, 4221913696LL});
 }
