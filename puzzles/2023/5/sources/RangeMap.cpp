@@ -36,7 +36,7 @@ RangeMap::convert(Interval<int64_t> const& keyInterval) const noexcept
     }
 
     // Get the first relevant map section
-    RangeMapSection const a{0LL, keyInterval.getMin(), 0} LL;
+    RangeMapSection const a{0LL, keyInterval.getMin(), 0LL};
     auto sectionIt = ranges::upper_bound(mSections, a, std::less{});
     if (sectionIt != mSections.begin()) {
         sectionIt = std::prev(sectionIt);
