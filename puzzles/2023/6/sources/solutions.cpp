@@ -89,27 +89,17 @@ calculateDistance(uint64_t const totalTime, uint64_t const pressButtonTime)
 uint64_t countRaceWins(Race const& race)
 {
     // find first index that wins
-    auto firstWinIt{std::ranges::upper_bound(
-        std::ranges::iota_view(1ULL, race.time),
-        race.distance,
-        [&race](uint32_t value, uint32_t const item) {
-            return calculateDistance(race.time, item) > value;
+    auto firstWinIt{std::ranges::find_if(
+        std::ranges::iota_view(1ULL, race.time), [&race](uint32_t const item) {
+            return calculateDistance(race.time, item) > race.distance;
         })};
-    if (*firstWinIt == race.time) {
-        return 0ULL;
-    }
     // find last index that wins
-    auto lastWinIt{std::ranges::upper_bound(
+    auto lastWinIt{std::ranges::find_if(
         std::ranges::iota_view(1ULL, race.time) | std::views::reverse,
-        race.distance,
-        [&race](uint32_t value, uint32_t const item) {
-            return calculateDistance(race.time, item) > value;
+        [&race](uint32_t const item) {
+            return calculateDistance(race.time, item) > race.distance;
         })};
-    if (*lastWinIt == race.time) {
-        return 0ULL;
-    }
-    uint64_t const result{*lastWinIt - *firstWinIt + 1ULL};
-    return result;
+    return *lastWinIt - *firstWinIt + 1ULL;
 }
 
 // ---------- End of Private Methods ----------
