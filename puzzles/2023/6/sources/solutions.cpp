@@ -1,9 +1,12 @@
 #include "solutions.hpp"
 
 #include "Race.hpp"
+#include <algorithm>
 #include <fstream>
 #include <range/v3/algorithm/fold_left.hpp>
+#include <range/v3/algorithm/upper_bound.hpp>
 #include <range/v3/view/iota.hpp>
+#include <ranges>
 #include <utils/String.hpp>
 #include <vector>
 
@@ -85,13 +88,28 @@ calculateDistance(uint64_t const totalTime, uint64_t const pressButtonTime)
 
 uint64_t countRaceWins(Race const& race)
 {
-    uint64_t winCounter{0ULL};
-    for (uint64_t i : ranges::views::iota(1ULL, race.time)) {
-        if (calculateDistance(race.time, i) > race.distance) {
-            ++winCounter;
-        }
+    // find first index that wins
+    auto firstWinIt{std::ranges::upper_bound(
+        std::ranges::iota_view(1ULL, race.time),
+        race.distance,
+        [&race](uint32_t value, uint32_t const item) {
+            return calculateDistance(race.time, item) > value;
+        })};
+    if (*firstWinIt == race.time) {
+        return 0ULL;
     }
-    return winCounter;
+    // find last index that wins
+    auto lastWinIt{std::ranges::upper_bound(
+        std::ranges::iota_view(1ULL, race.time) | std::views::reverse,
+        race.distance,
+        [&race](uint32_t value, uint32_t const item) {
+            return calculateDistance(race.time, item) > value;
+        })};
+    if (*lastWinIt == race.time) {
+        return 0ULL;
+    }
+    uint64_t const result{*lastWinIt - *firstWinIt + 1ULL};
+    return result;
 }
 
 // ---------- End of Private Methods ----------
