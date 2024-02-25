@@ -1,12 +1,9 @@
 #include "solutions.hpp"
 
 #include "Race.hpp"
-#include <algorithm>
+#include <cmath>
 #include <fstream>
 #include <range/v3/algorithm/fold_left.hpp>
-#include <range/v3/algorithm/upper_bound.hpp>
-#include <range/v3/view/iota.hpp>
-#include <ranges>
 #include <utils/String.hpp>
 #include <vector>
 
@@ -86,20 +83,32 @@ calculateDistance(uint64_t const totalTime, uint64_t const pressButtonTime)
     return (totalTime - pressButtonTime) * pressButtonTime;
 }
 
+bool isExactDouble(double const value)
+{
+    return std::fmod(value, 1) < std::numeric_limits<double>::epsilon()
+        && std::fmod(value, 1) > -std::numeric_limits<double>::epsilon();
+}
+
 uint64_t countRaceWins(Race const& race)
 {
     // find first index that wins
-    auto firstWinIt{std::ranges::find_if(
-        std::ranges::iota_view(1ULL, race.time), [&race](uint32_t const item) {
-            return calculateDistance(race.time, item) > race.distance;
-        })};
+    double const raceTime{static_cast<double>(race.time)};
+    double const raceDistance{static_cast<double>(race.distance)};
+    double const firstWinD{
+        (raceTime - std::sqrt((raceTime * raceTime) - (4.0 * raceDistance)))
+        / 2.0};
     // find last index that wins
-    auto lastWinIt{std::ranges::find_if(
-        std::ranges::iota_view(1ULL, race.time) | std::views::reverse,
-        [&race](uint32_t const item) {
-            return calculateDistance(race.time, item) > race.distance;
-        })};
-    return *lastWinIt - *firstWinIt + 1ULL;
+    double const lastWinD{
+        (raceTime + std::sqrt((raceTime * raceTime) - (4.0 * raceDistance)))
+        / 2.0};
+
+    auto const lastIndex = isExactDouble(lastWinD)
+        ? static_cast<uint64_t>(lastWinD - 1.0)
+        : static_cast<uint64_t>(std::floor(lastWinD));
+    auto const firstIndex = isExactDouble(lastWinD)
+        ? static_cast<uint64_t>(firstWinD + 1.0)
+        : static_cast<uint64_t>(std::ceil(firstWinD));
+    return lastIndex - firstIndex + 1ULL;
 }
 
 // ---------- End of Private Methods ----------
