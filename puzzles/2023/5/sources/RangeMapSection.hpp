@@ -9,7 +9,6 @@ namespace aoc_2023_5 {
 
 class RangeMapSection {
 public:
-    RangeMapSection() noexcept = default;
     RangeMapSection(int64_t dest, int64_t src, int64_t length) noexcept;
     [[nodiscard]] std::optional<int64_t> convert(int64_t key) const noexcept;
     [[nodiscard]] bool operator<(RangeMapSection const& other) const noexcept;
