@@ -21,12 +21,13 @@ RangeMapSection::convert(int64_t const key) const noexcept
 
 bool RangeMapSection::operator<(RangeMapSection const& other) const noexcept
 {
-    return mSource < other.mSource;
+    return mSource < other.mSource
+        || (mSource == other.mSource && mDestination < other.mDestination);
 }
 
 bool RangeMapSection::operator==(RangeMapSection const& other) const noexcept
 {
-    return mSource == other.mSource;
+    return mSource == other.mSource && mDestination == mDestination;
 }
 
 utils::interval::Interval<int64_t> const& RangeMapSection::getSource() const
