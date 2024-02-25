@@ -63,13 +63,13 @@ public:
      */
     explicit IntervalSet(std::vector<Interval<T>> const& intervals) noexcept
         : mIntervals{
-              std::set<Interval<T>>{intervals.cbegin(), intervals.cend()}}
+            std::set<Interval<T>>{intervals.cbegin(), intervals.cend()}}
     {
         reduce();
     }
     explicit IntervalSet(std::vector<Interval<T>>&& intervals) noexcept
         : mIntervals{
-              std::set<Interval<T>>{intervals.cbegin(), intervals.cend()}}
+            std::set<Interval<T>>{intervals.cbegin(), intervals.cend()}}
     {
         reduce();
     }
