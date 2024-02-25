@@ -1,8 +1,6 @@
 #include "RangeMap.hpp"
 
-#include <algorithm>
-#include <range/v3/algorithm/sort.hpp>
-#include <range/v3/algorithm/upper_bound.hpp>
+#include <range/v3/algorithm/find_if.hpp>
 
 using namespace utils::interval;
 
@@ -36,11 +34,17 @@ RangeMap::convert(Interval<int64_t> const& keyInterval) const noexcept
     }
 
     // Get the first relevant map section
-    RangeMapSection const a{0LL, keyInterval.getMin(), 0LL};
-    auto sectionIt = ranges::upper_bound(mSections, a, std::less{});
-    if (sectionIt != mSections.begin()) {
-        sectionIt = std::prev(sectionIt);
+    auto it = std::find_if(
+        mSections.rbegin(),
+        mSections.rend(),
+        [&keyInterval](RangeMapSection const& section) -> bool {
+            return keyInterval.getMin() <= section.getSource().getMax();
+        });
+    if (it == mSections.rend()) {
+        result.add(keyInterval);
+        return result;
     }
+    auto sectionIt{it.base()};
 
     int64_t start{keyInterval.getMin()};
     int64_t length{static_cast<int64_t>(keyInterval.size())};
