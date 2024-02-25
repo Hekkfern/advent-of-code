@@ -548,6 +548,8 @@ TEST_CASE("[Interval] Comparison operators", "[utils][Interval]")
         SECTION("Greater and less than")
         {
             CHECK_FALSE(Interval{1, 3} > Interval{1, 3});
+            CHECK(Interval{1, 3} >= Interval{1, 3});
+            CHECK(Interval{1, 3} <= Interval{1, 3});
             CHECK(Interval{1, 3} < Interval{1, 5});
             CHECK(Interval{1, 3} < Interval{2, 3});
             CHECK(Interval{1, 5} > Interval{1, 3});
