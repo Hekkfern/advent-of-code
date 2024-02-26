@@ -10,6 +10,8 @@ namespace aoc_2023_7 {
 
 class Hand {
 public:
+    std::array<Card, 5> cards;
+    uint32_t bid;
     enum Type {
         HighCard,
         OnePair,
@@ -20,14 +22,11 @@ public:
         FiveOfKind
     } value;
 
-    std::array<Card, 5> cards;
-    uint32_t bid;
-
     Hand(std::array<Card, 5> const c, uint32_t const b)
         : cards{c}
         , bid{b}
+        , value{analyzeHand(cards)}
     {
-        analyzeHand();
     }
 
     [[nodiscard]] auto operator<=>(Hand const& other) const
@@ -42,10 +41,10 @@ public:
     }
 
 private:
-    void analyzeHand()
+    static Type analyzeHand(std::array<Card, 5> c)
     {
-        std::array<Card, 5> sorted_cards{cards};
-        ranges::sort(sorted_cards, std::greater<>{});
+        std::array<Card, 5> sorted_cards{c};
+        ranges::sort(sorted_cards, std::greater{});
 
         // Translate cards into frequencies of equal cards
         std::array<uint32_t, 5ULL> freq{1U, 0U, 0U, 0U, 0U};
@@ -56,22 +55,22 @@ private:
             }
             ++*it;
         }
-        ranges::sort(freq, std::greater<>{});
+        ranges::sort(freq, std::greater{});
         // Map the frequencies to the hand value
         if (freq[0] == 5U) {
-            value = FiveOfKind;
+            return FiveOfKind;
         } else if (freq[0] == 4U) {
-            value = FourOfKind;
+            return FourOfKind;
         } else if (freq[0] == 3U && freq[1] == 2U) {
-            value = FullHouse;
+            return FullHouse;
         } else if (freq[0] == 3U && freq[1] != 2U) {
-            value = ThreeOfKind;
+            return ThreeOfKind;
         } else if (freq[0] == 2U && freq[1] == 2U) {
-            value = TwoPair;
+            return TwoPair;
         } else if (freq[0] == 2U && freq[1] != 2U) {
-            value = OnePair;
+            return OnePair;
         } else {
-            value = HighCard;
+            return HighCard;
         }
     }
 };

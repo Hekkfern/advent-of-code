@@ -3,6 +3,7 @@
 #include "Card.hpp"
 #include "Hand.hpp"
 #include <cassert>
+#include <range/v3/numeric/accumulate.hpp>
 #include <range/v3/view/enumerate.hpp>
 #include <sstream>
 #include <utils/File.hpp>
@@ -79,8 +80,15 @@ std::vector<Hand> parseInput(std::filesystem::path const& filePath)
 
 std::string solvePart1(std::filesystem::path const& filePath)
 {
-    auto const input{parseInput(filePath)};
-    return "";
+    auto hands{parseInput(filePath)};
+    ranges::sort(hands, std::less{});
+    uint64_t const result{ranges::accumulate(
+        hands | ranges::views::enumerate,
+        0ULL,
+        [](uint64_t const accum, std::pair<uint64_t, Hand> item) -> uint64_t {
+            return accum + ((item.first + 1ULL) * item.second.bid);
+        })};
+    return std::to_string(result);
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
