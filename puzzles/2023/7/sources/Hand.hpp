@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <array>
 #include <cstdint>
+#include <range/v3/algorithm/sort.hpp>
 
 namespace aoc_2023_7 {
 
@@ -22,26 +23,20 @@ public:
     std::array<Card, 5> cards;
     uint32_t bid;
 
-    friend std::istream& operator>>(std::istream& s, Hand& hand)
+    Hand(std::array<Card, 5> const c, uint32_t const b)
+        : cards{c}
+        , bid{b}
     {
-        for (auto& e : hand.cards) {
-            if (!(s >> e)) {
-                return s;
-            }
-        }
-        if (!(s >> hand.bid)) {
-            return s;
-        }
-        hand.analyzeHand();
-        return s;
+        analyzeHand();
     }
 
-    auto operator<=>(Hand const& other) const
+    [[nodiscard]] auto operator<=>(Hand const& other) const
     {
         // First compare by the hand value
         auto cmp = value <=> other.value;
-        if (std::is_neq(cmp))
+        if (std::is_neq(cmp)) {
             return cmp;
+        }
         // If the hands are the same, lexicographically compare the cards
         return cards <=> other.cards;
     }
@@ -50,7 +45,7 @@ private:
     void analyzeHand()
     {
         std::array<Card, 5> sorted_cards{cards};
-        std::ranges::sort(sorted_cards, std::greater<>{});
+        ranges::sort(sorted_cards, std::greater<>{});
 
         // Translate cards into frequencies of equal cards
         std::array<uint32_t, 5ULL> freq{1U, 0U, 0U, 0U, 0U};
@@ -61,7 +56,7 @@ private:
             }
             ++*it;
         }
-        std::ranges::sort(freq, std::greater<>{});
+        ranges::sort(freq, std::greater<>{});
         // Map the frequencies to the hand value
         if (freq[0] == 5U) {
             value = FiveOfKind;
