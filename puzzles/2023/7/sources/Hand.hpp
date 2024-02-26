@@ -13,6 +13,7 @@ public:
     std::array<Card, 5> cards;
     uint32_t bid;
     enum Type {
+        Unknown,
         HighCard,
         OnePair,
         TwoPair,
@@ -25,7 +26,7 @@ public:
     Hand(std::array<Card, 5> const c, uint32_t const b)
         : cards{c}
         , bid{b}
-        , value{analyzeHand(cards)}
+        , value{Unknown}
     {
     }
 
@@ -40,10 +41,9 @@ public:
         return cards <=> other.cards;
     }
 
-private:
-    static Type analyzeHand(std::array<Card, 5> c)
+    void analyzeNormalHand()
     {
-        std::array<Card, 5> sorted_cards{c};
+        std::array<Card, 5> sorted_cards{cards};
         ranges::sort(sorted_cards, std::greater{});
 
         // Translate cards into frequencies of equal cards
@@ -58,19 +58,53 @@ private:
         ranges::sort(freq, std::greater{});
         // Map the frequencies to the hand value
         if (freq[0] == 5U) {
-            return FiveOfKind;
+            value = FiveOfKind;
         } else if (freq[0] == 4U) {
-            return FourOfKind;
+            value = FourOfKind;
         } else if (freq[0] == 3U && freq[1] == 2U) {
-            return FullHouse;
+            value = FullHouse;
         } else if (freq[0] == 3U && freq[1] != 2U) {
-            return ThreeOfKind;
+            value = ThreeOfKind;
         } else if (freq[0] == 2U && freq[1] == 2U) {
-            return TwoPair;
+            value = TwoPair;
         } else if (freq[0] == 2U && freq[1] != 2U) {
-            return OnePair;
+            value = OnePair;
         } else {
-            return HighCard;
+            value = HighCard;
+        }
+    }
+
+    void analyzeHandWithJokers()
+    {
+        std::array<Card, 5> sorted_cards{cards};
+        ranges::sort(sorted_cards, std::greater{});
+
+        // Translate cards into frequencies of equal cards
+        std::array<uint32_t, 5ULL> freq{1U, 0U, 0U, 0U, 0U};
+        auto it = freq.begin();
+        // TODO
+        for (std::size_t i = 1ULL; i < 5ULL; ++i) {
+            if (sorted_cards[i - 1ULL] != sorted_cards[i]) {
+                ++it;
+            }
+            ++*it;
+        }
+        ranges::sort(freq, std::greater{});
+        // Map the frequencies to the hand value
+        if (freq[0] == 5U) {
+            value = FiveOfKind;
+        } else if (freq[0] == 4U) {
+            value = FourOfKind;
+        } else if (freq[0] == 3U && freq[1] == 2U) {
+            value = FullHouse;
+        } else if (freq[0] == 3U && freq[1] != 2U) {
+            value = ThreeOfKind;
+        } else if (freq[0] == 2U && freq[1] == 2U) {
+            value = TwoPair;
+        } else if (freq[0] == 2U && freq[1] != 2U) {
+            value = OnePair;
+        } else {
+            value = HighCard;
         }
     }
 };

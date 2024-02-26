@@ -3,6 +3,7 @@
 #include "Card.hpp"
 #include "Hand.hpp"
 #include <cassert>
+#include <range/v3/algorithm/for_each.hpp>
 #include <range/v3/numeric/accumulate.hpp>
 #include <range/v3/view/enumerate.hpp>
 #include <sstream>
@@ -81,6 +82,9 @@ std::vector<Hand> parseInput(std::filesystem::path const& filePath)
 std::string solvePart1(std::filesystem::path const& filePath)
 {
     auto hands{parseInput(filePath)};
+    ranges::for_each(hands, [](Hand& item) -> void {
+        item.analyzeNormalHand();
+    });
     ranges::sort(hands, std::less{});
     uint64_t const result{ranges::accumulate(
         hands | ranges::views::enumerate,
@@ -93,8 +97,18 @@ std::string solvePart1(std::filesystem::path const& filePath)
 
 std::string solvePart2(std::filesystem::path const& filePath)
 {
-    (void)filePath;
-    return "";
+    auto hands{parseInput(filePath)};
+    ranges::for_each(hands, [](Hand& item) -> void {
+        item.analyzeHandWithJokers();
+    });
+    ranges::sort(hands, std::less{});
+    uint64_t const result{ranges::accumulate(
+        hands | ranges::views::enumerate,
+        0ULL,
+        [](uint64_t const accum, std::pair<uint64_t, Hand> item) -> uint64_t {
+            return accum + ((item.first + 1ULL) * item.second.bid);
+        })};
+    return std::to_string(result);
 }
 
 // ---------- End of Public Methods ----------
