@@ -4,8 +4,9 @@
 
 namespace aoc_2023_7 {
 
-struct Card {
+struct Card2 {
     enum Type {
+        Joker,
         Two,
         Three,
         Four,
@@ -15,20 +16,19 @@ struct Card {
         Eight,
         Nine,
         Ten,
-        Jack,
         Queen,
         King,
         Ace
     } value;
 
-    Card() = default;
+    Card2() = default;
 
-    explicit Card(Type v)
+    explicit Card2(Type v)
         : value{v}
     {
     }
 
-    [[nodiscard]] auto operator<=>(Card const& other) const = default;
+    [[nodiscard]] auto operator<=>(Card2 const& other) const = default;
 };
 
 } // namespace aoc_2023_7
