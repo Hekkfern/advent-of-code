@@ -12,10 +12,14 @@ target_link_libraries(${_EXEC_NAME} PRIVATE aoc_2023_8_solutions PRIVATE aoc_uti
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../sources/input.txt
         ${CMAKE_CURRENT_BINARY_DIR}/input.txt COPYONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input1_test.txt
-        ${CMAKE_CURRENT_BINARY_DIR}/input1_test.txt COPYONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/solution1_test.txt
-        ${CMAKE_CURRENT_BINARY_DIR}/solution1_test.txt COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input1a_test.txt
+        ${CMAKE_CURRENT_BINARY_DIR}/input1a_test.txt COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input1b_test.txt
+        ${CMAKE_CURRENT_BINARY_DIR}/input1b_test.txt COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/solution1a_test.txt
+        ${CMAKE_CURRENT_BINARY_DIR}/solution1a_test.txt COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/solution1b_test.txt
+        ${CMAKE_CURRENT_BINARY_DIR}/solution1b_test.txt COPYONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/solution1.txt
         ${CMAKE_CURRENT_BINARY_DIR}/solution1.txt COPYONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input2_test.txt
