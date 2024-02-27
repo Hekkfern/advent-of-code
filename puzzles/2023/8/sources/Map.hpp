@@ -10,9 +10,9 @@ namespace aoc_2023_8 {
 class Map {
 public:
     Map() = default;
-    void addInstructions(std::vector<Instruction>&& instructions);
-    void addNode(NodeId&& id, NetworkNode&& network);
-    uint64_t navigateFromAToZ();
+    void addInstructions(std::vector<Instruction>&& instructions) noexcept;
+    void addNode(NodeId&& id, NetworkNode&& network) noexcept;
+    [[nodiscard]] uint64_t navigateFromAToZ() const noexcept;
 
 private:
     std::vector<Instruction> mInstructions{};

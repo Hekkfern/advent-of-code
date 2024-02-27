@@ -9,7 +9,7 @@ NetworkNode::NetworkNode(NodeId leftNode, NodeId rightNode)
 {
 }
 
-NodeId NetworkNode::navigate(Instruction const instruction)
+NodeId NetworkNode::navigate(Instruction instruction) const noexcept
 {
     switch (instruction) {
     case Instruction::Left:

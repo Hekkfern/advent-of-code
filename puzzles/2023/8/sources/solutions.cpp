@@ -55,7 +55,7 @@ Map parseInput(std::filesystem::path const& filePath)
 std::string solvePart1(std::filesystem::path const& filePath)
 {
     auto const map{parseInput(filePath)};
-    return "";
+    return std::to_string(map.navigateFromAToZ());
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)

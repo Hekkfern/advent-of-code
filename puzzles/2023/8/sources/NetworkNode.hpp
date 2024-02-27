@@ -12,7 +12,7 @@ class NetworkNode {
 public:
     NetworkNode(NodeId leftNode, NodeId rightNode);
 
-    NodeId navigate(Instruction instruction);
+    [[nodiscard]] NodeId navigate(Instruction instruction) const noexcept;
 
 private:
     std::array<NodeId, 2> mNextNodes;
