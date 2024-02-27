@@ -13,8 +13,11 @@ public:
     void addInstructions(std::vector<Instruction>&& instructions) noexcept;
     void addNode(NodeId&& id, NetworkNode&& network) noexcept;
     [[nodiscard]] uint64_t navigateFromAAAToZZZ() const noexcept;
+    [[nodiscard]] uint64_t navigateFromAllXXAToAllXXZ() const noexcept;
 
 private:
+    Instruction yieldInstruction(uint32_t& instructionIndex) const noexcept;
+
     std::vector<Instruction> mInstructions{};
     std::unordered_map<NodeId, NetworkNode> mNetworkNodes{};
 };

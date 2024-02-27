@@ -61,7 +61,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
 std::string solvePart2(std::filesystem::path const& filePath)
 {
     auto const map{parseInput(filePath)};
-    return "";
+    return std::to_string(map.navigateFromAllXXAToAllXXZ());
 }
 
 // ---------- End of Public Methods ----------
