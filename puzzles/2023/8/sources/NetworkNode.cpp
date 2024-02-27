@@ -1,14 +1,25 @@
 #include "NetworkNode.hpp"
 
-namespace aoc_2023_8{
+#include <cassert>
 
-NetworkNode::NetworkNode(std::array<std::string, 2> nextNodes)
-    : mNextNodes{std::move(nextNodes)}
+namespace aoc_2023_8 {
+
+NetworkNode::NetworkNode(NodeId leftNode, NodeId rightNode)
+    : mNextNodes{std::array{std::move(leftNode), std::move(rightNode)}}
 {
 }
 
-std::string NetworkNode::navigate(const Instruction instruction){
-    //TODO
+NodeId NetworkNode::navigate(Instruction const instruction)
+{
+    switch (instruction) {
+    case Instruction::Left:
+        return mNextNodes[0];
+    case Instruction::Right:
+        return mNextNodes[1];
+    default:
+        assert("Wrong instruction");
+        return {};
+    }
 }
 
-}
+} // namespace aoc_2023_8

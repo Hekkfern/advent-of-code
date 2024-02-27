@@ -1,19 +1,21 @@
 #pragma once
 
+#include "Instruction.hpp"
 #include <array>
 #include <string>
-#include <utility>
-#include "Instruction.hpp"
 
 namespace aoc_2023_8 {
 
+using NodeId = std::string;
+
 class NetworkNode {
 public:
-    NetworkNode(std::array<std::string, 2> nextNodes);
+    NetworkNode(NodeId leftNode, NodeId rightNode);
 
-    std::string navigate(const Instruction instruction);
+    NodeId navigate(Instruction instruction);
+
 private:
-    std::array<std::string, 2> mNextNodes;
+    std::array<NodeId, 2> mNextNodes;
 };
 
 } // namespace aoc_2023_8
