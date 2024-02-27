@@ -55,12 +55,12 @@ Map parseInput(std::filesystem::path const& filePath)
 std::string solvePart1(std::filesystem::path const& filePath)
 {
     auto const map{parseInput(filePath)};
-    return std::to_string(map.navigateFromAToZ());
+    return std::to_string(map.navigateFromAAAToZZZ());
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
 {
-    (void)filePath;
+    auto const map{parseInput(filePath)};
     return "";
 }
 

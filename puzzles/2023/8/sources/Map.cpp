@@ -12,7 +12,7 @@ void Map::addNode(NodeId&& id, NetworkNode&& network) noexcept
     mNetworkNodes.emplace(id, std::move(network));
 }
 
-uint64_t Map::navigateFromAToZ() const noexcept
+uint64_t Map::navigateFromAAAToZZZ() const noexcept
 {
     constexpr auto InitialNodeId{"AAA"};
     constexpr auto FinalNodeId{"ZZZ"};

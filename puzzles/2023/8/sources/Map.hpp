@@ -12,7 +12,7 @@ public:
     Map() = default;
     void addInstructions(std::vector<Instruction>&& instructions) noexcept;
     void addNode(NodeId&& id, NetworkNode&& network) noexcept;
-    [[nodiscard]] uint64_t navigateFromAToZ() const noexcept;
+    [[nodiscard]] uint64_t navigateFromAAAToZZZ() const noexcept;
 
 private:
     std::vector<Instruction> mInstructions{};
