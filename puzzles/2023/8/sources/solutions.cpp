@@ -1,6 +1,7 @@
 #include "solutions.hpp"
 
 #include "Map.hpp"
+#include <cassert>
 #include <fstream>
 #include <range/v3/range/conversion.hpp>
 #include <range/v3/view/transform.hpp>
@@ -28,7 +29,7 @@ Map parseInput(std::filesystem::path const& filePath)
             case 'R':
                 return Instruction::Right;
             default:
-                assert("Wrong instruction character");
+                assert(("Wrong instruction character", false));
                 return {};
             }
         })
