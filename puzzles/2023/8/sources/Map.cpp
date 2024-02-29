@@ -1,10 +1,10 @@
 #include "Map.hpp"
 
-#include <range/v3/algorithm/all_of.hpp>
 #include <range/v3/range/conversion.hpp>
 #include <range/v3/view/filter.hpp>
 #include <range/v3/view/map.hpp>
 #include <range/v3/view/transform.hpp>
+#include <utils/Math.hpp>
 
 namespace aoc_2023_8 {
 
@@ -28,14 +28,14 @@ Instruction Map::yieldInstruction(uint32_t& instructionIndex) const noexcept
 
 uint64_t Map::navigateFromAAAToZZZ() const noexcept
 {
-    constexpr auto InitialNodeId{"AAA"};
-    constexpr auto FinalNodeId{"ZZZ"};
+    static constexpr auto InitialNodeId{"AAA"};
+    static constexpr auto FinalNodeId{"ZZZ"};
     uint32_t instructionIndex{0U};
     uint64_t stepCounter{0ULL};
     NodeId currentNode{InitialNodeId};
 
     while (currentNode != FinalNodeId) {
-        Instruction instruction{yieldInstruction(instructionIndex)};
+        const Instruction instruction{yieldInstruction(instructionIndex)};
         currentNode = mNetworkNodes.at(currentNode).navigate(instruction);
         ++stepCounter;
     }
@@ -48,36 +48,29 @@ uint64_t Map::navigateFromAllXXAToAllXXZ() const noexcept
     static constexpr auto isFinalNode{[](NodeId const& nodeId) -> bool {
         return nodeId[2] == 'Z';
     }};
-    static constexpr auto areAllNodesFinal{
-        [](std::vector<NodeId> const& nodeIds) -> bool {
-            return ranges::all_of(nodeIds, isFinalNode);
-        }};
 
     // look for starting nodes
-    auto initialNodeIds{
+    auto const initialNodeIds{
         mNetworkNodes | ranges::views::keys
         | ranges::views::filter([](NodeId const& nodeId) -> bool {
               return nodeId[2] == 'A';
           })
         | ranges::to<std::vector>};
 
+    uint64_t stepResult{1ULL};
     uint32_t instructionIndex{0U};
-    uint64_t stepCounter{0ULL};
-    std::vector<NodeId> currentNodes{initialNodeIds};
-
-    while (!areAllNodesFinal(currentNodes)) {
-        Instruction instruction{yieldInstruction(instructionIndex)};
-        currentNodes
-            = currentNodes
-            | ranges::views::
-                transform([this, instruction](NodeId const& nodeId) -> NodeId {
-                    return mNetworkNodes.at(nodeId).navigate(instruction);
-                })
-            | ranges::to<std::vector>;
-        ++stepCounter;
+    for (NodeId const& initialNodeId : initialNodeIds) {
+        uint64_t stepCounter{0ULL};
+        NodeId currentNode{initialNodeId};
+        while (!isFinalNode(currentNode)) {
+            const Instruction instruction{yieldInstruction(instructionIndex)};
+            currentNode = mNetworkNodes.at(currentNode).navigate(instruction);
+            ++stepCounter;
+        }
+        stepResult = utils::math::lcm(stepResult, stepCounter);
     }
 
-    return stepCounter;
+    return stepResult;
 }
 
 } // namespace aoc_2023_8

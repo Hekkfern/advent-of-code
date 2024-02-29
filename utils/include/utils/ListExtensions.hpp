@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Concepts.hpp"
-#include "IntegerMath.hpp"
+#include "Math.hpp"
 #include <iterator>
 #include <list>
 #include <ostream>

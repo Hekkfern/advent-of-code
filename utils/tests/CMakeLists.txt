@@ -7,7 +7,7 @@ find_package(Catch2 3 CONFIG REQUIRED)
 
 # aoc_utils_tests
 set(_EXEC_NAME "aoc_utils_tests")
-set(_TESTFILES StringTests.cpp IntegerMathTests.cpp ListExtensionsTests.cpp
+set(_TESTFILES StringTests.cpp MathTests.cpp ListExtensionsTests.cpp
                FileTests.cpp)
 set(_TESTFILES_INTERVAL interval/IntervalTests.cpp
                         interval/IntervalSetTests.cpp)
