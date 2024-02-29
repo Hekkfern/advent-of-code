@@ -23,6 +23,34 @@ bool isAllZeros(std::vector<int64_t> const& input)
         return item == 0ULL;
     });
 }
+
+std::optional<int64_t>
+extrapolateRightRecursive(std::vector<int64_t> const& input)
+{
+    auto const diffs{calculateDifferences(input)};
+    if (isAllZeros(diffs)) {
+        return {};
+    }
+    auto const nextLevel{extrapolateRightRecursive(diffs)};
+    if (!nextLevel) {
+        return diffs[0];
+    }
+    return diffs.back() + *nextLevel;
+}
+
+std::optional<int64_t>
+extrapolateLeftRecursive(std::vector<int64_t> const& input)
+{
+    auto const diffs{calculateDifferences(input)};
+    if (isAllZeros(diffs)) {
+        return {};
+    }
+    auto const nextLevel{extrapolateLeftRecursive(diffs)};
+    if (!nextLevel) {
+        return diffs[0];
+    }
+    return diffs.front() - *nextLevel;
+}
 } // namespace
 
 namespace aoc_2023_9 {
@@ -32,23 +60,16 @@ History::History(std::vector<int64_t>&& seq) noexcept
 {
 }
 
-std::optional<int64_t> extrapolateRecursive(std::vector<int64_t> const& input)
+int64_t History::extrapolateRight() const noexcept
 {
-    auto const diffs{calculateDifferences(input)};
-    if (isAllZeros(diffs)) {
-        return {};
-    }
-    auto const nextLevel{extrapolateRecursive(diffs)};
-    if (!nextLevel) {
-        return diffs[0];
-    }
-    return diffs.back() + *nextLevel;
+    auto const nextLevel{extrapolateRightRecursive(mSequence)};
+    return mSequence.back() + *nextLevel;
 }
 
-int64_t History::extrapolate() const noexcept
+int64_t History::extrapolateLeft() const noexcept
 {
-    auto const nextLevel{extrapolateRecursive(mSequence)};
-    return mSequence.back() + *nextLevel;
+    auto const nextLevel{extrapolateLeftRecursive(mSequence)};
+    return mSequence.front() - *nextLevel;
 }
 
 } // namespace aoc_2023_9

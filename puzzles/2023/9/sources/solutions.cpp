@@ -28,7 +28,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
     utils::file::parseAndIterate(
         filePath, [&accumNextValues](std::string_view const line) -> void {
             auto const history{parseInputLine(line)};
-            accumNextValues += history.extrapolate();
+            accumNextValues += history.extrapolateRight();
         });
 
     return std::to_string(accumNextValues);
@@ -36,8 +36,15 @@ std::string solvePart1(std::filesystem::path const& filePath)
 
 std::string solvePart2(std::filesystem::path const& filePath)
 {
-    (void)filePath;
-    return "";
+    int64_t accumNextValues{0LL};
+
+    utils::file::parseAndIterate(
+        filePath, [&accumNextValues](std::string_view const line) -> void {
+            auto const history{parseInputLine(line)};
+            accumNextValues += history.extrapolateLeft();
+        });
+
+    return std::to_string(accumNextValues);
 }
 
 // ---------- End of Public Methods ----------
