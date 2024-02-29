@@ -23,7 +23,7 @@ History parseInputLine(std::string_view const line) noexcept
 
 std::string solvePart1(std::filesystem::path const& filePath)
 {
-    uint32_t accumNextValues{0U};
+    int64_t accumNextValues{0LL};
 
     utils::file::parseAndIterate(
         filePath, [&accumNextValues](std::string_view const line) -> void {

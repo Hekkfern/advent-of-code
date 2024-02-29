@@ -29,7 +29,7 @@ Map parseInput(std::filesystem::path const& filePath)
             case 'R':
                 return Instruction::Right;
             default:
-                assert(("Wrong instruction character", false));
+                assert(false);
                 return {};
             }
         })

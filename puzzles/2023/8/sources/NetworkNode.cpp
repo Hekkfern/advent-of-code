@@ -17,8 +17,7 @@ NodeId NetworkNode::navigate(Instruction instruction) const noexcept
     case Instruction::Right:
         return mNextNodes[1];
     default:
-        assert(("Wrong instruction", false));
-        return {};
+        assert(false);
     }
 }
 
