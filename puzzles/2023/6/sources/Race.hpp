@@ -10,4 +10,3 @@ struct Race {
 };
 
 } // namespace aoc_2023_6
-

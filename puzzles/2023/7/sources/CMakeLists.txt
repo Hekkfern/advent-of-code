@@ -6,11 +6,8 @@ find_package(range-v3 CONFIG REQUIRED)
 
 # aoc_2023_7_solutions
 set(_LIB_NAME "aoc_2023_7_solutions")
-add_library(${_LIB_NAME} STATIC solutions.cpp solutions.hpp
-        Hand.hpp
-        Card.hpp
-        Hand2.hpp
-        Card2.hpp)
+add_library(${_LIB_NAME} STATIC solutions.cpp solutions.hpp Hand.hpp Card.hpp
+                                Hand2.hpp Card2.hpp)
 setup_puzzle(${_LIB_NAME})
 target_link_libraries(${_LIB_NAME} PRIVATE aoc_utils)
 
