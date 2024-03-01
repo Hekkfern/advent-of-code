@@ -23,8 +23,7 @@ std::unordered_map<
     {PipeType::NorthWest, {Vector2D<int32_t>{0, -1}, Vector2D<int32_t>{-1, 0}}},
     {PipeType::Vertical, {Vector2D<int32_t>{0, 1}, Vector2D<int32_t>{0, -1}}},
     {PipeType::NorthEast, {Vector2D<int32_t>{0, -1}, Vector2D<int32_t>{1, 0}}},
-    {PipeType::SouthWest,
-     {Vector2D<int32_t>{0, -1}, Vector2D<int32_t>{-1, 0}}}};
+    {PipeType::SouthWest, {Vector2D<int32_t>{0, 1}, Vector2D<int32_t>{-1, 0}}}};
 
 // ---------- Private Methods ----------
 
@@ -127,14 +126,14 @@ std::string solvePart1(std::filesystem::path const& filePath)
     // look for two pipes connected to the start
     auto currentPosition{getStartingNeighbor(field, start)};
     auto previousPosition{start};
-    std::size_t count{0ULL};
+    std::size_t count{1ULL};
     while (currentPosition != start) {
         auto nextPosition = move(field, currentPosition, previousPosition);
         previousPosition = currentPosition;
         currentPosition = nextPosition;
         ++count;
     }
-    return std::to_string(count);
+    return std::to_string(count / 2);
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
