@@ -13,14 +13,16 @@ using namespace utils::geometry2d;
 
 namespace aoc_2023_10 {
 
+/* note: vertical coord is inverted because the input is parsed from top (row=0)
+ * to bottom (row=N) */
 std::unordered_map<
     PipeType,
     std::pair<Vector2D<int32_t>, Vector2D<int32_t>>> const PipeTranslation{
-    {PipeType::SouthEast, {Vector2D<int32_t>{0, -1}, Vector2D<int32_t>{1, 0}}},
+    {PipeType::SouthEast, {Vector2D<int32_t>{0, 1}, Vector2D<int32_t>{1, 0}}},
     {PipeType::Horizontal, {Vector2D<int32_t>{-1, 0}, Vector2D<int32_t>{1, 0}}},
-    {PipeType::NorthWest, {Vector2D<int32_t>{0, 1}, Vector2D<int32_t>{-1, 0}}},
+    {PipeType::NorthWest, {Vector2D<int32_t>{0, -1}, Vector2D<int32_t>{-1, 0}}},
     {PipeType::Vertical, {Vector2D<int32_t>{0, 1}, Vector2D<int32_t>{0, -1}}},
-    {PipeType::NorthEast, {Vector2D<int32_t>{0, 1}, Vector2D<int32_t>{1, 0}}},
+    {PipeType::NorthEast, {Vector2D<int32_t>{0, -1}, Vector2D<int32_t>{1, 0}}},
     {PipeType::SouthWest,
      {Vector2D<int32_t>{0, -1}, Vector2D<int32_t>{-1, 0}}}};
 
@@ -50,6 +52,7 @@ PipeType parsePipeType(char const c)
     }
 }
 
+/* where Field[row][col] and row==0 is the top row of the input file */
 using Field = std::vector<std::vector<PipeType>>;
 
 std::pair<Field, Point2D<int32_t>>
@@ -77,12 +80,20 @@ parseInput(std::filesystem::path const& filePath)
     return std::make_pair(outList, startingPoint);
 }
 
+PipeType
+getTypeForPosition(Field const& field, int32_t const row, int32_t const col)
+{
+    return field.at(static_cast<std::size_t>(row))
+        .at(static_cast<std::size_t>(col));
+}
+
 Point2D<int32_t> move(
+    Field const& field,
     Point2D<int32_t> const& pipePosition,
-    PipeType const pipeType,
     Point2D<int32_t> const& previousPosition)
 {
-    auto const translation{PipeTranslation.at(pipeType)};
+    auto const translation{PipeTranslation.at(
+        getTypeForPosition(field, pipePosition.getY(), pipePosition.getX()))};
     if (pipePosition + translation.first == previousPosition) {
         return pipePosition + translation.second;
     } else {
@@ -96,8 +107,7 @@ getStartingNeighbor(Field const& field, Point2D<int32_t> const& start)
     Point2D<int32_t> result;
     for (auto const& neighbor : start.getNeighbors()) {
         auto const translation{PipeTranslation.at(
-            field.at(static_cast<std::size_t>(neighbor.getX()))
-                .at(static_cast<std::size_t>(neighbor.getY())))};
+            getTypeForPosition(field, neighbor.getY(), neighbor.getX()))};
         if ((neighbor + translation.first) == start
             || (neighbor + translation.second) == start) {
             return neighbor;
@@ -119,10 +129,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
     auto previousPosition{start};
     std::size_t count{0ULL};
     while (currentPosition != start) {
-        auto const pipeType{
-            field.at(static_cast<std::size_t>(currentPosition.getX()))
-                .at(static_cast<std::size_t>(currentPosition.getY()))};
-        auto nextPosition = move(currentPosition, pipeType, previousPosition);
+        auto nextPosition = move(field, currentPosition, previousPosition);
         previousPosition = currentPosition;
         currentPosition = nextPosition;
         ++count;
