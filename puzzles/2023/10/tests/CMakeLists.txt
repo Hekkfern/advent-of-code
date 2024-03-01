@@ -8,19 +8,31 @@ find_package(Catch2 3 CONFIG REQUIRED)
 set(_EXEC_NAME "aoc_2023_10_tests")
 add_executable(${_EXEC_NAME} unittests.cpp)
 setup_test(${_EXEC_NAME})
-target_link_libraries(${_EXEC_NAME} PRIVATE aoc_2023_10_solutions PRIVATE aoc_utils PRIVATE Catch2::Catch2WithMain)
+target_link_libraries(
+  ${_EXEC_NAME}
+  PRIVATE aoc_2023_10_solutions
+  PRIVATE aoc_utils
+  PRIVATE Catch2::Catch2WithMain)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../sources/input.txt
-        ${CMAKE_CURRENT_BINARY_DIR}/input.txt COPYONLY)
+               ${CMAKE_CURRENT_BINARY_DIR}/input.txt COPYONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input1_test.txt
-        ${CMAKE_CURRENT_BINARY_DIR}/input1_test.txt COPYONLY)
+               ${CMAKE_CURRENT_BINARY_DIR}/input1_test.txt COPYONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/solution1_test.txt
-        ${CMAKE_CURRENT_BINARY_DIR}/solution1_test.txt COPYONLY)
+               ${CMAKE_CURRENT_BINARY_DIR}/solution1_test.txt COPYONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/solution1.txt
-        ${CMAKE_CURRENT_BINARY_DIR}/solution1.txt COPYONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input2_test.txt
-        ${CMAKE_CURRENT_BINARY_DIR}/input2_test.txt COPYONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/solution2_test.txt
-        ${CMAKE_CURRENT_BINARY_DIR}/solution2_test.txt COPYONLY)
+               ${CMAKE_CURRENT_BINARY_DIR}/solution1.txt COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input2a_test.txt
+               ${CMAKE_CURRENT_BINARY_DIR}/input2a_test.txt COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input2b_test.txt
+               ${CMAKE_CURRENT_BINARY_DIR}/input2b_test.txt COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input2c_test.txt
+               ${CMAKE_CURRENT_BINARY_DIR}/input2c_test.txt COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/solution2a_test.txt
+               ${CMAKE_CURRENT_BINARY_DIR}/solution2a_test.txt COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/solution2b_test.txt
+               ${CMAKE_CURRENT_BINARY_DIR}/solution2b_test.txt COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/solution2c_test.txt
+               ${CMAKE_CURRENT_BINARY_DIR}/solution2c_test.txt COPYONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/solution2.txt
-        ${CMAKE_CURRENT_BINARY_DIR}/solution2.txt COPYONLY)
+               ${CMAKE_CURRENT_BINARY_DIR}/solution2.txt COPYONLY)

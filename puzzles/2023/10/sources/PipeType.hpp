@@ -14,4 +14,4 @@ enum class PipeType {
     StartingPosition
 };
 
-} //
+} // namespace aoc_2023_10
