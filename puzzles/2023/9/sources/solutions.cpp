@@ -13,7 +13,7 @@ History parseInputLine(std::string_view const line) noexcept
 {
     std::stringstream ss{std::string{line}};
     std::vector<int64_t> values(
-        std::istream_iterator<int64_t>(ss), std::istream_iterator<int64_t>());
+        (std::istream_iterator<int64_t>(ss)), std::istream_iterator<int64_t>());
     return History{std::move(values)};
 }
 
