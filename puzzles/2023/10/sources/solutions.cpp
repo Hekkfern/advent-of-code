@@ -63,7 +63,7 @@ parseInput(std::filesystem::path const& filePath)
     utils::file::parseAndIterateWithIndex(
         filePath,
         [&outList, &startingPoint](
-            std::size_t const rowIndex, std::string_view const line) {
+            std::size_t const rowIndex, std::string_view const line) -> void {
             std::vector<PipeType> row;
             row.reserve(line.size());
             for (auto const [colIndex, c] : line | ranges::views::enumerate) {
