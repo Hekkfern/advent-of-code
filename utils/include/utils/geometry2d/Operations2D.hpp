@@ -189,4 +189,57 @@ void operator+=(Point2D<T>& point, Direction2D const& direction)
     point = point + direction;
 }
 
+/**
+ * @brief      Applies the "Shoelace formula"
+ *             (https://en.wikipedia.org/wiki/Shoelace_formula), a mathematical
+ *             algorithm to determine the area of a simple polygon whose
+ *             vertices are described by their Cartesian coordinates in the
+ *             place.
+ *
+ * @param[in]  perimeterPoints  List of all the points forming the perimeter of
+ *                              the polygon, ordered in a counter-clock-wise or
+ *                              clock-wise sequence.
+ *
+ * @tparam     T                Type of the coordinates.
+ *
+ * @return     Area of the shape.
+ */
+template <SignedIntegerType T = int32_t>
+double calculateArbitraryPolygonArea(std::vector<Point2D<T>> perimeterPoints)
+{
+    T leftSum{0};
+    T rightSum{0};
+
+    for (std::size_t i{0ULL}; i < perimeterPoints.size(); ++i) {
+        std::size_t j{(i + 1ULL) % perimeterPoints.size()};
+        leftSum += perimeterPoints[i].getX() * perimeterPoints[j].getY();
+        rightSum += perimeterPoints[j].getX() * perimeterPoints[i].getY();
+    }
+
+    return 0.5 * std::abs(leftSum - rightSum);
+}
+
+/**
+ * @brief      Applies "Pick's theorem"
+ *             (https://en.wikipedia.org/wiki/Pick%27s_theorem), a formula for
+ *             the area of a simple polygon with integer vertex coordinates, to
+ *             find the number of integer points interior to the polygon.
+ *
+ * @param[in]  perimeterPoints  List of all the points forming the perimeter of
+ *                              the polygon, ordered in a counter-clock-wise or
+ *                              clock-wise sequence.
+ *
+ * @tparam     T                Type of the coordinates.
+ *
+ * @return     Number of points in the interior of the polygon.
+ */
+template <SignedIntegerType T = int32_t>
+std::size_t calculateNumberOfIntrinsicPointsInsidePolygon(
+    std::vector<Point2D<T>> perimeterPoints)
+{
+    auto const area{calculateArbitraryPolygonArea(perimeterPoints)};
+    return static_cast<std::size_t>(
+        area - (static_cast<double>(perimeterPoints.size()) / 2.0) + 1.0);
+}
+
 } // namespace utils::geometry2d

@@ -89,3 +89,34 @@ TEST_CASE("[Operations2D] toVector2D() method", "[utils][Operations2D]")
         CHECK(v1 == Vector2D{-1, -1});
     }
 }
+
+TEST_CASE(
+    "[Operations2D] calculateArbitraryPolygonArea() method",
+    "[utils][Operations2D]")
+{
+    std::vector<Point2D<>> const points{
+        Point2D{1, 6},
+        Point2D{3, 1},
+        Point2D{7, 2},
+        Point2D{4, 4},
+        Point2D{8, 5}};
+    CHECK_THAT(
+        calculateArbitraryPolygonArea(points),
+        Catch::Matchers::WithinRel(16.5, 0.001));
+}
+
+TEST_CASE(
+    "[Operations2D] calculateNumberOfIntrinsicPointsInsidePolygon() method",
+    "[utils][Operations2D]")
+{
+    std::vector<Point2D<>> const points{
+        Point2D{1, 0},
+        Point2D{2, 1},
+        Point2D{3, 2},
+        Point2D{4, 3},
+        Point2D{4, 4},
+        Point2D{4, 5},
+        Point2D{2, 4},
+        Point2D{0, 3}};
+    CHECK(calculateNumberOfIntrinsicPointsInsidePolygon(points) == 7ULL);
+}
