@@ -126,6 +126,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
     // look for two pipes connected to the start
     auto currentPosition{getStartingNeighbor(field, start)};
     auto previousPosition{start};
+    // count nodes in loop
     std::size_t count{1ULL};
     while (currentPosition != start) {
         auto nextPosition = move(field, currentPosition, previousPosition);
@@ -139,7 +140,19 @@ std::string solvePart1(std::filesystem::path const& filePath)
 std::string solvePart2(std::filesystem::path const& filePath)
 {
     auto const [field, start]{parseInput(filePath)};
-    return "";
+    // look for two pipes connected to the start
+    auto currentPosition{getStartingNeighbor(field, start)};
+    auto previousPosition{start};
+    // get nodes of the loop
+    std::vector<Point2D<int32_t>> points{start};
+    while (currentPosition != start) {
+        auto nextPosition = move(field, currentPosition, previousPosition);
+        previousPosition = currentPosition;
+        currentPosition = nextPosition;
+        points.emplace_back(previousPosition);
+    }
+    return std::to_string(
+        calculateNumberOfIntrinsicPointsInsidePolygon(points));
 }
 
 // ---------- End of Public Methods ----------
