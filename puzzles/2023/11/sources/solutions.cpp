@@ -64,20 +64,16 @@ GalaxyMap parseInput(std::filesystem::path const& filePath)
     return galaxyMap;
 }
 
-// ---------- End of Private Methods ----------
-
-// ---------- Public Methods ----------
-
-std::string solvePart1(std::filesystem::path const& filePath)
+uint64_t calculateAccumulatedShortestPaths(
+    GalaxyMap const& galaxyMap, uint64_t const emptyMultiplier)
 {
-    auto const galaxyMap{parseInput(filePath)};
     std::vector<std::size_t> galaxyIndexes(galaxyMap.galaxies.size());
     std::iota(galaxyIndexes.begin(), galaxyIndexes.end(), 0ULL);
     uint64_t accumShortestPaths{0ULL};
     utils::combinations::forEachCombination(
         galaxyIndexes,
         2,
-        [&galaxyMap, &accumShortestPaths](
+        [&galaxyMap, &accumShortestPaths, emptyMultiplier](
             std::vector<std::size_t> const& combination) -> void {
             const auto& galaxy1{galaxyMap.galaxies.at(combination[0])};
             const auto& galaxy2{galaxyMap.galaxies.at(combination[1])};
@@ -97,6 +93,18 @@ std::string solvePart1(std::filesystem::path const& filePath)
                 }))};
             accumShortestPaths += distance + numEmptyRows + numEmptyCols;
         });
+    return accumShortestPaths;
+}
+
+// ---------- End of Private Methods ----------
+
+// ---------- Public Methods ----------
+
+std::string solvePart1(std::filesystem::path const& filePath)
+{
+    auto const galaxyMap{parseInput(filePath)};
+    uint64_t const accumShortestPaths{
+        calculateAccumulatedShortestPaths(galaxyMap, 2ULL)};
     return std::to_string(accumShortestPaths);
 }
 
