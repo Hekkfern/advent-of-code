@@ -1,16 +1,48 @@
 #pragma once
 
+#include <functional>
+#include <range/v3/algorithm/sort.hpp>
+#include <vector>
+
 namespace utils::combinations {
 
+namespace detail {
+template <typename T, typename Function>
+void forEachCombinationHelper(
+    std::vector<T> const& container,
+    std::size_t K,
+    Function&& function,
+    std::vector<T>& combination,
+    std::size_t start)
+{
+    if (combination.size() == K) {
+        function(combination);
+        return;
+    }
+
+    for (std::size_t i{start}; i < container.size(); ++i) {
+        combination.emplace_back(container[i]);
+        forEachCombinationHelper(
+            container, K, std::forward<Function>(function), combination, i + 1);
+        combination.pop_back();
+        // Skip duplicates
+        while (i < container.size() - 1 && container[i] == container[i + 1]) {
+            ++i;
+        }
+    }
+}
+} // namespace detail
+
 /**
- * @brief Calculates how many different ways you can choose "K" items from all the items in the container without repetition and without order.
+ * @brief Calculates how many different ways you can choose "K" items from all
+ * the items in the container without repetition and without order.
  *
- * @param[in] container
- * @param[in] K
+ * @param[in] N Total number of elements.
+ * @param[in] K Number of elements of the group.
  *
- * @return
+ * @return Total amount of combinations.
  */
-uint64_t calculateNumberCombinations(const std::size_t N, std::size_t K)
+uint64_t calculateNumberCombinations(std::size_t const N, std::size_t K)
 {
     if (K > N) {
         return 0;
@@ -29,12 +61,15 @@ uint64_t calculateNumberCombinations(const std::size_t N, std::size_t K)
     return result;
 }
 
-/*
-template <class T>
-void forEachCombination(std::vector<T>& container, std::function<>)
+template <typename T, typename Function>
+void forEachCombination(
+    std::vector<T> container, std::size_t K, Function&& function)
 {
+    std::vector<T> combination;
+    ranges::sort(container);
+    detail::forEachCombinationHelper(
+        container, K, std::forward<Function>(function), combination, 0);
 }
- */
 
 /**
  * @brief Generates all the possible combinations from a set of collections and
