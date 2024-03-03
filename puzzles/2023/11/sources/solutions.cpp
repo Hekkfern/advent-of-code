@@ -91,7 +91,9 @@ uint64_t calculateAccumulatedShortestPaths(
                     return std::min(galaxy1.getX(), galaxy2.getX()) < colIndex
                         && colIndex < std::max(galaxy1.getX(), galaxy2.getX());
                 }))};
-            accumShortestPaths += distance + numEmptyRows + numEmptyCols;
+            accumShortestPaths += distance
+                + numEmptyRows * (emptyMultiplier - 1ULL)
+                + numEmptyCols * (emptyMultiplier - 1ULL);
         });
     return accumShortestPaths;
 }
@@ -110,8 +112,10 @@ std::string solvePart1(std::filesystem::path const& filePath)
 
 std::string solvePart2(std::filesystem::path const& filePath)
 {
-    (void)filePath;
-    return "";
+    auto const galaxyMap{parseInput(filePath)};
+    uint64_t const accumShortestPaths{
+        calculateAccumulatedShortestPaths(galaxyMap, 1000000ULL)};
+    return std::to_string(accumShortestPaths);
 }
 
 // ---------- End of Public Methods ----------
