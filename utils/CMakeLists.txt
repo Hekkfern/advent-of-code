@@ -18,7 +18,8 @@ set(_SOURCES_UTILS
     include/utils/Time.hpp
     include/utils/Concepts.hpp
     include/utils/Math.hpp
-    include/utils/Algorithms.hpp)
+    include/utils/Algorithms.hpp
+    include/utils/Combinations.hpp)
 set(_SOURCES_UTILS_INTERVAL include/utils/interval/Interval.hpp
                             include/utils/interval/IntervalSet.hpp)
 set(_SOURCES_UTILS_GEOMETRY2D
