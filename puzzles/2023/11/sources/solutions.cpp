@@ -86,14 +86,14 @@ std::string solvePart1(std::filesystem::path const& filePath)
             const uint64_t numEmptyRows{static_cast<uint64_t>(ranges::count_if(
                 galaxyMap.emptyRows,
                 [&galaxy1, &galaxy2](const int32_t rowIndex) -> bool {
-                    return galaxy1.getY() < rowIndex
-                        && rowIndex < galaxy2.getY();
+                    return std::min(galaxy1.getY(), galaxy2.getY()) < rowIndex
+                        && rowIndex < std::max(galaxy1.getY(), galaxy2.getY());
                 }))};
             const uint64_t numEmptyCols{static_cast<uint64_t>(ranges::count_if(
                 galaxyMap.emptyColumns,
                 [&galaxy1, &galaxy2](const int32_t colIndex) -> bool {
-                    return galaxy1.getX() < colIndex
-                        && colIndex < galaxy2.getX();
+                    return std::min(galaxy1.getX(), galaxy2.getX()) < colIndex
+                        && colIndex < std::max(galaxy1.getX(), galaxy2.getX());
                 }))};
             accumShortestPaths += distance + numEmptyRows + numEmptyCols;
         });
