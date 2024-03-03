@@ -1,9 +1,8 @@
 #include "solutions.hpp"
 
 #include "GalaxyMap.hpp"
-#include <range/v3/algorithm/all_of.hpp>
+#include <fstream>
 #include <range/v3/view/enumerate.hpp>
-#include <utils/File.hpp>
 
 namespace aoc_2023_11 {
 
@@ -13,25 +12,47 @@ GalaxyMap parseInput(std::filesystem::path const& filePath)
 {
     GalaxyMap galaxyMap;
 
-    // parse file and check for empty rows
-    utils::file::parseAndIterateWithIndex(
-        filePath,
-        [&galaxyMap](
-            std::size_t const rowIndex, std::string_view const line) -> void {
-            std::size_t galaxyCount{0ULL};
-            for (auto const [colIndex, c] : line | ranges::views::enumerate) {
-                if (c == '#') {
-                    galaxyMap.mGalaxies.emplace_back(colIndex, rowIndex);
-                    ++galaxyCount;
-                }
+    std::ifstream fileStream{filePath};
+    if (!fileStream.is_open()) {
+        return {};
+    }
+
+    std::string line;
+    // get first line to know how many columns it has
+    std::getline(fileStream, line);
+    auto const numCols{line.length()};
+    std::vector<uint32_t> galaxiesPerColumn(numCols);
+    auto parseLine =
+        [&galaxyMap, &galaxiesPerColumn](
+            std::size_t const rowIndex, std::string_view const parsedLine)
+        -> void {
+        std::size_t galaxyCount{0ULL};
+        for (auto const [colIndex, c] : parsedLine | ranges::views::enumerate) {
+            if (c == '#') {
+                galaxyMap.mGalaxies.emplace_back(colIndex, rowIndex);
+                ++galaxiesPerColumn[colIndex];
+                ++galaxyCount;
             }
-            // check if the row was empty
-            if (galaxyCount == 0ULL) {
-                galaxyMap.mEmptyRows.emplace_back(rowIndex);
-            }
-        });
-    // check for empty columns
-    //TODO
+        }
+        // check if the row was empty
+        if (galaxyCount == 0ULL) {
+            galaxyMap.mEmptyRows.emplace_back(rowIndex);
+        }
+    };
+    parseLine(0ULL, line);
+    // analyze the other rows
+    std::size_t rowIndex{1ULL};
+    while (std::getline(fileStream, line)) {
+        parseLine(rowIndex, line);
+        ++rowIndex;
+    }
+    // check empty columns
+    for (auto const [colIndex, numGalaxies] :
+         galaxiesPerColumn | ranges::views::enumerate) {
+        if (numGalaxies == 0U) {
+            galaxyMap.mEmptyColumns.emplace_back(colIndex);
+        }
+    }
 
     return galaxyMap;
 }
@@ -42,7 +63,7 @@ GalaxyMap parseInput(std::filesystem::path const& filePath)
 
 std::string solvePart1(std::filesystem::path const& filePath)
 {
-    (void)filePath;
+    auto const galaxyMap{parseInput(filePath)};
     return "";
 }
 
