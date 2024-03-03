@@ -2,7 +2,11 @@
 #include <catch.hpp>
 #include <utils/Combinations.hpp>
 
-TEST_CASE("[Combinations] aaaaa method", "[utils][Combinations]")
-{
+using namespace utils::combinations;
 
+TEST_CASE(
+    "[Combinations] calculateNumberCombinations() method",
+    "[utils][Combinations]")
+{
+    CHECK(calculateNumberCombinations(9, 2) == 36);
 }

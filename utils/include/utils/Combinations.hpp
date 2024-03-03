@@ -5,17 +5,13 @@ namespace utils::combinations {
 /**
  * @brief Calculates how many different ways you can choose "K" items from all the items in the container without repetition and without order.
  *
- * @tparam T
- *
  * @param[in] container
  * @param[in] K
  *
  * @return
  */
-template <class T>
-uint64_t calculateNumberCombinations(std::vector<T>& container, std::size_t K)
+uint64_t calculateNumberCombinations(const std::size_t N, std::size_t K)
 {
-    size_t const N{container.size()};
     if (K > N) {
         return 0;
     }
@@ -33,10 +29,12 @@ uint64_t calculateNumberCombinations(std::vector<T>& container, std::size_t K)
     return result;
 }
 
+/*
 template <class T>
 void forEachCombination(std::vector<T>& container, std::function<>)
 {
 }
+ */
 
 /**
  * @brief Generates all the possible combinations from a set of collections and
