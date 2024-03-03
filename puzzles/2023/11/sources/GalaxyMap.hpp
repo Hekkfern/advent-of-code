@@ -9,9 +9,9 @@ class GalaxyMap {
 public:
     GalaxyMap() = default;
 
-    std::vector<utils::geometry2d::Point2D<int32_t>> mGalaxies{};
-    std::vector<int32_t> mEmptyRows{};
-    std::vector<int32_t> mEmptyColumns{};
+    std::vector<utils::geometry2d::Point2D<int32_t>> galaxies{};
+    std::vector<int32_t> emptyRows{};
+    std::vector<int32_t> emptyColumns{};
 };
 
 } // namespace aoc_2023_11
