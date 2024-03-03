@@ -8,7 +8,7 @@ namespace aoc_2023_12 {
 class Record {
 public:
     Record(
-        std::vector<Spring>&& springs, std::vector<int>&& contiguosGroupInfo);
+        std::vector<Spring>&& springs, std::vector<int>&& contiguousGroupInfo);
     /**
      * @brief
      *
@@ -18,7 +18,7 @@ public:
 
 private:
     std::vector<Spring>&& mSprings;
-    std::vector<int> mContiguousGroupInfo;
+    std::vector<int32_t> mContiguousGroupInfo;
 };
 
 } // namespace aoc_2023_12
