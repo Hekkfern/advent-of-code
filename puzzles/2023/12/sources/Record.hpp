@@ -1,23 +1,23 @@
 #pragma once
 
-#include "Spring.hpp"
+#include <string>
 #include <vector>
+#include <cstdint>
 
 namespace aoc_2023_12 {
 
 class Record {
 public:
-    Record(
-        std::vector<Spring>&& springs, std::vector<int>&& contiguousGroupInfo);
+    Record(std::string&& springs, std::vector<int>&& contiguousGroupInfo);
     /**
      * @brief
      *
      * @return Number of possible solutions.
      */
-    u_int64_t solve();
+    uint64_t solve();
 
 private:
-    std::vector<Spring>&& mSprings;
+    std::string mSprings;
     std::vector<int32_t> mContiguousGroupInfo;
 };
 

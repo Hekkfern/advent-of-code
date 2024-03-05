@@ -1,7 +1,6 @@
 #include "solutions.hpp"
 
 #include "Record.hpp"
-#include "Spring.hpp"
 #include <range/v3/range/conversion.hpp>
 #include <range/v3/view/transform.hpp>
 #include <utils/File.hpp>
@@ -17,20 +16,15 @@ Record parseInputLine(std::string_view const line)
     std::string springsStr;
     std::string contiguousInfoStr;
     ss >> springsStr >> contiguousInfoStr;
-    std::vector<Spring> springs{
-        springsStr | ranges::view::transform([](char const c) -> Spring {
-            return Spring(c);
-        })
-        | ranges::to<std::vector>};
     std::vector<std::string> contiguousInfoSplitStr{
         utils::string::split(contiguousInfoStr, ",")};
     std::vector<int32_t> contiguousInfo{
         contiguousInfoSplitStr
-        | ranges::view::transform([](std::string const& str) -> int32_t {
+        | ranges::views::transform([](std::string const& str) -> int32_t {
               return *utils::string::toNumber<int32_t>(str);
           })
         | ranges::to<std::vector>};
-    return Record{std::move(springs), std::move(contiguousInfo)};
+    return Record{std::move(springsStr), std::move(contiguousInfo)};
 }
 
 // ---------- End of Private Methods ----------

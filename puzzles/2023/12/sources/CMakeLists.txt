@@ -7,7 +7,6 @@ find_package(range-v3 CONFIG REQUIRED)
 # aoc_2023_12_solutions
 set(_LIB_NAME "aoc_2023_12_solutions")
 add_library(${_LIB_NAME} STATIC solutions.cpp solutions.hpp
-        Spring.hpp
         Record.cpp
         Record.hpp)
 setup_puzzle(${_LIB_NAME})
