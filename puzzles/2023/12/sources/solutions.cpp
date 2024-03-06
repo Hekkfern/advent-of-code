@@ -39,7 +39,7 @@ Record parseInputLine(std::string_view const line)
 std::vector<bool>
 expandContiguousGroupInfo(std::vector<int32_t> const& groupInfo)
 {
-    std::vector<bool> result{{true}};
+    std::vector<bool> result{false};
     ranges::for_each(groupInfo, [&result](int32_t const value) -> void {
         // TODO
     });
