@@ -19,7 +19,9 @@ set(_SOURCES_UTILS
     include/utils/Concepts.hpp
     include/utils/Math.hpp
     include/utils/Algorithms.hpp
-    include/utils/Combinations.hpp)
+    include/utils/Combinations.hpp
+    src/DynamicProgramming.cpp
+    include/utils/DynamicProgramming.hpp)
 set(_SOURCES_UTILS_INTERVAL include/utils/interval/Interval.hpp
                             include/utils/interval/IntervalSet.hpp)
 set(_SOURCES_UTILS_GEOMETRY2D
