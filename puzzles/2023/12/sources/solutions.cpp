@@ -1,6 +1,7 @@
 #include "solutions.hpp"
 
 #include "Record.hpp"
+#include <range/v3/algorithm/for_each.hpp>
 #include <range/v3/range/conversion.hpp>
 #include <range/v3/view/transform.hpp>
 #include <utils/File.hpp>
@@ -27,6 +28,36 @@ Record parseInputLine(std::string_view const line)
     return Record{std::move(springsStr), std::move(contiguousInfo)};
 }
 
+/**
+ * \brief
+ *
+ * \param groupInfo
+ *
+ * \return List. True being "1 damaged" and False being "a gap of operational"
+ * (1 or more operational).
+ */
+std::vector<bool>
+expandContiguousGroupInfo(std::vector<int32_t> const& groupInfo)
+{
+    std::vector<bool> result{{true}};
+    ranges::for_each(groupInfo, [&result](int32_t const value) -> void {
+        // TODO
+    });
+    return result;
+}
+
+/**
+ * \brief
+ *
+ * \param record
+ *
+ * \return
+ */
+uint64_t countArrangements(Record&& record)
+{
+    // TODO
+}
+
 // ---------- End of Private Methods ----------
 
 // ---------- Public Methods ----------
@@ -35,12 +66,12 @@ std::string solvePart1(std::filesystem::path const& filePath)
 {
     uint64_t accumNumSolutions{0ULL};
     utils::file::parseAndIterate(
-        filePath, [](std::string_view const line) -> void {
+        filePath, [&accumNumSolutions](std::string_view const line) -> void {
             /* parse line */
             Record record{parseInputLine(line)};
-            // TODO
+            accumNumSolutions += countArrangements(std::move(record));
         });
-    return "";
+    return std::to_string(accumNumSolutions);
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
