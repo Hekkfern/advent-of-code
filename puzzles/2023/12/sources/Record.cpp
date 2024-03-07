@@ -55,7 +55,7 @@ uint32_t Record::solve() const
     dp[n][m] = 1;
 
     for (int32_t i = n - 1; i >= 0; --i) {
-        for (int32_t j = m - 1; j >= 0; --j) {
+        for (int32_t j = m - 1; j >= std::max(m - (n - i), 0); --j) {
             bool damaged = false;
             bool operational = false;
             switch (springsStr[i]) {
