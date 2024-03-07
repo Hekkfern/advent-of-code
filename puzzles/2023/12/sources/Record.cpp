@@ -39,16 +39,14 @@ Record::Record(std::string&& springs, std::vector<int>&& contiguousGroupInfo)
 uint32_t Record::solve() const
 {
     // add extra operational springs in both sides
-    std::string springsStr{mSprings};
-    springsStr.insert(0, ".");
-    springsStr += '.';
+    std::string const extendedSprings{"." + mSprings + "."};
 
     // translate groupInfo
     auto const expandedGroupInfo{
         expandContiguousGroupInfo(mContiguousGroupInfo)};
 
     // solve
-    int32_t const n{static_cast<int32_t>(springsStr.size())};
+    int32_t const n{static_cast<int32_t>(extendedSprings.size())};
     int32_t const m{static_cast<int32_t>(expandedGroupInfo.size())};
     std::vector<std::vector<uint32_t>> dp(
         n + 1, std::vector<uint32_t>(m + 1, 0));
@@ -58,7 +56,7 @@ uint32_t Record::solve() const
         for (int32_t j = m - 1; j >= std::max(m - (n - i), 0); --j) {
             bool damaged = false;
             bool operational = false;
-            switch (springsStr[i]) {
+            switch (extendedSprings[i]) {
             case '#': {
                 damaged = true;
                 break;
