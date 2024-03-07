@@ -71,17 +71,17 @@ uint32_t Record::solve() const
                 break;
             }
             }
-            uint32_t sum{0};
+            uint32_t value{0};
             if (damaged
                 && expandedGroupInfo[j] == ExpandedSpringStatus::OneDamaged) {
-                sum += dp[i + 1][j + 1];
+                value = dp[i + 1][j + 1];
             } else if (
                 operational
                 && expandedGroupInfo[j]
                     == ExpandedSpringStatus::GroupOfOperational) {
-                sum += dp[i + 1][j + 1] + dp[i + 1][j];
+                value = dp[i + 1][j + 1] + dp[i + 1][j];
             }
-            dp[i][j] = sum;
+            dp[i][j] = value;
         }
     }
     return dp[0][0];
