@@ -1,8 +1,8 @@
 #pragma once
 
+#include <cstdint>
 #include <string>
 #include <vector>
-#include <cstdint>
 
 namespace aoc_2023_12 {
 
@@ -14,7 +14,7 @@ public:
      *
      * @return Number of possible solutions.
      */
-    uint64_t solve();
+    [[nodiscard]] uint64_t solve() const;
 
 private:
     std::string mSprings;
