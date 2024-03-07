@@ -10,8 +10,7 @@ enum class ExpandedSpringStatus { OneDamaged, GroupOfOperational };
  *
  * \param groupInfo
  *
- * \return List. True being "1 damaged" and False being "a gap of operational"
- * (1 or more operational).
+ * \return List. Both extremes are guaranteed to be @ref ExpandedSpringStatus::GroupOfOperational.
  */
 std::vector<ExpandedSpringStatus>
 expandContiguousGroupInfo(std::vector<int32_t> const& groupInfo)
@@ -43,7 +42,12 @@ uint64_t Record::solve() const
     springsStr.insert(0, ".");
     springsStr += '.';
 
-    // TODO
+    // translate groupInfo
+    auto const expandedGroupInfo{
+        expandContiguousGroupInfo(mContiguousGroupInfo)};
+
+    //TODO
+
 }
 
 } // namespace aoc_2023_12
