@@ -10,7 +10,8 @@ enum class ExpandedSpringStatus { OneDamaged, GroupOfOperational };
  *
  * \param groupInfo
  *
- * \return List. Both extremes are guaranteed to be @ref ExpandedSpringStatus::GroupOfOperational.
+ * \return List. Both extremes are guaranteed to be @ref
+ * ExpandedSpringStatus::GroupOfOperational.
  */
 std::vector<ExpandedSpringStatus>
 expandContiguousGroupInfo(std::vector<int32_t> const& groupInfo)
@@ -35,7 +36,7 @@ Record::Record(std::string&& springs, std::vector<int>&& contiguousGroupInfo)
 {
 }
 
-uint64_t Record::solve() const
+uint32_t Record::solve() const
 {
     // add extra operational springs in both sides
     std::string springsStr{mSprings};
@@ -46,8 +47,46 @@ uint64_t Record::solve() const
     auto const expandedGroupInfo{
         expandContiguousGroupInfo(mContiguousGroupInfo)};
 
-    //TODO
+    // solve
+    int32_t const n{static_cast<int32_t>(springsStr.size())};
+    int32_t const m{static_cast<int32_t>(expandedGroupInfo.size())};
+    std::vector<std::vector<uint32_t>> dp(
+        n + 1, std::vector<uint32_t>(m + 1, 0));
+    dp[n][m] = 1;
 
+    for (int32_t i = n - 1; i >= 0; --i) {
+        for (int32_t j = m - 1; j >= 0; --j) {
+            bool damaged = false;
+            bool operational = false;
+            switch (springsStr[i]) {
+            case '#': {
+                damaged = true;
+                break;
+            }
+            case '.': {
+                operational = true;
+                break;
+            }
+            default: {
+                operational = true;
+                damaged = true;
+                break;
+            }
+            }
+            uint32_t sum{0};
+            if (damaged
+                && expandedGroupInfo[j] == ExpandedSpringStatus::OneDamaged) {
+                sum += dp[i + 1][j + 1];
+            } else if (
+                operational
+                && expandedGroupInfo[j]
+                    == ExpandedSpringStatus::GroupOfOperational) {
+                sum += dp[i + 1][j + 1] + dp[i + 1][j];
+            }
+            dp[i][j] = sum;
+        }
+    }
+    return dp[0][0];
 }
 
 } // namespace aoc_2023_12

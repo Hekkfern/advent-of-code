@@ -14,7 +14,7 @@ public:
      *
      * @return Number of possible solutions.
      */
-    [[nodiscard]] uint64_t solve() const;
+    [[nodiscard]] uint32_t solve() const;
 
 private:
     std::string mSprings;
