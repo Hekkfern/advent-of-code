@@ -54,29 +54,12 @@ uint32_t Record::solve() const
 
     for (int32_t i = n - 1; i >= 0; --i) {
         for (int32_t j = m - 1; j >= std::max(m - (n - i), 0); --j) {
-            bool damaged = false;
-            bool operational = false;
-            switch (extendedSprings[i]) {
-            case '#': {
-                damaged = true;
-                break;
-            }
-            case '.': {
-                operational = true;
-                break;
-            }
-            default: {
-                operational = true;
-                damaged = true;
-                break;
-            }
-            }
             uint32_t value{0};
-            if (damaged
+            if (extendedSprings[i] != '.'
                 && expandedGroupInfo[j] == ExpandedSpringStatus::OneDamaged) {
                 value = dp[i + 1][j + 1];
             } else if (
-                operational
+                extendedSprings[i] != '#'
                 && expandedGroupInfo[j]
                     == ExpandedSpringStatus::GroupOfOperational) {
                 value = dp[i + 1][j + 1] + dp[i + 1][j];
