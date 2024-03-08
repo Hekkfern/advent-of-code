@@ -38,7 +38,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
         filePath, [&accumNumSolutions](std::string_view const line) -> void {
             /* parse line */
             Record record{parseInputLine(line)};
-            accumNumSolutions += record.solve();
+            accumNumSolutions += record.solveOriginal();
         });
     return std::to_string(accumNumSolutions);
 }

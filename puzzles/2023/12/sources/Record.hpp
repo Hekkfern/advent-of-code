@@ -14,7 +14,12 @@ public:
      *
      * @return Number of possible solutions.
      */
-    [[nodiscard]] uint32_t solve() const;
+    [[nodiscard]] uint32_t solveOriginal() const;
+    /**
+     * \brief 
+     * \return 
+     */
+    [[nodiscard]] uint32_t solveUnfolded() const;
 
 private:
     std::string mSprings;

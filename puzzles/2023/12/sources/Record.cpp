@@ -36,7 +36,7 @@ Record::Record(std::string&& springs, std::vector<int>&& contiguousGroupInfo)
 {
 }
 
-uint32_t Record::solve() const
+uint32_t Record::solveOriginal() const
 {
     // add extra operational springs in both sides
     std::string const extendedSprings{"." + mSprings + "."};
@@ -68,6 +68,29 @@ uint32_t Record::solve() const
         }
     }
     return dp[0][0];
+}
+
+uint32_t Record::solveUnfolded() const
+{
+    // create 4 more copies and add extra operational springs in both sides
+    std::string extendedSprings = ".";
+    for (int i = 0; i < 5; ++i) {
+        extendedSprings += mSprings + (i < 4 ? "?" : ".");
+    }
+
+    // translate groupInfo and create 4 more copies
+    auto const expandedGroupInfo{
+        expandContiguousGroupInfo(mContiguousGroupInfo)};
+    auto extendedGroupInfo{expandedGroupInfo};
+    for (int i = 0; i < 5; ++i) {
+        extendedGroupInfo.insert(
+            std::end(extendedGroupInfo),
+            std::begin(expandedGroupInfo),
+            std::end(expandedGroupInfo));
+    }
+
+    // solve
+    // TODO
 }
 
 } // namespace aoc_2023_12
