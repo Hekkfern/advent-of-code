@@ -5,6 +5,8 @@
 
 namespace utils::cache {
 
+// https://leetcode.com/problems/lru-cache/solutions/3171305/solution/
+
 template <typename Key, typename Value, std::size_t N>
 class LRUCache {
 public:
