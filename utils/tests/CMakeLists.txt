@@ -10,6 +10,8 @@ set(_EXEC_NAME "aoc_utils_tests")
 set(_TESTFILES StringTests.cpp MathTests.cpp FileTests.cpp
                DynamicProgrammingTests.cpp
                CombinationsTests.cpp)
+set(_TESTFILES_CACHE cache/LRUCacheTests.cpp
+    cache/MemoizationTests.cpp)
 set(_TESTFILES_INTERVAL interval/IntervalTests.cpp
                         interval/IntervalSetTests.cpp)
 set(_TESTFILES_GEOMETRY2D
@@ -28,7 +30,7 @@ set(_TESTFILES_GEOMETRY3D
 set(_TESTFILES_GRAPH graph/GraphTests.cpp graph/VertexTests.cpp
                      graph/AlgorithmsTests.cpp)
 add_executable(
-  ${_EXEC_NAME} ${_TESTFILES} ${_TESTFILES_INTERVAL} ${_TESTFILES_GEOMETRY2D}
+  ${_EXEC_NAME} ${_TESTFILES} ${_TESTFILES_INTERVAL} ${_TESTFILES_CACHE} ${_TESTFILES_GEOMETRY2D}
                 ${_TESTFILES_GEOMETRY3D} ${_TESTFILES_GRAPH})
 set_cpp_standard(${_EXEC_NAME})
 set_compiler_flags(${_EXEC_NAME})
@@ -40,6 +42,7 @@ target_link_libraries(${_EXEC_NAME} PRIVATE aoc_utils)
 target_link_libraries(${_EXEC_NAME} PRIVATE Catch2::Catch2WithMain)
 
 source_group("Source Files" FILES ${_TESTFILES})
+source_group("Source Files/cache" FILES ${_TESTFILES_CACHE})
 source_group("Source Files/interval" FILES ${_TESTFILES_INTERVAL})
 source_group("Source Files/geometry2d" FILES ${_TESTFILES_GEOMETRY2D})
 source_group("Source Files/geometry3d" FILES ${_TESTFILES_GEOMETRY3D})
