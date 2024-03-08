@@ -1,53 +1,34 @@
 #pragma once
 
-#include <list>
+#include <optional>
 #include <unordered_map>
 
 namespace utils::cache {
 
-template <typename Key, typename Value>
+template <typename Key, typename Value, std::size_t N>
 class LRUCache {
 public:
-    LRUCache(std::size_t const capacity)
-        : mCapacity(capacity)
+    LRUCache() = default;
+
+    [[nodiscard]] std::optional<Value> get(Key const& key) const
     {
+        // TODO
     }
 
-    int get(int key)
+    void put(Key const&, Value const& value)
     {
-        if (cacheMap.find(key) == cacheMap.end()) {
-            return -1;
-        }
-
-        // Move the accessed element to the front of the list
-        cacheList.splice(cacheList.begin(), cacheList, cacheMap[key]);
-
-        return cacheMap[key]->second;
+        // TODO
     }
 
-    void put(int key, int value)
+    void erase(Key const& key)
     {
-        if (cacheMap.find(key) != cacheMap.end()) {
-            // Update the value and move the element to the front
-            cacheMap[key]->second = value;
-            cacheList.splice(cacheList.begin(), cacheList, cacheMap[key]);
-        } else {
-            // Insert the new element
-            if (cacheList.size() == mCapacity) {
-                int lastKey = cacheList.back().first;
-                cacheMap.erase(lastKey);
-                cacheList.pop_back();
-            }
-
-            cacheList.emplace_front(key, value);
-            cacheMap[key] = cacheList.begin();
-        }
+        // TODO
     }
+
+    [[nodiscard]] static std::size_t size() { return N; }
 
 private:
-    std::size_t mCapacity;
-    std::unordered_map<int, std::list<std::pair<int, int>>::iterator> cacheMap;
-    std::list<std::pair<int, int>> cacheList;
+    std::unordered_map<Key, Value> mNodes;
 };
 
 } // namespace utils::cache
