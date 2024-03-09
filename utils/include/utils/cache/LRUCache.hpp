@@ -28,7 +28,7 @@ public:
      *
      * @return
      */
-    [[nodiscard]] std::optional<Value> get(Key const& key) const
+    [[nodiscard]] std::optional<Value> get(Key const& key)
     {
         auto const it = mCacheItemsMap.find(key);
         if (it == mCacheItemsMap.cend()) {
@@ -59,7 +59,7 @@ public:
         mCacheItemsMap[key] = mCacheItemsList.begin();
 
         if (mCacheItemsMap.size() > mMaxSize) {
-            mCacheItemsMap.erase(mCacheItemsList.back()->first);
+            mCacheItemsMap.erase(*(mCacheItemsList.back())->first);
             mCacheItemsList.pop_back();
         }
     }

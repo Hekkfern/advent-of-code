@@ -15,6 +15,14 @@ struct std::hash<CustomStruct> {
     }
 };
 
+struct CustomStruct2 {
+    int b;
+    bool operator==(CustomStruct2 const& other) const noexcept
+    {
+        return b == other.b;
+    }
+};
+
 TEST_CASE("[LRUCache] Constructor", "[utils][LRUCache]")
 {
     SECTION("Numbers")
@@ -29,10 +37,33 @@ TEST_CASE("[LRUCache] Constructor", "[utils][LRUCache]")
     }
     SECTION("Custom struct")
     {
-        struct CustomStruct2 {
-            int b;
-        };
         LRUCache<CustomStruct, CustomStruct2> cache{10};
         CHECK(cache.maxSize() == 10);
+    }
+}
+
+TEST_CASE("[LRUCache] get() / put() methods", "[utils][LRUCache]")
+{
+    SECTION("Numbers")
+    {
+        LRUCache<int, int> cache{10};
+        CHECK_FALSE(cache.get(6));
+        cache.put(6, 1000);
+        CHECK(cache.get(6) == 1000);
+    }
+    SECTION("Strings")
+    {
+        LRUCache<std::string, std::string> cache{10};
+        CHECK_FALSE(cache.get("aa"));
+        cache.put("aa", "bbb");
+        CHECK(cache.get("aa") == "bbb");
+    }
+    SECTION("Custom struct")
+    {
+        LRUCache<CustomStruct, CustomStruct2> cache{10};
+        CustomStruct s1{2};
+        CHECK_FALSE(cache.get(s1));
+        cache.put(s1, CustomStruct2{1000});
+        CHECK(cache.get(s1) == CustomStruct2{1000});
     }
 }
