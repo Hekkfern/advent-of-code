@@ -3,12 +3,14 @@
 #include <list>
 #include <optional>
 #include <unordered_map>
+#include <utils/Concepts.hpp>
 
 namespace utils::cache {
 
 // https://github.com/lamerman/cpp-lru-cache/blob/master/include/lrucache.hpp
 
 template <typename Key, typename Value>
+    requires std::equality_comparable<Key> && Hashable<Key>
 class LRUCache {
 public:
     explicit LRUCache(std::size_t const maxSize) noexcept
@@ -59,7 +61,9 @@ public:
         mCacheItemsMap[key] = mCacheItemsList.begin();
 
         if (mCacheItemsMap.size() > mMaxSize) {
-            mCacheItemsMap.erase(*(mCacheItemsList.back())->first);
+            auto last = mCacheItemsList.end();
+            --last;
+            mCacheItemsMap.erase(last->first);
             mCacheItemsList.pop_back();
         }
     }

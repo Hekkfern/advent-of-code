@@ -6,6 +6,10 @@ using namespace utils::cache;
 
 struct CustomStruct {
     int a;
+    bool operator==(CustomStruct const& other) const noexcept
+    {
+        return a == other.a;
+    }
 };
 template <>
 struct std::hash<CustomStruct> {
