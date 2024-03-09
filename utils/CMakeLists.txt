@@ -24,9 +24,8 @@ set(_SOURCES_UTILS
     include/utils/DynamicProgramming.hpp)
 set(_SOURCES_UTILS_INTERVAL include/utils/interval/Interval.hpp
                             include/utils/interval/IntervalSet.hpp)
-set(_SOURCES_UTILS_CACHE
-                            include/utils/cache/Memoization.hpp
-                            include/utils/cache/LRUCache.hpp)
+set(_SOURCES_UTILS_CACHE include/utils/cache/Memoization.hpp
+                         include/utils/cache/LRUCache.hpp)
 set(_SOURCES_UTILS_GEOMETRY2D
     include/utils/geometry2d/Direction2D.hpp
     include/utils/geometry2d/Point2D.hpp
@@ -46,8 +45,9 @@ set(_SOURCES_UTILS_GRAPH
     include/utils/graph/Algorithms.hpp)
 add_library(
   ${_LIB_NAME} STATIC
-  ${_SOURCES_UTILS} ${_SOURCES_UTILS_INTERVAL} ${_SOURCES_UTILS_CACHE} ${_SOURCES_UTILS_GEOMETRY2D}
-  ${_SOURCES_UTILS_GEOMETRY3D} ${_SOURCES_UTILS_GRAPH})
+  ${_SOURCES_UTILS} ${_SOURCES_UTILS_INTERVAL} ${_SOURCES_UTILS_CACHE}
+  ${_SOURCES_UTILS_GEOMETRY2D} ${_SOURCES_UTILS_GEOMETRY3D}
+  ${_SOURCES_UTILS_GRAPH})
 set_cpp_standard(${_LIB_NAME})
 set_compiler_flags(${_LIB_NAME})
 set_vectorization_flags(${_LIB_NAME})

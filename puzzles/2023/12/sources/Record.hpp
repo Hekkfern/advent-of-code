@@ -16,8 +16,8 @@ public:
      */
     [[nodiscard]] uint32_t solveOriginal() const;
     /**
-     * \brief 
-     * \return 
+     * \brief
+     * \return
      */
     [[nodiscard]] uint32_t solveUnfolded() const;
 

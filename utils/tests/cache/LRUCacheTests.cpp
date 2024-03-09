@@ -4,6 +4,17 @@
 
 using namespace utils::cache;
 
+struct CustomStruct {
+    int a;
+};
+template <>
+struct std::hash<CustomStruct> {
+    inline std::size_t operator()(CustomStruct const& x) const
+    {
+        return std::hash<int>()(x.a);
+    }
+};
+
 TEST_CASE("[LRUCache] Constructor", "[utils][LRUCache]")
 {
     SECTION("Numbers")
@@ -18,13 +29,10 @@ TEST_CASE("[LRUCache] Constructor", "[utils][LRUCache]")
     }
     SECTION("Custom struct")
     {
-        struct CustomStruct1 {
-            int a;
-        };
         struct CustomStruct2 {
             int b;
         };
-        LRUCache<CustomStruct1, CustomStruct2> cache{10};
+        LRUCache<CustomStruct, CustomStruct2> cache{10};
         CHECK(cache.maxSize() == 10);
     }
 }

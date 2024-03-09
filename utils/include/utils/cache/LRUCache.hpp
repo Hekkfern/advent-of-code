@@ -90,7 +90,7 @@ private:
     using ListIterator = std::list<KeyValuePair>::iterator;
 
     std::list<KeyValuePair> mCacheItemsList{};
-    std::unordered_map<Key, ListIterator, std::hash<Key>> mCacheItemsMap{};
+    std::unordered_map<Key, ListIterator> mCacheItemsMap{};
     std::size_t mMaxSize;
 };
 

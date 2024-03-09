@@ -8,10 +8,8 @@ find_package(Catch2 3 CONFIG REQUIRED)
 # aoc_utils_tests
 set(_EXEC_NAME "aoc_utils_tests")
 set(_TESTFILES StringTests.cpp MathTests.cpp FileTests.cpp
-               DynamicProgrammingTests.cpp
-               CombinationsTests.cpp)
-set(_TESTFILES_CACHE cache/LRUCacheTests.cpp
-    cache/MemoizationTests.cpp)
+               DynamicProgrammingTests.cpp CombinationsTests.cpp)
+set(_TESTFILES_CACHE cache/LRUCacheTests.cpp cache/MemoizationTests.cpp)
 set(_TESTFILES_INTERVAL interval/IntervalTests.cpp
                         interval/IntervalSetTests.cpp)
 set(_TESTFILES_GEOMETRY2D
@@ -30,8 +28,9 @@ set(_TESTFILES_GEOMETRY3D
 set(_TESTFILES_GRAPH graph/GraphTests.cpp graph/VertexTests.cpp
                      graph/AlgorithmsTests.cpp)
 add_executable(
-  ${_EXEC_NAME} ${_TESTFILES} ${_TESTFILES_INTERVAL} ${_TESTFILES_CACHE} ${_TESTFILES_GEOMETRY2D}
-                ${_TESTFILES_GEOMETRY3D} ${_TESTFILES_GRAPH})
+  ${_EXEC_NAME}
+  ${_TESTFILES} ${_TESTFILES_INTERVAL} ${_TESTFILES_CACHE}
+  ${_TESTFILES_GEOMETRY2D} ${_TESTFILES_GEOMETRY3D} ${_TESTFILES_GRAPH})
 set_cpp_standard(${_EXEC_NAME})
 set_compiler_flags(${_EXEC_NAME})
 set_vectorization_flags(${_EXEC_NAME})
