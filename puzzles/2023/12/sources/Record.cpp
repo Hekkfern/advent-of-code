@@ -1,6 +1,7 @@
 #include "Record.hpp"
 
 #include <range/v3/algorithm/for_each.hpp>
+#include <utils/Algorithms.hpp>
 
 namespace {
 enum class ExpandedSpringStatus { OneDamaged, GroupOfOperational };
@@ -88,6 +89,8 @@ uint32_t Record::solveUnfolded() const
             std::begin(expandedGroupInfo),
             std::end(expandedGroupInfo));
     }
+    extendedGroupInfo = utils::algorithms::removeConsecutiveDuplicates(
+        expandedGroupInfo);
 
     // solve
     int64_t const n{std::ssize(extendedSprings)};
