@@ -74,4 +74,10 @@ clamped_count_if(
         std::move(proj));
 }
 
+template <typename T>
+std::vector<T> removeConsecutiveDuplicates(const std::vector<T>& container ){
+    //TODO
+    aaaa
+}
+
 } // namespace utils::algorithms
