@@ -90,8 +90,28 @@ uint32_t Record::solveUnfolded() const
     }
 
     // solve
-    // TODO
-    return 0;
+    int64_t const n{std::ssize(extendedSprings)};
+    int64_t const m{std::ssize(extendedGroupInfo)};
+    std::vector<std::vector<uint32_t>> dp(
+        n + 1, std::vector<uint32_t>(m + 1, 0));
+    dp[n][m] = 1;
+
+    for (int64_t i = n - 1; i >= 0; --i) {
+        for (int64_t j = m - 1; j >= std::max<int64_t>(m - (n - i), 0); --j) {
+            uint32_t value{0};
+            if (extendedSprings[i] != '.'
+                && expandedGroupInfo[j] == ExpandedSpringStatus::OneDamaged) {
+                value = dp[i + 1][j + 1];
+            } else if (
+                extendedSprings[i] != '#'
+                && expandedGroupInfo[j]
+                    == ExpandedSpringStatus::GroupOfOperational) {
+                value = dp[i + 1][j + 1] + dp[i + 1][j];
+            }
+            dp[i][j] = value;
+        }
+    }
+    return dp[0][0];
 }
 
 } // namespace aoc_2023_12

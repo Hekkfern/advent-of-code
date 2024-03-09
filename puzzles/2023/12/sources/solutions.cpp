@@ -36,7 +36,6 @@ std::string solvePart1(std::filesystem::path const& filePath)
     uint64_t accumNumSolutions{0ULL};
     utils::file::parseAndIterate(
         filePath, [&accumNumSolutions](std::string_view const line) -> void {
-            /* parse line */
             Record record{parseInputLine(line)};
             accumNumSolutions += record.solveOriginal();
         });
@@ -45,8 +44,13 @@ std::string solvePart1(std::filesystem::path const& filePath)
 
 std::string solvePart2(std::filesystem::path const& filePath)
 {
-    (void)filePath;
-    return "";
+    uint64_t accumNumSolutions{0ULL};
+    utils::file::parseAndIterate(
+        filePath, [&accumNumSolutions](std::string_view const line) -> void {
+            Record record{parseInputLine(line)};
+            accumNumSolutions += record.solveUnfolded();
+        });
+    return std::to_string(accumNumSolutions);
 }
 
 // ---------- End of Public Methods ----------
