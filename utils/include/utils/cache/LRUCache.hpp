@@ -74,7 +74,7 @@ public:
     {
         auto it = mCacheItemsMap.find(key);
         if (it != mCacheItemsMap.end()) {
-            mCacheItemsList.erase(*it);
+            mCacheItemsList.erase(it->second);
             mCacheItemsMap.erase(it);
         }
     }

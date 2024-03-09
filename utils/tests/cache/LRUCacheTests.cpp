@@ -51,23 +51,119 @@ TEST_CASE("[LRUCache] get() / put() methods", "[utils][LRUCache]")
     SECTION("Numbers")
     {
         LRUCache<int, int> cache{10};
+        CHECK(cache.size() == 0ULL);
         CHECK_FALSE(cache.get(6));
         cache.put(6, 1000);
         CHECK(cache.get(6) == 1000);
+        CHECK(cache.size() == 1ULL);
     }
     SECTION("Strings")
     {
         LRUCache<std::string, std::string> cache{10};
+        CHECK(cache.size() == 0ULL);
         CHECK_FALSE(cache.get("aa"));
         cache.put("aa", "bbb");
         CHECK(cache.get("aa") == "bbb");
+        CHECK(cache.size() == 1ULL);
     }
     SECTION("Custom struct")
     {
         LRUCache<CustomStruct, CustomStruct2> cache{10};
         CustomStruct s1{2};
+        CHECK(cache.size() == 0ULL);
         CHECK_FALSE(cache.get(s1));
         cache.put(s1, CustomStruct2{1000});
         CHECK(cache.get(s1) == CustomStruct2{1000});
+        CHECK(cache.size() == 1ULL);
+    }
+}
+
+TEST_CASE("[LRUCache] exists() methods", "[utils][LRUCache]")
+{
+    SECTION("Numbers")
+    {
+        LRUCache<int, int> cache{10};
+        CHECK_FALSE(cache.exists(6));
+        cache.put(6, 1000);
+        CHECK(cache.exists(6));
+    }
+    SECTION("Strings")
+    {
+        LRUCache<std::string, std::string> cache{10};
+        CHECK_FALSE(cache.exists("aa"));
+        cache.put("aa", "bbb");
+        CHECK(cache.exists("aa"));
+    }
+    SECTION("Custom struct")
+    {
+        LRUCache<CustomStruct, CustomStruct2> cache{10};
+        CustomStruct s1{2};
+        CHECK_FALSE(cache.exists(s1));
+        cache.put(s1, CustomStruct2{1000});
+        CHECK(cache.exists(s1));
+    }
+}
+
+TEST_CASE("[LRUCache] erase() methods", "[utils][LRUCache]")
+{
+    SECTION("Numbers")
+    {
+        LRUCache<int, int> cache{10};
+        CHECK(cache.size() == 0ULL);
+        cache.put(6, 1000);
+        CHECK(cache.size() == 1ULL);
+        cache.erase(6);
+        CHECK(cache.size() == 0ULL);
+    }
+    SECTION("Strings")
+    {
+        LRUCache<std::string, std::string> cache{10};
+        CHECK(cache.size() == 0ULL);
+        cache.put("aa", "bbb");
+        CHECK(cache.size() == 1ULL);
+        cache.erase("aa");
+        CHECK(cache.size() == 0ULL);
+    }
+    SECTION("Custom struct")
+    {
+        LRUCache<CustomStruct, CustomStruct2> cache{10};
+        CustomStruct s1{2};
+        CHECK(cache.size() == 0ULL);
+        cache.put(s1, CustomStruct2{1000});
+        CHECK(cache.size() == 1ULL);
+        cache.erase(s1);
+        CHECK(cache.size() == 0ULL);
+    }
+}
+
+TEST_CASE("[LRUCache] clear() methods", "[utils][LRUCache]")
+{
+    SECTION("Numbers")
+    {
+        LRUCache<int, int> cache{10};
+        CHECK(cache.size() == 0ULL);
+        cache.put(6, 1000);
+        CHECK(cache.size() == 1ULL);
+        cache.clear();
+        CHECK(cache.size() == 0ULL);
+    }
+    SECTION("Strings")
+    {
+        LRUCache<std::string, std::string> cache{10};
+        CHECK(cache.size() == 0ULL);
+        cache.put("aa", "bbb");
+        CHECK(cache.size() == 1ULL);
+        cache.clear();
+        CHECK(cache.size() == 0ULL);
+    }
+    SECTION("Custom struct")
+    {
+        LRUCache<CustomStruct, CustomStruct2> cache{10};
+        CustomStruct s1{2};
+        CHECK(cache.size() == 0ULL);
+        cache.put(s1, CustomStruct2{1000});
+        CHECK(cache.size() == 1ULL);
+        cache.clear();
+        CHECK(cache.size() == 0ULL);
     }
 }
