@@ -3,6 +3,7 @@
 #include "Record.hpp"
 #include <range/v3/range/conversion.hpp>
 #include <range/v3/view/transform.hpp>
+#include <sstream>
 #include <utils/File.hpp>
 #include <utils/String.hpp>
 
