@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
+#include "utils/algorithms/ClampedCountIf.hpp"
 #include <catch.hpp>
-#include <utils/Algorithms.hpp>
 
 TEST_CASE("[Algorithms] count_if_until method", "[utils][Algorithms]")
 {

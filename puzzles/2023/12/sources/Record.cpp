@@ -3,7 +3,6 @@
 #include <range/v3/algorithm/for_each.hpp>
 #include <range/v3/range/conversion.hpp>
 #include <range/v3/view/unique.hpp>
-#include <utils/Algorithms.hpp>
 
 namespace {
 enum class ExpandedSpringStatus { OneDamaged, GroupOfOperational };

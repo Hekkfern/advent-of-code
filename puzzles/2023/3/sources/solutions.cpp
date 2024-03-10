@@ -5,7 +5,6 @@
 #include <range/v3/algorithm/fold_left.hpp>
 #include <range/v3/range/conversion.hpp>
 #include <range/v3/view/filter.hpp>
-#include <utils/Algorithms.hpp>
 #include <utils/File.hpp>
 #include <utils/String.hpp>
 #include <utils/geometry2d/Vector2D.hpp>
