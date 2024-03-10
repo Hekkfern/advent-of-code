@@ -1,10 +1,18 @@
 #include "Record.hpp"
 
 #include <range/v3/algorithm/for_each.hpp>
+#include <range/v3/range/conversion.hpp>
+#include <range/v3/view/unique.hpp>
 #include <utils/Algorithms.hpp>
 
 namespace {
 enum class ExpandedSpringStatus { OneDamaged, GroupOfOperational };
+
+template <typename T>
+std::vector<T> removeConsecutiveDuplicates(std::vector<T> const& container)
+{
+    return container | ranges::views::unique | ranges::to<std::vector>;
+}
 
 /**
  * \brief
@@ -47,14 +55,14 @@ uint32_t Record::solveOriginal() const
         expandContiguousGroupInfo(mContiguousGroupInfo)};
 
     // solve
-    int64_t const n{std::ssize(extendedSprings)};
-    int64_t const m{std::ssize(expandedGroupInfo)};
+    int32_t const n{static_cast<int32_t>(extendedSprings.size())};
+    int32_t const m{static_cast<int32_t>(expandedGroupInfo.size())};
     std::vector<std::vector<uint32_t>> dp(
         n + 1, std::vector<uint32_t>(m + 1, 0));
     dp[n][m] = 1;
 
-    for (int64_t i = n - 1; i >= 0; --i) {
-        for (int64_t j = m - 1; j >= std::max<int64_t>(m - (n - i), 0); --j) {
+    for (int32_t i = n - 1; i >= 0; --i) {
+        for (int32_t j = m - 1; j >= std::max(m - (n - i), 0); --j) {
             uint32_t value{0};
             if (extendedSprings[i] != '.'
                 && expandedGroupInfo[j] == ExpandedSpringStatus::OneDamaged) {
@@ -89,8 +97,7 @@ uint32_t Record::solveUnfolded() const
             std::begin(expandedGroupInfo),
             std::end(expandedGroupInfo));
     }
-    extendedGroupInfo = utils::algorithms::removeConsecutiveDuplicates(
-        expandedGroupInfo);
+    extendedGroupInfo = removeConsecutiveDuplicates(expandedGroupInfo);
 
     // solve
     int64_t const n{std::ssize(extendedSprings)};

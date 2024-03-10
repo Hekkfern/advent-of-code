@@ -167,3 +167,16 @@ TEST_CASE("[LRUCache] clear() methods", "[utils][LRUCache]")
         CHECK(cache.size() == 0ULL);
     }
 }
+
+TEST_CASE("[LRUCache] Overflow deletes oldest data", "[utils][LRUCache]")
+{
+    LRUCache<int, int> cache{2};
+    cache.put(1, 100);
+    cache.put(2, 200);
+    CHECK(cache.get(1) == 100);
+    CHECK(cache.get(2) == 200);
+    cache.put(3, 300);
+    CHECK_FALSE(cache.get(1));
+    CHECK(cache.get(2) == 200);
+    CHECK(cache.get(3) == 300);
+}
