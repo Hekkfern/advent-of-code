@@ -35,7 +35,7 @@ uint64_t Map::navigateFromAAAToZZZ() const noexcept
     NodeId currentNode{InitialNodeId};
 
     while (currentNode != FinalNodeId) {
-        const Instruction instruction{yieldInstruction(instructionIndex)};
+        Instruction const instruction{yieldInstruction(instructionIndex)};
         currentNode = mNetworkNodes.at(currentNode).navigate(instruction);
         ++stepCounter;
     }
@@ -63,7 +63,7 @@ uint64_t Map::navigateFromAllXXAToAllXXZ() const noexcept
         uint64_t stepCounter{0ULL};
         NodeId currentNode{initialNodeId};
         while (!isFinalNode(currentNode)) {
-            const Instruction instruction{yieldInstruction(instructionIndex)};
+            Instruction const instruction{yieldInstruction(instructionIndex)};
             currentNode = mNetworkNodes.at(currentNode).navigate(instruction);
             ++stepCounter;
         }

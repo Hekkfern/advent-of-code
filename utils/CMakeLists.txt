@@ -21,7 +21,8 @@ set(_SOURCES_UTILS
     include/utils/Combinations.hpp
     src/DynamicProgramming.cpp
     include/utils/DynamicProgramming.hpp)
-set(_SOURCES_UTILS_ALGORITHMS include/utils/algorithms/ClampedCountIf.hpp)
+set(_SOURCES_UTILS_ALGORITHMS include/utils/algorithms/ClampedCountIf.hpp
+                              include/utils/algorithms/SteppedIota.hpp)
 set(_SOURCES_UTILS_INTERVAL include/utils/interval/Interval.hpp
                             include/utils/interval/IntervalSet.hpp)
 set(_SOURCES_UTILS_CACHE include/utils/cache/Memoization.hpp

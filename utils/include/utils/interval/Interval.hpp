@@ -63,7 +63,8 @@ public:
      * @return     The result of the three-way comparison.
      */
     [[nodiscard]] constexpr auto
-    operator<=>(Interval const& other) const noexcept = default;
+    operator<=>(Interval const& other) const noexcept
+        = default;
     /**
      * @brief      Retrieves the length/size of the interval, i.e. the number of
      *             different values between the minimum and maximum values (both
@@ -470,8 +471,7 @@ namespace std {
 /* Support for structured binding */
 template <class T>
 struct tuple_size<utils::interval::Interval<T>>
-    : std::integral_constant<std::size_t, 2> {
-};
+    : std::integral_constant<std::size_t, 2> { };
 /* Support for structured binding */
 template <class T>
 struct tuple_element<0, utils::interval::Interval<T>> {

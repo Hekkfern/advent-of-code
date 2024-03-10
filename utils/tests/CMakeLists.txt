@@ -9,7 +9,8 @@ find_package(Catch2 3 CONFIG REQUIRED)
 set(_EXEC_NAME "aoc_utils_tests")
 set(_TESTFILES StringTests.cpp MathTests.cpp FileTests.cpp
                DynamicProgrammingTests.cpp CombinationsTests.cpp)
-set(_TESTFILES_ALGORITHMS algorithms/ClampedCountIfTests.cpp)
+set(_TESTFILES_ALGORITHMS algorithms/ClampedCountIfTests.cpp
+                          algorithms/SteppedIotaTests.cpp)
 set(_TESTFILES_CACHE cache/LRUCacheTests.cpp cache/MemoizationTests.cpp)
 set(_TESTFILES_INTERVAL interval/IntervalTests.cpp
                         interval/IntervalSetTests.cpp)

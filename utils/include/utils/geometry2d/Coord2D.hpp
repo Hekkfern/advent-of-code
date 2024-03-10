@@ -108,8 +108,7 @@ namespace std {
 /* Support for structured binding */
 template <class T>
 struct tuple_size<utils::geometry2d::Coord2D<T>>
-    : std::integral_constant<std::size_t, 2> {
-};
+    : std::integral_constant<std::size_t, 2> { };
 /* Support for structured binding */
 template <class T>
 struct tuple_element<0, utils::geometry2d::Coord2D<T>> {
