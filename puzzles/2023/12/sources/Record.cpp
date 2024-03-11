@@ -7,12 +7,6 @@
 namespace {
 enum class ExpandedSpringStatus { OneDamaged, GroupOfOperational };
 
-template <typename T>
-std::vector<T> removeConsecutiveDuplicates(std::vector<T> const& container)
-{
-    return container | ranges::views::unique | ranges::to<std::vector>;
-}
-
 /**
  * \brief
  *
