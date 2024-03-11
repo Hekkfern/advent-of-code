@@ -24,7 +24,6 @@ macro(set_compiler_flags target_name)
             -Winconsistent-missing-destructor-override
             -Wformat-nonliteral
             -Wimplicit-int-conversion
-            -Wsign-conversion
             -Wconstant-conversion
             -Wcast-qual
             -Wheader-hygiene
