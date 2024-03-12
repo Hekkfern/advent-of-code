@@ -21,14 +21,14 @@ public:
      *
      * @return     Number of matching solutions.
      */
-    [[nodiscard]] uint32_t solveOriginal() const;
+    [[nodiscard]] uint64_t solveOriginal() const;
     /**
      * @brief      Calculates the number of permutations using the record data
      *             which has been expanded up to 5 copies.
      *
      * @return     Number of matching solutions.
      */
-    [[nodiscard]] uint32_t solveUnfolded() const;
+    [[nodiscard]] uint64_t solveUnfolded() const;
 
 private:
     std::string mSprings;

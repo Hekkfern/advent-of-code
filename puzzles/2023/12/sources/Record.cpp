@@ -42,7 +42,7 @@ Record::Record(std::string&& springs, std::vector<int>&& contiguousGroupInfo)
 {
 }
 
-uint32_t Record::solveOriginal() const
+uint64_t Record::solveOriginal() const
 {
     // add extra operational springs in both sides
     std::string const extendedSprings{"." + mSprings + "."};
@@ -52,15 +52,15 @@ uint32_t Record::solveOriginal() const
         expandContiguousGroupInfo(mContiguousGroupInfo)};
 
     // solve
-    int32_t const n{static_cast<int32_t>(extendedSprings.size())};
-    int32_t const m{static_cast<int32_t>(expandedGroupInfo.size())};
-    std::vector<std::vector<uint32_t>> dp(
-        n + 1, std::vector<uint32_t>(m + 1, 0));
+    int64_t const n{static_cast<int64_t>(extendedSprings.size())};
+    int64_t const m{static_cast<int64_t>(expandedGroupInfo.size())};
+    std::vector<std::vector<uint64_t>> dp(
+        n + 1, std::vector<uint64_t>(m + 1, 0));
     dp[n][m] = 1;
 
-    for (int32_t i = n - 1; i >= 0; --i) {
-        for (int32_t j = m - 1; j >= std::max(m - (n - i), 0); --j) {
-            uint32_t value{0};
+    for (int64_t i = n - 1; i >= 0; --i) {
+        for (int64_t j = m - 1; j >= std::max(m - (n - i), 0LL); --j) {
+            uint64_t value{0};
             if (extendedSprings[i] != '.'
                 && expandedGroupInfo[j] == ExpandedSpringStatus::OneDamaged) {
                 value = dp[i + 1][j + 1];
@@ -76,7 +76,7 @@ uint32_t Record::solveOriginal() const
     return dp[0][0];
 }
 
-uint32_t Record::solveUnfolded() const
+uint64_t Record::solveUnfolded() const
 {
     // create 4 more copies and add extra operational springs in both sides
     std::string extendedSprings = ".";
@@ -89,15 +89,15 @@ uint32_t Record::solveUnfolded() const
         expandContiguousGroupInfo(mContiguousGroupInfo, 5)};
 
     // solve
-    int32_t const n{static_cast<int32_t>(extendedSprings.size())};
-    int32_t const m{static_cast<int32_t>(expandedGroupInfo.size())};
-    std::vector<std::vector<uint32_t>> dp(
-        n + 1, std::vector<uint32_t>(m + 1, 0));
+    int64_t const n{static_cast<int64_t>(extendedSprings.size())};
+    int64_t const m{static_cast<int64_t>(expandedGroupInfo.size())};
+    std::vector<std::vector<uint64_t>> dp(
+        n + 1, std::vector<uint64_t>(m + 1, 0));
     dp[n][m] = 1;
 
-    for (int32_t i = n - 1; i >= 0; --i) {
-        for (int32_t j = m - 1; j >= std::max(m - (n - i), 0); --j) {
-            uint32_t value{0};
+    for (int64_t i = n - 1; i >= 0; --i) {
+        for (int64_t j = m - 1; j >= std::max(m - (n - i), 0LL); --j) {
+            uint64_t value{0};
             if (extendedSprings[i] != '.'
                 && expandedGroupInfo[j] == ExpandedSpringStatus::OneDamaged) {
                 value = dp[i + 1][j + 1];
