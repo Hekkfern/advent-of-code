@@ -11,6 +11,13 @@ namespace aoc_2023_12 {
 
 // ---------- Private Methods ----------
 
+/**
+ * @brief      Parses a line of the input file.
+ *
+ * @param[in]  line  The line to parse.
+ *
+ * @return     A @ref Record instance with the parsed line from the input file.
+ */
 Record parseInputLine(std::string_view const line)
 {
     std::stringstream ss{std::string{line}};

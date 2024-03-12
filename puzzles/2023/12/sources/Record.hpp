@@ -8,16 +8,25 @@ namespace aoc_2023_12 {
 
 class Record {
 public:
+    /**
+     * @brief      Constructs a new instance.
+     *
+     * @param[in]  springs              The springs
+     * @param[in]  contiguousGroupInfo  The contiguous group information
+     */
     Record(std::string&& springs, std::vector<int>&& contiguousGroupInfo);
     /**
-     * @brief
+     * @brief      Calculates the number of permutations using the original
+     *             record data.
      *
-     * @return Number of possible solutions.
+     * @return     Number of matching solutions.
      */
     [[nodiscard]] uint32_t solveOriginal() const;
     /**
-     * \brief
-     * \return
+     * @brief      Calculates the number of permutations using the record data
+     *             which has been expanded up to 5 copies.
+     *
+     * @return     Number of matching solutions.
      */
     [[nodiscard]] uint32_t solveUnfolded() const;
 

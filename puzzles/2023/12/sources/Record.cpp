@@ -1,6 +1,7 @@
 #include "Record.hpp"
 
 #include <range/v3/algorithm/for_each.hpp>
+#include <range/v3/view/iota.hpp>
 #include <range/v3/range/conversion.hpp>
 #include <range/v3/view/unique.hpp>
 
@@ -11,21 +12,24 @@ enum class ExpandedSpringStatus { OneDamaged, GroupOfOperational };
  * \brief
  *
  * \param groupInfo
+ * \param repetitions
  *
  * \return List. Both extremes are guaranteed to be @ref
  * ExpandedSpringStatus::GroupOfOperational.
  */
 std::vector<ExpandedSpringStatus>
-expandContiguousGroupInfo(std::vector<int32_t> const& groupInfo)
+expandContiguousGroupInfo(std::vector<int32_t> const& groupInfo, const int32_t repetitions = 1)
 {
     std::vector<ExpandedSpringStatus> result{
         ExpandedSpringStatus::GroupOfOperational};
-    ranges::for_each(groupInfo, [&result](int32_t const value) -> void {
-        for (int32_t i{0}; i < value; ++i) {
-            result.emplace_back(ExpandedSpringStatus::OneDamaged);
-        }
-        result.emplace_back(ExpandedSpringStatus::GroupOfOperational);
-    });
+    for ([[maybe_unused]] auto const i : ranges::views::iota(0, repetitions)) {
+        ranges::for_each(groupInfo, [&result](int32_t const value) -> void {
+            for (int32_t i{0}; i < value; ++i) {
+                result.emplace_back(ExpandedSpringStatus::OneDamaged);
+            }
+            result.emplace_back(ExpandedSpringStatus::GroupOfOperational);
+        });
+    }
     return result;
 }
 } // namespace
@@ -83,18 +87,10 @@ uint32_t Record::solveUnfolded() const
     // translate groupInfo and create 4 more copies
     auto const expandedGroupInfo{
         expandContiguousGroupInfo(mContiguousGroupInfo)};
-    auto extendedGroupInfo{expandedGroupInfo};
-    for (int i = 0; i < 5; ++i) {
-        extendedGroupInfo.insert(
-            std::end(extendedGroupInfo),
-            std::begin(expandedGroupInfo),
-            std::end(expandedGroupInfo));
-    }
-    extendedGroupInfo = removeConsecutiveDuplicates(expandedGroupInfo);
 
     // solve
     int64_t const n{std::ssize(extendedSprings)};
-    int64_t const m{std::ssize(extendedGroupInfo)};
+    int64_t const m{std::ssize(expandedGroupInfo)};
     std::vector<std::vector<uint32_t>> dp(
         n + 1, std::vector<uint32_t>(m + 1, 0));
     dp[n][m] = 1;
