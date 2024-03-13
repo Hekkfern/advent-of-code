@@ -2,6 +2,7 @@
 
 #include "Pattern.hpp"
 #include <fstream>
+#include <range/v3/algorithm/fold_left.hpp>
 #include <utils/String.hpp>
 #include <vector>
 
@@ -52,8 +53,25 @@ std::vector<Pattern> parseInput(std::filesystem::path const& filePath)
 std::string solvePart1(std::filesystem::path const& filePath)
 {
     auto const patterns{parseInput(filePath)};
-    (void)patterns;
-    return "";
+    auto const result{ranges::fold_left(
+        patterns,
+        0ULL,
+        [](uint64_t const accum, Pattern const& pattern) -> uint64_t {
+            uint64_t value{0ULL};
+            const auto verticalReflectionLines{
+                pattern.searchVerticalReflectionLines()};
+            for (const auto& verticalReflectionLine : verticalReflectionLines) {
+                value += verticalReflectionLine.first + 1ULL;
+            }
+            const auto horizontalReflectionLines{
+                pattern.searchHorizontalReflectionLines()};
+            for (const auto& horizontalReflectionLine :
+                 horizontalReflectionLines) {
+                value += 100ULL * (horizontalReflectionLine.first + 1ULL);
+            }
+            return accum + value;
+        })};
+    return std::to_string(result);
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)

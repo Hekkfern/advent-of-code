@@ -6,20 +6,68 @@
 namespace aoc_2023_13 {
 
 Pattern::Pattern(std::vector<std::string>&& data) noexcept
-    : mData{data}
+    : mData{std::move(data)}
 {
 }
 
-std::vector<std::size_t>
+std::vector<std::pair<std::size_t, std::size_t>>
 Pattern::searchHorizontalReflectionLines() const noexcept
 {
-    // TODO
-    return std::vector<std::size_t>();
+    std::size_t const height{mData.size()};
+    std::vector<std::pair<std::size_t, std::size_t>> results;
+    for (std::size_t rowIndex{1ULL}; rowIndex < height - 1ULL; ++rowIndex) {
+        // check if this column and the one to the right are equal
+        if (!areRowsEqual(rowIndex, rowIndex + 1ULL)) {
+            continue;
+        }
+        // it is a candidate to reflection line
+        // let's compare the next lines
+        std::size_t rowIndex1{rowIndex - 1ULL};
+        std::size_t rowIndex2{rowIndex + 2ULL};
+        bool isDifferenceFound{false};
+        while (!isDifferenceFound && rowIndex1 > 0ULL && rowIndex2 < height) {
+            if (!areRowsEqual(rowIndex, rowIndex + 1ULL)) {
+                isDifferenceFound = true;
+            }
+            --rowIndex1;
+            ++rowIndex2;
+        }
+        if (isDifferenceFound) {
+            continue;
+        }
+        results.emplace_back(rowIndex, rowIndex + 1ULL);
+    }
+    return results;
 }
 
-std::vector<std::size_t> Pattern::searchVerticalReflectionLines() const noexcept
+std::vector<std::pair<std::size_t, std::size_t>>
+Pattern::searchVerticalReflectionLines() const noexcept
 {
-    // TODO
+    std::size_t const width{mData[0].size()};
+    std::vector<std::pair<std::size_t, std::size_t>> results;
+    for (std::size_t colIndex{1ULL}; colIndex < width - 1ULL; ++colIndex) {
+        // check if this column and the one to the right are equal
+        if (!areColumnsEqual(colIndex, colIndex + 1ULL)) {
+            continue;
+        }
+        // it is a candidate to reflection line
+        // let's compare the next lines
+        std::size_t colIndex1{colIndex - 1ULL};
+        std::size_t colIndex2{colIndex + 2ULL};
+        bool isDifferenceFound{false};
+        while (!isDifferenceFound && colIndex1 > 0ULL && colIndex2 < width) {
+            if (!areColumnsEqual(colIndex, colIndex + 1ULL)) {
+                isDifferenceFound = true;
+            }
+            --colIndex1;
+            ++colIndex2;
+        }
+        if (isDifferenceFound) {
+            continue;
+        }
+        results.emplace_back(colIndex, colIndex + 1ULL);
+    }
+    return results;
 }
 
 void Pattern::forEachItemInRow(

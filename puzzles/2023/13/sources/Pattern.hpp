@@ -19,14 +19,14 @@ public:
      *
      * @return
      */
-    [[nodiscard]] std::vector<std::size_t>
+    [[nodiscard]] std::vector<std::pair<std::size_t, std::size_t>>
     searchHorizontalReflectionLines() const noexcept;
     /**
      * @brief
      *
      * @return
      */
-    [[nodiscard]] std::vector<std::size_t>
+    [[nodiscard]] std::vector<std::pair<std::size_t, std::size_t>>
     searchVerticalReflectionLines() const noexcept;
 
 private:
