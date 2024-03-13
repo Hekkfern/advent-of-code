@@ -36,7 +36,7 @@ private:
      * @param predicate
      */
     void forEachItemInRow(
-        std::size_t rowIndex, std::function<void(char const c)>&& predicate);
+        std::size_t rowIndex, std::function<void(char c)>&& predicate) const;
     /**
      * @brief
      *
@@ -44,7 +44,23 @@ private:
      * @param predicate
      */
     void forEachItemInColumn(
-        std::size_t colIndex, std::function<void(char const c)>&& predicate);
+        std::size_t colIndex, std::function<void(char c)>&& predicate) const;
+    /**
+     * \brief
+     * \param colIndex1
+     * \param colIndex2
+     * \return
+     */
+    [[nodiscard]] bool
+    areColumnsEqual(std::size_t colIndex1, std::size_t colIndex2) const;
+    /**
+     * \brief
+     * \param rowIndex1
+     * \param rowIndex2
+     * \return
+     */
+    [[nodiscard]] bool
+    areRowsEqual(std::size_t rowIndex1, std::size_t rowIndex2) const;
 
     std::vector<std::string> mData;
 };

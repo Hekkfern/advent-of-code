@@ -37,7 +37,9 @@ std::vector<Pattern> parseInput(std::filesystem::path const& filePath)
 
     std::vector<Pattern> outList;
     while (auto pattern{parsePattern(fileStream)}) {
-        outList.emplace_back(std::move(*pattern));
+        if (pattern) {
+            outList.emplace_back(std::move(*pattern));
+        }
     }
 
     return outList;
