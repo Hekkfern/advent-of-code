@@ -15,7 +15,8 @@ Pattern::searchHorizontalReflectionLines() const noexcept
 {
     std::size_t const height{mData.size()};
     std::vector<std::pair<std::size_t, std::size_t>> results;
-    for (std::size_t rowIndex{1ULL}; rowIndex < height - 1ULL; ++rowIndex) {
+    for (
+        std::size_t const rowIndex : ranges::views::iota(0ULL, height - 1ULL)) {
         // check if this column and the one to the right are equal
         if (!areRowsEqual(rowIndex, rowIndex + 1ULL)) {
             continue;
@@ -45,7 +46,7 @@ Pattern::searchVerticalReflectionLines() const noexcept
 {
     std::size_t const width{mData[0].size()};
     std::vector<std::pair<std::size_t, std::size_t>> results;
-    for (std::size_t colIndex{1ULL}; colIndex < width - 1ULL; ++colIndex) {
+    for (std::size_t const colIndex : ranges::views::iota(0ULL, width - 1ULL)) {
         // check if this column and the one to the right are equal
         if (!areColumnsEqual(colIndex, colIndex + 1ULL)) {
             continue;
