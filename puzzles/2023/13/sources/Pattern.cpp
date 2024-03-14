@@ -22,11 +22,11 @@ Pattern::searchHorizontalReflectionLines() const noexcept
         }
         // it is a candidate to reflection line
         // let's compare the next lines
-        std::size_t rowIndex1{rowIndex - 1ULL};
+        int64_t rowIndex1{static_cast<int64_t>(rowIndex) - 1LL};
         std::size_t rowIndex2{rowIndex + 2ULL};
         bool isDifferenceFound{false};
-        while (!isDifferenceFound && rowIndex1 > 0ULL && rowIndex2 < height) {
-            if (!areRowsEqual(rowIndex, rowIndex + 1ULL)) {
+        while (!isDifferenceFound && rowIndex1 >= 0LL && rowIndex2 < height) {
+            if (!areRowsEqual(rowIndex1, rowIndex2)) {
                 isDifferenceFound = true;
             }
             --rowIndex1;
@@ -52,11 +52,11 @@ Pattern::searchVerticalReflectionLines() const noexcept
         }
         // it is a candidate to reflection line
         // let's compare the next lines
-        std::size_t colIndex1{colIndex - 1ULL};
+        int64_t colIndex1{static_cast<int64_t>(colIndex) - 1LL};
         std::size_t colIndex2{colIndex + 2ULL};
         bool isDifferenceFound{false};
-        while (!isDifferenceFound && colIndex1 > 0ULL && colIndex2 < width) {
-            if (!areColumnsEqual(colIndex, colIndex + 1ULL)) {
+        while (!isDifferenceFound && colIndex1 >= 0LL && colIndex2 < width) {
+            if (!areColumnsEqual(colIndex1, colIndex2)) {
                 isDifferenceFound = true;
             }
             --colIndex1;
@@ -93,8 +93,8 @@ void Pattern::forEachItemInColumn(
 bool Pattern::areColumnsEqual(
     std::size_t const colIndex1, std::size_t const colIndex2) const
 {
-    assert(colIndex1 < mData[colIndex1].size());
-    assert(colIndex2 < mData[colIndex2].size());
+    assert(colIndex1 < mData[0].size());
+    assert(colIndex2 < mData[0].size());
     assert(colIndex1 != colIndex2);
 
     std::size_t const height{mData.size()};
