@@ -3,6 +3,7 @@
 #include "Pattern.hpp"
 #include <fstream>
 #include <range/v3/algorithm/fold_left.hpp>
+#include <range/v3/view/enumerate.hpp>
 #include <utils/String.hpp>
 #include <vector>
 
@@ -12,7 +13,8 @@ namespace aoc_2023_13 {
 
 std::optional<Pattern> parsePattern(std::ifstream& fileStream)
 {
-    std::vector<std::string> outList;
+    std::vector<uint64_t> rows;
+    std::vector<uint64_t> cols;
 
     std::string line;
     while (std::getline(fileStream, line)) {
@@ -20,13 +22,22 @@ std::optional<Pattern> parsePattern(std::ifstream& fileStream)
         if (lineStr.empty()) {
             break;
         }
-        outList.emplace_back(std::move(lineStr));
+        uint64_t rowValue{0ULL};
+        for (auto const [colIndex, value] : ranges::views::enumerate(lineStr)) {
+            rowValue = rowValue << 1 | (value == '#' ? 1 : 0);
+            if (cols.size() == colIndex) {
+                cols.emplace_back(value == '#' ? 1ULL : 0ULL);
+            } else {
+                cols[colIndex] = cols[colIndex] << 1 | (value == '#' ? 1 : 0);
+            }
+        }
+        rows.emplace_back(rowValue);
     }
 
-    if (outList.empty()) {
+    if (rows.empty() || cols.empty()) {
         return {};
     }
-    return Pattern{std::move(outList)};
+    return Pattern{std::move(rows), std::move(cols)};
 }
 
 std::vector<Pattern> parseInput(std::filesystem::path const& filePath)
@@ -58,16 +69,15 @@ std::string solvePart1(std::filesystem::path const& filePath)
         0ULL,
         [](uint64_t const accum, Pattern const& pattern) -> uint64_t {
             uint64_t value{0ULL};
-            const auto verticalReflectionLines{
-                pattern.searchVerticalReflectionLines()};
-            for (const auto& verticalReflectionLine : verticalReflectionLines) {
-                value += verticalReflectionLine.first + 1ULL;
+            const auto verticalReflectionLine{
+                pattern.searchVerticalReflectionLine()};
+            if (verticalReflectionLine) {
+                value += verticalReflectionLine->first + 1ULL;
             }
-            const auto horizontalReflectionLines{
-                pattern.searchHorizontalReflectionLines()};
-            for (const auto& horizontalReflectionLine :
-                 horizontalReflectionLines) {
-                value += 100ULL * (horizontalReflectionLine.first + 1ULL);
+            const auto horizontalReflectionLine{
+                pattern.searchHorizontalReflectionLine()};
+            if (horizontalReflectionLine) {
+                value += 100ULL * (horizontalReflectionLine->first + 1ULL);
             }
             return accum + value;
         })};

@@ -1,126 +1,60 @@
 #include "Pattern.hpp"
 
-#include <cassert>
 #include <range/v3/view/iota.hpp>
+
+namespace {
+std::optional<std::pair<std::size_t, std::size_t>>
+mirror(std::vector<uint64_t> const& rng)
+{
+    std::size_t const size{rng.size()};
+    std::pair<std::size_t, std::size_t> result;
+    for (std::size_t const index : ranges::views::iota(0ULL, size - 1ULL)) {
+        // check if this column and the one to the right are equal
+        std::size_t const nextIndex{index + 1ULL};
+        if (rng[index] != rng[nextIndex]) {
+            continue;
+        }
+        // it is a candidate to reflection line
+        // let's compare the next lines
+        int64_t leftIndex{static_cast<int64_t>(index) - 1LL};
+        std::size_t rightIndex{nextIndex + 1ULL};
+        bool isDifferenceFound{false};
+        while (!isDifferenceFound && leftIndex >= 0LL && rightIndex < size) {
+            if (rng[leftIndex] != rng[rightIndex]) {
+                isDifferenceFound = true;
+            }
+            --leftIndex;
+            ++rightIndex;
+        }
+        if (isDifferenceFound) {
+            continue;
+        }
+        return std::make_pair(index, nextIndex);
+    }
+    return {};
+}
+
+} // namespace
 
 namespace aoc_2023_13 {
 
-Pattern::Pattern(std::vector<std::string>&& data) noexcept
-    : mData{std::move(data)}
+Pattern::Pattern(
+    std::vector<uint64_t>&& rows, std::vector<uint64_t>&& cols) noexcept
+    : mRowsData{std::move(rows)}
+    , mColumnsData{std::move(cols)}
 {
 }
 
-std::vector<std::pair<std::size_t, std::size_t>>
-Pattern::searchHorizontalReflectionLines() const noexcept
+std::optional<std::pair<std::size_t, std::size_t>>
+Pattern::searchHorizontalReflectionLine() const noexcept
 {
-    std::size_t const height{mData.size()};
-    std::vector<std::pair<std::size_t, std::size_t>> results;
-    for (
-        std::size_t const rowIndex : ranges::views::iota(0ULL, height - 1ULL)) {
-        // check if this column and the one to the right are equal
-        if (!areRowsEqual(rowIndex, rowIndex + 1ULL)) {
-            continue;
-        }
-        // it is a candidate to reflection line
-        // let's compare the next lines
-        int64_t rowIndex1{static_cast<int64_t>(rowIndex) - 1LL};
-        std::size_t rowIndex2{rowIndex + 2ULL};
-        bool isDifferenceFound{false};
-        while (!isDifferenceFound && rowIndex1 >= 0LL && rowIndex2 < height) {
-            if (!areRowsEqual(rowIndex1, rowIndex2)) {
-                isDifferenceFound = true;
-            }
-            --rowIndex1;
-            ++rowIndex2;
-        }
-        if (isDifferenceFound) {
-            continue;
-        }
-        results.emplace_back(rowIndex, rowIndex + 1ULL);
-    }
-    return results;
+    return mirror(mRowsData);
 }
 
-std::vector<std::pair<std::size_t, std::size_t>>
-Pattern::searchVerticalReflectionLines() const noexcept
+std::optional<std::pair<std::size_t, std::size_t>>
+Pattern::searchVerticalReflectionLine() const noexcept
 {
-    std::size_t const width{mData[0].size()};
-    std::vector<std::pair<std::size_t, std::size_t>> results;
-    for (std::size_t const colIndex : ranges::views::iota(0ULL, width - 1ULL)) {
-        // check if this column and the one to the right are equal
-        if (!areColumnsEqual(colIndex, colIndex + 1ULL)) {
-            continue;
-        }
-        // it is a candidate to reflection line
-        // let's compare the next lines
-        int64_t colIndex1{static_cast<int64_t>(colIndex) - 1LL};
-        std::size_t colIndex2{colIndex + 2ULL};
-        bool isDifferenceFound{false};
-        while (!isDifferenceFound && colIndex1 >= 0LL && colIndex2 < width) {
-            if (!areColumnsEqual(colIndex1, colIndex2)) {
-                isDifferenceFound = true;
-            }
-            --colIndex1;
-            ++colIndex2;
-        }
-        if (isDifferenceFound) {
-            continue;
-        }
-        results.emplace_back(colIndex, colIndex + 1ULL);
-    }
-    return results;
-}
-
-void Pattern::forEachItemInRow(
-    std::size_t const rowIndex,
-    std::function<void(char const c)>&& predicate) const
-{
-    std::size_t const width{mData[rowIndex].size()};
-    for (std::size_t colIndex{0ULL}; colIndex < width; ++colIndex) {
-        predicate(mData[rowIndex][colIndex]);
-    }
-}
-
-void Pattern::forEachItemInColumn(
-    std::size_t const colIndex,
-    std::function<void(char const c)>&& predicate) const
-{
-    std::size_t const height{mData.size()};
-    for (std::size_t rowIndex{0ULL}; rowIndex < height; ++rowIndex) {
-        predicate(mData[rowIndex][colIndex]);
-    }
-}
-
-bool Pattern::areColumnsEqual(
-    std::size_t const colIndex1, std::size_t const colIndex2) const
-{
-    assert(colIndex1 < mData[0].size());
-    assert(colIndex2 < mData[0].size());
-    assert(colIndex1 != colIndex2);
-
-    std::size_t const height{mData.size()};
-    for (std::size_t rowIndex{0ULL}; rowIndex < height; ++rowIndex) {
-        if (mData[rowIndex][colIndex1] != mData[rowIndex][colIndex2]) {
-            return false;
-        }
-    }
-    return true;
-}
-
-bool Pattern::areRowsEqual(
-    std::size_t const rowIndex1, std::size_t const rowIndex2) const
-{
-    assert(rowIndex1 < mData.size());
-    assert(rowIndex2 < mData.size());
-    assert(rowIndex1 != rowIndex2);
-
-    std::size_t const width{mData[rowIndex1].size()};
-    for (std::size_t colIndex{0ULL}; colIndex < width; ++colIndex) {
-        if (mData[rowIndex1][colIndex] != mData[rowIndex2][colIndex]) {
-            return false;
-        }
-    }
-    return true;
+    return mirror(mColumnsData);
 }
 
 } // namespace aoc_2023_13

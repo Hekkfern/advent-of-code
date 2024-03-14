@@ -1,7 +1,6 @@
 #pragma once
 
-#include <functional>
-#include <string>
+#include <optional>
 #include <vector>
 
 namespace aoc_2023_13 {
@@ -12,57 +11,28 @@ public:
      * @brief Constructs an instance.
      *
      * @param[in] data Data
+     * @param[in] data Data
      */
-    explicit Pattern(std::vector<std::string>&& data) noexcept;
+    explicit Pattern(
+        std::vector<uint64_t>&& rows, std::vector<uint64_t>&& cols) noexcept;
     /**
      * @brief
      *
      * @return
      */
-    [[nodiscard]] std::vector<std::pair<std::size_t, std::size_t>>
-    searchHorizontalReflectionLines() const noexcept;
+    [[nodiscard]] std::optional<std::pair<std::size_t, std::size_t>>
+    searchHorizontalReflectionLine() const noexcept;
     /**
      * @brief
      *
      * @return
      */
-    [[nodiscard]] std::vector<std::pair<std::size_t, std::size_t>>
-    searchVerticalReflectionLines() const noexcept;
+    [[nodiscard]] std::optional<std::pair<std::size_t, std::size_t>>
+    searchVerticalReflectionLine() const noexcept;
 
 private:
-    /**
-     * @brief
-     * @param rowIndex
-     * @param predicate
-     */
-    void forEachItemInRow(
-        std::size_t rowIndex, std::function<void(char c)>&& predicate) const;
-    /**
-     * @brief
-     *
-     * @param colIndex
-     * @param predicate
-     */
-    void forEachItemInColumn(
-        std::size_t colIndex, std::function<void(char c)>&& predicate) const;
-    /**
-     * \brief
-     * \param colIndex1
-     * \param colIndex2
-     * \return
-     */
-    [[nodiscard]] bool
-    areColumnsEqual(std::size_t colIndex1, std::size_t colIndex2) const;
-    /**
-     * \brief
-     * \param rowIndex1
-     * \param rowIndex2
-     * \return
-     */
-    [[nodiscard]] bool
-    areRowsEqual(std::size_t rowIndex1, std::size_t rowIndex2) const;
-
-    std::vector<std::string> mData;
+    std::vector<uint64_t> mRowsData;
+    std::vector<uint64_t> mColumnsData;
 };
 
 } // namespace aoc_2023_13
