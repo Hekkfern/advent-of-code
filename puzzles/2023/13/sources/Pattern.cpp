@@ -7,7 +7,6 @@ std::optional<std::pair<std::size_t, std::size_t>>
 mirror(std::vector<uint64_t> const& rng)
 {
     std::size_t const size{rng.size()};
-    std::pair<std::size_t, std::size_t> result;
     for (std::size_t const index : ranges::views::iota(0ULL, size - 1ULL)) {
         // check if this column and the one to the right are equal
         std::size_t const nextIndex{index + 1ULL};
