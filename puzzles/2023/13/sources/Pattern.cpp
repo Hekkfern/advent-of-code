@@ -3,6 +3,7 @@
 #include <bit>
 #include <numeric>
 #include <ranges>
+#include <span>
 
 namespace {
 
