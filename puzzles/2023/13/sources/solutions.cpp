@@ -67,7 +67,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
     auto const result{ranges::fold_left(
         patterns,
         0ULL,
-        [](uint64_t const accum, Pattern const& pattern) -> uint64_t {
+        [](uint64_t const accumulated, Pattern const& pattern) -> uint64_t {
             uint64_t value{0ULL};
             const auto verticalReflectionLine{
                 pattern.searchVerticalReflectionLine()};
@@ -79,15 +79,32 @@ std::string solvePart1(std::filesystem::path const& filePath)
             if (horizontalReflectionLine) {
                 value += 100ULL * (horizontalReflectionLine->first + 1ULL);
             }
-            return accum + value;
+            return accumulated + value;
         })};
     return std::to_string(result);
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
 {
-    (void)filePath;
-    return "";
+    auto const patterns{parseInput(filePath)};
+    auto const result{ranges::fold_left(
+        patterns,
+        0ULL,
+        [](uint64_t const accumulated, Pattern const& pattern) -> uint64_t {
+            uint64_t value{0ULL};
+            const auto verticalReflectionLine{
+                pattern.searchVerticalReflectionLineWithSingleFix()};
+            if (verticalReflectionLine) {
+                value += verticalReflectionLine->first + 1ULL;
+            }
+            const auto horizontalReflectionLine{
+                pattern.searchHorizontalReflectionLineWithSingleFix()};
+            if (horizontalReflectionLine) {
+                value += 100ULL * (horizontalReflectionLine->first + 1ULL);
+            }
+            return accumulated + value;
+        })};
+    return std::to_string(result);
 }
 
 // ---------- End of Public Methods ----------

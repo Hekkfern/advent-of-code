@@ -29,6 +29,20 @@ public:
      */
     [[nodiscard]] std::optional<std::pair<std::size_t, std::size_t>>
     searchVerticalReflectionLine() const noexcept;
+    /**
+     * @brief
+     *
+     * @return
+     */
+    [[nodiscard]] std::optional<std::pair<std::size_t, std::size_t>>
+    searchHorizontalReflectionLineWithSingleFix() const noexcept;
+    /**
+     * @brief
+     *
+     * @return
+     */
+    [[nodiscard]] std::optional<std::pair<std::size_t, std::size_t>>
+    searchVerticalReflectionLineWithSingleFix() const noexcept;
 
 private:
     std::vector<uint64_t> mRowsData;
