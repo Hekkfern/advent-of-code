@@ -10,8 +10,8 @@ public:
     /**
      * @brief Constructs an instance.
      *
-     * @param[in] data Data
-     * @param[in] data Data
+     * @param[in] rows Data
+     * @param[in] cols Data
      */
     explicit Pattern(
         std::vector<uint64_t>&& rows, std::vector<uint64_t>&& cols) noexcept;

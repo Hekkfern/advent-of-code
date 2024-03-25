@@ -4,7 +4,7 @@
 
 namespace {
 std::optional<std::pair<std::size_t, std::size_t>>
-mirror(std::vector<uint64_t> const& rng)
+mirror(std::span<uint64_t const> const& rng)
 {
     // All possible splits of the range into a prefix and a suffix
     // with the prefix reversed
