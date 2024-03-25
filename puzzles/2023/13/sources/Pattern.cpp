@@ -7,6 +7,14 @@
 
 namespace {
 
+/**
+ * @brief      Looks for a mirror line for the given range of columns/rows.
+ *
+ * @param[in]  rng   The list of columns/rows.
+ *
+ * @return     Pair with the indexes of the list before and after the mirror
+ *             line.
+ */
 std::optional<std::pair<std::size_t, std::size_t>>
 mirror(std::span<uint64_t const> const& rng)
 {
@@ -36,6 +44,15 @@ mirror(std::span<uint64_t const> const& rng)
     return {};
 }
 
+/**
+ * @brief      Looks for a mirror line for the given range of columns/rows,
+ *             which has a single error.
+ *
+ * @param[in]  rng   The list of columns/rows.
+ *
+ * @return     Pair with the indexes of the list before and after the mirror
+ *             line.
+ */
 std::optional<std::pair<std::size_t, std::size_t>>
 mirrorWithSingleFix(std::span<uint64_t const> const& rng)
 {

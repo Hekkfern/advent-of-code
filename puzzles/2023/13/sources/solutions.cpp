@@ -11,6 +11,13 @@ namespace aoc_2023_13 {
 
 // ---------- Private Methods ----------
 
+/**
+ * @brief         Parses a single pattern of the input file.
+ *
+ * @param[in,out] fileStream  The file stream.
+ *
+ * @return        Information of the pattern.
+ */
 std::optional<Pattern> parsePattern(std::ifstream& fileStream)
 {
     std::vector<uint64_t> rows;
@@ -40,6 +47,13 @@ std::optional<Pattern> parsePattern(std::ifstream& fileStream)
     return Pattern{std::move(rows), std::move(cols)};
 }
 
+/**
+ * @brief      Parses the whole input file.
+ *
+ * @param[in]  filePath  The path to the input file.
+ *
+ * @return     List of parsed patterns.
+ */
 std::vector<Pattern> parseInput(std::filesystem::path const& filePath)
 {
     std::ifstream fileStream{filePath.string()};
