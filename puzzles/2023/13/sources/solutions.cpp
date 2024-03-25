@@ -25,7 +25,7 @@ std::optional<Pattern> parsePattern(std::ifstream& fileStream)
 
     std::string line;
     while (std::getline(fileStream, line)) {
-        const auto lineStr{utils::string::trim(line)};
+        auto const lineStr{utils::string::trim(line)};
         if (lineStr.empty()) {
             break;
         }

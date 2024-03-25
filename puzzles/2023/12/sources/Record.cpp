@@ -1,8 +1,8 @@
 #include "Record.hpp"
 
 #include <range/v3/algorithm/for_each.hpp>
-#include <range/v3/view/iota.hpp>
 #include <range/v3/range/conversion.hpp>
+#include <range/v3/view/iota.hpp>
 #include <range/v3/view/unique.hpp>
 
 namespace {
@@ -17,8 +17,8 @@ enum class ExpandedSpringStatus { OneDamaged, GroupOfOperational };
  * \return List. Both extremes are guaranteed to be @ref
  * ExpandedSpringStatus::GroupOfOperational.
  */
-std::vector<ExpandedSpringStatus>
-expandContiguousGroupInfo(std::vector<int32_t> const& groupInfo, const int32_t repetitions = 1)
+std::vector<ExpandedSpringStatus> expandContiguousGroupInfo(
+    std::vector<int32_t> const& groupInfo, const int32_t repetitions = 1)
 {
     std::vector<ExpandedSpringStatus> result{
         ExpandedSpringStatus::GroupOfOperational};
