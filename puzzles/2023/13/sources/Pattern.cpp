@@ -1,34 +1,33 @@
 #include "Pattern.hpp"
 
-#include <range/v3/view/iota.hpp>
+#include <ranges>
 
 namespace {
 std::optional<std::pair<std::size_t, std::size_t>>
 mirror(std::vector<uint64_t> const& rng)
 {
-    std::size_t const size{rng.size()};
-    for (std::size_t const index : ranges::views::iota(0ULL, size - 1ULL)) {
-        // check if this column and the one to the right are equal
-        std::size_t const nextIndex{index + 1ULL};
-        if (rng[index] != rng[nextIndex]) {
+    // All possible splits of the range into a prefix and a suffix
+    // with the prefix reversed
+    auto AllSplits
+        = std::views::iota(rng.begin(), rng.end())
+        | std::views::transform([&](auto it) {
+              return std::pair{
+                  std::ranges::subrange(rng.begin(), it) | std::views::reverse,
+                  std::ranges::subrange(it, rng.end())};
+          });
+    for (auto [prefix, suffix] : AllSplits) {
+        // We are looking for proper mirrors, both prefix and suffix
+        // have to contain something
+        if (prefix.empty() || suffix.empty()) {
             continue;
         }
-        // it is a candidate to reflection line
-        // let's compare the next lines
-        int64_t leftIndex{static_cast<int64_t>(index) - 1LL};
-        std::size_t rightIndex{nextIndex + 1ULL};
-        bool isDifferenceFound{false};
-        while (!isDifferenceFound && leftIndex >= 0LL && rightIndex < size) {
-            if (rng[leftIndex] != rng[rightIndex]) {
-                isDifferenceFound = true;
-            }
-            --leftIndex;
-            ++rightIndex;
+        // Find the first mismatch
+        auto const cmp = std::ranges::mismatch(prefix, suffix);
+        // If there is no mismatch besides the length,
+        // return the prefix size
+        if (cmp.in1 == prefix.end() || cmp.in2 == suffix.end()) {
+            return std::make_pair(prefix.size() - 1, prefix.size());
         }
-        if (isDifferenceFound) {
-            continue;
-        }
-        return std::make_pair(index, nextIndex);
     }
     return {};
 }
