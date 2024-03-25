@@ -10,11 +10,6 @@ namespace aoc_2023_14 {
 
 // ---------- Private Methods ----------
 
-std::vector<Rock> parseInputLine(std::string_view const line)
-{
-    // TODO
-}
-
 /**
  * @brief      Parses the whole input file.
  *
@@ -54,7 +49,15 @@ std::vector<Rock> parseInput(std::filesystem::path const& filePath)
     return rocks;
 }
 
-uint64_t calculateLoad();
+std::vector<Rock> moveRocks(std::vector<Rock> const& rocks)
+{
+    // TODO
+}
+
+uint64_t calculateLoad(std::vector<Rock> const& rocks)
+{
+    // TODO
+}
 
 // ---------- End of Private Methods ----------
 
@@ -63,8 +66,8 @@ uint64_t calculateLoad();
 std::string solvePart1(std::filesystem::path const& filePath)
 {
     auto const rocks{parseInput(filePath)};
-    // TODO
-    return std::to_string(1);
+    auto const movedRocks{moveRocks(rocks)};
+    return std::to_string(calculateLoad(moveRocks));
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
