@@ -8,6 +8,11 @@
 
 namespace {
 
+/**
+ * @brief      Shift all the rounded rocks from back to front.
+ *
+ * @param[in]  rng   The row or column of the grid.
+ */
 void shift(auto rng)
 {
     // First available space to the left
@@ -48,10 +53,10 @@ void shift(auto rng)
 namespace aoc_2023_14 {
 
 Rocks::Rocks(
-    std::vector<char>&& flattenGrid,
+    std::vector<char>&& flatGrid,
     std::size_t const width,
     std::size_t const height) noexcept
-    : mFlattenGrid{std::move(flattenGrid)}
+    : mFlatGrid{std::move(flatGrid)}
     , mWidth{width}
     , mHeight{height}
 {
@@ -61,7 +66,7 @@ void Rocks::shiftNorth() noexcept
 {
     for (std::size_t colIndex{0ULL}; colIndex < mWidth; ++colIndex) {
         shift(
-            mFlattenGrid | ranges::views::drop(colIndex)
+            mFlatGrid | ranges::views::drop(colIndex)
             | ranges::views::stride(mWidth));
     }
 }
@@ -69,9 +74,9 @@ void Rocks::shiftNorth() noexcept
 uint64_t Rocks::calculateLoad() const noexcept
 {
     uint64_t weight{0ULL};
-    for (auto const [ridx, row] : mFlattenGrid | ranges::views::chunk(mWidth)
-             | ranges::views::enumerate) {
-        weight += std::ranges::count(row, 'O') * (mHeight - ridx);
+    for (auto const [rowIndex, row] :
+         mFlatGrid | ranges::views::chunk(mWidth) | ranges::views::enumerate) {
+        weight += std::ranges::count(row, 'O') * (mHeight - rowIndex);
     }
 
     return weight;

@@ -12,8 +12,6 @@ namespace aoc_2023_14 {
 /**
  * @brief      Parses the whole input file and generates a flatten grid.
  *
- * @details    The flatten grid contains the rows of the grid one after another.
- *
  * @param[in]  filePath  The path to the input file.
  *
  * @return     Parsed data.
