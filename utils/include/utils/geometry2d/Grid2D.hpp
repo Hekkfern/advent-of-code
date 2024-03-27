@@ -34,8 +34,11 @@ public:
     [[nodiscard]] std::vector<T>
     getRow(std::size_t const rowIndex) const noexcept
     {
+        if (rowIndex >= mHeight) {
+            return {};
+        }
         return mFlatGrid | ranges::views::chunk(mWidth)
-            | ranges::views::drop(rowIndex) | ranges::views::take(1)
+            | ranges::views::drop(rowIndex + 1) | ranges::views::take(1)
             | ranges::to<std::vector>;
     }
     /**
@@ -46,7 +49,10 @@ public:
     [[nodiscard]] std::vector<T>
     getColumn(std::size_t const colIndex) const noexcept
     {
-        return mFlatGrid | ranges::views::drop(colIndex)
+        if (colIndex >= mWidth) {
+            return {};
+        }
+        return mFlatGrid | ranges::views::drop(colIndex + 1)
             | ranges::views::stride(mWidth) | ranges::views::take(1)
             | ranges::to<std::vector>;
     }
