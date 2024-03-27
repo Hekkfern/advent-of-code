@@ -4,6 +4,7 @@
 #include <range/v3/view/chunk.hpp>
 #include <range/v3/view/drop.hpp>
 #include <range/v3/view/enumerate.hpp>
+#include <range/v3/view/reverse.hpp>
 #include <range/v3/view/stride.hpp>
 
 namespace {
@@ -68,6 +69,29 @@ void Rocks::shiftNorth() noexcept
         shift(
             mFlatGrid | ranges::views::drop(colIndex)
             | ranges::views::stride(mWidth));
+    }
+}
+
+void Rocks::shiftSouth() noexcept
+{
+    for (std::size_t colIndex{0ULL}; colIndex < mWidth; ++colIndex) {
+        shift(
+            mFlatGrid | ranges::views::drop(colIndex)
+            | ranges::views::stride(mWidth) | ranges::views::reverse);
+    }
+}
+
+void Rocks::shiftWest() noexcept
+{
+    for (auto row : mFlatGrid | ranges::views::chunk(mWidth)) {
+        shift(row);
+    }
+}
+
+void Rocks::shiftEast() noexcept
+{
+    for (auto row : mFlatGrid | ranges::views::chunk(mWidth)) {
+        shift(row | ranges::views::reverse);
     }
 }
 

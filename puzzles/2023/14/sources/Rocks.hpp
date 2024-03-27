@@ -19,9 +19,15 @@ public:
         std::size_t width,
         std::size_t height) noexcept;
     /**
-     * @brief      Shift all the rounded rocks to the north.
+     * @brief      Shift all the rounded rocks to the given direction.
+     *
+     * @{
      */
     void shiftNorth() noexcept;
+    void shiftSouth() noexcept;
+    void shiftWest() noexcept;
+    void shiftEast() noexcept;
+    /** }@ */
     /**
      * @brief      Calculates the load of all the rounded rocks.
      *
@@ -40,7 +46,7 @@ private:
      *
      * @details    Rows are concatenated one after another.
      */
-    std::vector<char> mFlattenGrid;
+    std::vector<char> mFlatGrid;
     /**
      * The width of the grid.
      */
