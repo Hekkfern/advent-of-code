@@ -1,26 +1,14 @@
 #include "Rocks.hpp"
 
+#include <algorithm>
+#include <range/v3/view/chunk.hpp>
 #include <range/v3/view/drop.hpp>
+#include <range/v3/view/enumerate.hpp>
 #include <range/v3/view/stride.hpp>
 
-namespace aoc_2023_14 {
+namespace {
 
-Rocks::Rocks(
-    std::vector<char>&& flattenGrid,
-    std::size_t width,
-    std::size_t height) noexcept
-    : mFlattenGrid{std::move(flattenGrid)}
-    , mWidth{width}
-    , mHeight{height}
-{
-}
-
-/**
- * @brief
- *
- * @param[in,out] rocks
- */
-void Rocks::shift(auto rng)
+void shift(auto rng)
 {
     // First available space to the left
     auto dst = rng.begin();
@@ -46,19 +34,29 @@ void Rocks::shift(auto rng)
             break;
         }
         // If it is a 'O', shift it to dst
+        // but if its '#', shift dst
         if (*src == 'O') {
             std::iter_swap(src, dst);
-            // If its '#' shift dst
         } else if (*src == '#') {
             dst = src;
         }
     }
 }
 
-/**
- *
- * @param rocks
- */
+} // namespace
+
+namespace aoc_2023_14 {
+
+Rocks::Rocks(
+    std::vector<char>&& flattenGrid,
+    std::size_t const width,
+    std::size_t const height) noexcept
+    : mFlattenGrid{std::move(flattenGrid)}
+    , mWidth{width}
+    , mHeight{height}
+{
+}
+
 void Rocks::shiftNorth() noexcept
 {
     for (std::size_t colIndex{0ULL}; colIndex < mWidth; ++colIndex) {
@@ -68,14 +66,15 @@ void Rocks::shiftNorth() noexcept
     }
 }
 
-/**
- * @brief
- * @param[in] rocks
- * @return
- */
-uint64_t Rocks::calculateLoad() noexcept
+uint64_t Rocks::calculateLoad() const noexcept
 {
-    // TODO
+    uint64_t weight{0ULL};
+    for (auto const [ridx, row] : mFlattenGrid | ranges::views::chunk(mWidth)
+             | ranges::views::enumerate) {
+        weight += std::ranges::count(row, 'O') * (mHeight - ridx);
+    }
+
+    return weight;
 }
 
 } // namespace aoc_2023_14

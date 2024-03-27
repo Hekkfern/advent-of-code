@@ -12,11 +12,9 @@ public:
         std::size_t width,
         std::size_t height) noexcept;
     void shiftNorth() noexcept;
-    [[nodiscard]] uint64_t calculateLoad() noexcept;
+    [[nodiscard]] uint64_t calculateLoad() const noexcept;
 
 private:
-    void shift(auto rng);
-
     std::vector<char> mFlattenGrid;
     std::size_t mWidth;
     std::size_t mHeight;

@@ -37,9 +37,9 @@ Rocks parseInput(std::filesystem::path const& filePath)
 
 std::string solvePart1(std::filesystem::path const& filePath)
 {
-    auto const rocks{parseInput(filePath)};
-    shiftRocks(rocks);
-    return std::to_string(calculateLoad(rocks));
+    auto rocks{parseInput(filePath)};
+    rocks.shiftNorth();
+    return std::to_string(rocks.calculateLoad());
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
