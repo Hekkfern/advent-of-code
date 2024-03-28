@@ -1,10 +1,13 @@
 #pragma once
 
+#include <functional>
 #include <range/v3/range/conversion.hpp>
 #include <range/v3/view/chunk.hpp>
 #include <range/v3/view/drop.hpp>
+#include <range/v3/view/iota.hpp>
 #include <range/v3/view/join.hpp>
 #include <range/v3/view/stride.hpp>
+#include <range/v3/view/transform.hpp>
 #include <vector>
 
 namespace utils::geometry2d {
@@ -84,6 +87,66 @@ public:
     {
         return mWidth == other.mWidth && mHeight == other.mHeight
             && mFlatGrid == other.mFlatGrid;
+    }
+    /**
+     * @brief      Iterates over each item in the specified row.
+     *
+     * @param[in]  rowIndex  The row index. Index starts with value 0.
+     * @param[in]  callback  The callback function to call for each item. The
+     *                       callback function should return true to continue
+     *                       iterating, or false to cancel it.
+     */
+    void iterateRow(
+        std::size_t rowIndex,
+        std::function<bool(T const& item)> callback) const noexcept
+    {
+        if (rowIndex >= mHeight) {
+            return;
+        }
+
+        auto const start = rowIndex * mWidth;
+        auto const end = start + mWidth;
+
+        auto rowItems
+            = ranges::views::iota(start, end)
+            | ranges::views::transform([this](std::size_t const flatIndex) {
+                  return mFlatGrid[flatIndex];
+              });
+
+        for (auto item : rowItems) {
+            if (!callback(item)) {
+                break; // Cancel the iteration if callback returns false
+            }
+        }
+    }
+    /**
+     * @brief      Iterates over each item in the specified column.
+     *
+     * @param[in]  colIndex  The column index. Index starts with value 0.
+     * @param[in]  callback  The callback function to call for each item. The
+     *                       callback function should return true to continue
+     *                       iterating, or false to cancel it.
+     */
+    void iterateColumn(
+        std::size_t colIndex,
+        std::function<bool(T const& item)> callback) const noexcept
+    {
+        if (colIndex >= mWidth) {
+            return; // Invalid column index
+        }
+
+        auto columnItems
+            = ranges::views::iota(0ULL, mHeight)
+            | ranges::views::
+                transform([this, colIndex](std::size_t const rowIndex) {
+                    return mFlatGrid[rowIndex * mWidth + colIndex];
+                });
+
+        for (auto item : columnItems) {
+            if (!callback(item)) {
+                break; // Cancel the iteration if callback returns false
+            }
+        }
     }
 
 private:

@@ -108,3 +108,51 @@ TEST_CASE("[Grid2D] Equality operator", "[utils][Grid2D]")
         }
     }
 }
+
+TEST_CASE("[Grid2D] iterateRow() method", "[utils][Grid2D]")
+{
+    SECTION("Empty grid")
+    {
+        Grid2D<int> const grid2D;
+        int count{0};
+        grid2D.iterateRow(1, [&count](int const) -> bool {
+            ++count;
+            return true;
+        });
+        CHECK(count == 0);
+    }
+    SECTION("Filled grid")
+    {
+        Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+        int count{0};
+        grid2D.iterateRow(1, [&count](int const) -> bool {
+            ++count;
+            return true;
+        });
+        CHECK(count == 2);
+    }
+}
+
+TEST_CASE("[Grid2D] iterateColumn() method", "[utils][Grid2D]")
+{
+    SECTION("Empty grid")
+    {
+        Grid2D<int> const grid2D;
+        int count{0};
+        grid2D.iterateColumn(1, [&count](int const) -> bool {
+            ++count;
+            return true;
+        });
+        CHECK(count == 0);
+    }
+    SECTION("Filled grid")
+    {
+        Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+        int count{0};
+        grid2D.iterateColumn(1, [&count](int const) -> bool {
+            ++count;
+            return true;
+        });
+        CHECK(count == 3);
+    }
+}
