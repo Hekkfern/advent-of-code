@@ -113,7 +113,7 @@ public:
                   return mFlatGrid[flatIndex];
               });
 
-        for (auto item : rowItems) {
+        for (auto const& item : rowItems) {
             if (!callback(item)) {
                 break; // Cancel the iteration if callback returns false
             }
@@ -132,7 +132,7 @@ public:
         std::function<bool(T const& item)> callback) const noexcept
     {
         if (colIndex >= mWidth) {
-            return; // Invalid column index
+            return;
         }
 
         auto columnItems
@@ -142,7 +142,7 @@ public:
                     return mFlatGrid[rowIndex * mWidth + colIndex];
                 });
 
-        for (auto item : columnItems) {
+        for (auto const& item : columnItems) {
             if (!callback(item)) {
                 break; // Cancel the iteration if callback returns false
             }
@@ -155,11 +155,17 @@ public:
      * @param[in]  callback  A function to call for each item. Should return
      *                       true to continue iteration, or false to cancel.
      */
-    void iterateDiagonal(std::function<bool(T)> callback) const noexcept
+    void
+    iterateDiagonal(std::function<bool(T const& item)> callback) const noexcept
     {
-        std::size_t len = std::min(mWidth, mHeight);
-        for (std::size_t i = 0; i < len; ++i) {
-            if (!callback(mFlatGrid[i * mWidth + i])) {
+        auto diagonal
+            = ranges::views::iota(0ULL, std::min(mWidth, mHeight))
+            | ranges::views::transform([this](std::size_t i) {
+                  return mFlatGrid[i * mWidth + i];
+              });
+
+        for (auto const& item : diagonal) {
+            if (!callback(item)) {
                 break;
             }
         }
@@ -171,17 +177,27 @@ public:
      * @param[in]  callback  A function to call for each item. Should return
      *                       true to continue iteration, or false to cancel.
      */
-    void iterateAntiDiagonal(std::function<bool(T)> callback) const noexcept
+    void iterateAntiDiagonal(
+        std::function<bool(T const& item)> callback) const noexcept
     {
-        std::size_t len = std::min(mWidth, mHeight);
-        for (std::size_t i = 0; i < len; ++i) {
-            if (!callback(mFlatGrid[i * mWidth + (mWidth - 1 - i)])) {
+        auto const diagonalLength = std::min(mWidth, mHeight);
+        auto antiDiagonal
+            = ranges::views::iota(0ULL, diagonalLength)
+            | ranges::views::transform([this, diagonalLength](std::size_t i) {
+                  return mFlatGrid[i * mWidth + (diagonalLength - 1 - i)];
+              });
+
+        for (auto const& item : antiDiagonal) {
+            if (!callback(item)) {
                 break;
             }
         }
     }
     /**
      * @brief      Accesses the element at the specified row and column.
+     *
+     * @note       It's the caller's responsibility to ensure the indices are
+     *             within the bounds of the grid.
      *
      * @param[in]  row   The row index.
      * @param[in]  col   The column index.
@@ -190,20 +206,12 @@ public:
      *
      * @{
      */
-    T& at(std::size_t row, std::size_t col)
+    T& at(std::size_t row, std::size_t col) noexcept
     {
-        if (row >= mHeight || col >= mWidth) {
-            throw std::out_of_range(
-                "Grid2D::at() called with out-of-range indices");
-        }
         return mFlatGrid[row * mWidth + col];
     }
-    T const& at(std::size_t row, std::size_t col) const
+    T const& at(std::size_t row, std::size_t col) const noexcept
     {
-        if (row >= mHeight || col >= mWidth) {
-            throw std::out_of_range(
-                "Grid2D::at() called with out-of-range indices");
-        }
         return mFlatGrid[row * mWidth + col];
     }
     /** }@ */
@@ -217,11 +225,11 @@ public:
      *
      * @return     A new Grid2D object representing the subgrid.
      */
-    [[nodiscard]]Grid2D<T> subgrid(
-        std::size_t startRow,
-        std::size_t startCol,
-        std::size_t numRows,
-        std::size_t numCols) const
+    [[nodiscard]] Grid2D<T> subgrid(
+        std::size_t const startRow,
+        std::size_t const startCol,
+        std::size_t const numRows,
+        std::size_t const numCols) const noexcept
     {
         if (startRow + numRows > mHeight || startCol + numCols > mWidth) {
             throw std::out_of_range(
@@ -242,7 +250,7 @@ public:
     /**
      * @brief      Flips the grid horizontally.
      */
-    void flipHorizontal()
+    void flipHorizontal() noexcept
     {
         for (std::size_t row = 0; row < mHeight; ++row) {
             std::size_t start = row * mWidth;
@@ -257,7 +265,7 @@ public:
     /**
      * @brief      Flips the grid vertically.
      */
-    void flipVertical()
+    void flipVertical() noexcept
     {
         std::vector<T> tempFlatGrid = mFlatGrid;
         for (std::size_t row = 0; row < mHeight; ++row) {
@@ -270,7 +278,7 @@ public:
     /**
      * @brief      Rotates the grid 90 degrees clockwise.
      */
-    void rotateClockwise()
+    void rotateClockwise() noexcept
     {
         std::vector<T> rotatedGrid(mWidth * mHeight);
         for (std::size_t row = 0; row < mHeight; ++row) {
@@ -285,7 +293,7 @@ public:
     /**
      * @brief      Rotates the grid 90 degrees counterclockwise.
      */
-    void rotateCounterClockwise()
+    void rotateCounterClockwise() noexcept
     {
         std::vector<T> rotatedGrid(mWidth * mHeight);
         for (std::size_t row = 0; row < mHeight; ++row) {
@@ -306,7 +314,7 @@ public:
      *             std::nullopt otherwise.
      */
     std::optional<std::pair<std::size_t, std::size_t>>
-    findFirst(T const& value) const
+    findFirst(T const& value) const noexcept
     {
         for (std::size_t row = 0; row < mHeight; ++row) {
             for (std::size_t col = 0; col < mWidth; ++col) {
@@ -315,7 +323,7 @@ public:
                 }
             }
         }
-        return std::nullopt; // No match found
+        return {};
     }
     /**
      * @brief      Finds all occurrences of a value in the grid.
@@ -326,7 +334,7 @@ public:
      *             of the value.
      */
     std::vector<std::pair<std::size_t, std::size_t>>
-    findAll(T const& value) const
+    findAll(T const& value) const noexcept
     {
         std::vector<std::pair<std::size_t, std::size_t>> positions;
         for (std::size_t row = 0; row < mHeight; ++row) {
@@ -350,7 +358,7 @@ public:
     void resize(
         std::size_t newHeight,
         std::size_t newWidth,
-        T const& defaultValue = T{})
+        T const& defaultValue = T{}) noexcept
     {
         std::vector<T> newFlatGrid(newHeight * newWidth, defaultValue);
 
