@@ -618,183 +618,251 @@
             "cleanFirst": false
         },
         {
-            "name": "linux-base",
+            "name": "linux-gcc-debug",
             "inherits": [
                 "common-base"
             ],
-            "hidden": true
+            "displayName": "GCC Debug",
+            "configurePreset": "linux-gcc-debug"
         },
         {
-            "name": "windows-base",
+            "name": "linux-gcc-release",
             "inherits": [
                 "common-base"
             ],
-            "hidden": true
+            "displayName": "GCC Release",
+            "configurePreset": "linux-gcc-release"
         },
         {
-            "name": "macos-base",
+            "name": "linux-gcc-asan",
             "inherits": [
                 "common-base"
             ],
-            "hidden": true
+            "displayName": "GCC sanitize=address",
+            "configurePreset": "linux-gcc-asan"
         },
         {
-            "name": "linux-x64-debug",
+            "name": "linux-gcc-tsan",
             "inherits": [
-                "linux-base"
+                "common-base"
             ],
-            "displayName": "x64 Debug",
-            "configurePreset": "linux-x64-debug"
+            "displayName": "GCC sanitize=thread",
+            "configurePreset": "linux-gcc-tsan"
         },
         {
-            "name": "linux-x64-release",
+            "name": "linux-gcc-lsan",
             "inherits": [
-                "linux-base"
+                "common-base"
             ],
-            "displayName": "x64 Release",
-            "configurePreset": "linux-x64-release"
+            "displayName": "GCC sanitize=leak",
+            "configurePreset": "linux-gcc-lsan"
         },
         {
-            "name": "linux-x64-asan",
+            "name": "linux-gcc-ubsan",
             "inherits": [
-                "linux-base"
+                "common-base"
             ],
-            "displayName": "x64 sanitize=address",
-            "configurePreset": "linux-x64-asan"
+            "displayName": "GCC sanitize=undefined",
+            "configurePreset": "linux-gcc-ubsan"
         },
         {
-            "name": "linux-x64-tsan",
+            "name": "linux-clang-debug",
             "inherits": [
-                "linux-base"
+                "common-base"
             ],
-            "displayName": "x64 sanitize=thread",
-            "configurePreset": "linux-x64-tsan"
+            "displayName": "Clang Debug",
+            "configurePreset": "linux-clang-debug"
         },
         {
-            "name": "linux-x64-lsan",
+            "name": "linux-clang-release",
             "inherits": [
-                "linux-base"
+                "common-base"
             ],
-            "displayName": "x64 sanitize=leak",
-            "configurePreset": "linux-x64-lsan"
+            "displayName": "Clang Release",
+            "configurePreset": "linux-clang-release"
         },
         {
-            "name": "linux-x64-ubsan",
+            "name": "linux-clang-asan",
             "inherits": [
-                "linux-base"
+                "common-base"
             ],
-            "displayName": "x64 sanitize=undefined",
-            "configurePreset": "linux-x64-ubsan"
+            "displayName": "Clang sanitize=address",
+            "configurePreset": "linux-clang-asan"
+        },
+        {
+            "name": "linux-clang-tsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "Clang sanitize=thread",
+            "configurePreset": "linux-clang-tsan"
+        },
+        {
+            "name": "linux-clang-lsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "Clang sanitize=leak",
+            "configurePreset": "linux-clang-lsan"
+        },
+        {
+            "name": "linux-clang-ubsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "Clang sanitize=undefined",
+            "configurePreset": "linux-clang-ubsan"
         },
         {
             "name": "windows-x86-base",
             "inherits": [
-                "windows-base"
+                "common-base"
             ],
             "hidden": true
         },
         {
-            "name": "windows-x64-base",
+            "name": "windows-vs2022-debug",
             "inherits": [
-                "windows-base"
+                "common-base"
             ],
-            "hidden": true
+            "displayName": "VS2022 Debug",
+            "configurePreset": "windows-vs2022-debug"
         },
         {
-            "name": "windows-x64-debug",
+            "name": "windows-vs2022-release",
             "inherits": [
-                "windows-x64-base"
+                "common-base"
             ],
-            "displayName": "x64 Debug",
-            "configurePreset": "windows-x64-debug"
+            "displayName": "VS2022 Release",
+            "configurePreset": "windows-vs2022-release"
         },
         {
-            "name": "windows-x86-debug",
+            "name": "windows-vs2022-asan",
             "inherits": [
-                "windows-x86-base"
+                "common-base"
             ],
-            "displayName": "x86 Debug",
-            "configurePreset": "windows-x86-debug"
+            "displayName": "VS2022 sanitize=address",
+            "configurePreset": "windows-vs2022-asan"
         },
         {
-            "name": "windows-x64-release",
+            "name": "windows-ninja-debug",
             "inherits": [
-                "windows-x64-base"
+                "common-base"
             ],
-            "displayName": "x64 Release",
-            "configurePreset": "windows-x64-release"
+            "displayName": "Ninja Debug",
+            "configurePreset": "windows-ninja-debug"
         },
         {
-            "name": "windows-x86-release",
+            "name": "windows-ninja-release",
             "inherits": [
-                "windows-x86-base"
+                "common-base"
             ],
-            "displayName": "x86 Release",
-            "configurePreset": "windows-x86-release"
+            "displayName": "Ninja Release",
+            "configurePreset": "windows-ninja-release"
         },
         {
-            "name": "windows-x64-asan",
+            "name": "windows-ninja-asan",
             "inherits": [
-                "windows-x64-base"
+                "common-base"
             ],
-            "displayName": "x64 sanitize=address",
-            "configurePreset": "windows-x64-asan"
+            "displayName": "Ninja sanitize=address",
+            "configurePreset": "windows-ninja-asan"
         },
         {
-            "name": "windows-x86-asan",
+            "name": "macos-x64-ninja-debug",
             "inherits": [
-                "windows-x86-base"
+                "common-base"
             ],
-            "displayName": "x86 sanitize=address",
-            "configurePreset": "windows-x86-asan"
+            "displayName": "x64 Ninja Debug",
+            "configurePreset": "macos-x64-ninja-debug"
         },
         {
-            "name": "macos-x64-debug",
+            "name": "macos-x64-ninja-release",
             "inherits": [
-                "macos-base"
+                "common-base"
             ],
-            "displayName": "x64 Debug",
-            "configurePreset": "macos-x64-debug"
+            "displayName": "x64 Ninja Release",
+            "configurePreset": "macos-x64-ninja-release"
         },
         {
-            "name": "macos-x64-release",
+            "name": "macos-x64-ninja-asan",
             "inherits": [
-                "macos-base"
+                "common-base"
             ],
-            "displayName": "x64 Release",
-            "configurePreset": "macos-x64-release"
+            "displayName": "x64 Ninja sanitize=address",
+            "configurePreset": "macos-x64-ninja-asan"
         },
         {
-            "name": "macos-x64-asan",
+            "name": "macos-x64-ninja-tsan",
             "inherits": [
-                "macos-base"
+                "common-base"
             ],
-            "displayName": "x64 sanitize=address",
-            "configurePreset": "macos-x64-asan"
+            "displayName": "x64 Ninja sanitize=thread",
+            "configurePreset": "macos-x64-ninja-tsan"
         },
         {
-            "name": "macos-x64-tsan",
+            "name": "macos-x64-ninja-lsan",
             "inherits": [
-                "macos-base"
+                "common-base"
             ],
-            "displayName": "x64 sanitize=thread",
-            "configurePreset": "macos-x64-tsan"
+            "displayName": "x64 Ninja sanitize=leak",
+            "configurePreset": "macos-x64-ninja-lsan"
         },
         {
-            "name": "macos-x64-lsan",
+            "name": "macos-x64-ninja-ubsan",
             "inherits": [
-                "macos-base"
+                "common-base"
             ],
-            "displayName": "x64 sanitize=leak",
-            "configurePreset": "macos-x64-lsan"
+            "displayName": "x64 Ninja sanitize=undefined",
+            "configurePreset": "macos-x64-ninja-ubsan"
         },
         {
-            "name": "macos-x64-ubsan",
+            "name": "macos-arm64-ninja-debug",
             "inherits": [
-                "macos-base"
+                "common-base"
             ],
-            "displayName": "x64 sanitize=undefined",
-            "configurePreset": "macos-x64-ubsan"
+            "displayName": "arm64 Ninja Debug",
+            "configurePreset": "macos-arm64-ninja-debug"
+        },
+        {
+            "name": "macos-arm64-ninja-release",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Ninja Release",
+            "configurePreset": "macos-arm64-ninja-release"
+        },
+        {
+            "name": "macos-arm64-ninja-asan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Ninja sanitize=address",
+            "configurePreset": "macos-arm64-ninja-asan"
+        },
+        {
+            "name": "macos-arm64-ninja-tsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Ninja sanitize=thread",
+            "configurePreset": "macos-arm64-ninja-tsan"
+        },
+        {
+            "name": "macos-arm64-ninja-lsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Ninja sanitize=leak",
+            "configurePreset": "macos-arm64-ninja-lsan"
+        },
+        {
+            "name": "macos-arm64-ninja-ubsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Ninja sanitize=undefined",
+            "configurePreset": "macos-arm64-ninja-ubsan"
         }
     ],
     "testPresets": [
@@ -811,183 +879,251 @@
             }
         },
         {
-            "name": "linux-base",
+            "name": "linux-gcc-debug",
             "inherits": [
                 "common-base"
             ],
-            "hidden": true
+            "displayName": "GCC Debug",
+            "configurePreset": "linux-gcc-debug"
         },
         {
-            "name": "windows-base",
+            "name": "linux-gcc-release",
             "inherits": [
                 "common-base"
             ],
-            "hidden": true
+            "displayName": "GCC Release",
+            "configurePreset": "linux-gcc-release"
         },
         {
-            "name": "macos-base",
+            "name": "linux-gcc-asan",
             "inherits": [
                 "common-base"
             ],
-            "hidden": true
+            "displayName": "GCC sanitize=address",
+            "configurePreset": "linux-gcc-asan"
         },
         {
-            "name": "linux-x64-debug",
+            "name": "linux-gcc-tsan",
             "inherits": [
-                "linux-base"
+                "common-base"
             ],
-            "displayName": "x64 Debug",
-            "configurePreset": "linux-x64-debug"
+            "displayName": "GCC sanitize=thread",
+            "configurePreset": "linux-gcc-tsan"
         },
         {
-            "name": "linux-x64-release",
+            "name": "linux-gcc-lsan",
             "inherits": [
-                "linux-base"
+                "common-base"
             ],
-            "displayName": "x64 Release",
-            "configurePreset": "linux-x64-release"
+            "displayName": "GCC sanitize=leak",
+            "configurePreset": "linux-gcc-lsan"
         },
         {
-            "name": "linux-x64-asan",
+            "name": "linux-gcc-ubsan",
             "inherits": [
-                "linux-base"
+                "common-base"
             ],
-            "displayName": "x64 sanitize=address",
-            "configurePreset": "linux-x64-asan"
+            "displayName": "GCC sanitize=undefined",
+            "configurePreset": "linux-gcc-ubsan"
         },
         {
-            "name": "linux-x64-tsan",
+            "name": "linux-clang-debug",
             "inherits": [
-                "linux-base"
+                "common-base"
             ],
-            "displayName": "x64 sanitize=thread",
-            "configurePreset": "linux-x64-tsan"
+            "displayName": "Clang Debug",
+            "configurePreset": "linux-clang-debug"
         },
         {
-            "name": "linux-x64-lsan",
+            "name": "linux-clang-release",
             "inherits": [
-                "linux-base"
+                "common-base"
             ],
-            "displayName": "x64 sanitize=leak",
-            "configurePreset": "linux-x64-lsan"
+            "displayName": "Clang Release",
+            "configurePreset": "linux-clang-release"
         },
         {
-            "name": "linux-x64-ubsan",
+            "name": "linux-clang-asan",
             "inherits": [
-                "linux-base"
+                "common-base"
             ],
-            "displayName": "x64 sanitize=undefined",
-            "configurePreset": "linux-x64-ubsan"
+            "displayName": "Clang sanitize=address",
+            "configurePreset": "linux-clang-asan"
         },
         {
-            "name": "windows-x64-base",
+            "name": "linux-clang-tsan",
             "inherits": [
-                "windows-base"
+                "common-base"
             ],
-            "hidden": true
+            "displayName": "Clang sanitize=thread",
+            "configurePreset": "linux-clang-tsan"
+        },
+        {
+            "name": "linux-clang-lsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "Clang sanitize=leak",
+            "configurePreset": "linux-clang-lsan"
+        },
+        {
+            "name": "linux-clang-ubsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "Clang sanitize=undefined",
+            "configurePreset": "linux-clang-ubsan"
         },
         {
             "name": "windows-x86-base",
             "inherits": [
-                "windows-base"
+                "common-base"
             ],
             "hidden": true
         },
         {
-            "name": "windows-x64-debug",
+            "name": "windows-vs2022-debug",
             "inherits": [
-                "windows-x64-base"
+                "common-base"
             ],
-            "displayName": "x64 Debug",
-            "configurePreset": "windows-x64-debug"
+            "displayName": "VS2022 Debug",
+            "configurePreset": "windows-vs2022-debug"
         },
         {
-            "name": "windows-x86-debug",
+            "name": "windows-vs2022-release",
             "inherits": [
-                "windows-x86-base"
+                "common-base"
             ],
-            "displayName": "x86 Debug",
-            "configurePreset": "windows-x86-debug"
+            "displayName": "VS2022 Release",
+            "configurePreset": "windows-vs2022-release"
         },
         {
-            "name": "windows-x64-release",
+            "name": "windows-vs2022-asan",
             "inherits": [
-                "windows-x64-base"
+                "common-base"
             ],
-            "displayName": "x64 Release",
-            "configurePreset": "windows-x64-release"
+            "displayName": "VS2022 sanitize=address",
+            "configurePreset": "windows-vs2022-asan"
         },
         {
-            "name": "windows-x86-release",
+            "name": "windows-ninja-debug",
             "inherits": [
-                "windows-x86-base"
+                "common-base"
             ],
-            "displayName": "x86 Release",
-            "configurePreset": "windows-x86-release"
+            "displayName": "Ninja Debug",
+            "configurePreset": "windows-ninja-debug"
         },
         {
-            "name": "windows-x64-asan",
+            "name": "windows-ninja-release",
             "inherits": [
-                "windows-x64-base"
+                "common-base"
             ],
-            "displayName": "x64 sanitize=address",
-            "configurePreset": "windows-x64-asan"
+            "displayName": "Ninja Release",
+            "configurePreset": "windows-ninja-release"
         },
         {
-            "name": "windows-x86-asan",
+            "name": "windows-ninja-asan",
             "inherits": [
-                "windows-x86-base"
+                "common-base"
             ],
-            "displayName": "x86 sanitize=address",
-            "configurePreset": "windows-x86-asan"
+            "displayName": "Ninja sanitize=address",
+            "configurePreset": "windows-ninja-asan"
         },
         {
-            "name": "macos-x64-debug",
+            "name": "macos-x64-ninja-debug",
             "inherits": [
-                "macos-base"
+                "common-base"
             ],
-            "displayName": "x64 Debug",
-            "configurePreset": "macos-x64-debug"
+            "displayName": "x64 Ninja Debug",
+            "configurePreset": "macos-x64-ninja-debug"
         },
         {
-            "name": "macos-x64-release",
+            "name": "macos-x64-ninja-release",
             "inherits": [
-                "macos-base"
+                "common-base"
             ],
-            "displayName": "x64 Release",
-            "configurePreset": "macos-x64-release"
+            "displayName": "x64 Ninja Release",
+            "configurePreset": "macos-x64-ninja-release"
         },
         {
-            "name": "macos-x64-asan",
+            "name": "macos-x64-ninja-asan",
             "inherits": [
-                "macos-base"
+                "common-base"
             ],
-            "displayName": "x64 sanitize=address",
-            "configurePreset": "macos-x64-asan"
+            "displayName": "x64 Ninja sanitize=address",
+            "configurePreset": "macos-x64-ninja-asan"
         },
         {
-            "name": "macos-x64-tsan",
+            "name": "macos-x64-ninja-tsan",
             "inherits": [
-                "macos-base"
+                "common-base"
             ],
-            "displayName": "x64 sanitize=thread",
-            "configurePreset": "macos-x64-tsan"
+            "displayName": "x64 Ninja sanitize=thread",
+            "configurePreset": "macos-x64-ninja-tsan"
         },
         {
-            "name": "macos-x64-lsan",
+            "name": "macos-x64-ninja-lsan",
             "inherits": [
-                "macos-base"
+                "common-base"
             ],
-            "displayName": "x64 sanitize=leak",
-            "configurePreset": "macos-x64-lsan"
+            "displayName": "x64 Ninja sanitize=leak",
+            "configurePreset": "macos-x64-ninja-lsan"
         },
         {
-            "name": "macos-x64-ubsan",
+            "name": "macos-x64-ninja-ubsan",
             "inherits": [
-                "macos-base"
+                "common-base"
             ],
-            "displayName": "x64 sanitize=undefined",
-            "configurePreset": "macos-x64-ubsan"
+            "displayName": "x64 Ninja sanitize=undefined",
+            "configurePreset": "macos-x64-ninja-ubsan"
+        },
+        {
+            "name": "macos-arm64-ninja-debug",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Ninja Debug",
+            "configurePreset": "macos-arm64-ninja-debug"
+        },
+        {
+            "name": "macos-arm64-ninja-release",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Ninja Release",
+            "configurePreset": "macos-arm64-ninja-release"
+        },
+        {
+            "name": "macos-arm64-ninja-asan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Ninja sanitize=address",
+            "configurePreset": "macos-arm64-ninja-asan"
+        },
+        {
+            "name": "macos-arm64-ninja-tsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Ninja sanitize=thread",
+            "configurePreset": "macos-arm64-ninja-tsan"
+        },
+        {
+            "name": "macos-arm64-ninja-lsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Ninja sanitize=leak",
+            "configurePreset": "macos-arm64-ninja-lsan"
+        },
+        {
+            "name": "macos-arm64-ninja-ubsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Ninja sanitize=undefined",
+            "configurePreset": "macos-arm64-ninja-ubsan"
         }
     ]
 }
