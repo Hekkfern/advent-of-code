@@ -41,7 +41,7 @@ public:
             return {};
         }
         return mFlatGrid | ranges::views::chunk(mWidth)
-            | ranges::views::drop(rowIndex + 1) | ranges::views::take(1)
+            | ranges::views::drop(rowIndex) | ranges::views::take(1)
             | ranges::views::join | ranges::to<std::vector<int>>;
     }
     /**
@@ -57,9 +57,9 @@ public:
         if (colIndex >= mWidth) {
             return {};
         }
-        return mFlatGrid | ranges::views::drop(colIndex + 1)
-            | ranges::views::stride(mWidth) | ranges::views::take(1)
-            | ranges::views::join | ranges::to<std::vector<int>>;
+        return mFlatGrid | ranges::views::drop(colIndex)
+            | ranges::views::stride(mWidth) | ranges::views::take(mWidth + 1)
+            | ranges::to<std::vector<int>>;
     }
     /**
      * @brief      Gets the width.
