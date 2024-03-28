@@ -278,7 +278,7 @@ public:
         for (std::size_t row = 0; row < mHeight; ++row) {
             for (std::size_t col = 0; col < mWidth; ++col) {
                 if (mFlatGrid[row * mWidth + col] == value) {
-                    return std::make_pair(row, col);
+                    return std::make_pair(col, row);
                 }
             }
         }
@@ -299,7 +299,7 @@ public:
         for (std::size_t row = 0; row < mHeight; ++row) {
             for (std::size_t col = 0; col < mWidth; ++col) {
                 if (mFlatGrid[row * mWidth + col] == value) {
-                    positions.emplace_back(row, col);
+                    positions.emplace_back(col, row);
                 }
             }
         }

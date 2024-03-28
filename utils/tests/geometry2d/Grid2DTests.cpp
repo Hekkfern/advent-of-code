@@ -181,10 +181,10 @@ TEST_CASE("[Grid2D] subgrid() method", "[utils][Grid2D]")
     SECTION("Correct subgrid")
     {
         auto const subgrid{grid2D.subgrid(1, 0, 2, 2)};
-        CHECK(grid2D.at(0, 0) == 3);
-        CHECK(grid2D.at(0, 1) == 4);
-        CHECK(grid2D.at(1, 0) == 5);
-        CHECK(grid2D.at(1, 1) == 6);
+        CHECK(subgrid.at(0, 0) == 3);
+        CHECK(subgrid.at(0, 1) == 4);
+        CHECK(subgrid.at(1, 0) == 5);
+        CHECK(subgrid.at(1, 1) == 6);
     }
     SECTION("Out of bounds")
     {
@@ -262,7 +262,7 @@ TEST_CASE("[Grid2D] findFirst() method", "[utils][Grid2D]")
     SECTION("Empty grid")
     {
         Grid2D<int> const grid2D;
-        CHECK_FALSE(grid2D.findFirst(34));
+        REQUIRE_FALSE(grid2D.findFirst(34));
     }
     SECTION("Filled grid")
     {
@@ -271,7 +271,8 @@ TEST_CASE("[Grid2D] findFirst() method", "[utils][Grid2D]")
         {
             auto const result{grid2D.findFirst(3)};
             REQUIRE(result);
-            CHECK(*result == std::make_pair(0ULL, 1ULL));
+            CHECK(result->first == 0ULL);
+            CHECK(result->second == 1ULL);
         }
         SECTION("Not found")
         {
@@ -281,6 +282,47 @@ TEST_CASE("[Grid2D] findFirst() method", "[utils][Grid2D]")
     }
 }
 
-TEST_CASE("[Grid2D] findAll() method", "[utils][Grid2D]") { }
+TEST_CASE("[Grid2D] findAll() method", "[utils][Grid2D]")
+{
+    SECTION("Empty grid")
+    {
+        Grid2D<int> const grid2D;
+        REQUIRE(grid2D.findAll(34).empty());
+    }
+    SECTION("Filled grid")
+    {
+        Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+        SECTION("Found")
+        {
+            auto const result{grid2D.findAll(3)};
+            REQUIRE(result.size() == 1);
+            CHECK(result[0].first == 0ULL);
+            CHECK(result[0].second == 1ULL);
+        }
+        SECTION("Not found")
+        {
+            auto const result{grid2D.findAll(65)};
+            REQUIRE(result.empty());
+        }
+    }
+}
 
-TEST_CASE("[Grid2D] resize() method", "[utils][Grid2D]") { }
+TEST_CASE("[Grid2D] resize() method", "[utils][Grid2D]")
+{
+    Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+    SECTION("Increase")
+    {
+        grid2D.resize(4, 3, 0);
+        REQUIRE(grid2D.getWidth() == 3);
+        REQUIRE(grid2D.getHeight() == 4);
+        CHECK(grid2D.at(2, 3) == 0);
+    }
+    SECTION("Decrease")
+    {
+        grid2D.resize(2, 1, 0);
+        REQUIRE(grid2D.getWidth() == 1);
+        REQUIRE(grid2D.getHeight() == 2);
+        CHECK(grid2D.at(0, 0) == 1);
+        CHECK(grid2D.at(0, 1) == 3);
+    }
+}
