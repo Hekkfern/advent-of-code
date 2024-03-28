@@ -13,12 +13,13 @@ template <typename T>
 class Grid2D {
 public:
     /**
-     * \brief
+     * @brief      Constructs a new instance.
      */
     Grid2D() noexcept = default;
     /**
-     * \brief
-     * \param[in] grid
+     * @brief      Constructs a new instance.
+     *
+     * @param[in]  grid  The grid in 2D format.
      */
     explicit Grid2D(std::vector<std::vector<T>> const& grid) noexcept
         : mFlatGrid{grid | ranges::views::join | ranges::to<std::vector>}
@@ -27,9 +28,11 @@ public:
     {
     }
     /**
-     * \brief
-     * \param[in] rowIndex
-     * \return
+     * @brief      Gets the values of the row with the specified index.
+     *
+     * @param[in]  rowIndex  The row index. Index starts with value 0.
+     *
+     * @return     The row values.
      */
     [[nodiscard]] std::vector<T>
     getRow(std::size_t const rowIndex) const noexcept
@@ -42,9 +45,11 @@ public:
             | ranges::to<std::vector>;
     }
     /**
-     * \brief
-     * \param[in] colIndex
-     * \return
+     * @brief      Gets the values of the column with the specified index.
+     *
+     * @param[in]  colIndex  The column index. Index starts with value 0.
+     *
+     * @return     The column values.
      */
     [[nodiscard]] std::vector<T>
     getColumn(std::size_t const colIndex) const noexcept
@@ -57,13 +62,15 @@ public:
             | ranges::to<std::vector>;
     }
     /**
-     * \brief
-     * \return
+     * @brief      Gets the width.
+     *
+     * @return     The width.
      */
     [[nodiscard]] std::size_t getWidth() const noexcept { return mWidth; }
     /**
-     * \brief
-     * \return
+     * @brief      Gets the height.
+     *
+     * @return     The height.
      */
     [[nodiscard]] std::size_t getHeight() const noexcept { return mHeight; }
     /**
@@ -80,8 +87,19 @@ public:
     }
 
 private:
+    /**
+     * Flat representation of the 2D grid of rocks.
+     *
+     * @details    Rows are concatenated one after another.
+     */
     std::vector<T> mFlatGrid{};
+    /**
+     * The width of the grid.
+     */
     std::size_t mWidth{0ULL};
+    /**
+     * The height of the grid.
+     */
     std::size_t mHeight{0ULL};
 };
 
