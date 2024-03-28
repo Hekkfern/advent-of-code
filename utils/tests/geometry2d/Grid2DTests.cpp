@@ -156,3 +156,131 @@ TEST_CASE("[Grid2D] iterateColumn() method", "[utils][Grid2D]")
         CHECK(count == 3);
     }
 }
+
+TEST_CASE("[Grid2D] at() method", "[utils][Grid2D]")
+{
+    SECTION("Read")
+    {
+        Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+        auto& item{grid2D.at(1, 1)};
+        CHECK(item == 4);
+    }
+    SECTION("Write and write")
+    {
+        Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+        auto& item{grid2D.at(1, 1)};
+        CHECK(item == 4);
+        item = 57;
+        CHECK(item == 57);
+    }
+}
+
+TEST_CASE("[Grid2D] subgrid() method", "[utils][Grid2D]")
+{
+    Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+    SECTION("Correct subgrid")
+    {
+        auto const subgrid{grid2D.subgrid(1, 0, 2, 2)};
+        CHECK(grid2D.at(0, 0) == 3);
+        CHECK(grid2D.at(0, 1) == 4);
+        CHECK(grid2D.at(1, 0) == 5);
+        CHECK(grid2D.at(1, 1) == 6);
+    }
+    SECTION("Out of bounds")
+    {
+        auto const subgrid{grid2D.subgrid(1, 0, 6, 7)};
+        CHECK(subgrid == Grid2D<int>{});
+    }
+}
+
+TEST_CASE("[Grid2D] flipHorizontal() method", "[utils][Grid2D]")
+{
+    SECTION("Empty grid")
+    {
+        Grid2D<int> grid2D;
+        grid2D.flipHorizontal();
+        CHECK(grid2D == Grid2D<int>{});
+    }
+    SECTION("Filled grid")
+    {
+        Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+        grid2D.flipHorizontal();
+        CHECK(grid2D == Grid2D<int>{{{2, 1}, {4, 3}, {6, 5}}});
+    }
+}
+
+TEST_CASE("[Grid2D] flipVertical() method", "[utils][Grid2D]")
+{
+    SECTION("Empty grid")
+    {
+        Grid2D<int> grid2D;
+        grid2D.flipVertical();
+        CHECK(grid2D == Grid2D<int>{});
+    }
+    SECTION("Filled grid")
+    {
+        Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+        grid2D.flipVertical();
+        CHECK(grid2D == Grid2D<int>{{{5, 6}, {3, 4}, {1, 2}}});
+    }
+}
+
+TEST_CASE("[Grid2D] rotateClockwise() method", "[utils][Grid2D]")
+{
+    SECTION("Empty grid")
+    {
+        Grid2D<int> grid2D;
+        grid2D.rotateClockwise();
+        CHECK(grid2D == Grid2D<int>{});
+    }
+    SECTION("Filled grid")
+    {
+        Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+        grid2D.rotateClockwise();
+        CHECK(grid2D == Grid2D<int>{{{5, 3, 1}, {6, 4, 2}}});
+    }
+}
+
+TEST_CASE("[Grid2D] rotateCounterClockwise() method", "[utils][Grid2D]")
+{
+    SECTION("Empty grid")
+    {
+        Grid2D<int> grid2D;
+        grid2D.rotateCounterClockwise();
+        CHECK(grid2D == Grid2D<int>{});
+    }
+    SECTION("Filled grid")
+    {
+        Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+        grid2D.rotateCounterClockwise();
+        CHECK(grid2D == Grid2D<int>{{{2, 4, 6}, {1, 3, 5}}});
+    }
+}
+
+TEST_CASE("[Grid2D] findFirst() method", "[utils][Grid2D]")
+{
+    SECTION("Empty grid")
+    {
+        Grid2D<int> const grid2D;
+        CHECK_FALSE(grid2D.findFirst(34));
+    }
+    SECTION("Filled grid")
+    {
+        Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+        SECTION("Found")
+        {
+            auto const result{grid2D.findFirst(3)};
+            REQUIRE(result);
+            CHECK(*result == std::make_pair(0ULL, 1ULL));
+        }
+        SECTION("Not found")
+        {
+            auto const result{grid2D.findFirst(65)};
+            REQUIRE_FALSE(result);
+        }
+    }
+}
+
+TEST_CASE("[Grid2D] findAll() method", "[utils][Grid2D]") { }
+
+TEST_CASE("[Grid2D] resize() method", "[utils][Grid2D]") { }

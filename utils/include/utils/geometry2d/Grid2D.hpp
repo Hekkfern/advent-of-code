@@ -1,6 +1,9 @@
 #pragma once
 
+#include <algorithm>
 #include <functional>
+#include <optional>
+#include <range/v3/algorithm/swap_ranges.hpp>
 #include <range/v3/range/conversion.hpp>
 #include <range/v3/view/chunk.hpp>
 #include <range/v3/view/drop.hpp>
@@ -149,51 +152,6 @@ public:
         }
     }
     /**
-     * @brief      Iterates over each item in the specified diagonal, calling a
-     *             callback function.
-     *
-     * @param[in]  callback  A function to call for each item. Should return
-     *                       true to continue iteration, or false to cancel.
-     */
-    void
-    iterateDiagonal(std::function<bool(T const& item)> callback) const noexcept
-    {
-        auto diagonal
-            = ranges::views::iota(0ULL, std::min(mWidth, mHeight))
-            | ranges::views::transform([this](std::size_t i) {
-                  return mFlatGrid[i * mWidth + i];
-              });
-
-        for (auto const& item : diagonal) {
-            if (!callback(item)) {
-                break;
-            }
-        }
-    }
-    /**
-     * @brief      Iterates over each item in the specified anti-diagonal,
-     *             calling a callback function.
-     *
-     * @param[in]  callback  A function to call for each item. Should return
-     *                       true to continue iteration, or false to cancel.
-     */
-    void iterateAntiDiagonal(
-        std::function<bool(T const& item)> callback) const noexcept
-    {
-        auto const diagonalLength = std::min(mWidth, mHeight);
-        auto antiDiagonal
-            = ranges::views::iota(0ULL, diagonalLength)
-            | ranges::views::transform([this, diagonalLength](std::size_t i) {
-                  return mFlatGrid[i * mWidth + (diagonalLength - 1 - i)];
-              });
-
-        for (auto const& item : antiDiagonal) {
-            if (!callback(item)) {
-                break;
-            }
-        }
-    }
-    /**
      * @brief      Accesses the element at the specified row and column.
      *
      * @note       It's the caller's responsibility to ensure the indices are
@@ -232,34 +190,30 @@ public:
         std::size_t const numCols) const noexcept
     {
         if (startRow + numRows > mHeight || startCol + numCols > mWidth) {
-            throw std::out_of_range(
-                "Grid2D::subgrid() called with out-of-range indices or size");
+            return {};
         }
 
-        std::vector<std::vector<T>> subgridData(
-            numRows, std::vector<T>(numCols));
-        for (std::size_t row = 0; row < numRows; ++row) {
-            for (std::size_t col = 0; col < numCols; ++col) {
-                subgridData[row][col] = this->at(
-                    startRow + row, startCol + col);
-            }
-        }
-
-        return Grid2D<T>(subgridData);
+        auto rowIndices = ranges::views::ints(startRow, startRow + numRows);
+        auto subRows
+            = rowIndices
+            | ranges::views::transform(
+                  [this, startCol, numCols](std::size_t const rowIndex) {
+                      auto rowStart = mFlatGrid.begin() + rowIndex * mWidth
+                          + startCol;
+                      return std::vector<T>(rowStart, rowStart + numCols);
+                  })
+            | ranges::to<std::vector<std::vector<T>>>();
+        return Grid2D<T>(subRows);
     }
     /**
      * @brief      Flips the grid horizontally.
      */
     void flipHorizontal() noexcept
     {
-        for (std::size_t row = 0; row < mHeight; ++row) {
-            std::size_t start = row * mWidth;
-            std::size_t end = start + mWidth - 1;
-            while (start < end) {
-                std::swap(mFlatGrid[start], mFlatGrid[end]);
-                ++start;
-                --end;
-            }
+        for (auto row : ranges::views::iota(0ULL, mHeight)) {
+            auto const rowStart{mFlatGrid.begin() + row * mWidth};
+            auto const rowEnd{rowStart + mWidth};
+            std::reverse(rowStart, rowEnd);
         }
     }
     /**
@@ -267,12 +221,17 @@ public:
      */
     void flipVertical() noexcept
     {
-        std::vector<T> tempFlatGrid = mFlatGrid;
-        for (std::size_t row = 0; row < mHeight; ++row) {
-            for (std::size_t col = 0; col < mWidth; ++col) {
-                mFlatGrid[row * mWidth + col] = tempFlatGrid
-                    [(mHeight - 1 - row) * mWidth + col];
-            }
+        // Calculate the total number of swaps needed
+        std::size_t const totalSwaps = mHeight / 2;
+
+        for (std::size_t i = 0; i < totalSwaps; ++i) {
+            auto topRowStart = mFlatGrid.begin() + i * mWidth;
+            auto bottomRowStart = mFlatGrid.begin()
+                + (mHeight - 1 - i) * mWidth;
+
+            // Perform the swap row-wise
+            ranges::swap_ranges(
+                topRowStart, topRowStart + mWidth, bottomRowStart);
         }
     }
     /**
@@ -319,7 +278,7 @@ public:
         for (std::size_t row = 0; row < mHeight; ++row) {
             for (std::size_t col = 0; col < mWidth; ++col) {
                 if (mFlatGrid[row * mWidth + col] == value) {
-                    return {{row, col}};
+                    return std::make_pair(row, col);
                 }
             }
         }
