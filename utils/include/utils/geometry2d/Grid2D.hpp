@@ -148,6 +148,223 @@ public:
             }
         }
     }
+    /**
+     * @brief      Iterates over each item in the specified diagonal, calling a
+     *             callback function.
+     *
+     * @param[in]  callback  A function to call for each item. Should return
+     *                       true to continue iteration, or false to cancel.
+     */
+    void iterateDiagonal(std::function<bool(T)> callback) const noexcept
+    {
+        std::size_t len = std::min(mWidth, mHeight);
+        for (std::size_t i = 0; i < len; ++i) {
+            if (!callback(mFlatGrid[i * mWidth + i])) {
+                break;
+            }
+        }
+    }
+    /**
+     * @brief      Iterates over each item in the specified anti-diagonal,
+     *             calling a callback function.
+     *
+     * @param[in]  callback  A function to call for each item. Should return
+     *                       true to continue iteration, or false to cancel.
+     */
+    void iterateAntiDiagonal(std::function<bool(T)> callback) const noexcept
+    {
+        std::size_t len = std::min(mWidth, mHeight);
+        for (std::size_t i = 0; i < len; ++i) {
+            if (!callback(mFlatGrid[i * mWidth + (mWidth - 1 - i)])) {
+                break;
+            }
+        }
+    }
+    /**
+     * @brief      Accesses the element at the specified row and column.
+     *
+     * @param[in]  row   The row index.
+     * @param[in]  col   The column index.
+     *
+     * @return     A reference to the element at the specified position.
+     *
+     * @{
+     */
+    T& at(std::size_t row, std::size_t col)
+    {
+        if (row >= mHeight || col >= mWidth) {
+            throw std::out_of_range(
+                "Grid2D::at() called with out-of-range indices");
+        }
+        return mFlatGrid[row * mWidth + col];
+    }
+    T const& at(std::size_t row, std::size_t col) const
+    {
+        if (row >= mHeight || col >= mWidth) {
+            throw std::out_of_range(
+                "Grid2D::at() called with out-of-range indices");
+        }
+        return mFlatGrid[row * mWidth + col];
+    }
+    /** }@ */
+    /**
+     * @brief      Extracts a subgrid from the grid.
+     *
+     * @param[in]  startRow  The starting row index for the subgrid.
+     * @param[in]  startCol  The starting column index for the subgrid.
+     * @param[in]  numRows   The number of rows in the subgrid.
+     * @param[in]  numCols   The number of columns in the subgrid.
+     *
+     * @return     A new Grid2D object representing the subgrid.
+     */
+    [[nodiscard]]Grid2D<T> subgrid(
+        std::size_t startRow,
+        std::size_t startCol,
+        std::size_t numRows,
+        std::size_t numCols) const
+    {
+        if (startRow + numRows > mHeight || startCol + numCols > mWidth) {
+            throw std::out_of_range(
+                "Grid2D::subgrid() called with out-of-range indices or size");
+        }
+
+        std::vector<std::vector<T>> subgridData(
+            numRows, std::vector<T>(numCols));
+        for (std::size_t row = 0; row < numRows; ++row) {
+            for (std::size_t col = 0; col < numCols; ++col) {
+                subgridData[row][col] = this->at(
+                    startRow + row, startCol + col);
+            }
+        }
+
+        return Grid2D<T>(subgridData);
+    }
+    /**
+     * @brief      Flips the grid horizontally.
+     */
+    void flipHorizontal()
+    {
+        for (std::size_t row = 0; row < mHeight; ++row) {
+            std::size_t start = row * mWidth;
+            std::size_t end = start + mWidth - 1;
+            while (start < end) {
+                std::swap(mFlatGrid[start], mFlatGrid[end]);
+                ++start;
+                --end;
+            }
+        }
+    }
+    /**
+     * @brief      Flips the grid vertically.
+     */
+    void flipVertical()
+    {
+        std::vector<T> tempFlatGrid = mFlatGrid;
+        for (std::size_t row = 0; row < mHeight; ++row) {
+            for (std::size_t col = 0; col < mWidth; ++col) {
+                mFlatGrid[row * mWidth + col] = tempFlatGrid
+                    [(mHeight - 1 - row) * mWidth + col];
+            }
+        }
+    }
+    /**
+     * @brief      Rotates the grid 90 degrees clockwise.
+     */
+    void rotateClockwise()
+    {
+        std::vector<T> rotatedGrid(mWidth * mHeight);
+        for (std::size_t row = 0; row < mHeight; ++row) {
+            for (std::size_t col = 0; col < mWidth; ++col) {
+                rotatedGrid[col * mHeight + (mHeight - 1 - row)] = mFlatGrid
+                    [row * mWidth + col];
+            }
+        }
+        std::swap(mWidth, mHeight);
+        mFlatGrid = std::move(rotatedGrid);
+    }
+    /**
+     * @brief      Rotates the grid 90 degrees counterclockwise.
+     */
+    void rotateCounterClockwise()
+    {
+        std::vector<T> rotatedGrid(mWidth * mHeight);
+        for (std::size_t row = 0; row < mHeight; ++row) {
+            for (std::size_t col = 0; col < mWidth; ++col) {
+                rotatedGrid[(mWidth - 1 - col) * mHeight + row] = mFlatGrid
+                    [row * mWidth + col];
+            }
+        }
+        std::swap(mWidth, mHeight);
+        mFlatGrid = std::move(rotatedGrid);
+    }
+    /**
+     * @brief      Finds the first occurrence of a value in the grid.
+     *
+     * @param[in]  value  The value to search for.
+     *
+     * @return     An optional pair of indices (row, col) if the value is found,
+     *             std::nullopt otherwise.
+     */
+    std::optional<std::pair<std::size_t, std::size_t>>
+    findFirst(T const& value) const
+    {
+        for (std::size_t row = 0; row < mHeight; ++row) {
+            for (std::size_t col = 0; col < mWidth; ++col) {
+                if (mFlatGrid[row * mWidth + col] == value) {
+                    return {{row, col}};
+                }
+            }
+        }
+        return std::nullopt; // No match found
+    }
+    /**
+     * @brief      Finds all occurrences of a value in the grid.
+     *
+     * @param[in]  value  The value to search for.
+     *
+     * @return     A vector of pairs of indices (row, col) for each occurrence
+     *             of the value.
+     */
+    std::vector<std::pair<std::size_t, std::size_t>>
+    findAll(T const& value) const
+    {
+        std::vector<std::pair<std::size_t, std::size_t>> positions;
+        for (std::size_t row = 0; row < mHeight; ++row) {
+            for (std::size_t col = 0; col < mWidth; ++col) {
+                if (mFlatGrid[row * mWidth + col] == value) {
+                    positions.emplace_back(row, col);
+                }
+            }
+        }
+        return positions;
+    }
+    /**
+     * @brief      Resizes the grid to a new width and height, filling new
+     *             spaces with a default value.
+     *
+     * @param[in]  newHeight     The new height of the grid.
+     * @param[in]  newWidth      The new width of the grid.
+     * @param[in]  defaultValue  The value to fill new cells with. Defaults to
+     *                           T{}.
+     */
+    void resize(
+        std::size_t newHeight,
+        std::size_t newWidth,
+        T const& defaultValue = T{})
+    {
+        std::vector<T> newFlatGrid(newHeight * newWidth, defaultValue);
+
+        for (std::size_t row = 0; row < std::min(newHeight, mHeight); ++row) {
+            for (std::size_t col = 0; col < std::min(newWidth, mWidth); ++col) {
+                newFlatGrid[row * newWidth + col] = mFlatGrid
+                    [row * mWidth + col];
+            }
+        }
+
+        mFlatGrid = std::move(newFlatGrid);
+        mWidth = newWidth;
+        mHeight = newHeight;
+    }
 
 private:
     /**
