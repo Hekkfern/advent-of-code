@@ -42,7 +42,7 @@ public:
         }
         return mFlatGrid | ranges::views::chunk(mWidth)
             | ranges::views::drop(rowIndex + 1) | ranges::views::take(1)
-            | ranges::to<std::vector>;
+            | ranges::views::join | ranges::to<std::vector<int>>;
     }
     /**
      * @brief      Gets the values of the column with the specified index.
@@ -59,7 +59,7 @@ public:
         }
         return mFlatGrid | ranges::views::drop(colIndex + 1)
             | ranges::views::stride(mWidth) | ranges::views::take(1)
-            | ranges::to<std::vector>;
+            | ranges::views::join | ranges::to<std::vector<int>>;
     }
     /**
      * @brief      Gets the width.
