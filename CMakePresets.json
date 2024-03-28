@@ -440,7 +440,7 @@
                 "lhs": "${hostSystemName}",
                 "rhs": "Darwin"
             },
-            "generator": "XCode"
+            "generator": "Xcode"
         },
         {
             "name": "macos-x64-ninja-debug",
@@ -605,6 +605,174 @@
                 "macos-ninja-base"
             ],
             "displayName": "arm64 Ninja sanitize=undefined",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "SANITIZE": "undefined"
+            }
+        },
+        {
+            "name": "macos-x64-xcode-debug",
+            "description": "Configuration preset for mac OS in a Intel (64 bits) CPU, where the debug flags are enabled. It uses Xcode generator and default compiler.",
+            "inherits": [
+                "macos-base",
+                "macos-x64-base",
+                "macos-xcode-base"
+            ],
+            "displayName": "x64 Xcode Debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "SANITIZE": false
+            }
+        },
+        {
+            "name": "macos-x64-xcode-release",
+            "description": "Configuration preset for mac OS in a Intel (64 bits) CPU, where the debug flags are disabled and the optimizations are enabled. It uses Xcode generator and default compiler.",
+            "inherits": [
+                "macos-base",
+                "macos-x64-base",
+                "macos-xcode-base"
+            ],
+            "displayName": "x64 Xcode Release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "SANITIZE": false
+            }
+        },
+        {
+            "name": "macos-x64-xcode-asan",
+            "description": "Configuration preset for mac OS in a Intel (64 bits) CPU, where the debug flags are enabled and the Address sanitizer is active. It uses Xcode generator and default compiler.",
+            "inherits": [
+                "macos-base",
+                "macos-x64-base",
+                "macos-xcode-base"
+            ],
+            "displayName": "x64 Xcode sanitize=address",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "SANITIZE": "address"
+            }
+        },
+        {
+            "name": "macos-x64-xcode-tsan",
+            "description": "Configuration preset for mac OS in a Intel (64 bits) CPU, where the debug flags are enabled and the Thread sanitizer is active. It uses Xcode generator and default compiler.",
+            "inherits": [
+                "macos-base",
+                "macos-x64-base",
+                "macos-xcode-base"
+            ],
+            "displayName": "x64 Xcode sanitize=thread",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "SANITIZE": "thread"
+            }
+        },
+        {
+            "name": "macos-x64-xcode-lsan",
+            "description": "Configuration preset for mac OS in a Intel (64 bits) CPU, where the debug flags are enabled and the Memory-Leak sanitizer is active. It uses Xcode generator and default compiler.",
+            "inherits": [
+                "macos-base",
+                "macos-x64-base",
+                "macos-xcode-base"
+            ],
+            "displayName": "x64 Xcode sanitize=leak",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "SANITIZE": "leak"
+            }
+        },
+        {
+            "name": "macos-x64-xcode-ubsan",
+            "description": "Configuration preset for mac OS in a Intel (64 bits) CPU, where the debug flags are enabled and the Undefined-Behavior sanitizer is active. It uses Xcode generator and default compiler.",
+            "inherits": [
+                "macos-base",
+                "macos-x64-base",
+                "macos-xcode-base"
+            ],
+            "displayName": "x64 Xcode sanitize=undefined",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "SANITIZE": "undefined"
+            }
+        },
+        {
+            "name": "macos-arm64-xcode-debug",
+            "description": "Configuration preset for mac OS in a Apple Silicon (64 bits) CPU, where the debug flags are enabled. It uses Xcode generator and default compiler.",
+            "inherits": [
+                "macos-base",
+                "macos-arm64-base",
+                "macos-xcode-base"
+            ],
+            "displayName": "arm64 Xcode Debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "SANITIZE": false
+            }
+        },
+        {
+            "name": "macos-arm64-xcode-release",
+            "description": "Configuration preset for mac OS in a Apple Silicon (64 bits) CPU, where the debug flags are disabled and the optimizations are enabled. It uses Xcode generator and default compiler.",
+            "inherits": [
+                "macos-base",
+                "macos-arm64-base",
+                "macos-xcode-base"
+            ],
+            "displayName": "arm64 Xcode Release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "SANITIZE": false
+            }
+        },
+        {
+            "name": "macos-arm64-xcode-asan",
+            "description": "Configuration preset for mac OS in a Apple Silicon (64 bits) CPU, where the debug flags are enabled and the Address sanitizer is active. It uses Xcode generator and default compiler.",
+            "inherits": [
+                "macos-base",
+                "macos-arm64-base",
+                "macos-xcode-base"
+            ],
+            "displayName": "arm64 Xcode sanitize=address",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "SANITIZE": "address"
+            }
+        },
+        {
+            "name": "macos-arm64-xcode-tsan",
+            "description": "Configuration preset for mac OS in a Apple Silicon (64 bits) CPU, where the debug flags are enabled and the Thread sanitizer is active. It uses Xcode generator and default compiler.",
+            "inherits": [
+                "macos-base",
+                "macos-arm64-base",
+                "macos-xcode-base"
+            ],
+            "displayName": "arm64 Xcode sanitize=thread",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "SANITIZE": "thread"
+            }
+        },
+        {
+            "name": "macos-arm64-xcode-lsan",
+            "description": "Configuration preset for mac OS in a Apple Silicon (64 bits) CPU, where the debug flags are enabled and the Memory-Leak sanitizer is active. It uses Xcode generator and default compiler.",
+            "inherits": [
+                "macos-base",
+                "macos-arm64-base",
+                "macos-xcode-base"
+            ],
+            "displayName": "arm64 Xcode sanitize=leak",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "SANITIZE": "leak"
+            }
+        },
+        {
+            "name": "macos-arm64-xcode-ubsan",
+            "description": "Configuration preset for mac OS in a Apple Silicon (64 bits) CPU, where the debug flags are enabled and the Undefined-Behavior sanitizer is active. It uses Xcode generator and default compiler.",
+            "inherits": [
+                "macos-base",
+                "macos-arm64-base",
+                "macos-xcode-base"
+            ],
+            "displayName": "arm64 Xcode sanitize=undefined",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
                 "SANITIZE": "undefined"
@@ -863,6 +1031,102 @@
             ],
             "displayName": "arm64 Ninja sanitize=undefined",
             "configurePreset": "macos-arm64-ninja-ubsan"
+        },
+        {
+            "name": "macos-x64-xcode-debug",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "x64 Xcode Debug",
+            "configurePreset": "macos-x64-xcode-debug"
+        },
+        {
+            "name": "macos-x64-xcode-release",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "x64 Xcode Release",
+            "configurePreset": "macos-x64-xcode-release"
+        },
+        {
+            "name": "macos-x64-xcode-asan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "x64 Xcode sanitize=address",
+            "configurePreset": "macos-x64-xcode-asan"
+        },
+        {
+            "name": "macos-x64-xcode-tsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "x64 Xcode sanitize=thread",
+            "configurePreset": "macos-x64-xcode-tsan"
+        },
+        {
+            "name": "macos-x64-xcode-lsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "x64 Xcode sanitize=leak",
+            "configurePreset": "macos-x64-xcode-lsan"
+        },
+        {
+            "name": "macos-x64-xcode-ubsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "x64 Xcode sanitize=undefined",
+            "configurePreset": "macos-x64-xcode-ubsan"
+        },
+        {
+            "name": "macos-arm64-xcode-debug",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Xcode Debug",
+            "configurePreset": "macos-arm64-xcode-debug"
+        },
+        {
+            "name": "macos-arm64-xcode-release",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Xcode Release",
+            "configurePreset": "macos-arm64-xcode-release"
+        },
+        {
+            "name": "macos-arm64-xcode-asan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Xcode sanitize=address",
+            "configurePreset": "macos-arm64-xcode-asan"
+        },
+        {
+            "name": "macos-arm64-xcode-tsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Xcode sanitize=thread",
+            "configurePreset": "macos-arm64-xcode-tsan"
+        },
+        {
+            "name": "macos-arm64-xcode-lsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Xcode sanitize=leak",
+            "configurePreset": "macos-arm64-xcode-lsan"
+        },
+        {
+            "name": "macos-arm64-xcode-ubsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Xcode sanitize=undefined",
+            "configurePreset": "macos-arm64-xcode-ubsan"
         }
     ],
     "testPresets": [
@@ -1124,6 +1388,102 @@
             ],
             "displayName": "arm64 Ninja sanitize=undefined",
             "configurePreset": "macos-arm64-ninja-ubsan"
+        },
+        {
+            "name": "macos-x64-xcode-debug",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "x64 Xcode Debug",
+            "configurePreset": "macos-x64-xcode-debug"
+        },
+        {
+            "name": "macos-x64-xcode-release",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "x64 Xcode Release",
+            "configurePreset": "macos-x64-xcode-release"
+        },
+        {
+            "name": "macos-x64-xcode-asan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "x64 Xcode sanitize=address",
+            "configurePreset": "macos-x64-xcode-asan"
+        },
+        {
+            "name": "macos-x64-xcode-tsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "x64 Xcode sanitize=thread",
+            "configurePreset": "macos-x64-xcode-tsan"
+        },
+        {
+            "name": "macos-x64-xcode-lsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "x64 Xcode sanitize=leak",
+            "configurePreset": "macos-x64-xcode-lsan"
+        },
+        {
+            "name": "macos-x64-xcode-ubsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "x64 Xcode sanitize=undefined",
+            "configurePreset": "macos-x64-xcode-ubsan"
+        },
+        {
+            "name": "macos-arm64-xcode-debug",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Xcode Debug",
+            "configurePreset": "macos-arm64-xcode-debug"
+        },
+        {
+            "name": "macos-arm64-xcode-release",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Xcode Release",
+            "configurePreset": "macos-arm64-xcode-release"
+        },
+        {
+            "name": "macos-arm64-xcode-asan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Xcode sanitize=address",
+            "configurePreset": "macos-arm64-xcode-asan"
+        },
+        {
+            "name": "macos-arm64-xcode-tsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Xcode sanitize=thread",
+            "configurePreset": "macos-arm64-xcode-tsan"
+        },
+        {
+            "name": "macos-arm64-xcode-lsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Xcode sanitize=leak",
+            "configurePreset": "macos-arm64-xcode-lsan"
+        },
+        {
+            "name": "macos-arm64-xcode-ubsan",
+            "inherits": [
+                "common-base"
+            ],
+            "displayName": "arm64 Xcode sanitize=undefined",
+            "configurePreset": "macos-arm64-xcode-ubsan"
         }
     ]
 }
