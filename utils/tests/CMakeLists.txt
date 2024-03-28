@@ -1,7 +1,7 @@
 include(${CMAKE_SOURCE_DIR}/cmake/compiler_flags.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/cpp_standard.cmake)
 
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.22)
 
 find_package(Catch2 3 CONFIG REQUIRED)
 
