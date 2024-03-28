@@ -198,8 +198,8 @@ public:
             = rowIndices
             | ranges::views::transform(
                   [this, startCol, numCols](std::size_t const rowIndex) {
-                      auto rowStart = mFlatGrid.begin() + rowIndex * mWidth
-                          + startCol;
+                      const auto rowStart{
+                          mFlatGrid.begin() + rowIndex * mWidth + startCol};
                       return std::vector<T>(rowStart, rowStart + numCols);
                   })
             | ranges::to<std::vector<std::vector<T>>>();
@@ -221,15 +221,12 @@ public:
      */
     void flipVertical() noexcept
     {
-        // Calculate the total number of swaps needed
         std::size_t const totalSwaps = mHeight / 2;
 
         for (std::size_t i = 0; i < totalSwaps; ++i) {
-            auto topRowStart = mFlatGrid.begin() + i * mWidth;
-            auto bottomRowStart = mFlatGrid.begin()
-                + (mHeight - 1 - i) * mWidth;
-
-            // Perform the swap row-wise
+            auto const topRowStart{mFlatGrid.begin() + i * mWidth};
+            auto const bottomRowStart{
+                mFlatGrid.begin() + (mHeight - 1 - i) * mWidth};
             ranges::swap_ranges(
                 topRowStart, topRowStart + mWidth, bottomRowStart);
         }
