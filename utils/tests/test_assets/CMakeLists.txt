@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.22)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/EmptyFile.txt
                ${CMAKE_CURRENT_BINARY_DIR}/EmptyFile.txt COPYONLY)

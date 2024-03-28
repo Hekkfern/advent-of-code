@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.22)
 
 if(GENERATE_YEARS STREQUAL "" OR "2021" IN_LIST GENERATE_YEARS)
   add_subdirectory(2021)

@@ -1,6 +1,6 @@
 include(${CMAKE_SOURCE_DIR}/cmake/aoc_puzzles.cmake)
 
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.22)
 
 # aoc_2021_01_solutions
 set(_LIB_NAME "aoc_2021_1_solutions")
