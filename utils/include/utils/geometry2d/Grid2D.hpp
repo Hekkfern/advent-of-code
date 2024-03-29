@@ -6,8 +6,11 @@
 #include <range/v3/algorithm/find_if.hpp>
 #include <range/v3/algorithm/swap_ranges.hpp>
 #include <range/v3/range/conversion.hpp>
+#include <range/v3/view.hpp>
 #include <range/v3/view/chunk.hpp>
 #include <range/v3/view/drop.hpp>
+#include <range/v3/view/enumerate.hpp>
+#include <range/v3/view/filter.hpp>
 #include <range/v3/view/iota.hpp>
 #include <range/v3/view/join.hpp>
 #include <range/v3/view/stride.hpp>
@@ -295,15 +298,15 @@ public:
     std::vector<std::pair<std::size_t, std::size_t>>
     findAll(T const& value) const noexcept
     {
-        std::vector<std::pair<std::size_t, std::size_t>> positions;
-        for (std::size_t row = 0; row < mHeight; ++row) {
-            for (std::size_t col = 0; col < mWidth; ++col) {
-                if (mFlatGrid[row * mWidth + col] == value) {
-                    positions.emplace_back(col, row);
-                }
-            }
-        }
-        return positions;
+        return mFlatGrid | ranges::views::enumerate
+            | ranges::views::filter([&value](auto const& pair) {
+                   return pair.second == value;
+               })
+            | ranges::views::transform([this](auto const& pair) {
+                   std::size_t index = pair.first;
+                   return std::make_pair(index % mWidth, index / mWidth);
+               })
+            | ranges::to<std::vector<std::pair<std::size_t, std::size_t>>>();
     }
     /**
      * @brief      Resizes the grid to a new width and height, filling new
@@ -315,8 +318,8 @@ public:
      *                           T{}.
      */
     void resize(
-        std::size_t newHeight,
-        std::size_t newWidth,
+        std::size_t const newHeight,
+        std::size_t const newWidth,
         T const& defaultValue = T{}) noexcept
     {
         std::vector<T> newFlatGrid(newHeight * newWidth, defaultValue);

@@ -312,17 +312,17 @@ TEST_CASE("[Grid2D] resize() method", "[utils][Grid2D]")
     Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
     SECTION("Increase")
     {
-        grid2D.resize(4, 3, 0);
-        REQUIRE(grid2D.getWidth() == 3);
-        REQUIRE(grid2D.getHeight() == 4);
-        CHECK(grid2D.at(2, 3) == 0);
+        grid2D.resize(4ULL, 3ULL, 0);
+        REQUIRE(grid2D.getWidth() == 3ULL);
+        REQUIRE(grid2D.getHeight() == 4ULL);
+        CHECK(grid2D.at(2ULL, 3ULL) == 0);
     }
     SECTION("Decrease")
     {
-        grid2D.resize(2, 1, 0);
-        REQUIRE(grid2D.getWidth() == 1);
-        REQUIRE(grid2D.getHeight() == 2);
-        CHECK(grid2D.at(0, 0) == 1);
-        CHECK(grid2D.at(0, 1) == 3);
+        grid2D.resize(2ULL, 1ULL, 0);
+        REQUIRE(grid2D.getWidth() == 1ULL);
+        REQUIRE(grid2D.getHeight() == 2ULL);
+        CHECK(grid2D.at(0ULL, 0ULL) == 1);
+        CHECK(grid2D.at(0ULL, 1ULL) == 3);
     }
 }
