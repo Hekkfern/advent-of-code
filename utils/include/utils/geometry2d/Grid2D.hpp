@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <functional>
 #include <optional>
+#include <range/v3/algorithm/find_if.hpp>
 #include <range/v3/algorithm/swap_ranges.hpp>
 #include <range/v3/range/conversion.hpp>
 #include <range/v3/view/chunk.hpp>
@@ -272,12 +273,14 @@ public:
     std::optional<std::pair<std::size_t, std::size_t>>
     findFirst(T const& value) const noexcept
     {
-        for (std::size_t row = 0; row < mHeight; ++row) {
-            for (std::size_t col = 0; col < mWidth; ++col) {
-                if (mFlatGrid[row * mWidth + col] == value) {
-                    return std::make_pair(col, row);
-                }
-            }
+        auto const it = ranges::find_if(
+            mFlatGrid, [&value = std::as_const(value)](T const& item) {
+                return item == value;
+            });
+
+        if (it != mFlatGrid.end()) {
+            std::size_t const index = std::distance(mFlatGrid.begin(), it);
+            return std::make_pair(index % mWidth, index / mWidth);
         }
         return {};
     }
