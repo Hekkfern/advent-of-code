@@ -193,7 +193,7 @@ public:
             return {};
         }
 
-        auto rowIndices = ranges::views::ints(startRow, startRow + numRows);
+        auto rowIndices = ranges::views::iota(startRow, startRow + numRows);
         auto subRows
             = rowIndices
             | ranges::views::transform(
