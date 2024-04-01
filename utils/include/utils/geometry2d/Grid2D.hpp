@@ -102,9 +102,11 @@ public:
      * @param[in]  callback  The callback function to call for each item. The
      *                       callback function should return true to continue
      *                       iterating, or false to cancel it.
+     *
+     * @{
      */
     void iterateRow(
-        std::size_t rowIndex,
+        std::size_t const rowIndex,
         std::function<bool(T const& item)> callback) const noexcept
     {
         if (rowIndex >= mHeight) {
@@ -126,6 +128,23 @@ public:
             }
         }
     }
+    void iterateRow(
+        std::size_t const rowIndex,
+        std::function<bool(T& item)> callback) noexcept
+    {
+        if (rowIndex >= mHeight) {
+            return;
+        }
+
+        auto startIt = mFlatGrid.begin() + rowIndex * mWidth;
+        auto endIt = startIt + mWidth;
+        for (auto it = startIt; it != endIt; ++it) {
+            if (!callback(*it)) {
+                break;
+            }
+        }
+    }
+    /** }@ */
     /**
      * @brief      Iterates over each item in the specified column.
      *
@@ -133,6 +152,8 @@ public:
      * @param[in]  callback  The callback function to call for each item. The
      *                       callback function should return true to continue
      *                       iterating, or false to cancel it.
+     *
+     * @{
      */
     void iterateColumn(
         std::size_t colIndex,
@@ -155,6 +176,21 @@ public:
             }
         }
     }
+    void iterateColumn(
+        std::size_t colIndex, std::function<bool(T& item)> callback) noexcept
+    {
+        if (colIndex >= mWidth) {
+            return;
+        }
+
+        for (std::size_t rowIndex{0ULL}; rowIndex < mHeight; ++rowIndex) {
+            auto& item{mFlatGrid[rowIndex * mWidth + colIndex]};
+            if (!callback(item)) {
+                break;
+            }
+        }
+    }
+    /** }@ */
     /**
      * @brief      Accesses the element at the specified row and column.
      *

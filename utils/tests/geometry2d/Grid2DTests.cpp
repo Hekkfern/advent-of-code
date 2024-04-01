@@ -111,49 +111,83 @@ TEST_CASE("[Grid2D] Equality operator", "[utils][Grid2D]")
 
 TEST_CASE("[Grid2D] iterateRow() method", "[utils][Grid2D]")
 {
-    SECTION("Empty grid")
+    SECTION("Immutable")
     {
-        Grid2D<int> const grid2D;
-        int count{0};
-        grid2D.iterateRow(1, [&count](int const) -> bool {
-            ++count;
-            return true;
-        });
-        CHECK(count == 0);
+        SECTION("Empty grid")
+        {
+            Grid2D<int> const grid2D;
+            int count{0};
+            grid2D.iterateRow(1, [&count](int const) -> bool {
+                ++count;
+                return true;
+            });
+            CHECK(count == 0);
+        }
+        SECTION("Filled grid")
+        {
+            Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+            int count{0};
+            grid2D.iterateRow(1, [&count](int const) -> bool {
+                ++count;
+                return true;
+            });
+            CHECK(count == 2);
+        }
     }
-    SECTION("Filled grid")
+    SECTION("Mutable")
     {
-        Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
-        int count{0};
-        grid2D.iterateRow(1, [&count](int const) -> bool {
-            ++count;
+        Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+        grid2D.iterateRow(1, [](int& item) -> bool {
+            ++item;
             return true;
         });
-        CHECK(count == 2);
+        CHECK(grid2D.at(0, 0) == 1);
+        CHECK(grid2D.at(0, 1) == 2);
+        CHECK(grid2D.at(1, 0) == 4);
+        CHECK(grid2D.at(1, 1) == 5);
+        CHECK(grid2D.at(2, 0) == 5);
+        CHECK(grid2D.at(2, 1) == 6);
     }
 }
 
 TEST_CASE("[Grid2D] iterateColumn() method", "[utils][Grid2D]")
 {
-    SECTION("Empty grid")
+    SECTION("Immutable")
     {
-        Grid2D<int> const grid2D;
-        int count{0};
-        grid2D.iterateColumn(1, [&count](int const) -> bool {
-            ++count;
-            return true;
-        });
-        CHECK(count == 0);
+        SECTION("Empty grid")
+        {
+            Grid2D<int> const grid2D;
+            int count{0};
+            grid2D.iterateColumn(1, [&count](int const) -> bool {
+                ++count;
+                return true;
+            });
+            CHECK(count == 0);
+        }
+        SECTION("Filled grid")
+        {
+            Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+            int count{0};
+            grid2D.iterateColumn(1, [&count](int const) -> bool {
+                ++count;
+                return true;
+            });
+            CHECK(count == 3);
+        }
     }
-    SECTION("Filled grid")
+    SECTION("Mutable")
     {
-        Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
-        int count{0};
-        grid2D.iterateColumn(1, [&count](int const) -> bool {
-            ++count;
+        Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+        grid2D.iterateColumn(1, [](int& item) -> bool {
+            ++item;
             return true;
         });
-        CHECK(count == 3);
+        CHECK(grid2D.at(0, 0) == 1);
+        CHECK(grid2D.at(0, 1) == 3);
+        CHECK(grid2D.at(1, 0) == 3);
+        CHECK(grid2D.at(1, 1) == 5);
+        CHECK(grid2D.at(2, 0) == 5);
+        CHECK(grid2D.at(2, 1) == 7);
     }
 }
 
