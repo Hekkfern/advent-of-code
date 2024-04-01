@@ -1,6 +1,8 @@
 #include "solutions.hpp"
 
-#include <utils/File.hpp>
+#include <fstream>
+#include <range/v3/
+#include <range/v3/algorithm/fold_left.hpp>
 
 namespace aoc_2023_15 {
 
@@ -12,8 +14,11 @@ namespace aoc_2023_15 {
 
 std::string solvePart1(std::filesystem::path const& filePath)
 {
-    (void)filePath;
-    return "";
+    std::ifstream fin(filePath);
+    std::size_t accummulated{ranges::fold_left(std::istreambuf_iterator{fin},std::istreambuf_iterator{}, [](){})};
+
+
+    return std::to_string(accummulated);
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
