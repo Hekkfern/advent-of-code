@@ -26,7 +26,8 @@ set(_SOURCES_UTILS_ALGORITHMS include/utils/algorithms/ClampedCountIf.hpp
 set(_SOURCES_UTILS_INTERVAL include/utils/interval/Interval.hpp
                             include/utils/interval/IntervalSet.hpp)
 set(_SOURCES_UTILS_CACHE include/utils/cache/Memoization.hpp
-                         include/utils/cache/LRUCache.hpp)
+                         include/utils/cache/LRUCache.hpp
+        include/utils/cache/LoopCache.hpp)
 set(_SOURCES_UTILS_GEOMETRY2D
     include/utils/geometry2d/Direction2D.hpp
     include/utils/geometry2d/Point2D.hpp

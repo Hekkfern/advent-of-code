@@ -78,6 +78,20 @@ TEST_CASE("[LRUCache] get() / put() methods", "[utils][LRUCache]")
     }
 }
 
+TEST_CASE("[LRUCache] Overwrite item", "[utils][LRUCache]")
+{
+    LRUCache<int, int> cache{10};
+    CHECK(cache.size() == 0ULL);
+    // add new item
+    cache.put(6, 1000);
+    CHECK(cache.get(6) == 1000);
+    CHECK(cache.size() == 1ULL);
+    // overwrite
+    cache.put(6, 2000);
+    CHECK(cache.get(6) == 2000);
+    CHECK(cache.size() == 1ULL);
+}
+
 TEST_CASE("[LRUCache] exists() methods", "[utils][LRUCache]")
 {
     SECTION("Numbers")
