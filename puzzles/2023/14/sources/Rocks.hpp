@@ -39,6 +39,22 @@ public:
      * @return     The total load of all the rounded rocks.
      */
     [[nodiscard]] uint64_t calculateLoad() const noexcept;
+    /**
+     * @brief      Equality operator.
+     *
+     * @param[in]  other  The other object.
+     *
+     * @return     The result of the equality.
+     */
+    [[nodiscard]] constexpr bool operator==(Rocks const& other) const noexcept
+    {
+        return mFlatGrid == other.mFlatGrid && mWidth == other.mWidth
+            && mHeight == other.mHeight;
+    }
+    /**
+     * Friend statement for the hash calculator
+     */
+    friend std::hash<Rocks>;
 
 private:
     /**
@@ -58,3 +74,17 @@ private:
 };
 
 } // namespace aoc_2023_14
+
+template <>
+struct std::hash<aoc_2023_14::Rocks> {
+    std::size_t operator()(aoc_2023_14::Rocks const& rocks) const noexcept
+    {
+        std::size_t result = 17;
+        for (char c : rocks.mFlatGrid) {
+            result = result * 31 + std::hash<char>()(c);
+        }
+        result = result * 31 + std::hash<std::size_t>()(rocks.mWidth);
+        result = result * 31 + std::hash<std::size_t>()(rocks.mHeight);
+        return result;
+    }
+};

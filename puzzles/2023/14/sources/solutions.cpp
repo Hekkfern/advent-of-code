@@ -2,8 +2,10 @@
 
 #include "Rocks.hpp"
 #include <range/v3/range/conversion.hpp>
+#include <range/v3/view/iota.hpp>
 #include <range/v3/view/join.hpp>
 #include <utils/File.hpp>
+#include <utils/cache/LRUCache.hpp>
 
 namespace aoc_2023_14 {
 
@@ -55,10 +57,21 @@ std::string solvePart1(std::filesystem::path const& filePath)
 std::string solvePart2(std::filesystem::path const& filePath)
 {
     auto rocks{parseInput(filePath)};
-
-    //TODO
-
-
+    /** Cache whose "key" is the status of the rocks before the cycle, and the
+     * "value" is the status after the cycle.
+     */
+    utils::cache::LRUCache<Rocks, Rocks> cache{100ULL};
+    for ([[maybe_unused]] auto const i :
+         ranges::views::iota(0ULL, 1'000'000'000ULL)) {
+        auto cachedResult{cache.get(rocks)};
+        if (!cachedResult) {
+            auto originalRocks{rocks};
+            executeOneCycle(rocks);
+            cache.put(originalRocks, rocks);
+        } else {
+            rocks = *cachedResult;
+        }
+    }
     return std::to_string(rocks.calculateLoad());
 }
 
