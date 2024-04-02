@@ -56,12 +56,12 @@ void run(
         if (auto const loopIt{loops.find(item)};
             loopIt != loops.cend() && !finishManually) {
             // loop found in the cache
-            if (iterationCounter + loopIt->second > maxNumIterations) {
+            if (iterationCounter + loopIt->second <= maxNumIterations) {
+                iterationCounter += loopIt->second;
+            } else {
                 finishManually = true;
                 iterationAction(item);
                 ++iterationCounter;
-            } else {
-                iterationCounter += loopIt->second;
             }
         } else {
             // loop not found in the cache
