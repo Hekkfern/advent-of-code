@@ -51,18 +51,18 @@ void run(
     uint64_t iterationCounter{0ULL};
     std::unordered_map<T, uint64_t> loops;
     std::unordered_map<T, detail::VisitedInfo<T>> visited;
-    bool finishManually{false};
     while (iterationCounter < maxNumIterations) {
-        if (auto const loopIt{loops.find(item)};
-            loopIt != loops.cend() && !finishManually) {
+        if (auto const loopIt{loops.find(item)}; loopIt != loops.cend()) {
             // loop found in the cache
-            if (iterationCounter + loopIt->second <= maxNumIterations) {
-                iterationCounter += loopIt->second;
-            } else {
-                finishManually = true;
+            // Remove all the loops and execute only the remaining actions
+            for (int64_t remaining{static_cast<int64_t>(
+                     (maxNumIterations - iterationCounter)
+                     % (iterationCounter - loopIt->second))};
+                 remaining > 0;
+                 --remaining) {
                 iterationAction(item);
-                ++iterationCounter;
             }
+            iterationCounter = maxNumIterations;
         } else {
             // loop not found in the cache
             if (auto const visitedIt{visited.find(item)};
