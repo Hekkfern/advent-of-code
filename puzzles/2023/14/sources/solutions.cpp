@@ -29,6 +29,18 @@ Rocks parseInput(std::filesystem::path const& filePath)
         rocks.size()};
 }
 
+/**
+ * \brief ???
+ * \param[in,out] rocks  ???
+ */
+void executeOneCycle(Rocks& rocks)
+{
+    rocks.shiftNorth();
+    rocks.shiftWest();
+    rocks.shiftSouth();
+    rocks.shiftEast();
+}
+
 // ---------- End of Private Methods ----------
 
 // ---------- Public Methods ----------
@@ -42,8 +54,12 @@ std::string solvePart1(std::filesystem::path const& filePath)
 
 std::string solvePart2(std::filesystem::path const& filePath)
 {
-    (void)filePath;
-    return "";
+    auto rocks{parseInput(filePath)};
+
+    //TODO
+
+
+    return std::to_string(rocks.calculateLoad());
 }
 
 // ---------- End of Public Methods ----------
