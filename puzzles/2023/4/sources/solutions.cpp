@@ -70,7 +70,7 @@ std::string solvePart2(std::filesystem::path const& filePath)
             auto numMatchingNumbers{card.calculateMatchingNumbers()};
             // increase number of copies of the following cards
             if (numMatchingNumbers > 0UL) {
-                for (const auto index :
+                for (auto const index :
                      ranges::views::iota(0UL, numMatchingNumbers)) {
                     copies[card.cardId + static_cast<Card::CardId>(index + 1)]
                         += copies[card.cardId];

@@ -60,7 +60,7 @@ Monkey parseMonkey(std::ifstream& fileStream)
     monkeyOperand = (regexResult[2] == "old")
         ? std::nullopt
         : std::make_optional(
-            utils::string::toNumber<WorryLevel>(regexResult[2]));
+              utils::string::toNumber<WorryLevel>(regexResult[2]));
     Operation monkeyOperation{monkeyOperator, monkeyOperand};
     // line 4
     std::getline(fileStream, line);

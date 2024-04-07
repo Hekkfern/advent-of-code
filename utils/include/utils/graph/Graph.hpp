@@ -53,7 +53,7 @@ public:
      * @return     True if the vertex was added. False, otherwise.
      */
     template <class U>
-    requires std::convertible_to<U, T>
+        requires std::convertible_to<U, T>
     bool addVertex(std::string&& name, U&& info)
     {
         std::string key{name};
@@ -128,7 +128,7 @@ public:
         // delete edges
         ranges::for_each(mVertices, [&erasableVertices](auto& item) {
             ranges::for_each(
-                erasableVertices, [&item](const std::string& vertexName) {
+                erasableVertices, [&item](std::string const& vertexName) {
                     item.second.removeEdge(vertexName);
                 });
         });

@@ -63,9 +63,7 @@ concept IntegerType = requires(T param) {
  */
 template <typename T>
 concept Streamable = requires(std::ostream& os, T value) {
-    {
-        os << value
-    } -> std::convertible_to<std::ostream&>;
+    { os << value } -> std::convertible_to<std::ostream&>;
 };
 
 /**
@@ -75,7 +73,5 @@ concept Streamable = requires(std::ostream& os, T value) {
  */
 template <typename T>
 concept Hashable = requires(T value) {
-    {
-        std::hash<T>{}(value)
-    } -> std::convertible_to<std::size_t>;
+    { std::hash<T>{}(value) } -> std::convertible_to<std::size_t>;
 };

@@ -33,7 +33,7 @@ public:
     explicit SquareDiamond2D(
         Point2D<T> const& centerPoint, Point2D<T> const& perimeterPoint)
         : SquareDiamond2D{
-            centerPoint, Vector2D{centerPoint, perimeterPoint}.distance()}
+              centerPoint, Vector2D{centerPoint, perimeterPoint}.distance()}
     {
     }
     /**

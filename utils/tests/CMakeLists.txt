@@ -12,7 +12,7 @@ set(_TESTFILES StringTests.cpp MathTests.cpp FileTests.cpp
 set(_TESTFILES_ALGORITHMS algorithms/ClampedCountIfTests.cpp
                           algorithms/SteppedIotaTests.cpp)
 set(_TESTFILES_CACHE cache/LRUCacheTests.cpp cache/MemoizationTests.cpp
-        cache/LoopCacheTests.cpp)
+                     cache/LoopCacheTests.cpp)
 set(_TESTFILES_INTERVAL interval/IntervalTests.cpp
                         interval/IntervalSetTests.cpp)
 set(_TESTFILES_GEOMETRY2D

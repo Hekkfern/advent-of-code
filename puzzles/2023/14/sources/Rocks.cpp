@@ -54,7 +54,7 @@ void shift(auto rng)
 namespace aoc_2023_14 {
 
 Rocks::Rocks(
-    std::vector<char>&& flatGrid,
+    std::string&& flatGrid,
     std::size_t const width,
     std::size_t const height) noexcept
     : mFlatGrid{std::move(flatGrid)}
