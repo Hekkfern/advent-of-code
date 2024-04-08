@@ -8,7 +8,7 @@
 namespace utils::cache {
 
 template <typename Key, typename Value>
-    requires std::equality_comparable<Key> && Hashable<Key>
+requires std::equality_comparable<Key> && Hashable<Key>
 class LRUCache {
 public:
     /**

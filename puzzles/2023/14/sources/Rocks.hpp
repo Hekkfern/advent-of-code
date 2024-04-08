@@ -44,7 +44,7 @@ public:
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] constexpr bool operator==(Rocks const& other) const noexcept
+    [[nodiscard]] bool operator==(Rocks const& other) const noexcept
     {
         return mFlatGrid == other.mFlatGrid && mWidth == other.mWidth
             && mHeight == other.mHeight;

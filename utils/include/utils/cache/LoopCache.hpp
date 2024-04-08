@@ -41,7 +41,7 @@ struct VisitedInfo {
  *   of type T&.
  */
 template <typename T>
-    requires std::equality_comparable<T> && Hashable<T>
+requires std::equality_comparable<T> && Hashable<T>
 void run(
     T& item,
     std::size_t const maxNumIterations,
@@ -55,9 +55,9 @@ void run(
         if (auto const loopIt{loops.find(item)}; loopIt != loops.cend()) {
             // loop found in the cache
             // Remove all the loops and execute only the remaining actions
-            for (int64_t remaining{static_cast<int64_t>(
+            for (int64_t remaining = static_cast<int64_t>(
                      (maxNumIterations - iterationCounter)
-                     % (iterationCounter - loopIt->second))};
+                     % (iterationCounter - loopIt->second));
                  remaining > 0;
                  --remaining) {
                 iterationAction(item);

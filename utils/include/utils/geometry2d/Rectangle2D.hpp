@@ -44,9 +44,9 @@ public:
     explicit Rectangle2D(
         Point2D<T> const& bottomLeft, Vector2D<T> const& diagonal)
         : Rectangle2D{
-              bottomLeft,
-              static_cast<uint32_t>(diagonal.size()[0]),
-              static_cast<uint32_t>(diagonal.size()[1])}
+            bottomLeft,
+            static_cast<uint32_t>(diagonal.size()[0]),
+            static_cast<uint32_t>(diagonal.size()[1])}
     {
     }
     /**
