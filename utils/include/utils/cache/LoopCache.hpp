@@ -51,6 +51,7 @@ void run(
     uint64_t iterationCounter{0ULL};
     std::unordered_map<T, uint64_t> loops;
     std::unordered_map<T, detail::VisitedInfo<T>> visited;
+    visited.reserve(256);
     while (iterationCounter < maxNumIterations) {
         if (auto const loopIt{loops.find(item)}; loopIt != loops.cend()) {
             // loop found in the cache
