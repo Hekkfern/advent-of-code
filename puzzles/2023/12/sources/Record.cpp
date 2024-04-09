@@ -18,7 +18,7 @@ enum class ExpandedSpringStatus { OneDamaged, GroupOfOperational };
  * ExpandedSpringStatus::GroupOfOperational.
  */
 std::vector<ExpandedSpringStatus> expandContiguousGroupInfo(
-    std::vector<int32_t> const& groupInfo, const int32_t repetitions = 1)
+    std::vector<int32_t> const& groupInfo, int32_t const repetitions = 1)
 {
     std::vector<ExpandedSpringStatus> result{
         ExpandedSpringStatus::GroupOfOperational};

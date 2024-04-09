@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include <vector>
+#include <string>
 
 namespace aoc_2023_14 {
 
@@ -15,9 +15,7 @@ public:
      * @param[in]  height    The height of the grid.
      */
     Rocks(
-        std::vector<char>&& flatGrid,
-        std::size_t width,
-        std::size_t height) noexcept;
+        std::string&& flatGrid, std::size_t width, std::size_t height) noexcept;
     /**
      * @brief      Shift all the rounded rocks to the given direction.
      *
@@ -46,7 +44,7 @@ public:
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] constexpr bool operator==(Rocks const& other) const noexcept
+    [[nodiscard]] bool operator==(Rocks const& other) const noexcept
     {
         return mFlatGrid == other.mFlatGrid && mWidth == other.mWidth
             && mHeight == other.mHeight;
@@ -62,7 +60,7 @@ private:
      *
      * @details    Rows are concatenated one after another.
      */
-    std::vector<char> mFlatGrid;
+    std::string mFlatGrid;
     /**
      * The width of the grid.
      */
@@ -80,9 +78,7 @@ struct std::hash<aoc_2023_14::Rocks> {
     std::size_t operator()(aoc_2023_14::Rocks const& rocks) const noexcept
     {
         std::size_t result = 17;
-        for (char c : rocks.mFlatGrid) {
-            result = result * 31 + std::hash<char>()(c);
-        }
+        result = result * 31 + std::hash<std::string>()(rocks.mFlatGrid);
         result = result * 31 + std::hash<std::size_t>()(rocks.mWidth);
         result = result * 31 + std::hash<std::size_t>()(rocks.mHeight);
         return result;

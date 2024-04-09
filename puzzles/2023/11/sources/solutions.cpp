@@ -75,19 +75,19 @@ uint64_t calculateAccumulatedShortestPaths(
         2,
         [&galaxyMap, &accumShortestPaths, emptyMultiplier](
             std::vector<std::size_t> const& combination) -> void {
-            const auto& galaxy1{galaxyMap.galaxies.at(combination[0])};
-            const auto& galaxy2{galaxyMap.galaxies.at(combination[1])};
-            const uint64_t distance{
+            auto const& galaxy1{galaxyMap.galaxies.at(combination[0])};
+            auto const& galaxy2{galaxyMap.galaxies.at(combination[1])};
+            uint64_t const distance{
                 utils::geometry2d::Vector2D{galaxy1, galaxy2}.distance()};
-            const uint64_t numEmptyRows{static_cast<uint64_t>(ranges::count_if(
+            uint64_t const numEmptyRows{static_cast<uint64_t>(ranges::count_if(
                 galaxyMap.emptyRows,
-                [&galaxy1, &galaxy2](const int32_t rowIndex) -> bool {
+                [&galaxy1, &galaxy2](int32_t const rowIndex) -> bool {
                     return std::min(galaxy1.getY(), galaxy2.getY()) < rowIndex
                         && rowIndex < std::max(galaxy1.getY(), galaxy2.getY());
                 }))};
-            const uint64_t numEmptyCols{static_cast<uint64_t>(ranges::count_if(
+            uint64_t const numEmptyCols{static_cast<uint64_t>(ranges::count_if(
                 galaxyMap.emptyColumns,
-                [&galaxy1, &galaxy2](const int32_t colIndex) -> bool {
+                [&galaxy1, &galaxy2](int32_t const colIndex) -> bool {
                     return std::min(galaxy1.getX(), galaxy2.getX()) < colIndex
                         && colIndex < std::max(galaxy1.getX(), galaxy2.getX());
                 }))};

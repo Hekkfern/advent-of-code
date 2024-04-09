@@ -109,7 +109,7 @@ std::string solvePart2(std::filesystem::path const& filePath)
                         return ranges::any_of(
                             part.line.getVertexes(),
                             [&gear = std::as_const(gear)](
-                                const utils::geometry2d::Point2D<>& vertex)
+                                utils::geometry2d::Point2D<> const& vertex)
                                 -> bool {
                                 utils::geometry2d::Vector2D<> v{
                                     vertex, gear.position};

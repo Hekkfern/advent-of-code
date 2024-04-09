@@ -128,7 +128,7 @@ public:
         // delete edges
         ranges::for_each(mVertices, [&erasableVertices](auto& item) {
             ranges::for_each(
-                erasableVertices, [&item](const std::string& vertexName) {
+                erasableVertices, [&item](std::string const& vertexName) {
                     item.second.removeEdge(vertexName);
                 });
         });

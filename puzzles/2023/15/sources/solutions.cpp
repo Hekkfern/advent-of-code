@@ -15,8 +15,8 @@ namespace aoc_2023_15 {
 std::string solvePart1(std::filesystem::path const& filePath)
 {
     std::ifstream fin(filePath);
-    std::size_t accummulated{ranges::fold_left(std::istreambuf_iterator{fin},std::istreambuf_iterator{}, [](){})};
-
+    std::size_t accummulated{ranges::fold_left(
+        std::istreambuf_iterator{fin}, std::istreambuf_iterator{}, []() {})};
 
     return std::to_string(accummulated);
 }

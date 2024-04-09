@@ -238,7 +238,7 @@ public:
             = rowIndices
             | ranges::views::transform(
                   [this, startCol, numCols](std::size_t const rowIndex) {
-                      const auto rowStart{
+                      auto const rowStart{
                           mFlatGrid.begin() + rowIndex * mWidth + startCol};
                       return std::vector<T>(rowStart, rowStart + numCols);
                   })

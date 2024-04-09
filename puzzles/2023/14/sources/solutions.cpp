@@ -25,7 +25,7 @@ Rocks parseInput(std::filesystem::path const& filePath)
             rocks.emplace_back(line);
         });
     return Rocks{
-        rocks | ranges::views::join | ranges::to<std::vector>,
+        rocks | ranges::views::join | ranges::to<std::string>,
         rocks[0].size(),
         rocks.size()};
 }

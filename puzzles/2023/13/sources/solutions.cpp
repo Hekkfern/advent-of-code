@@ -83,12 +83,12 @@ std::string solvePart1(std::filesystem::path const& filePath)
         0ULL,
         [](uint64_t const accumulated, Pattern const& pattern) -> uint64_t {
             uint64_t value{0ULL};
-            const auto verticalReflectionLine{
+            auto const verticalReflectionLine{
                 pattern.searchVerticalReflectionLine()};
             if (verticalReflectionLine) {
                 value += verticalReflectionLine->first + 1ULL;
             }
-            const auto horizontalReflectionLine{
+            auto const horizontalReflectionLine{
                 pattern.searchHorizontalReflectionLine()};
             if (horizontalReflectionLine) {
                 value += 100ULL * (horizontalReflectionLine->first + 1ULL);
@@ -106,12 +106,12 @@ std::string solvePart2(std::filesystem::path const& filePath)
         0ULL,
         [](uint64_t const accumulated, Pattern const& pattern) -> uint64_t {
             uint64_t value{0ULL};
-            const auto verticalReflectionLine{
+            auto const verticalReflectionLine{
                 pattern.searchVerticalReflectionLineWithSingleFix()};
             if (verticalReflectionLine) {
                 value += verticalReflectionLine->first + 1ULL;
             }
-            const auto horizontalReflectionLine{
+            auto const horizontalReflectionLine{
                 pattern.searchHorizontalReflectionLineWithSingleFix()};
             if (horizontalReflectionLine) {
                 value += 100ULL * (horizontalReflectionLine->first + 1ULL);
