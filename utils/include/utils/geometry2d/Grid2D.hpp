@@ -123,7 +123,7 @@ public:
               });
 
         for (auto const& item : rowItems) {
-            if (!callback(item)) {
+            if (!std::invoke(callback, item)) {
                 break; // Cancel the iteration if callback returns false
             }
         }
@@ -139,7 +139,7 @@ public:
         auto startIt = mFlatGrid.begin() + rowIndex * mWidth;
         auto endIt = startIt + mWidth;
         for (auto it = startIt; it != endIt; ++it) {
-            if (!callback(*it)) {
+            if (!std::invoke(callback, *it)) {
                 break;
             }
         }
@@ -171,7 +171,7 @@ public:
                 });
 
         for (auto const& item : columnItems) {
-            if (!callback(item)) {
+            if (!std::invoke(callback, item)) {
                 break; // Cancel the iteration if callback returns false
             }
         }
@@ -185,7 +185,7 @@ public:
 
         for (std::size_t rowIndex{0ULL}; rowIndex < mHeight; ++rowIndex) {
             auto& item{mFlatGrid[rowIndex * mWidth + colIndex]};
-            if (!callback(item)) {
+            if (!std::invoke(callback, item)) {
                 break;
             }
         }
