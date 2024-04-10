@@ -3,18 +3,10 @@
 #include <cassert>
 #include <cstdint>
 #include <functional>
-#include <unordered_map>
-#include <utils/Concepts.hpp>
+#include <range/v3/algorithm/contains.hpp>
+#include <vector>
 
 namespace utils::cache::LoopCache {
-
-namespace detail {
-template <typename T>
-struct VisitedInfo {
-    T modifiedItem;
-    uint64_t iterationCounter;
-};
-} // namespace detail
 
 /**
  * @brief         Executes a given action on an item repeatedly until a maximum
@@ -23,8 +15,7 @@ struct VisitedInfo {
  * @details       Loops are identified and managed to prevent infinite
  *                iterations, using internal caching mechanisms.
  *
- * @tparam        T                 Type of the item to be modified. Must be
- *                                  equality comparable and hashable.
+ * @tparam        T                 Type of the item to be modified.
  *
  * @param[in,out] item              The item to be modified through
  *                                  iterationAction.
@@ -35,59 +26,31 @@ struct VisitedInfo {
  * @note          The function asserts that iterationAction is not an empty
  *                function object.
  *
- *                Requirements:
- * - T must satisfy std::equality_comparable and Hashable concepts.
- * - iterationAction must be a valid std::function that modifies its parameter
- *   of type T&.
  */
 template <typename T>
-requires std::equality_comparable<T> && Hashable<T>
 void run(
     T& item,
-    std::size_t const maxNumIterations,
+    int64_t const maxNumIterations,
     std::function<void(T& itemToChange)> const& iterationAction)
 {
     assert(iterationAction);
-    uint64_t iterationCounter{0ULL};
-    std::unordered_map<T, uint64_t> loops;
-    std::unordered_map<T, detail::VisitedInfo<T>> visited;
-    visited.reserve(256);
-    while (iterationCounter < maxNumIterations) {
-        if (auto const loopIt{loops.find(item)}; loopIt != loops.cend()) {
-            // loop found in the cache
-            // Remove all the loops and execute only the remaining actions
-            for (int64_t remaining = static_cast<int64_t>(
-                     (maxNumIterations - iterationCounter)
-                     % (iterationCounter - loopIt->second));
-                 remaining > 0;
-                 --remaining) {
-                iterationAction(item);
-            }
-            iterationCounter = maxNumIterations;
-        } else {
-            // loop not found in the cache
-            if (auto const visitedIt{visited.find(item)};
-                visitedIt != visited.cend()) {
-                // action result cached
-                if (!loops.contains(item)) {
-                    uint64_t const loopLength{
-                        iterationCounter - visitedIt->second.iterationCounter};
-                    loops.emplace(item, loopLength);
-                    iterationCounter += loopLength;
-                } else {
-                    item = visitedIt->second.modifiedItem;
-                    ++iterationCounter;
-                }
-            } else {
-                // action result not cached
-                auto const originalItem{item};
-                iterationAction(item);
-                visited.emplace(
-                    originalItem,
-                    detail::VisitedInfo<T>{item, iterationCounter});
-                ++iterationCounter;
-            }
-        }
+
+    int64_t cycleCounter{0LL};
+    std::vector<T> history;
+    history.reserve(256);
+    while (
+        cycleCounter < maxNumIterations && !ranges::contains(history, item)) {
+        history.emplace_back(item);
+        iterationAction(item);
+        ++cycleCounter;
+    }
+    int64_t const offset{
+        std::distance(history.begin(), ranges::find(history, item))};
+    int64_t const cycleLength{cycleCounter - offset};
+    if (maxNumIterations > offset) {
+        item = history[offset + (maxNumIterations - offset) % cycleLength];
+    } else {
+        item = history.back();
     }
 }
 

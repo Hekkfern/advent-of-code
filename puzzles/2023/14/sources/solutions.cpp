@@ -60,7 +60,7 @@ std::string solvePart2(std::filesystem::path const& filePath)
      * "value" is the status after the cycle.
      */
     utils::cache::LoopCache::run<
-        Rocks>(rocks, 1'000'000'000ULL, [](Rocks& rocksToChange) -> void {
+        Rocks>(rocks, 1'000'000'000LL, [](Rocks& rocksToChange) -> void {
         executeOneCycle(rocksToChange);
     });
     return std::to_string(rocks.calculateLoad());
