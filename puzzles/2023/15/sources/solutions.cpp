@@ -1,12 +1,11 @@
 #include "solutions.hpp"
 
-#include <fstream>
-#include <iterator>
 #include <range/v3/algorithm/fold_left.hpp>
 #include <range/v3/algorithm/for_each.hpp>
 #include <range/v3/view/split.hpp>
 #include <range/v3/view/transform.hpp>
 #include <string_view>
+#include <utils/File.hpp>
 
 namespace aoc_2023_15 {
 
@@ -32,20 +31,15 @@ uint64_t calculateHash(std::string_view const str)
 
 std::string solvePart1(std::filesystem::path const& filePath)
 {
-    std::ifstream fin(filePath);
-    // Read the entire content of the file into a std::string
-    std::string content{
-        std::istreambuf_iterator<char>(fin), std::istreambuf_iterator<char>()};
-
-    // Split the string on ',' and iterate over the parts
-    auto split_view
+    std::string content{*utils::file::readFirstLine(filePath)};
+    auto splitContent
         = content | ranges::views::split(',')
         | ranges::views::transform([](auto&& str_range) -> std::string_view {
               return std::string_view(
                   &*str_range.begin(), std::ranges::distance(str_range));
           });
     std::size_t accummulated{ranges::fold_left(
-        split_view,
+        splitContent,
         0ULL,
         [](uint64_t const initialValue, std::string_view const str)
             -> uint64_t { return initialValue + calculateHash(str); })};
