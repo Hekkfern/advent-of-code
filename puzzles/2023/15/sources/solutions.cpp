@@ -21,14 +21,23 @@ using Book = std::vector<std::vector<Lens>>;
 
 uint64_t calculateFocusingPower(Book const& book)
 {
-    uint64_t value{0ULL};
-    for (auto const [boxIndex, box] : ranges::views::enumerate(book)) {
-        for (auto const [lensIndex, lens] : ranges::views::enumerate(box)) {
-            value += (boxIndex + 1ULL) * (lensIndex + 1ULL)
-                * lens.getFocalLength();
-        }
-    }
-    return value;
+    return ranges::fold_left(
+        ranges::views::enumerate(book),
+        0ULL,
+        [](uint64_t const accum,
+           std::pair<uint32_t, std::vector<Lens>> const& box) -> uint64_t {
+            return accum
+                + ranges::fold_left(
+                       ranges::views::enumerate(box.second),
+                       0ULL,
+                       [boxIndex = box.first](
+                           uint64_t const accum,
+                           std::pair<uint32_t, Lens> const& lens) -> uint64_t {
+                           return accum
+                               + (boxIndex + 1ULL) * (lens.first + 1ULL)
+                               * lens.second.getFocalLength();
+                       });
+        });
 }
 
 // ---------- End of Private Methods ----------
