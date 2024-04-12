@@ -28,6 +28,11 @@ public:
      * @return ???
      */
     [[nodiscard]] uint8_t getFocalLength() const noexcept;
+    /**
+     * @brief
+     * @param value
+     */
+    void setFocalLength(uint8_t value) noexcept;
 
 private:
     std::string mLabel;
@@ -42,6 +47,7 @@ template <>
 struct std::hash<aoc_2023_15::Lens> {
     std::size_t operator()(aoc_2023_15::Lens const& lens) const noexcept
     {
-        return aoc_2023_15::calculateHash(lens.mLabel);
+        return std::hash<std::string>{}(lens.mLabel)
+            ^ (std::hash<uint8_t>{}(lens.mFocalLength) << 1);
     }
 };
