@@ -17,15 +17,16 @@ namespace aoc_2023_15 {
 
 // ---------- Private Methods ----------
 
-using Book = std::vector<std::vector<Lens>>;
+using LensBox = std::vector<Lens>;
+using LensBook = std::vector<LensBox>;
 
-uint64_t calculateFocusingPower(Book const& book)
+uint64_t calculateFocusingPower(LensBook const& book)
 {
     return ranges::fold_left(
         ranges::views::enumerate(book),
         0ULL,
         [](uint64_t const accum,
-           std::pair<uint32_t, std::vector<Lens>> const& box) -> uint64_t {
+           std::pair<uint32_t, LensBox> const& box) -> uint64_t {
             return accum
                 + ranges::fold_left(
                        ranges::views::enumerate(box.second),
@@ -71,7 +72,7 @@ std::string solvePart2(std::filesystem::path const& filePath)
               return std::string_view(
                   &*str_range.begin(), std::ranges::distance(str_range));
           });
-    Book book(256ULL);
+    LensBook book(256ULL);
     ranges::for_each(splitContent, [&book](std::string_view const str) -> void {
         auto const symbolPosition{str.find_first_of("=-")};
         std::string const label{str.substr(0, symbolPosition)};
