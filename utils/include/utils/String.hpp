@@ -50,11 +50,13 @@ namespace utils::string {
 /**
  * @brief      Converts a string to a number.
  *
- * @param[in]  s     The string to convert to.
+ * @param[in]  s     The text to convert to.
  *
  * @tparam     T     Type of the resulting number.
  *
  * @return     Converted number.
+ *
+ * @{
  */
 template <NumericType T>
 [[nodiscard]] std::optional<T> toNumber(std::string_view s)
@@ -66,6 +68,15 @@ template <NumericType T>
     }
     return value;
 }
+template <IntegerType T>
+[[nodiscard]] std::optional<T> toNumber(char s)
+{
+    if (!std::isdigit(s)) {
+        return {};
+    }
+    return static_cast<T>(s - '0');
+}
+/** }@ */
 /**
  * @brief      Joins a list of strings and puts a delimiting string between
  *             them.

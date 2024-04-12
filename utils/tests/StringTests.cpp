@@ -4,33 +4,81 @@
 
 TEST_CASE("[String] toNumber method", "[utils][String]")
 {
-    auto value1{utils::string::toNumber<uint8_t>("6")};
-    CHECK(value1);
-    CHECK(*value1 == 6U);
-    auto value2{utils::string::toNumber<uint32_t>("6")};
-    CHECK(value2);
-    CHECK(*value2 == 6U);
-    auto value3{utils::string::toNumber<uint64_t>("6")};
-    CHECK(value3);
-    CHECK(*value3 == 6ULL);
-    auto value4{utils::string::toNumber<int8_t>("6")};
-    CHECK(value4);
-    CHECK(*value4 == 6);
-    auto value5{utils::string::toNumber<int8_t>("-4")};
-    CHECK(value5);
-    CHECK(*value5 == -4);
-    auto value6{utils::string::toNumber<int32_t>("6")};
-    CHECK(value6);
-    CHECK(*value6 == 6);
-    auto value7{utils::string::toNumber<int32_t>("-4")};
-    CHECK(value7);
-    CHECK(*value7 == -4);
-    auto value8{utils::string::toNumber<int64_t>("6")};
-    CHECK(value8);
-    CHECK(*value8 == 6LL);
-    auto value9{utils::string::toNumber<int64_t>("-4")};
-    CHECK(value9);
-    CHECK(*value9 == -4LL);
+    SECTION("Convert string representing a positive number")
+    {
+        SECTION("to uint8_t")
+        {
+            auto value{utils::string::toNumber<uint8_t>("6")};
+            CHECK(value);
+            CHECK(*value == 6U);
+        }
+        SECTION("to uint32_t")
+        {
+            auto value{utils::string::toNumber<uint32_t>("6")};
+            CHECK(value);
+            CHECK(*value == 6U);
+        }
+        SECTION("to uint64_t")
+        {
+            auto value{utils::string::toNumber<uint64_t>("6")};
+            CHECK(value);
+            CHECK(*value == 6ULL);
+        }
+        SECTION("to int8_t")
+        {
+            auto value{utils::string::toNumber<int8_t>("6")};
+            CHECK(value);
+            CHECK(*value == 6);
+        }
+        SECTION("to int32_t")
+        {
+            auto value{utils::string::toNumber<int32_t>("6")};
+            CHECK(value);
+            CHECK(*value == 6);
+        }
+        SECTION("to int32_t")
+        {
+            auto value{utils::string::toNumber<int64_t>("6")};
+            CHECK(value);
+            CHECK(*value == 6LL);
+        }
+    }
+    SECTION("Convert string representing a negative number")
+    {
+        SECTION("to int8_t")
+        {
+            auto value{utils::string::toNumber<int8_t>("-4")};
+            CHECK(value);
+            CHECK(*value == -4);
+        }
+        SECTION("to int32_t")
+        {
+            auto value{utils::string::toNumber<int32_t>("-4")};
+            CHECK(value);
+            CHECK(*value == -4);
+        }
+        SECTION("to int64_t")
+        {
+            auto value{utils::string::toNumber<int64_t>("-4")};
+            CHECK(value);
+            CHECK(*value == -4LL);
+        }
+    }
+    SECTION("Convert char")
+    {
+        SECTION("to uint8_t")
+        {
+            auto value{utils::string::toNumber<uint8_t>('4')};
+            CHECK(value);
+            CHECK(*value == 4U);
+        }
+        SECTION("to int8_t")
+        {
+            auto value{utils::string::toNumber<int8_t>('4')};
+            CHECK(value);
+            CHECK(*value == 4);
+        }
+    }
 }
 
 TEST_CASE("[String] split method", "[utils][String]")
