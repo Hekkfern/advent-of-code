@@ -3,6 +3,7 @@
 #include "HashHelper.hpp"
 #include <cstdint>
 #include <string>
+#include <string_view>
 
 namespace aoc_2023_15 {
 
@@ -17,6 +18,16 @@ public:
      * @return     The result of the equality.
      */
     [[nodiscard]] bool operator==(Lens const& other) const noexcept;
+    /**
+     * @brief ???
+     * @return ???
+     */
+    [[nodiscard]] std::string_view getLabel() const noexcept;
+    /**
+     * @brief ???
+     * @return ???
+     */
+    [[nodiscard]] uint8_t getFocalLength() const noexcept;
 
 private:
     std::string mLabel;

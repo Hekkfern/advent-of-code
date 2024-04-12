@@ -17,7 +17,7 @@ namespace aoc_2023_15 {
 
 std::string solvePart1(std::filesystem::path const& filePath)
 {
-    std::string content{*utils::file::readFirstLine(filePath)};
+    std::string const content{*utils::file::readFirstLine(filePath)};
     auto splitContent
         = content | ranges::views::split(',')
         | ranges::views::transform([](auto&& str_range) -> std::string_view {
@@ -27,10 +27,8 @@ std::string solvePart1(std::filesystem::path const& filePath)
     std::size_t accummulated{ranges::fold_left(
         splitContent,
         0ULL,
-        [](uint64_t const initialValue,
-           std::string_view const str) -> uint64_t {
-            return initialValue + calculateHash(str);
-        })};
+        [](uint64_t const initialValue, std::string_view const str)
+            -> uint64_t { return initialValue + calculateHash(str); })};
 
     return std::to_string(accummulated);
 }

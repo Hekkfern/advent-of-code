@@ -15,4 +15,8 @@ bool Lens::operator==(Lens const& other) const noexcept
     return mLabel == other.mLabel && mFocalLength == other.mFocalLength;
 }
 
+std::string_view Lens::getLabel() const noexcept { return mLabel; }
+
+uint8_t Lens::getFocalLength() const noexcept { return mFocalLength; }
+
 } // namespace aoc_2023_15
