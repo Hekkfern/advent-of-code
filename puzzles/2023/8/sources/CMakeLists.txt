@@ -17,6 +17,7 @@ add_library(
   Map.hpp)
 setup_puzzle(${_LIB_NAME})
 target_link_libraries(${_LIB_NAME} PRIVATE aoc_utils)
+target_link_libraries(${_LIB_NAME} PRIVATE range-v3)
 
 # aoc_2023_8
 if(GENERATE_PROJECTS STREQUAL "ALL" OR GENERATE_PROJECTS STREQUAL "EXES")
@@ -25,7 +26,6 @@ if(GENERATE_PROJECTS STREQUAL "ALL" OR GENERATE_PROJECTS STREQUAL "EXES")
   setup_puzzle(${_EXEC_NAME})
   target_link_libraries(${_EXEC_NAME} PRIVATE ${_LIB_NAME})
   target_link_libraries(${_EXEC_NAME} PRIVATE aoc_utils)
-  target_link_libraries(${_LIB_NAME} PRIVATE range-v3)
 endif()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input.txt
