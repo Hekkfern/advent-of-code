@@ -180,3 +180,74 @@ TEST_CASE("[File] readGroupsOfNumbers method", "[utils][File]")
         CHECK_FALSE(numbers);
     }
 }
+
+
+TEST_CASE("[File] readMatrixOfChars method", "[utils][File]")
+{
+    SECTION("File exists")
+    {
+        SECTION("File with content")
+        {
+                auto const data{utils::file::readMatrixOfChars(
+                    "test_assets/FileWithMatrixOfChars.txt")};
+                CHECK(data);
+                CHECK(data->size() == 2ULL);
+                CHECK((*data)[0].size() == 3ULL);
+                CHECK((*data)[0][0] == 'a');
+                CHECK((*data)[0][1] == 'b');
+                CHECK((*data)[0][2] == 'c');
+                CHECK((*data)[1].size() == 3ULL);
+                CHECK((*data)[1][0] == 'd');
+                CHECK((*data)[1][1] == 'e');
+                CHECK((*data)[1][2] == 'f');
+
+        }
+        SECTION("Empty file")
+        {
+            auto const data{
+                utils::file::readMatrixOfChars("test_assets/EmptyFile.txt")};
+            CHECK(data);
+            CHECK(data->empty());
+        }
+    }
+    SECTION("File doesn't exist")
+    {
+        auto const data{utils::file::readMatrixOfChars("unknown.txt")};
+        CHECK_FALSE(data);
+    }
+}
+
+TEST_CASE("[File] readMatrixOfDigits method", "[utils][File]")
+{
+    SECTION("File exists")
+    {
+        SECTION("File with content")
+        {
+            auto const data{utils::file::readMatrixOfDigits(
+                "test_assets/FileWithMatrixOfDigits.txt")};
+            CHECK(data);
+            CHECK(data->size() == 2ULL);
+            CHECK((*data)[0].size() == 3ULL);
+            CHECK((*data)[0][0] == 1U);
+            CHECK((*data)[0][1] == 2U);
+            CHECK((*data)[0][2] == 3U);
+            CHECK((*data)[1].size() == 3ULL);
+            CHECK((*data)[1][0] == 4U);
+            CHECK((*data)[1][1] == 5U);
+            CHECK((*data)[1][2] == 6U);
+
+        }
+        SECTION("Empty file")
+        {
+            auto const data{
+                utils::file::readMatrixOfDigits("test_assets/EmptyFile.txt")};
+            CHECK(data);
+            CHECK(data->empty());
+        }
+    }
+    SECTION("File doesn't exist")
+    {
+        auto const data{utils::file::readMatrixOfDigits("unknown.txt")};
+        CHECK_FALSE(data);
+    }
+}

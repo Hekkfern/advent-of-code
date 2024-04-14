@@ -68,6 +68,15 @@ readGroupsOfNumbers(std::filesystem::path const& filePath);
 [[nodiscard]] std::optional<std::vector<std::vector<uint8_t>>>
 readMatrixOfDigits(std::filesystem::path const& filePath);
 /**
+ * @brief      Reads a matrix of characters.
+ *
+ * @param[in]  filePath  The filename.
+ *
+ * @return     Matrix of characters.
+ */
+[[nodiscard]] std::optional<std::vector<std::vector<char>>>
+readMatrixOfChars(std::filesystem::path const& filePath);
+/**
  * @brief      Reads a text file and executes the selected action in each line.
  *
  * @param[in]  filePath  The filename.

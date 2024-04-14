@@ -108,6 +108,27 @@ readMatrixOfDigits(std::filesystem::path const& filePath)
     return outList;
 }
 
+std::optional<std::vector<std::vector<char>>>
+readMatrixOfChars(std::filesystem::path const& filePath)
+{
+    std::vector<std::vector<char>> outList;
+
+    bool const result{
+        parseAndIterate(filePath, [&outList](std::string_view const line) {
+            std::vector<char> row;
+            row.reserve(line.size());
+            for (char const c : line) {
+                row.emplace_back(c);
+            }
+            outList.push_back(std::move(row));
+        })};
+    if (!result) {
+        return {};
+    }
+
+    return outList;
+}
+
 bool parseAndIterate(
     std::filesystem::path const& filePath,
     std::function<void(std::string_view line)> const& action)
