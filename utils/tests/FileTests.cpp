@@ -181,26 +181,24 @@ TEST_CASE("[File] readGroupsOfNumbers method", "[utils][File]")
     }
 }
 
-
 TEST_CASE("[File] readMatrixOfChars method", "[utils][File]")
 {
     SECTION("File exists")
     {
         SECTION("File with content")
         {
-                auto const data{utils::file::readMatrixOfChars(
-                    "test_assets/FileWithMatrixOfChars.txt")};
-                CHECK(data);
-                CHECK(data->size() == 2ULL);
-                CHECK((*data)[0].size() == 3ULL);
-                CHECK((*data)[0][0] == 'a');
-                CHECK((*data)[0][1] == 'b');
-                CHECK((*data)[0][2] == 'c');
-                CHECK((*data)[1].size() == 3ULL);
-                CHECK((*data)[1][0] == 'd');
-                CHECK((*data)[1][1] == 'e');
-                CHECK((*data)[1][2] == 'f');
-
+            auto const data{utils::file::readMatrixOfChars(
+                "test_assets/FileWithMatrixOfChars.txt")};
+            CHECK(data);
+            CHECK(data->size() == 2ULL);
+            CHECK((*data)[0].size() == 3ULL);
+            CHECK((*data)[0][0] == 'a');
+            CHECK((*data)[0][1] == 'b');
+            CHECK((*data)[0][2] == 'c');
+            CHECK((*data)[1].size() == 3ULL);
+            CHECK((*data)[1][0] == 'd');
+            CHECK((*data)[1][1] == 'e');
+            CHECK((*data)[1][2] == 'f');
         }
         SECTION("Empty file")
         {
@@ -235,7 +233,6 @@ TEST_CASE("[File] readMatrixOfDigits method", "[utils][File]")
             CHECK((*data)[1][0] == 4U);
             CHECK((*data)[1][1] == 5U);
             CHECK((*data)[1][2] == 6U);
-
         }
         SECTION("Empty file")
         {
