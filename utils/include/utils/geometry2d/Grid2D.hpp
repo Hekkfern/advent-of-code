@@ -204,11 +204,11 @@ public:
      *
      * @{
      */
-    T& at(std::size_t row, std::size_t col) noexcept
+    T& at(std::size_t const row, std::size_t const col) noexcept
     {
         return mFlatGrid[row * mWidth + col];
     }
-    T const& at(std::size_t row, std::size_t col) const noexcept
+    T const& at(std::size_t const row, std::size_t const col) const noexcept
     {
         return mFlatGrid[row * mWidth + col];
     }
