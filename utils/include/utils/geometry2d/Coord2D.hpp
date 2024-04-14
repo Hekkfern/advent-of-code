@@ -9,7 +9,7 @@ namespace utils::geometry2d {
  *
  * @tparam     T     Type of the coordinate values.
  */
-template <SignedIntegerType T = int32_t>
+template <IntegerType T = int32_t>
 class Coord2D {
 public:
     /**

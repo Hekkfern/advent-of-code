@@ -193,19 +193,39 @@ TEST_CASE("[Grid2D] iterateColumn() method", "[utils][Grid2D]")
 
 TEST_CASE("[Grid2D] at() method", "[utils][Grid2D]")
 {
-    SECTION("Read")
+    SECTION("With X and Y")
     {
-        Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
-        auto& item{grid2D.at(1, 1)};
-        CHECK(item == 4);
+        SECTION("Read")
+        {
+            Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+            auto& item{grid2D.at(1, 1)};
+            CHECK(item == 4);
+        }
+        SECTION("Write and write")
+        {
+            Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+            auto& item{grid2D.at(1, 1)};
+            CHECK(item == 4);
+            item = 57;
+            CHECK(item == 57);
+        }
     }
-    SECTION("Write and write")
+    SECTION("With coordinates")
     {
-        Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
-        auto& item{grid2D.at(1, 1)};
-        CHECK(item == 4);
-        item = 57;
-        CHECK(item == 57);
+        SECTION("Read")
+        {
+            Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+            auto& item{grid2D.at(Coord2D<std::size_t>{1ULL, 1ULL})};
+            CHECK(item == 4);
+        }
+        SECTION("Write and write")
+        {
+            Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+            auto& item{grid2D.at(Coord2D<std::size_t>{1ULL, 1ULL})};
+            CHECK(item == 4);
+            item = 57;
+            CHECK(item == 57);
+        }
     }
 }
 

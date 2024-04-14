@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Coord2D.hpp"
 #include <algorithm>
 #include <functional>
 #include <optional>
@@ -211,6 +212,35 @@ public:
     T const& at(std::size_t const row, std::size_t const col) const noexcept
     {
         return mFlatGrid[row * mWidth + col];
+    }
+    /** }@ */
+    /**
+     * @brief      Accesses the element at the specified row and column.
+     *
+     * @note       It's the caller's responsibility to ensure the indices are
+     *             within the bounds of the grid.
+     *
+     * @param[in]  coords   The coords of the matrix.
+     *
+     * @return     A reference to the element at the specified position.
+     *
+     * @{
+     */
+    T& at(Coord2D<std::size_t> const& coords) noexcept
+    {
+        return mFlatGrid[coords.getY() * mWidth + coords.getX()];
+    }
+    T const& at(Coord2D<std::size_t> const& coords) const noexcept
+    {
+        return mFlatGrid[coords.getY() * mWidth + coords.getX()];
+    }
+    T& at(Coord2D<std::size_t>&& coords) noexcept
+    {
+        return mFlatGrid[coords.getY() * mWidth + coords.getX()];
+    }
+    T const& at(Coord2D<std::size_t>&& coords) const noexcept
+    {
+        return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
     /** }@ */
     /**
