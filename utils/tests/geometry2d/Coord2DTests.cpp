@@ -83,3 +83,53 @@ TEST_CASE("[Coord2D] Structured binding", "[utils][Coord2D]")
     CHECK(x == 1);
     CHECK(y == 2);
 }
+
+TEST_CASE("[Coord2D] move() method", "[utils][Coord2D]")
+{
+    SECTION("Signed integer")
+    {
+        SECTION("Left limit")
+        {
+            Coord2D const coords{std::numeric_limits<int32_t>::min(), 0};
+            auto const result{coords.move(Direction2D::Left)};
+            REQUIRE_FALSE(result);
+        }
+        SECTION("Right limit")
+        {
+            Coord2D const coords{std::numeric_limits<int32_t>::max(), 0};
+            auto const result{coords.move(Direction2D::Right)};
+            REQUIRE_FALSE(result);
+        }
+        SECTION("Normal range")
+        {
+            Coord2D const coords{1, 7};
+            auto const result{coords.move(Direction2D::Left)};
+            REQUIRE(result);
+            CHECK(*result == Coord2D{0, 7});
+        }
+    }
+    SECTION("Unsigned integer")
+    {
+        SECTION("Left limit")
+        {
+            Coord2D<uint32_t> const coords{
+                std::numeric_limits<uint32_t>::min(), 0U};
+            auto const result{coords.move(Direction2D::Left)};
+            REQUIRE_FALSE(result);
+        }
+        SECTION("Right limit")
+        {
+            Coord2D<uint32_t> const coords{
+                std::numeric_limits<uint32_t>::max(), 0U};
+            auto const result{coords.move(Direction2D::Right)};
+            REQUIRE_FALSE(result);
+        }
+        SECTION("Normal range")
+        {
+            Coord2D<uint32_t> const coords{1U, 7U};
+            auto const result{coords.move(Direction2D::Left)};
+            REQUIRE(result);
+            CHECK(*result == Coord2D<uint32_t>{0U, 7U});
+        }
+    }
+}

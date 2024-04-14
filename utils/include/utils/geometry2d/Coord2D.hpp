@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Concepts.hpp"
+#include "Direction2D.hpp"
 
 namespace utils::geometry2d {
 
@@ -75,6 +76,63 @@ public:
             return mY;
         }
     }
+    /**
+     * @brief      Calculates the resulting coordinates of applying an unitary
+     * movement towards the given direction to the current coordinates.
+     *
+     * @param[in]  direction  The direction of the movement.
+     *
+     * @return     Resulting position of the movement.
+     */
+    [[nodiscard]] constexpr std::optional<Coord2D<T>>
+    move(Direction2D const& direction) const noexcept
+    {
+        T coordX{0};
+        T coordY{0};
+        switch (direction.getValue()) {
+        case Direction2D::Left:
+        case Direction2D::DownLeft:
+        case Direction2D::UpLeft:
+            if (mX == std::numeric_limits<T>::min()) {
+                return {};
+            }
+            --coordX;
+            break;
+        case Direction2D::Right:
+        case Direction2D::UpRight:
+        case Direction2D::DownRight:
+            if (mX == std::numeric_limits<T>::max()) {
+                return {};
+            }
+            ++coordX;
+            break;
+        default:
+            /* NO STATEMENTS */
+            break;
+        }
+        switch (direction.getValue()) {
+        case Direction2D::Down:
+        case Direction2D::DownRight:
+        case Direction2D::DownLeft:
+            if (mY == std::numeric_limits<T>::min()) {
+                return {};
+            }
+            --coordY;
+            break;
+        case Direction2D::Up:
+        case Direction2D::UpRight:
+        case Direction2D::UpLeft:
+            if (mY == std::numeric_limits<T>::min()) {
+                return {};
+            }
+            ++coordY;
+            break;
+        default:
+            /* NO STATEMENTS */
+            break;
+        }
+        return Coord2D<T>{mX + coordX, mY + coordY};
+    }
 
 private:
     /**
@@ -108,8 +166,7 @@ namespace std {
 /* Support for structured binding */
 template <class T>
 struct tuple_size<utils::geometry2d::Coord2D<T>>
-    : std::integral_constant<std::size_t, 2> {
-};
+    : std::integral_constant<std::size_t, 2> { };
 /* Support for structured binding */
 template <class T>
 struct tuple_element<0, utils::geometry2d::Coord2D<T>> {
