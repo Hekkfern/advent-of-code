@@ -1,5 +1,6 @@
 #include "solutions.hpp"
 
+#include <unordered_map>
 #include <utils/File.hpp>
 #include <utils/cache/LRUCache.hpp>
 #include <utils/geometry2d/Direction2D.hpp>
@@ -33,6 +34,13 @@ TileType convertToTileType(char const c)
         return TileType::SplitterHorizontal;
     }
 }
+
+static std::unordered_map<
+    std::pair<TileType, utils::geometry2d::Direction2D>,
+    utils::geometry2d::Direction2D> const BeamBehaviours{
+    {{TileType::EmptySpace, utils::geometry2d::Direction2D::Left},
+     utils::geometry2d::Direction2D::Left},
+};
 
 /**
  * @brief      Parses the whole input file and generates a flatten grid.
