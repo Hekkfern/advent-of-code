@@ -1,11 +1,38 @@
 #include "solutions.hpp"
 
 #include <utils/File.hpp>
+#include <utils/cache/LRUCache.hpp>
+#include <utils/geometry2d/Direction2D.hpp>
 #include <utils/geometry2d/Grid2D.hpp>
 
 namespace aoc_2023_16 {
 
 // ---------- Private Methods ----------
+
+enum class TileType {
+    EmptySpace,
+    MirrorSlash,
+    MirrorBackslash,
+    SplitterVertical,
+    SplitterHorizontal
+};
+
+TileType convertToTileType(char const c)
+{
+    switch (c) {
+    case '.':
+    default:
+        return TileType::EmptySpace;
+    case '\\':
+        return TileType::MirrorBackslash;
+    case '/':
+        return TileType::MirrorSlash;
+    case '|':
+        return TileType::SplitterVertical;
+    case '-':
+        return TileType::SplitterHorizontal;
+    }
+}
 
 /**
  * @brief      Parses the whole input file and generates a flatten grid.
@@ -21,14 +48,97 @@ parseInput(std::filesystem::path const& filePath)
     return utils::geometry2d::Grid2D<char>{data};
 }
 
+std::vector<utils::geometry2d::Direction2D> processPositionWithMirror(
+    TileType const tileType,
+    utils::geometry2d::Direction2D const& inputDirection)
+{
+    std::vector<utils::geometry2d::Direction2D> output;
+    switch (tileType) {
+    case TileType::MirrorSlash:
+        switch (inputDirection) {
+        case utils::geometry2d::Direction2D::Up:
+            output.emplace_back(utils::geometry2d::Direction2D::Right);
+            break;
+        case utils::geometry2d::Direction2D::Down:
+            output.emplace_back(utils::geometry2d::Direction2D::Left);
+            break;
+        case utils::geometry2d::Direction2D::Left:
+            output.emplace_back(utils::geometry2d::Direction2D::Down);
+            break;
+        case utils::geometry2d::Direction2D::Right:
+            output.emplace_back(utils::geometry2d::Direction2D::Up);
+            break;
+        default:
+            /* NO STATEMENTS */
+            break;
+        }
+        break;
+    case TileType::MirrorBackslash:
+        switch (inputDirection) {
+        case utils::geometry2d::Direction2D::Up:
+            output.emplace_back(utils::geometry2d::Direction2D::Right);
+            break;
+        case utils::geometry2d::Direction2D::Down:
+            output.emplace_back(utils::geometry2d::Direction2D::Left);
+            break;
+        case utils::geometry2d::Direction2D::Left:
+            output.emplace_back(utils::geometry2d::Direction2D::Down);
+            break;
+        case utils::geometry2d::Direction2D::Right:
+            output.emplace_back(utils::geometry2d::Direction2D::Up);
+            break;
+        default:
+            /* NO STATEMENTS */
+            break;
+        }
+        break;
+    default:
+        /* NO STATEMENTS */
+        break;
+    }
+    return output;
+}
+
+std::vector<utils::geometry2d::Direction2D> processPositionWithSplitter(
+    TileType const tileType,
+    utils::geometry2d::Direction2D const& inputDirection)
+{
+    // TODO
+}
+
+std::vector<utils::geometry2d::Direction2D> processPosition(
+    utils::geometry2d::Grid2D<char> const& grid,
+    std::size_t const row,
+    std::size_t const col,
+    utils::geometry2d::Direction2D const& inputDirection)
+{
+    std::vector<utils::geometry2d::Direction2D> output;
+    switch (auto const tileType{convertToTileType(grid.at(row, col))}) {
+    case TileType::EmptySpace:
+        output.push_back(inputDirection);
+        break;
+    case TileType::MirrorBackslash:
+    case TileType::MirrorSlash:
+        output = processPositionWithMirror(tileType, inputDirection);
+        break;
+    case TileType::SplitterVertical:
+    case TileType::SplitterHorizontal:
+        output = processPositionWithSplitter(tileType, inputDirection);
+        break;
+    }
+
+    return output;
+}
+
 // ---------- End of Private Methods ----------
 
 // ---------- Public Methods ----------
 
 std::string solvePart1(std::filesystem::path const& filePath)
 {
-    (void)filePath;
-    return "";
+    auto const grid{parseInput(filePath)};
+
+    return "1";
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
