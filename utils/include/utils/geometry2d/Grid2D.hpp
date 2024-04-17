@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Coord2D.hpp"
+#include "PositionStatus.h"
 #include <algorithm>
 #include <functional>
 #include <optional>
@@ -400,6 +401,50 @@ public:
         mFlatGrid = std::move(newFlatGrid);
         mWidth = newWidth;
         mHeight = newHeight;
+    }
+    /**
+     * @brief      Determines the position status of given coordinates in the
+     *             grid.
+     *
+     * @param[in]  row     The row index.
+     * @param[in]  col     The column index.
+     *
+     * @return     A @ref PositionStatus enum indicating the status of the
+     *             coordinates.
+     */
+    [[nodiscard]] PositionStatus
+    where(std::size_t const row, std::size_t const col) const noexcept
+    {
+        if (col >= mWidth || row >= mHeight) {
+            return PositionStatus::Outside;
+        } else if (
+            col == 0 || col == mWidth - 1 || row == 0 || row == mHeight - 1) {
+            return PositionStatus::OnBorder;
+        } else {
+            return PositionStatus::Inside;
+        }
+    }
+    /**
+     * @brief      Determines the position status of given coordinates in the
+     *             grid.
+     *
+     * @param[in]  coords  The coordinates.
+     *
+     * @return     A @ref PositionStatus enum indicating the status of the
+     *             coordinates.
+     */
+    [[nodiscard]] PositionStatus
+    where(Coord2D<std::size_t> const& coords) const noexcept
+    {
+        auto const x{coords.getX()};
+        auto const y{coords.getY()};
+        if (x >= mWidth || y >= mHeight) {
+            return PositionStatus::Outside;
+        } else if (x == 0 || x == mWidth - 1 || y == 0 || y == mHeight - 1) {
+            return PositionStatus::OnBorder;
+        } else {
+            return PositionStatus::Inside;
+        }
     }
 
 private:

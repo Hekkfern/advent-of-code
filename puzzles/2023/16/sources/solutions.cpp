@@ -34,12 +34,75 @@ TileType convertToTileType(char const c)
         return TileType::SplitterHorizontal;
     }
 }
+struct HashPair {
+    template <class T1, class T2>
+    std::size_t operator()(std::pair<T1, T2> const& p) const
+    {
+        auto hash1{std::hash<T1>{}(p.first)};
+        auto hash2{std::hash<T2>{}(p.second)};
+
+        if (hash1 != hash2) {
+            return hash1 ^ hash2;
+        }
+
+        // If hash1 == hash2, their XOR is zero.
+        return hash1;
+    }
+};
 
 static std::unordered_map<
     std::pair<TileType, utils::geometry2d::Direction2D>,
-    utils::geometry2d::Direction2D> const BeamBehaviours{
+    std::vector<utils::geometry2d::Direction2D>,
+    HashPair> const BeamBehaviours{
+    // EmptySpace
     {{TileType::EmptySpace, utils::geometry2d::Direction2D::Left},
-     utils::geometry2d::Direction2D::Left},
+     {utils::geometry2d::Direction2D::Left}},
+    {{TileType::EmptySpace, utils::geometry2d::Direction2D::Right},
+     {utils::geometry2d::Direction2D::Right}},
+    {{TileType::EmptySpace, utils::geometry2d::Direction2D::Up},
+     {utils::geometry2d::Direction2D::Up}},
+    {{TileType::EmptySpace, utils::geometry2d::Direction2D::Down},
+     {utils::geometry2d::Direction2D::Down}},
+    // Mirror "/"
+    {{TileType::MirrorSlash, utils::geometry2d::Direction2D::Left},
+     {utils::geometry2d::Direction2D::Up}},
+    {{TileType::MirrorSlash, utils::geometry2d::Direction2D::Right},
+     {utils::geometry2d::Direction2D::Down}},
+    {{TileType::MirrorSlash, utils::geometry2d::Direction2D::Up},
+     {utils::geometry2d::Direction2D::Left}},
+    {{TileType::MirrorSlash, utils::geometry2d::Direction2D::Down},
+     {utils::geometry2d::Direction2D::Right}},
+    // Mirror "\"
+    {{TileType::MirrorBackslash, utils::geometry2d::Direction2D::Left},
+     {utils::geometry2d::Direction2D::Down}},
+    {{TileType::MirrorBackslash, utils::geometry2d::Direction2D::Right},
+     {utils::geometry2d::Direction2D::Up}},
+    {{TileType::MirrorBackslash, utils::geometry2d::Direction2D::Up},
+     {utils::geometry2d::Direction2D::Right}},
+    {{TileType::MirrorBackslash, utils::geometry2d::Direction2D::Down},
+     {utils::geometry2d::Direction2D::Left}},
+    // Horizontal splitter
+    {{TileType::SplitterHorizontal, utils::geometry2d::Direction2D::Left},
+     {utils::geometry2d::Direction2D::Left}},
+    {{TileType::SplitterHorizontal, utils::geometry2d::Direction2D::Right},
+     {utils::geometry2d::Direction2D::Right}},
+    {{TileType::SplitterHorizontal, utils::geometry2d::Direction2D::Up},
+     {utils::geometry2d::Direction2D::Left,
+      utils::geometry2d::Direction2D::Right}},
+    {{TileType::SplitterHorizontal, utils::geometry2d::Direction2D::Down},
+     {utils::geometry2d::Direction2D::Left,
+      utils::geometry2d::Direction2D::Right}},
+    // Vertical splitter
+    {{TileType::SplitterVertical, utils::geometry2d::Direction2D::Left},
+     {utils::geometry2d::Direction2D::Up,
+      utils::geometry2d::Direction2D::Down}},
+    {{TileType::SplitterVertical, utils::geometry2d::Direction2D::Right},
+     {utils::geometry2d::Direction2D::Up,
+      utils::geometry2d::Direction2D::Down}},
+    {{TileType::SplitterVertical, utils::geometry2d::Direction2D::Up},
+     {utils::geometry2d::Direction2D::Up}},
+    {{TileType::SplitterVertical, utils::geometry2d::Direction2D::Down},
+     {utils::geometry2d::Direction2D::Down}},
 };
 
 /**
@@ -56,115 +119,27 @@ parseInput(std::filesystem::path const& filePath)
     return utils::geometry2d::Grid2D<char>{data};
 }
 
-std::vector<utils::geometry2d::Direction2D> processPositionWithMirror(
-    TileType const tileType,
-    utils::geometry2d::Direction2D const& inputDirection)
-{
-    switch (tileType) {
-    case TileType::MirrorSlash:
-        switch (inputDirection) {
-        case utils::geometry2d::Direction2D::Up:
-            return {utils::geometry2d::Direction2D::Right};
-        case utils::geometry2d::Direction2D::Down:
-            return {utils::geometry2d::Direction2D::Left};
-        case utils::geometry2d::Direction2D::Left:
-            return {utils::geometry2d::Direction2D::Down};
-        case utils::geometry2d::Direction2D::Right:
-            return {utils::geometry2d::Direction2D::Up};
-        default:
-            /* NO STATEMENTS */
-            break;
-        }
-        break;
-    case TileType::MirrorBackslash:
-        switch (inputDirection) {
-        case utils::geometry2d::Direction2D::Up:
-            return {utils::geometry2d::Direction2D::Right};
-        case utils::geometry2d::Direction2D::Down:
-            return {utils::geometry2d::Direction2D::Left};
-        case utils::geometry2d::Direction2D::Left:
-            return {utils::geometry2d::Direction2D::Down};
-        case utils::geometry2d::Direction2D::Right:
-            return {utils::geometry2d::Direction2D::Up};
-        default:
-            /* NO STATEMENTS */
-            break;
-        }
-        break;
-    default:
-        /* NO STATEMENTS */
-        break;
-    }
-    return {};
-}
-
-std::vector<utils::geometry2d::Direction2D> processPositionWithSplitter(
-    TileType const tileType,
-    utils::geometry2d::Direction2D const& inputDirection)
-{
-    switch (tileType) {
-    case TileType::SplitterHorizontal:
-        switch (inputDirection) {
-        case utils::geometry2d::Direction2D::Up:
-        case utils::geometry2d::Direction2D::Down:
-            return {
-                utils::geometry2d::Direction2D::Left,
-                utils::geometry2d::Direction2D::Right};
-        case utils::geometry2d::Direction2D::Left:
-            return {utils::geometry2d::Direction2D::Left};
-        case utils::geometry2d::Direction2D::Right:
-            return {utils::geometry2d::Direction2D::Right};
-        default:
-            /* NO STATEMENTS */
-            break;
-        }
-        break;
-    case TileType::SplitterVertical:
-        switch (inputDirection) {
-        case utils::geometry2d::Direction2D::Up:
-            return {utils::geometry2d::Direction2D::Up};
-        case utils::geometry2d::Direction2D::Down:
-            return {utils::geometry2d::Direction2D::Down};
-        case utils::geometry2d::Direction2D::Left:
-        case utils::geometry2d::Direction2D::Right:
-            return {
-                utils::geometry2d::Direction2D::Down,
-                utils::geometry2d::Direction2D::Up};
-        default:
-            /* NO STATEMENTS */
-            break;
-        }
-        break;
-    default:
-        /* NO STATEMENTS */
-        break;
-    }
-
-    return {};
-}
-
 std::vector<utils::geometry2d::Direction2D> processPosition(
     utils::geometry2d::Grid2D<char> const& grid,
-    std::size_t const row,
-    std::size_t const col,
+    utils::geometry2d::Coord2D<std::size_t> const& coords,
     utils::geometry2d::Direction2D const& inputDirection)
 {
-    std::vector<utils::geometry2d::Direction2D> output;
-    switch (auto const tileType{convertToTileType(grid.at(row, col))}) {
-    case TileType::EmptySpace:
-        output.push_back(inputDirection);
-        break;
-    case TileType::MirrorBackslash:
-    case TileType::MirrorSlash:
-        output = processPositionWithMirror(tileType, inputDirection);
-        break;
-    case TileType::SplitterVertical:
-    case TileType::SplitterHorizontal:
-        output = processPositionWithSplitter(tileType, inputDirection);
-        break;
-    }
+    auto const tileType{convertToTileType(grid.at(coords))};
+    return BeamBehaviours.at(std::make_pair(tileType, inputDirection));
+}
 
-    return output;
+std::optional<utils::geometry2d::Coord2D<std::size_t>> moveInGrid(
+    utils::geometry2d::Grid2D<char> const& grid,
+    utils::geometry2d::Coord2D<std::size_t> const& coords,
+    utils::geometry2d::Direction2D const& direction)
+{
+    auto const nextCoord{coords.move(direction)};
+    if (!nextCoord
+        || grid.where(*nextCoord)
+            == utils::geometry2d::PositionStatus::Outside) {
+        return {};
+    }
+    return *nextCoord;
 }
 
 // ---------- End of Private Methods ----------

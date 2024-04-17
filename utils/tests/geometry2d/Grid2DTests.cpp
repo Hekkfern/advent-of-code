@@ -380,3 +380,48 @@ TEST_CASE("[Grid2D] resize() method", "[utils][Grid2D]")
         CHECK(grid2D.at(0ULL, 1ULL) == 3);
     }
 }
+
+TEST_CASE("[Grid2D] where() method", "[utils][Grid2D]")
+{
+    Grid2D<int> grid2D{{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}};
+    SECTION("With X and Y")
+    {
+        SECTION("Inside")
+        {
+            CHECK(grid2D.where(1, 1) == PositionStatus::Inside);
+        }
+        SECTION("On Border")
+        {
+            CHECK(grid2D.where(0, 0) == PositionStatus::OnBorder);
+            CHECK(grid2D.where(2, 2) == PositionStatus::OnBorder);
+        }
+        SECTION("Outside")
+        {
+            CHECK(grid2D.where(7, 4) == PositionStatus::Outside);
+        }
+    }
+    SECTION("With coords")
+    {
+        SECTION("Inside")
+        {
+            CHECK(
+                grid2D.where(Coord2D<std::size_t>{1, 1})
+                == PositionStatus::Inside);
+        }
+        SECTION("On Border")
+        {
+            CHECK(
+                grid2D.where(Coord2D<std::size_t>{0, 0})
+                == PositionStatus::OnBorder);
+            CHECK(
+                grid2D.where(Coord2D<std::size_t>{2, 2})
+                == PositionStatus::OnBorder);
+        }
+        SECTION("Outside")
+        {
+            CHECK(
+                grid2D.where(Coord2D<std::size_t>{7, 4})
+                == PositionStatus::Outside);
+        }
+    }
+}
