@@ -52,22 +52,17 @@ std::vector<utils::geometry2d::Direction2D> processPositionWithMirror(
     TileType const tileType,
     utils::geometry2d::Direction2D const& inputDirection)
 {
-    std::vector<utils::geometry2d::Direction2D> output;
     switch (tileType) {
     case TileType::MirrorSlash:
         switch (inputDirection) {
         case utils::geometry2d::Direction2D::Up:
-            output.emplace_back(utils::geometry2d::Direction2D::Right);
-            break;
+            return {utils::geometry2d::Direction2D::Right};
         case utils::geometry2d::Direction2D::Down:
-            output.emplace_back(utils::geometry2d::Direction2D::Left);
-            break;
+            return {utils::geometry2d::Direction2D::Left};
         case utils::geometry2d::Direction2D::Left:
-            output.emplace_back(utils::geometry2d::Direction2D::Down);
-            break;
+            return {utils::geometry2d::Direction2D::Down};
         case utils::geometry2d::Direction2D::Right:
-            output.emplace_back(utils::geometry2d::Direction2D::Up);
-            break;
+            return {utils::geometry2d::Direction2D::Up};
         default:
             /* NO STATEMENTS */
             break;
@@ -76,17 +71,13 @@ std::vector<utils::geometry2d::Direction2D> processPositionWithMirror(
     case TileType::MirrorBackslash:
         switch (inputDirection) {
         case utils::geometry2d::Direction2D::Up:
-            output.emplace_back(utils::geometry2d::Direction2D::Right);
-            break;
+            return {utils::geometry2d::Direction2D::Right};
         case utils::geometry2d::Direction2D::Down:
-            output.emplace_back(utils::geometry2d::Direction2D::Left);
-            break;
+            return {utils::geometry2d::Direction2D::Left};
         case utils::geometry2d::Direction2D::Left:
-            output.emplace_back(utils::geometry2d::Direction2D::Down);
-            break;
+            return {utils::geometry2d::Direction2D::Down};
         case utils::geometry2d::Direction2D::Right:
-            output.emplace_back(utils::geometry2d::Direction2D::Up);
-            break;
+            return {utils::geometry2d::Direction2D::Up};
         default:
             /* NO STATEMENTS */
             break;
@@ -96,14 +87,52 @@ std::vector<utils::geometry2d::Direction2D> processPositionWithMirror(
         /* NO STATEMENTS */
         break;
     }
-    return output;
+    return {};
 }
 
 std::vector<utils::geometry2d::Direction2D> processPositionWithSplitter(
     TileType const tileType,
     utils::geometry2d::Direction2D const& inputDirection)
 {
-    // TODO
+    switch (tileType) {
+    case TileType::SplitterHorizontal:
+        switch (inputDirection) {
+        case utils::geometry2d::Direction2D::Up:
+        case utils::geometry2d::Direction2D::Down:
+            return {
+                utils::geometry2d::Direction2D::Left,
+                utils::geometry2d::Direction2D::Right};
+        case utils::geometry2d::Direction2D::Left:
+            return {utils::geometry2d::Direction2D::Left};
+        case utils::geometry2d::Direction2D::Right:
+            return {utils::geometry2d::Direction2D::Right};
+        default:
+            /* NO STATEMENTS */
+            break;
+        }
+        break;
+    case TileType::SplitterVertical:
+        switch (inputDirection) {
+        case utils::geometry2d::Direction2D::Up:
+            return {utils::geometry2d::Direction2D::Up};
+        case utils::geometry2d::Direction2D::Down:
+            return {utils::geometry2d::Direction2D::Down};
+        case utils::geometry2d::Direction2D::Left:
+        case utils::geometry2d::Direction2D::Right:
+            return {
+                utils::geometry2d::Direction2D::Down,
+                utils::geometry2d::Direction2D::Up};
+        default:
+            /* NO STATEMENTS */
+            break;
+        }
+        break;
+    default:
+        /* NO STATEMENTS */
+        break;
+    }
+
+    return {};
 }
 
 std::vector<utils::geometry2d::Direction2D> processPosition(
