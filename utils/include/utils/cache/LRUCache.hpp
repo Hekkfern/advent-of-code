@@ -8,7 +8,7 @@
 namespace utils::cache {
 
 template <typename Key, typename Value>
-requires std::equality_comparable<Key> && Hashable<Key>
+    requires std::equality_comparable<Key> && Hashable<Key>
 class LRUCache {
 public:
     /**
@@ -23,6 +23,7 @@ public:
     {
     }
 
+    ~LRUCache() = default;
     LRUCache(LRUCache const&) noexcept = delete;
     LRUCache& operator=(LRUCache const&) noexcept = delete;
     LRUCache(LRUCache&& other) noexcept = default;
@@ -106,7 +107,7 @@ public:
     }
 
     /**
-     * @brief      Get the current amount of entries storedin the cache.
+     * @brief      Get the current amount of entries stored in the cache.
      *
      * @return     Number of entries stored in.
      */

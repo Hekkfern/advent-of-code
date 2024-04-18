@@ -1,8 +1,10 @@
 #include "solutions.hpp"
 
 #include <unordered_map>
+#include <utility>
 #include <utils/File.hpp>
 #include <utils/cache/LRUCache.hpp>
+#include <utils/geometry2d/Coord2D.hpp>
 #include <utils/geometry2d/Direction2D.hpp>
 #include <utils/geometry2d/Grid2D.hpp>
 
@@ -128,7 +130,7 @@ std::vector<utils::geometry2d::Direction2D> processPosition(
     return BeamBehaviours.at(std::make_pair(tileType, inputDirection));
 }
 
-std::optional<utils::geometry2d::Coord2D<std::size_t>> moveInGrid(
+std::optional<utils::geometry2d::Coord2D<std::size_t>> moveAround(
     utils::geometry2d::Grid2D<char> const& grid,
     utils::geometry2d::Coord2D<std::size_t> const& coords,
     utils::geometry2d::Direction2D const& direction)
