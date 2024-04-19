@@ -151,8 +151,20 @@ std::optional<utils::geometry2d::Coord2D<std::size_t>> moveAround(
 std::string solvePart1(std::filesystem::path const& filePath)
 {
     auto const grid{parseInput(filePath)};
+    utils::cache::LRUCache<
+        std::pair<
+            utils::geometry2d::Coord2D<std::size_t>,
+            utils::geometry2d::Direction2D>,
+        std::vector<utils::geometry2d::Direction2D>>
+        cache{1000};
+    utils::geometry2d::Coord2D<std::size_t> currentCoords{0, 0};
+    for (auto const dir : processPosition(grid, currentCoords, )) {
+        if (!cache.exists(std::make_pair(currentCoords, dir))) {
+            auto const moveResult{moveAround(grid, currentCoords, dir)};
+        }
+    }
 
-    return "1";
+    return std::to_string(cache.size());
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
