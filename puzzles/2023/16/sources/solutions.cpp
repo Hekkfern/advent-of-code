@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <utility>
 #include <utils/File.hpp>
-#include <utils/cache/LRUCache.hpp>
+#include <utils/cache/InfiniteCache.hpp>
 #include <utils/geometry2d/Coord2D.hpp>
 #include <utils/geometry2d/Direction2D.hpp>
 #include <utils/geometry2d/Grid2D.hpp>
@@ -151,12 +151,12 @@ std::optional<utils::geometry2d::Coord2D<std::size_t>> moveAround(
 std::string solvePart1(std::filesystem::path const& filePath)
 {
     auto const grid{parseInput(filePath)};
-    utils::cache::LRUCache<
+    utils::cache::InfiniteCache<
         std::pair<
             utils::geometry2d::Coord2D<std::size_t>,
             utils::geometry2d::Direction2D>,
         std::vector<utils::geometry2d::Direction2D>>
-        cache{1000};
+        cache;
     utils::geometry2d::Coord2D<std::size_t> currentCoords{0, 0};
     for (auto const dir : processPosition(grid, currentCoords, )) {
         if (!cache.exists(std::make_pair(currentCoords, dir))) {

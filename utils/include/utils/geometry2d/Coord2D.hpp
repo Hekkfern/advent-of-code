@@ -161,21 +161,25 @@ private:
 
 } // namespace utils::geometry2d
 
-namespace std {
+template <IntegerType T>
+struct std::hash<utils::geometry2d::Coord2D<T>> {
+    std::size_t operator()(utils::geometry2d::Coord2D<T> const& item) const
+    {
+        return std::hash<T>{}(item.getX()) ^ std::hash<T>{}(item.getY());
+    }
+};
 
 /* Support for structured binding */
 template <class T>
-struct tuple_size<utils::geometry2d::Coord2D<T>>
+struct std::tuple_size<utils::geometry2d::Coord2D<T>>
     : std::integral_constant<std::size_t, 2> { };
 /* Support for structured binding */
 template <class T>
-struct tuple_element<0, utils::geometry2d::Coord2D<T>> {
+struct std::tuple_element<0, utils::geometry2d::Coord2D<T>> {
     using type = T;
 };
 /* Support for structured binding */
 template <class T>
-struct tuple_element<1, utils::geometry2d::Coord2D<T>> {
+struct std::tuple_element<1, utils::geometry2d::Coord2D<T>> {
     using type = T;
 };
-
-} // namespace std
