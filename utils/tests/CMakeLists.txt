@@ -8,7 +8,8 @@ find_package(Catch2 3 CONFIG REQUIRED)
 # aoc_utils_tests
 set(_EXEC_NAME "aoc_utils_tests")
 set(_TESTFILES StringTests.cpp MathTests.cpp FileTests.cpp
-               DynamicProgrammingTests.cpp CombinationsTests.cpp)
+               DynamicProgrammingTests.cpp CombinationsTests.cpp
+        ConceptsTests.cpp)
 set(_TESTFILES_ALGORITHMS algorithms/ClampedCountIfTests.cpp
                           algorithms/SteppedIotaTests.cpp)
 set(_TESTFILES_CACHE cache/LRUCacheTests.cpp cache/MemoizationTests.cpp
