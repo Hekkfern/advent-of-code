@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Coord2D.hpp"
+#include "Coordinate2D.hpp"
 #include "PositionStatus.h"
 #include <algorithm>
 #include <functional>
@@ -227,19 +227,19 @@ public:
      *
      * @{
      */
-    T& at(Coord2D<std::size_t> const& coords) noexcept
+    T& at(Coordinate2D<std::size_t> const& coords) noexcept
     {
         return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
-    T const& at(Coord2D<std::size_t> const& coords) const noexcept
+    T const& at(Coordinate2D<std::size_t> const& coords) const noexcept
     {
         return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
-    T& at(Coord2D<std::size_t>&& coords) noexcept
+    T& at(Coordinate2D<std::size_t>&& coords) noexcept
     {
         return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
-    T const& at(Coord2D<std::size_t>&& coords) const noexcept
+    T const& at(Coordinate2D<std::size_t>&& coords) const noexcept
     {
         return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
@@ -434,7 +434,7 @@ public:
      *             coordinates.
      */
     [[nodiscard]] PositionStatus
-    where(Coord2D<std::size_t> const& coords) const noexcept
+    where(Coordinate2D<std::size_t> const& coords) const noexcept
     {
         auto const x{coords.getX()};
         auto const y{coords.getY()};

@@ -5,7 +5,7 @@
 #include <utils/File.hpp>
 #include <utils/Hash.hpp>
 #include <utils/cache/InfiniteCache.hpp>
-#include <utils/geometry2d/Coord2D.hpp>
+#include <utils/geometry2d/Coordinate2D.hpp>
 #include <utils/geometry2d/Direction2D.hpp>
 #include <utils/geometry2d/Grid2D.hpp>
 
@@ -124,16 +124,16 @@ parseInput(std::filesystem::path const& filePath)
 
 std::vector<utils::geometry2d::Direction2D> processPosition(
     utils::geometry2d::Grid2D<char> const& grid,
-    utils::geometry2d::Coord2D<std::size_t> const& coords,
+    utils::geometry2d::Coordinate2D<std::size_t> const& coords,
     utils::geometry2d::Direction2D const& inputDirection)
 {
     auto const tileType{convertToTileType(grid.at(coords))};
     return BeamBehaviours.at(std::make_pair(tileType, inputDirection));
 }
 
-std::optional<utils::geometry2d::Coord2D<std::size_t>> moveAround(
+std::optional<utils::geometry2d::Coordinate2D<std::size_t>> moveAround(
     utils::geometry2d::Grid2D<char> const& grid,
-    utils::geometry2d::Coord2D<std::size_t> const& coords,
+    utils::geometry2d::Coordinate2D<std::size_t> const& coords,
     utils::geometry2d::Direction2D const& direction)
 {
     auto const nextCoord{coords.move(direction)};
@@ -154,11 +154,11 @@ std::string solvePart1(std::filesystem::path const& filePath)
     auto const grid{parseInput(filePath)};
     utils::cache::InfiniteCache<
         std::pair<
-            utils::geometry2d::Coord2D<std::size_t>,
+            utils::geometry2d::Coordinate2D<std::size_t>,
             utils::geometry2d::Direction2D>,
         std::vector<utils::geometry2d::Direction2D>>
         cache;
-    utils::geometry2d::Coord2D<std::size_t> currentCoords{0, 0};
+    utils::geometry2d::Coordinate2D<std::size_t> currentCoords{0, 0};
     for (auto const dir : processPosition(grid, currentCoords, )) {
         if (!cache.exists(std::make_pair(currentCoords, dir))) {
             auto const moveResult{moveAround(grid, currentCoords, dir)};

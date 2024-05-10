@@ -9,7 +9,7 @@ TEST_CASE(
     "[SquareDiamond2D, SquareDiamond2D_getter]")
 {
     SquareDiamond2D const shape{Point2D{10, 10}, 2};
-    CHECK(shape.getCenter().getCoordinates() == Coord2D<>{10, 10});
+    CHECK(shape.getCenter().getCoordinates() == Coordinate2D<>{10, 10});
     CHECK(shape.getDistance() == 2);
 }
 

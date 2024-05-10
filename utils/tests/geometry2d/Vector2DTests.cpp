@@ -67,7 +67,7 @@ TEST_CASE("[Vector2D] Constructor", "[utils][Vector2D]")
         {
             SECTION("Positive values")
             {
-                Vector2D const vector2D{Coord2D{2, 4}};
+                Vector2D const vector2D{Coordinate2D{2, 4}};
                 CHECK(vector2D.getX() == 2);
                 CHECK(vector2D.getY() == 4);
                 auto const coords{vector2D.getCoordinates()};
@@ -76,7 +76,7 @@ TEST_CASE("[Vector2D] Constructor", "[utils][Vector2D]")
             }
             SECTION("Positive and negatives values")
             {
-                Vector2D const vector2D{Coord2D{-2, 3}};
+                Vector2D const vector2D{Coordinate2D{-2, 3}};
                 CHECK(vector2D.getX() == -2);
                 CHECK(vector2D.getY() == 3);
                 auto const coords{vector2D.getCoordinates()};

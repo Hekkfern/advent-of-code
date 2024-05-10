@@ -39,7 +39,7 @@ set(_SOURCES_UTILS_GEOMETRY2D
     include/utils/geometry2d/SquareDiamond2D.hpp
     include/utils/geometry2d/IShape2D.hpp
     include/utils/geometry2d/Operations2D.hpp
-    include/utils/geometry2d/Coord2D.hpp
+    include/utils/geometry2d/Coordinate2D.hpp
     include/utils/geometry2d/Grid2D.hpp
         include/utils/geometry2d/PositionStatus.h)
 set(_SOURCES_UTILS_GEOMETRY3D

@@ -12,19 +12,19 @@ namespace utils::geometry2d {
  * @tparam     T     Type of the coordinate values.
  */
 template <IntegerType T = int32_t>
-class Coord2D {
+class Coordinate2D {
 public:
     /**
      * @brief      Default constructor
      */
-    constexpr explicit Coord2D() noexcept = default;
+    constexpr explicit Coordinate2D() noexcept = default;
     /**
      * @brief      Parametrized constructor
      *
      * @param[in]  x     Coordinate X.
      * @param[in]  y     Coordinate Y.
      */
-    constexpr explicit Coord2D(T x, T y) noexcept
+    constexpr explicit Coordinate2D(T x, T y) noexcept
         : mX{x}
         , mY{y}
     {
@@ -48,7 +48,8 @@ public:
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] constexpr bool operator==(Coord2D const& other) const noexcept
+    [[nodiscard]] constexpr bool
+    operator==(Coordinate2D const& other) const noexcept
     {
         return mX == other.mX && mY == other.mY;
     }
@@ -85,7 +86,7 @@ public:
      *
      * @return     Resulting position of the movement.
      */
-    [[nodiscard]] constexpr std::optional<Coord2D<T>>
+    [[nodiscard]] constexpr std::optional<Coordinate2D<T>>
     move(Direction2D const& direction) const noexcept
     {
         T coordX{0};
@@ -132,7 +133,7 @@ public:
             /* NO STATEMENTS */
             break;
         }
-        return Coord2D<T>{mX + coordX, mY + coordY};
+        return Coordinate2D<T>{mX + coordX, mY + coordY};
     }
 
     /**
@@ -157,7 +158,7 @@ private:
      *
      * @return     The updated output stream.
      */
-    friend std::ostream& operator<<(std::ostream& os, Coord2D const& obj)
+    friend std::ostream& operator<<(std::ostream& os, Coordinate2D const& obj)
     {
         os << obj.toString();
         return os;
@@ -176,8 +177,9 @@ private:
 } // namespace utils::geometry2d
 
 template <IntegerType T>
-struct std::hash<utils::geometry2d::Coord2D<T>> {
-    std::size_t operator()(utils::geometry2d::Coord2D<T> const& instance) const
+struct std::hash<utils::geometry2d::Coordinate2D<T>> {
+    std::size_t
+    operator()(utils::geometry2d::Coordinate2D<T> const& instance) const
     {
         return instance.calculateHash();
     }
@@ -185,15 +187,15 @@ struct std::hash<utils::geometry2d::Coord2D<T>> {
 
 /* Support for structured binding */
 template <class T>
-struct std::tuple_size<utils::geometry2d::Coord2D<T>>
+struct std::tuple_size<utils::geometry2d::Coordinate2D<T>>
     : std::integral_constant<std::size_t, 2> { };
 /* Support for structured binding */
 template <class T>
-struct std::tuple_element<0, utils::geometry2d::Coord2D<T>> {
+struct std::tuple_element<0, utils::geometry2d::Coordinate2D<T>> {
     using type = T;
 };
 /* Support for structured binding */
 template <class T>
-struct std::tuple_element<1, utils::geometry2d::Coord2D<T>> {
+struct std::tuple_element<1, utils::geometry2d::Coordinate2D<T>> {
     using type = T;
 };

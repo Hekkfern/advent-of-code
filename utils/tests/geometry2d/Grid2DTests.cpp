@@ -215,13 +215,13 @@ TEST_CASE("[Grid2D] at() method", "[utils][Grid2D]")
         SECTION("Read")
         {
             Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
-            auto& item{grid2D.at(Coord2D<std::size_t>{1ULL, 1ULL})};
+            auto& item{grid2D.at(Coordinate2D<std::size_t>{1ULL, 1ULL})};
             CHECK(item == 4);
         }
         SECTION("Write and write")
         {
             Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
-            auto& item{grid2D.at(Coord2D<std::size_t>{1ULL, 1ULL})};
+            auto& item{grid2D.at(Coordinate2D<std::size_t>{1ULL, 1ULL})};
             CHECK(item == 4);
             item = 57;
             CHECK(item == 57);
@@ -405,22 +405,22 @@ TEST_CASE("[Grid2D] where() method", "[utils][Grid2D]")
         SECTION("Inside")
         {
             CHECK(
-                grid2D.where(Coord2D<std::size_t>{1, 1})
+                grid2D.where(Coordinate2D<std::size_t>{1, 1})
                 == PositionStatus::Inside);
         }
         SECTION("On Border")
         {
             CHECK(
-                grid2D.where(Coord2D<std::size_t>{0, 0})
+                grid2D.where(Coordinate2D<std::size_t>{0, 0})
                 == PositionStatus::OnBorder);
             CHECK(
-                grid2D.where(Coord2D<std::size_t>{2, 2})
+                grid2D.where(Coordinate2D<std::size_t>{2, 2})
                 == PositionStatus::OnBorder);
         }
         SECTION("Outside")
         {
             CHECK(
-                grid2D.where(Coord2D<std::size_t>{7, 4})
+                grid2D.where(Coordinate2D<std::size_t>{7, 4})
                 == PositionStatus::Outside);
         }
     }

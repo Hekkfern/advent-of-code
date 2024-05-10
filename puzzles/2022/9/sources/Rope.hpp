@@ -33,7 +33,8 @@ private:
                 return;
             }
 
-            Coord2D<int32_t> const desiredMovement{vector2D.getCoordinates()};
+            Coordinate2D<int32_t> const desiredMovement{
+                vector2D.getCoordinates()};
             Vector2D<int32_t> const movement{
                 std::clamp(desiredMovement.mX, -1, 1),
                 std::clamp(desiredMovement.mY, -1, 1)};

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Concepts.hpp"
-#include "Coord2D.hpp"
+#include "Coordinate2D.hpp"
 #include <array>
 #include <cstdint>
 #include <ostream>
@@ -36,7 +36,7 @@ public:
      *
      * @param[in]  coords  Coordinates.
      */
-    constexpr explicit Point2D(Coord2D<T> const coords) noexcept
+    constexpr explicit Point2D(Coordinate2D<T> const coords) noexcept
         : mX{coords.getX()}
         , mY{coords.getY()}
     {
@@ -46,9 +46,9 @@ public:
      *
      * @return     The coordinates as a pair (X,Y).
      */
-    [[nodiscard]] constexpr Coord2D<T> getCoordinates() const noexcept
+    [[nodiscard]] constexpr Coordinate2D<T> getCoordinates() const noexcept
     {
-        return Coord2D<T>{mX, mY};
+        return Coordinate2D<T>{mX, mY};
     }
     /**
      * @brief      Gets the coordinate X.

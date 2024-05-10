@@ -18,7 +18,7 @@ set(_TESTFILES_CACHE cache/LRUCacheTests.cpp cache/MemoizationTests.cpp
 set(_TESTFILES_INTERVAL interval/IntervalTests.cpp
                         interval/IntervalSetTests.cpp)
 set(_TESTFILES_GEOMETRY2D
-    geometry2d/Coord2DTests.cpp
+    geometry2d/Coordinate2DTests.cpp
     geometry2d/BoundingBox2DTests.cpp
     geometry2d/Direction2DTests.cpp
     geometry2d/Point2DTests.cpp

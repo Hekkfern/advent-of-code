@@ -41,7 +41,7 @@ public:
      * @param[in]  coord1  The first point.
      * @param[in]  coord2  The second point.
      */
-    explicit Line2D(Coord2D<T> const& coord1, Coord2D<T> const& coord2)
+    explicit Line2D(Coordinate2D<T> const& coord1, Coordinate2D<T> const& coord2)
         : Line2D<T>{Point2D<T>{coord1}, Point2D<T>{coord2}}
     {
     }
