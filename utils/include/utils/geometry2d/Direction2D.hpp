@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cassert>
 #include <string>
 
 namespace utils::geometry2d {
@@ -18,30 +19,57 @@ public:
     /**
      * @brief      Default constructor.
      */
-    Direction2D() = delete;
+    Direction2D() noexcept = delete;
     /**
      * @brief      Initialization constructor.
      *
      * @param[in]  v     Value to initialize the object with.
      */
-    constexpr Direction2D(Value v)
+    constexpr Direction2D(Value v) noexcept
         : mValue(v)
     {
     }
     /**
      * @brief      @ref Value conversion operator.
      */
-    constexpr operator Value() const { return mValue; }
+    constexpr operator Value() const noexcept { return mValue; }
     /**
      * @brief      Bool conversion operator.
      */
-    explicit operator bool() const = delete;
+    explicit operator bool() const noexcept = delete;
+    /**
+     * @brief Inverts the direction
+     */
+    [[nodiscard]] constexpr Direction2D invert() const noexcept
+    {
+        switch (mValue) {
+        case Up:
+            return Down;
+        case Left:
+            return Right;
+        case Down:
+            return Up;
+        case Right:
+            return Left;
+        case UpLeft:
+            return DownRight;
+        case DownLeft:
+            return UpRight;
+        case UpRight:
+            return DownLeft;
+        case DownRight:
+            return UpLeft;
+        default:
+            /* Invalid value */
+            assert(false);
+        }
+    }
     /**
      * @brief      Returns a string representation of the object.
      *
      * @return     String representation of the object.
      */
-    [[nodiscard]] std::string toString() const
+    [[nodiscard]] std::string toString() const noexcept
     {
         using namespace std::string_literals;
 
@@ -64,7 +92,7 @@ public:
             return "upright"s;
         default:
             /* Invalid value */
-            return ""s;
+            assert(false);
         }
     }
     /**
@@ -72,7 +100,7 @@ public:
      *
      * @return     The value.
      */
-    [[nodiscard]] constexpr Value getValue() const { return mValue; }
+    [[nodiscard]] constexpr Value getValue() const noexcept { return mValue; }
 
 private:
     /**

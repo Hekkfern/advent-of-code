@@ -152,7 +152,7 @@ std::optional<utils::geometry2d::Coordinate2D<std::size_t>> moveAround(
     utils::geometry2d::Coordinate2D<std::size_t> const& coords,
     utils::geometry2d::Direction2D const& direction)
 {
-    auto const nextCoord{coords.move(direction)};
+    auto const nextCoord{coords.move(direction.invert())};
     if (!nextCoord
         || grid.where(*nextCoord)
             == utils::geometry2d::PositionStatus::Outside) {
@@ -181,11 +181,21 @@ void processRecursive(
         energizedTiles,
     AnalyzedBeamList& analyzedBeamList)
 {
-    energizedTiles.emplace(coords);
-    auto const outputBeams{processPosition(grid, coords, direction)};
-    for (auto const outputBeam : outputBeams) {
-        if (!analyzedBeamList.contains(std::make_pair(coords, outputBeam))) {
+    if (!analyzedBeamList.contains(std::make_pair(coords, direction))) {
+        energizedTiles.emplace(coords);
+        analyzedBeamList.emplace(std::make_pair(coords, direction));
+        auto const outputBeams{processPosition(grid, coords, direction)};
+        for (auto const outputBeam : outputBeams) {
             auto const moveResult{moveAround(grid, coords, outputBeam)};
+            if (!moveResult) {
+                continue;
+            }
+            processRecursive(
+                grid,
+                *moveResult,
+                outputBeam,
+                energizedTiles,
+                analyzedBeamList);
         }
     }
 }
