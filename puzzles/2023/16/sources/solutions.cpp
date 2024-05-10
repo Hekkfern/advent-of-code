@@ -152,7 +152,7 @@ std::optional<utils::geometry2d::Coordinate2D<std::size_t>> moveAround(
     utils::geometry2d::Coordinate2D<std::size_t> const& coords,
     utils::geometry2d::Direction2D const& direction)
 {
-    auto const nextCoord{coords.move(direction.invert())};
+    auto const nextCoord{coords.move(direction)};
     if (!nextCoord
         || grid.where(*nextCoord)
             == utils::geometry2d::PositionStatus::Outside) {
@@ -212,7 +212,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
         energizedTiles;
     utils::geometry2d::Coordinate2D<std::size_t> initialCoords{0, 0};
     utils::geometry2d::Direction2D initialDirection{
-        utils::geometry2d::Direction2D::Left};
+        utils::geometry2d::Direction2D::Right};
     processRecursive(
         grid,
         initialCoords,
