@@ -42,6 +42,32 @@ public:
      */
     [[nodiscard]] constexpr T getY() const noexcept { return mY; }
     /**
+     * @brief      Sets the coordinate X.
+     *
+     * @param[in]  x     The coordinate X.
+     *
+     * @return     New instance with the new coordinate.
+     */
+    [[nodiscard]] constexpr Coordinate2D setX(T const x) const noexcept
+    {
+        Coordinate2D result{*this};
+        result.mX = x;
+        return result;
+    }
+    /**
+     * @brief      Sets the coordinate Y.
+     *
+     * @param[in]  y     The coordinate Y.
+     *
+     * @return     New instance with the new coordinate.
+     */
+    [[nodiscard]] constexpr Coordinate2D setY(T const y) const noexcept
+    {
+        Coordinate2D result{*this};
+        result.mY = y;
+        return result;
+    }
+    /**
      * @brief      Equality operator.
      *
      * @param[in]  other  The other object.
@@ -135,7 +161,6 @@ public:
         }
         return Coordinate2D<T>{mX + coordX, mY + coordY};
     }
-
     /**
      * @brief      Calculates the hash of this instance
      *
@@ -178,10 +203,9 @@ private:
 
 template <IntegerType T>
 struct std::hash<utils::geometry2d::Coordinate2D<T>> {
-    std::size_t
-    operator()(utils::geometry2d::Coordinate2D<T> const& instance) const
+    std::size_t operator()(utils::geometry2d::Coordinate2D<T> const& obj) const
     {
-        return instance.calculateHash();
+        return obj.calculateHash();
     }
 };
 

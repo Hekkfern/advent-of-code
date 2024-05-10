@@ -26,9 +26,8 @@ public:
      * @param[in]  x     Coordinate X.
      * @param[in]  y     Coordinate Y.
      */
-    constexpr explicit Point2D(T const x, T const y) noexcept
-        : mX{x}
-        , mY{y}
+    constexpr explicit Point2D(T x, T y) noexcept
+        : mCoordinates{Coordinate2D<T>{x, y}}
     {
     }
     /**
@@ -36,9 +35,8 @@ public:
      *
      * @param[in]  coords  Coordinates.
      */
-    constexpr explicit Point2D(Coordinate2D<T> const coords) noexcept
-        : mX{coords.getX()}
-        , mY{coords.getY()}
+    constexpr explicit Point2D(Coordinate2D<T> const& coords) noexcept
+        : mCoordinates{coords}
     {
     }
     /**
@@ -48,20 +46,26 @@ public:
      */
     [[nodiscard]] constexpr Coordinate2D<T> getCoordinates() const noexcept
     {
-        return Coordinate2D<T>{mX, mY};
+        return mCoordinates;
     }
     /**
      * @brief      Gets the coordinate X.
      *
      * @return     The coordinate X.
      */
-    [[nodiscard]] constexpr T getX() const noexcept { return mX; }
+    [[nodiscard]] constexpr T getX() const noexcept
+    {
+        return mCoordinates.getX();
+    }
     /**
      * @brief      Gets the coordinate Y.
      *
      * @return     The coordinate Y.
      */
-    [[nodiscard]] constexpr T getY() const noexcept { return mY; }
+    [[nodiscard]] constexpr T getY() const noexcept
+    {
+        return mCoordinates.getY();
+    }
     /**
      * @brief      Gets a list of all the colliding points.
      *
@@ -71,10 +75,10 @@ public:
     getNeighbors() const noexcept
     {
         return {
-            Point2D{mX, mY + 1},
-            Point2D{mX + 1, mY},
-            Point2D{mX, mY - 1},
-            Point2D{mX - 1, mY + 1}};
+            Point2D{mCoordinates.getX(), mCoordinates.getY() + 1},
+            Point2D{mCoordinates.getX() + 1, mCoordinates.getY()},
+            Point2D{mCoordinates.getX(), mCoordinates.getY() - 1},
+            Point2D{mCoordinates.getX() - 1, mCoordinates.getY() + 1}};
     }
     /**
      * @brief      Sets the coordinate X.
@@ -85,9 +89,7 @@ public:
      */
     [[nodiscard]] constexpr Point2D setX(T const x) const noexcept
     {
-        Point2D result{*this};
-        result.mX = x;
-        return result;
+        return Point2D{mCoordinates.setX(x)};
     }
     /**
      * @brief      Sets the coordinate Y.
@@ -98,9 +100,7 @@ public:
      */
     [[nodiscard]] constexpr Point2D setY(T const y) const noexcept
     {
-        Point2D result{*this};
-        result.mY = y;
-        return result;
+        return Point2D{mCoordinates.setY(y)};
     }
     /**
      * @brief      Equality operator.
@@ -112,7 +112,7 @@ public:
     [[nodiscard]] constexpr bool
     operator==(Point2D<T> const& other) const noexcept
     {
-        return mX == other.mX && mY == other.mY;
+        return mCoordinates == other.mCoordinates;
     }
     /**
      * @brief      Addition operator, which sums the coordinates of both
@@ -125,7 +125,9 @@ public:
     [[nodiscard]] constexpr Point2D
     operator+(Point2D const& other) const noexcept
     {
-        return Point2D{mX + other.mX, mY + other.mY};
+        return Point2D{
+            mCoordinates.getX() + other.mCoordinates.getX(),
+            mCoordinates.getY() + other.mCoordinates.getY()};
     }
     /**
      * @brief      Negation operator.
@@ -134,7 +136,7 @@ public:
      */
     [[nodiscard]] constexpr Point2D operator-() const noexcept
     {
-        return Point2D{-mX, -mY};
+        return Point2D{-mCoordinates.getX(), -mCoordinates.getY()};
     }
     /**
      * @brief      Subtraction operator.
@@ -171,7 +173,16 @@ public:
      */
     [[nodiscard]] std::string toString() const
     {
-        return "[" + std::to_string(mX) + "," + std::to_string(mY) + "]";
+        return mCoordinates.toString();
+    }
+    /**
+     * @brief      Calculates the hash of this instance
+     *
+     * @return     Hash of the instance
+     */
+    [[nodiscard]] std::size_t calculateHash() const noexcept
+    {
+        return mCoordinates.calculateHash();
     }
 
 private:
@@ -191,13 +202,9 @@ private:
     }
 
     /**
-     * Stores coordinate X.
+     * Stores coordinate X and Y.
      */
-    T mX{0};
-    /**
-     * Stores coordinate Y.
-     */
-    T mY{0};
+    Coordinate2D<T> mCoordinates{};
 };
 
 } // namespace utils::geometry2d
@@ -205,8 +212,8 @@ private:
 template <SignedIntegerType T>
 struct std::hash<utils::geometry2d::Point2D<T>> {
     std::size_t
-    operator()(utils::geometry2d::Point2D<T> const& k) const noexcept
+    operator()(utils::geometry2d::Point2D<T> const& obj) const noexcept
     {
-        return std::hash<T>()(k.getX()) ^ std::hash<T>()(k.getY());
+        return obj.calculateHash();
     }
 };

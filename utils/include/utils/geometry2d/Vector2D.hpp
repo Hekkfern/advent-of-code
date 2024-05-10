@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Concepts.hpp"
+#include "../Hash.hpp"
 #include "Point2D.hpp"
 #include <algorithm>
 #include <array>
@@ -224,6 +225,27 @@ public:
     {
         return Vector2D<T>{static_cast<T>(x), static_cast<T>(y)};
     }
+    /**
+     * @brief      Represents this class as a @ref std::string
+     *
+     * @return     String representing this class.
+     */
+    [[nodiscard]] std::string toString() const
+    {
+        return "(" + std::to_string(mX) + "," + std::to_string(mY) + ")";
+    }
+    /**
+     * @brief      Calculates the hash of this instance
+     *
+     * @return     Hash of the instance
+     */
+    [[nodiscard]] std::size_t calculateHash() const noexcept
+    {
+        std::size_t seed{27ULL};
+        utils::hash::hash_combine(seed, mX);
+        utils::hash::hash_combine(seed, mY);
+        return seed;
+    }
 
 private:
     /**
@@ -237,7 +259,7 @@ private:
     friend std::ostream&
     operator<<(std::ostream& os, Vector2D<T> const& obj) noexcept
     {
-        os << '(' << obj.mX << ',' << obj.mY << ')';
+        os << obj.toString();
         return os;
     }
 
