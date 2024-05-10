@@ -28,8 +28,7 @@ set(_SOURCES_UTILS_INTERVAL include/utils/interval/Interval.hpp
                             include/utils/interval/IntervalSet.hpp)
 set(_SOURCES_UTILS_CACHE
     include/utils/cache/Memoization.hpp include/utils/cache/LRUCache.hpp
-    include/utils/cache/LoopCache.hpp
-        include/utils/cache/InfiniteCache.hpp)
+    include/utils/cache/LoopCache.hpp include/utils/cache/InfiniteCache.hpp)
 set(_SOURCES_UTILS_GEOMETRY2D
     include/utils/geometry2d/Direction2D.hpp
     include/utils/geometry2d/Point2D.hpp
@@ -41,7 +40,7 @@ set(_SOURCES_UTILS_GEOMETRY2D
     include/utils/geometry2d/Operations2D.hpp
     include/utils/geometry2d/Coordinate2D.hpp
     include/utils/geometry2d/Grid2D.hpp
-        include/utils/geometry2d/PositionStatus.h)
+    include/utils/geometry2d/PositionStatus.h)
 set(_SOURCES_UTILS_GEOMETRY3D
     include/utils/geometry3d/Point3D.hpp include/utils/geometry3d/Vector3D.hpp
     include/utils/geometry3d/Coord3D.hpp

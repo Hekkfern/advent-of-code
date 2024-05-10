@@ -7,14 +7,13 @@ find_package(Catch2 3 CONFIG REQUIRED)
 
 # aoc_utils_tests
 set(_EXEC_NAME "aoc_utils_tests")
-set(_TESTFILES StringTests.cpp MathTests.cpp FileTests.cpp
-               DynamicProgrammingTests.cpp CombinationsTests.cpp
-        ConceptsTests.cpp)
+set(_TESTFILES
+    StringTests.cpp MathTests.cpp FileTests.cpp DynamicProgrammingTests.cpp
+    CombinationsTests.cpp ConceptsTests.cpp)
 set(_TESTFILES_ALGORITHMS algorithms/ClampedCountIfTests.cpp
                           algorithms/SteppedIotaTests.cpp)
 set(_TESTFILES_CACHE cache/LRUCacheTests.cpp cache/MemoizationTests.cpp
-                     cache/LoopCacheTests.cpp
-        cache/InfiniteCacheTests.cpp)
+                     cache/LoopCacheTests.cpp cache/InfiniteCacheTests.cpp)
 set(_TESTFILES_INTERVAL interval/IntervalTests.cpp
                         interval/IntervalSetTests.cpp)
 set(_TESTFILES_GEOMETRY2D
