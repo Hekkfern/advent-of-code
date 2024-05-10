@@ -1,13 +1,14 @@
 #include "solutions.hpp"
 
 #include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <utils/File.hpp>
 #include <utils/Hash.hpp>
-#include <utils/cache/InfiniteCache.hpp>
 #include <utils/geometry2d/Coordinate2D.hpp>
 #include <utils/geometry2d/Direction2D.hpp>
 #include <utils/geometry2d/Grid2D.hpp>
+#include <vector>
 
 namespace aoc_2023_16 {
 
@@ -21,6 +22,13 @@ enum class TileType {
     SplitterHorizontal
 };
 
+/**
+ * @brief      Converts the character of a tile to its corresponding enum value.
+ *
+ * @param[in]  c     Character to analyse.
+ *
+ * @return     The tile type.
+ */
 TileType convertToTileType(char const c)
 {
     switch (c) {
@@ -37,26 +45,14 @@ TileType convertToTileType(char const c)
         return TileType::SplitterHorizontal;
     }
 }
-struct HashPair {
-    template <class T1, class T2>
-    std::size_t operator()(std::pair<T1, T2> const& p) const
-    {
-        auto hash1{std::hash<T1>{}(p.first)};
-        auto hash2{std::hash<T2>{}(p.second)};
 
-        if (hash1 != hash2) {
-            return hash1 ^ hash2;
-        }
-
-        // If hash1 == hash2, their XOR is zero.
-        return hash1;
-    }
-};
-
+/**
+ * @brief      Map defining how an input beam behaves for each one of the
+ *             existing tile types.
+ */
 static std::unordered_map<
     std::pair<TileType, utils::geometry2d::Direction2D>,
-    std::vector<utils::geometry2d::Direction2D>,
-    HashPair> const BeamBehaviours{
+    std::vector<utils::geometry2d::Direction2D>> const BeamBehaviours{
     // EmptySpace
     {{TileType::EmptySpace, utils::geometry2d::Direction2D::Left},
      {utils::geometry2d::Direction2D::Left}},
@@ -122,6 +118,16 @@ parseInput(std::filesystem::path const& filePath)
     return utils::geometry2d::Grid2D<char>{data};
 }
 
+/**
+ * @brief      Given a position in the grid, reads the type of beam modifier in
+ *             it and returns the directions of the output beams.
+ *
+ * @param[in]  grid            The grid
+ * @param[in]  coords          The coordinates of the tile
+ * @param[in]  inputDirection  The input direction
+ *
+ * @return     One or more output beams.
+ */
 std::vector<utils::geometry2d::Direction2D> processPosition(
     utils::geometry2d::Grid2D<char> const& grid,
     utils::geometry2d::Coordinate2D<std::size_t> const& coords,
@@ -131,6 +137,16 @@ std::vector<utils::geometry2d::Direction2D> processPosition(
     return BeamBehaviours.at(std::make_pair(tileType, inputDirection));
 }
 
+/**
+ * @brief      Returns the new position after moving the selected tile one
+ *             position in the selected direction.
+ *
+ * @param      grid       The grid
+ * @param      coords     The coordinates of the tile
+ * @param      direction  The direction of movement
+ *
+ * @return     New position after moving, or std::nullopt otherwise.
+ */
 std::optional<utils::geometry2d::Coordinate2D<std::size_t>> moveAround(
     utils::geometry2d::Grid2D<char> const& grid,
     utils::geometry2d::Coordinate2D<std::size_t> const& coords,
@@ -145,6 +161,35 @@ std::optional<utils::geometry2d::Coordinate2D<std::size_t>> moveAround(
     return *nextCoord;
 }
 
+using AnalyzedBeamList = std::unordered_set<std::pair<
+    utils::geometry2d::Coordinate2D<std::size_t>,
+    utils::geometry2d::Direction2D>>;
+
+/**
+ * @brief      Recursively analyses all the tiles in the path of the beam.
+ *
+ * @param      grid       The grid
+ * @param      coords     The coordinates
+ * @param      direction  The direction
+ * @param      cache      The cache
+ */
+void processRecursive(
+    utils::geometry2d::Grid2D<char> const& grid,
+    utils::geometry2d::Coordinate2D<std::size_t> const& coords,
+    utils::geometry2d::Direction2D const& direction,
+    std::unordered_set<utils::geometry2d::Coordinate2D<std::size_t>>
+        energizedTiles,
+    AnalyzedBeamList& analyzedBeamList)
+{
+    energizedTiles.emplace(coords);
+    auto const outputBeams{processPosition(grid, coords, direction)};
+    for (auto const outputBeam : outputBeams) {
+        if (!analyzedBeamList.contains(std::make_pair(coords, outputBeam))) {
+            auto const moveResult{moveAround(grid, coords, outputBeam)};
+        }
+    }
+}
+
 // ---------- End of Private Methods ----------
 
 // ---------- Public Methods ----------
@@ -152,20 +197,19 @@ std::optional<utils::geometry2d::Coordinate2D<std::size_t>> moveAround(
 std::string solvePart1(std::filesystem::path const& filePath)
 {
     auto const grid{parseInput(filePath)};
-    utils::cache::InfiniteCache<
-        std::pair<
-            utils::geometry2d::Coordinate2D<std::size_t>,
-            utils::geometry2d::Direction2D>,
-        std::vector<utils::geometry2d::Direction2D>>
-        cache;
-    utils::geometry2d::Coordinate2D<std::size_t> currentCoords{0, 0};
-    for (auto const dir : processPosition(grid, currentCoords, )) {
-        if (!cache.exists(std::make_pair(currentCoords, dir))) {
-            auto const moveResult{moveAround(grid, currentCoords, dir)};
-        }
-    }
-
-    return std::to_string(cache.size());
+    AnalyzedBeamList analyzedBeamList;
+    std::unordered_set<utils::geometry2d::Coordinate2D<std::size_t>>
+        energizedTiles;
+    utils::geometry2d::Coordinate2D<std::size_t> initialCoords{0, 0};
+    utils::geometry2d::Direction2D initialDirection{
+        utils::geometry2d::Direction2D::Left};
+    processRecursive(
+        grid,
+        initialCoords,
+        initialDirection,
+        energizedTiles,
+        analyzedBeamList);
+    return std::to_string(energizedTiles.size());
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
