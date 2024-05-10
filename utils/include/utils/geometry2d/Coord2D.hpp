@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Concepts.hpp"
+#include "../Hash.hpp"
 #include "Direction2D.hpp"
 
 namespace utils::geometry2d {
@@ -134,6 +135,19 @@ public:
         return Coord2D<T>{mX + coordX, mY + coordY};
     }
 
+    /**
+     * @brief      Calculates the hash of this instance
+     *
+     * @return     Hash of the instance
+     */
+    [[nodiscard]] std::size_t calculateHash() const noexcept
+    {
+        std::size_t seed{0ULL};
+        utils::hash::hash_combine(seed, mX);
+        utils::hash::hash_combine(seed, mY);
+        return seed;
+    }
+
 private:
     /**
      * @brief      "Insert string into stream" operator.
@@ -163,9 +177,9 @@ private:
 
 template <IntegerType T>
 struct std::hash<utils::geometry2d::Coord2D<T>> {
-    std::size_t operator()(utils::geometry2d::Coord2D<T> const& item) const
+    std::size_t operator()(utils::geometry2d::Coord2D<T> const& instance) const
     {
-        return std::hash<T>{}(item.getX()) ^ std::hash<T>{}(item.getY());
+        return instance.calculateHash();
     }
 };
 

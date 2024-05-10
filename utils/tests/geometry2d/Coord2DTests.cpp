@@ -133,3 +133,17 @@ TEST_CASE("[Coord2D] move() method", "[utils][Coord2D]")
         }
     }
 }
+
+TEST_CASE("[Coord2D] Hash calculation", "[utils][Coord2D]")
+{
+    std::hash<Coord2D<int32_t>> hasher;
+    Coord2D const coords1{1, 7};
+    Coord2D const coords2{1, 7};
+    Coord2D const coords3{4, 8};
+
+    SECTION("Same") { REQUIRE(hasher(coords1) == hasher(coords1)); }
+
+    SECTION("Equal") { REQUIRE(hasher(coords1) == hasher(coords2)); }
+
+    SECTION("Different") { REQUIRE(hasher(coords1) != hasher(coords3)); }
+}

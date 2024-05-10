@@ -6,7 +6,7 @@
 
 namespace utils::cache {
 
-template <typename Key, typename Value>
+template <Hashable Key, typename Value>
 class InfiniteCache {
 public:
     InfiniteCache() noexcept = default;
@@ -53,7 +53,8 @@ public:
     bool exists(Key const& key) const { return mCacheItemsMap.contains(key); }
 
     /**
-     * @brief      Deletes the entry (key and value) for the selected key, if it exists.
+     * @brief      Deletes the entry (key and value) for the selected key, if it
+     * exists.
      *
      * @param[in]  key   The key.
      */

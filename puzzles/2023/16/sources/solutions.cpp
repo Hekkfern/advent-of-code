@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <utility>
 #include <utils/File.hpp>
+#include <utils/Hash.hpp>
 #include <utils/cache/InfiniteCache.hpp>
 #include <utils/geometry2d/Coord2D.hpp>
 #include <utils/geometry2d/Direction2D.hpp>
