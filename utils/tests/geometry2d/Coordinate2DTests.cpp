@@ -100,6 +100,18 @@ TEST_CASE("[Coordinate2D] move() method", "[utils][Coordinate2D]")
             auto const result{coords.move(Direction2D::Right)};
             REQUIRE_FALSE(result);
         }
+        SECTION("Down limit")
+        {
+            Coordinate2D const coords{0, std::numeric_limits<int32_t>::min()};
+            auto const result{coords.move(Direction2D::Down)};
+            REQUIRE_FALSE(result);
+        }
+        SECTION("Up limit")
+        {
+            Coordinate2D const coords{0, std::numeric_limits<int32_t>::max()};
+            auto const result{coords.move(Direction2D::Up)};
+            REQUIRE_FALSE(result);
+        }
         SECTION("Normal range")
         {
             Coordinate2D const coords{1, 7};
@@ -122,6 +134,20 @@ TEST_CASE("[Coordinate2D] move() method", "[utils][Coordinate2D]")
             Coordinate2D<uint32_t> const coords{
                 std::numeric_limits<uint32_t>::max(), 0U};
             auto const result{coords.move(Direction2D::Right)};
+            REQUIRE_FALSE(result);
+        }
+        SECTION("Down limit")
+        {
+            Coordinate2D<uint32_t> const coords{
+                0, std::numeric_limits<uint32_t>::min()};
+            auto const result{coords.move(Direction2D::Down)};
+            REQUIRE_FALSE(result);
+        }
+        SECTION("Up limit")
+        {
+            Coordinate2D<uint32_t> const coords{
+                0, std::numeric_limits<uint32_t>::max()};
+            auto const result{coords.move(Direction2D::Up)};
             REQUIRE_FALSE(result);
         }
         SECTION("Normal range")

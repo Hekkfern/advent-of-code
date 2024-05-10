@@ -150,7 +150,7 @@ public:
         case Direction2D::Up:
         case Direction2D::UpRight:
         case Direction2D::UpLeft:
-            if (mY == std::numeric_limits<T>::min()) {
+            if (mY == std::numeric_limits<T>::max()) {
                 return {};
             }
             ++coordY;
