@@ -4,6 +4,7 @@ import typing
 
 from . import utils
 from .platform_type import PlatformType
+from .constants import RETURN_CODE_SUCCESS, RETURN_CODE_ERROR
 
 
 def __store_current_preset(root_path: pathlib.Path, preset: str) -> None:
@@ -57,13 +58,13 @@ def compile_project(root_path: pathlib.Path) -> int:
     if preset is None:
         utils.print_error_msg(
             "Execution aborted. Please, generate the project first.")
-        return 1
+        return RETURN_CODE_ERROR
     # check if the CMakeCache.txt file of the current preset exists
     out_preset_path = root_path / "out/build" / preset
     if not (out_preset_path / "CMakeCache.txt").is_file():
         utils.print_error_msg(
             "Output folder doesn't exist. Generate the project first.")
-        return 1
+        return RETURN_CODE_ERROR
     # run CMake
     command: str = f'cmake --build --preset {preset} -j'
     cmd_code: int = utils.execute_program(command)
@@ -78,13 +79,13 @@ def test_project(root_path: pathlib.Path) -> int:
     if preset is None:
         utils.print_error_msg(
             "Project has not been generated. Use \"generate\" subcommand first.")
-        return 1
+        return RETURN_CODE_ERROR
     # run CTest
     command: str = f'ctest --preset {preset} -j'
     cmd_code: int = utils.execute_program(command)
     print()  # add empty line in stdout
 
-    if cmd_code != 0:
+    if cmd_code != RETURN_CODE_SUCCESS:
         utils.print_error_msg("One or more unit tests didn't pass.")
 
     return cmd_code
@@ -96,14 +97,14 @@ def run_project(root_path: pathlib.Path, year: int, day: int) -> int:
     if preset is None:
         utils.print_error_msg(
             "Project has not been generated. Use \"generate\" subcommand first.")
-        return 1
+        return RETURN_CODE_ERROR
     # check if exe exists
     exe_path = root_path / \
         f"out/build/{preset}/puzzles/{year}/{day}/sources/aoc_{year}_{day}"
     if not exe_path.is_file():
         utils.print_error_msg(
             "Project has not been either generated or compiled. Use \"build\" subcommand first.")
-        return 1
+        return RETURN_CODE_ERROR
     # run exe
     cmd_code: int = utils.execute_program(
         str(exe_path.absolute()), exe_path.parent)

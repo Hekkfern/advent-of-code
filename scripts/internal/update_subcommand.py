@@ -4,6 +4,7 @@ import git
 
 from . import utils
 from .clean_subcommand import clean_project
+from .constants import RETURN_CODE_SUCCESS, RETURN_CODE_ERROR
 
 
 def fetch_last_version(root_path: pathlib.Path, force: bool = False) -> int:
@@ -15,11 +16,11 @@ def fetch_last_version(root_path: pathlib.Path, force: bool = False) -> int:
         else:
             utils.print_error_msg(
                 "Pending changes to commit in the repository. Save them or discard them.")
-            return 1
+            return RETURN_CODE_ERROR
     repo.git.checkout("master")
     repo.remotes.origin.pull()
     print(f'Current commit is {repo.head.object.hexsha} in "master" branch')
     for submodule in repo.submodules:
         submodule.update(init=True)
 
-    return 0
+    return RETURN_CODE_SUCCESS

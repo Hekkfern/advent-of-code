@@ -11,11 +11,13 @@ from internal import argparse_utils as apr
 from internal import utils
 from internal.addday_subcommand import add_new_day
 from internal.clean_subcommand import clean_project
-from internal.cmake_subcommand import run_project, test_project, compile_project, generate_project
+from internal.cmake_subcommand import run_project, test_project, \
+    compile_project, generate_project
 from internal.getinput_subcommand import get_input
 from internal.getstatements_subcommand import get_statement
 from internal.platform_type import PlatformType
 from internal.update_subcommand import fetch_last_version
+from internal.constants import RETURN_CODE_SUCCESS, RETURN_CODE_ERROR
 
 
 def __get_root_project_path() -> pathlib.Path:
@@ -66,7 +68,8 @@ def __configure_input_parameters():
     subparsers = parser.add_subparsers(dest="subcommand", required=True)
     # ----- generate -----
     parser_generate = subparsers.add_parser(
-        'generate', help="Cleans the project and generates the project with CMake from scratch")
+        'generate',
+        help="Cleans the project and generates the project with CMake from scratch")
     __add_generation_input_arguments(parser_generate)
     # ----- compile -----
     parser_compile = subparsers.add_parser(
@@ -86,15 +89,18 @@ def __configure_input_parameters():
         'clean', help="Deletes all the local data stored in the project")
     # ----- add_day -----
     parser_addday = subparsers.add_parser(
-        'add_day', help='Set up the project to add a new "Advent Of Code" puzzle')
+        'add_day',
+        help='Set up the project to add a new "Advent Of Code" puzzle')
     parser_addday.add_argument(
-        "--year", type=apr.ranged_int(2015, 2099), required=True, metavar="[2015-2099]",
+        "--year", type=apr.ranged_int(2015, 2099), required=True,
+        metavar="[2015-2099]",
         help="Selects the year (format XXXX, as for instance, 2023) of the puzzle to generate")
     parser_addday.add_argument(
         "--day", type=apr.ranged_int(1, 25), required=True, metavar="[1-25]",
         help="Selects the day (from 1 to 25) of the puzzle to generate")
     parser_addday.add_argument(
-        "-f", "--force", action="store_true", help="Forces the overwrite of existing files")
+        "-f", "--force", action="store_true",
+        help="Forces the overwrite of existing files")
     __add_session_arguments(parser_addday)
     # ----- test -----
     parser_test = subparsers.add_parser(
@@ -104,7 +110,8 @@ def __configure_input_parameters():
         'get_input',
         help='Downloads the input data for the "Advent Of Code" selected puzzle')
     parser_getinput.add_argument(
-        "--year", type=apr.ranged_int(2015, 2099), required=True, metavar="[2015-2099]",
+        "--year", type=apr.ranged_int(2015, 2099), required=True,
+        metavar="[2015-2099]",
         help="Selects the year (format XXXX, as for instance, 2023) of the puzzle")
     parser_getinput.add_argument(
         "--day", type=apr.ranged_int(1, 25), required=True, metavar="[1-25]",
@@ -115,7 +122,8 @@ def __configure_input_parameters():
         'run',
         help='Executes the solution of the selected puzzle')
     parser_run.add_argument(
-        "--year", type=apr.ranged_int(2015, 2099), required=True, metavar="[2015-2099]",
+        "--year", type=apr.ranged_int(2015, 2099), required=True,
+        metavar="[2015-2099]",
         help="Selects the year (format XXXX, as for instance, 2023) of the puzzle")
     parser_run.add_argument(
         "--day", type=apr.ranged_int(1, 25), required=True, metavar="[1-25]",
@@ -125,7 +133,8 @@ def __configure_input_parameters():
         'get_statement',
         help='Downloads the statement (both parts if available) for the "Advent Of Code" selected puzzle')
     parser_getstatement.add_argument(
-        "--year", type=apr.ranged_int(2015, 2099), required=True, metavar="[2015-2099]",
+        "--year", type=apr.ranged_int(2015, 2099), required=True,
+        metavar="[2015-2099]",
         help="Selects the year (format XXXX, as for instance, 2023) of the puzzle")
     parser_getstatement.add_argument(
         "--day", type=apr.ranged_int(1, 25), required=True, metavar="[1-25]",
@@ -135,17 +144,22 @@ def __configure_input_parameters():
     return parser.parse_args()
 
 
-def __manage_session_key(args) -> str:
+def __manage_session_key(args) -> typing.Optional[str]:
     if args.session:
-        return args.session.strip()
-    else:
+        session_key = str(args.session.strip())
+    else:  # elif args.session_file:
         session_file: typing.IO = args.session_file
         if not session_file:
             utils.print_error_msg(
                 "Missing session key for accessing your profile in Advent of Code's webpage.")
-            return ""
+            return None
         with session_file:
-            return session_file.read().strip()
+            session_key = str(session_file.read().strip())
+    if not session_key:
+        utils.print_error_msg(
+            "Missing session key for accessing your profile in Advent of Code's webpage.")
+        return None
+    return session_key
 
 
 def main() -> int:
@@ -153,41 +167,53 @@ def main() -> int:
 
     __check_min_python_version()
 
-    ret_code: int = 1
+    ret_code: int = RETURN_CODE_ERROR
     args = __configure_input_parameters()
     root_path = __get_root_project_path()
     if args.subcommand == "build":
-        ret_code = generate_project(root_path, PlatformType.from_str(args.platform), args.years, args.release,
-                                    args.project, not args.no_ccache, not args.no_cppcheck)
-        if ret_code == 0:
+        ret_code = generate_project(root_path,
+                                    PlatformType.from_str(args.platform),
+                                    args.years, args.release,
+                                    args.project, not args.no_ccache,
+                                    not args.no_cppcheck)
+        if ret_code == RETURN_CODE_SUCCESS:
             ret_code = compile_project(root_path)
     elif args.subcommand == "update":
         ret_code = fetch_last_version(args.force)
     elif args.subcommand == "generate":
-        ret_code = generate_project(root_path, PlatformType.from_str(args.platform), args.years, args.release,
-                                    args.project, not args.no_ccache, not args.no_cppcheck)
+        ret_code = generate_project(root_path,
+                                    PlatformType.from_str(args.platform),
+                                    args.years, args.release,
+                                    args.project, not args.no_ccache,
+                                    not args.no_cppcheck)
     elif args.subcommand == "compile":
         ret_code = compile_project(root_path)
     elif args.subcommand == "clean":
         ret_code = clean_project(root_path)
     elif args.subcommand == "add_day":
-        session: str = __manage_session_key(args)
+        session = __manage_session_key(args)
+        if not session:
+            return RETURN_CODE_ERROR
         ret_code = add_new_day(root_path, args.year, args.day, args.force)
-        if ret_code != 0:
+        if ret_code != RETURN_CODE_SUCCESS:
             return ret_code
         ret_code = get_statement(root_path, args.year, args.day, session)
-        if ret_code != 0:
+        if ret_code != RETURN_CODE_SUCCESS:
             return ret_code
         ret_code = get_input(root_path, args.year, args.day, session)
     elif args.subcommand == "test":
         ret_code = test_project(root_path)
     elif args.subcommand == "get_input":
-        session: str = __manage_session_key(args)
+        session = __manage_session_key(args)
+        if not session:
+            return RETURN_CODE_ERROR
         ret_code = get_input(root_path, args.year, args.day, session)
     elif args.subcommand == "run":
         ret_code = run_project(root_path, args.year, args.day)
     elif args.subcommand == "get_statement":
-        session: str = __manage_session_key(args)
+        session = __manage_session_key(args)
+        if not session:
+            return RETURN_CODE_ERROR
         ret_code = get_statement(root_path, args.year, args.day, session)
 
     return ret_code
@@ -195,7 +221,7 @@ def main() -> int:
 
 if __name__ == "__main__":
     exit_code: int = main()
-    if exit_code == 0:
+    if exit_code == RETURN_CODE_SUCCESS:
         print(colorama.Fore.GREEN + "Script finished successfully.")
     else:
         print(colorama.Fore.RED + "Script failed.")

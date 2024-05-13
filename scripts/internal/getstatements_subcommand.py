@@ -8,6 +8,7 @@ import markdownify as md
 
 from . import generate_templates as gtp
 from . import utils
+from .constants import RETURN_CODE_SUCCESS, RETURN_CODE_ERROR
 
 
 def __parse_title(raw_statement: bs4.element.Tag) -> str:
@@ -27,7 +28,8 @@ def __parse_statement(raw_statement: bs4.element.Tag) -> str:
     return md.MarkdownConverter().convert_soup(st).strip()
 
 
-def get_statement(root_path: pathlib.Path, year: int, day: int, session: str) -> int:
+def get_statement(root_path: pathlib.Path, year: int, day: int,
+                  session: str) -> int:
     # Download data from server
     url: str = f"https://adventofcode.com/{year}/day/{day}"
     request = urllib.request.Request(
@@ -39,13 +41,13 @@ def get_statement(root_path: pathlib.Path, year: int, day: int, session: str) ->
     if response.status != 200:
         utils.print_error_msg(
             'Error while trying to connect to the \"Advent of Code\" webpage. Check the input parameters of the script and make sure that the session key is valid.')
-        return 1
+        return RETURN_CODE_ERROR
     # Check if the selected puzzle folder structure exists
     readme_path = root_path / f"puzzles/{year}/{day}/README.md"
     if not readme_path.is_file():
         utils.print_error_msg(
             'Missing folder structure for the selected puzzle. Use \"add_day\" subcommand first.')
-        return 1
+        return RETURN_CODE_ERROR
     # Get webscrapper instance
     soup = bs4.BeautifulSoup(response.read(), 'html.parser')
     # Get parts
@@ -64,4 +66,4 @@ def get_statement(root_path: pathlib.Path, year: int, day: int, session: str) ->
 
     print(
         f'Puzzle instructions for puzzle {year} day {day} has been stored in {readme_path.absolute()}.')
-    return 0
+    return RETURN_CODE_SUCCESS
