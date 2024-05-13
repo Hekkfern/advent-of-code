@@ -55,13 +55,13 @@ static std::unordered_map<
     std::vector<utils::geometry2d::Direction2D>> const BeamBehaviours{
     // EmptySpace
     {{TileType::EmptySpace, utils::geometry2d::Direction2D::Left},
-     {utils::geometry2d::Direction2D::Left}},
-    {{TileType::EmptySpace, utils::geometry2d::Direction2D::Right},
      {utils::geometry2d::Direction2D::Right}},
+    {{TileType::EmptySpace, utils::geometry2d::Direction2D::Right},
+     {utils::geometry2d::Direction2D::Left}},
     {{TileType::EmptySpace, utils::geometry2d::Direction2D::Up},
-     {utils::geometry2d::Direction2D::Up}},
-    {{TileType::EmptySpace, utils::geometry2d::Direction2D::Down},
      {utils::geometry2d::Direction2D::Down}},
+    {{TileType::EmptySpace, utils::geometry2d::Direction2D::Down},
+     {utils::geometry2d::Direction2D::Up}},
     // Mirror "/"
     {{TileType::MirrorSlash, utils::geometry2d::Direction2D::Left},
      {utils::geometry2d::Direction2D::Down}},
@@ -82,9 +82,9 @@ static std::unordered_map<
      {utils::geometry2d::Direction2D::Left}},
     // Horizontal splitter
     {{TileType::SplitterHorizontal, utils::geometry2d::Direction2D::Left},
-     {utils::geometry2d::Direction2D::Left}},
-    {{TileType::SplitterHorizontal, utils::geometry2d::Direction2D::Right},
      {utils::geometry2d::Direction2D::Right}},
+    {{TileType::SplitterHorizontal, utils::geometry2d::Direction2D::Right},
+     {utils::geometry2d::Direction2D::Left}},
     {{TileType::SplitterHorizontal, utils::geometry2d::Direction2D::Up},
      {utils::geometry2d::Direction2D::Left,
       utils::geometry2d::Direction2D::Right}},
@@ -99,9 +99,9 @@ static std::unordered_map<
      {utils::geometry2d::Direction2D::Up,
       utils::geometry2d::Direction2D::Down}},
     {{TileType::SplitterVertical, utils::geometry2d::Direction2D::Up},
-     {utils::geometry2d::Direction2D::Up}},
-    {{TileType::SplitterVertical, utils::geometry2d::Direction2D::Down},
      {utils::geometry2d::Direction2D::Down}},
+    {{TileType::SplitterVertical, utils::geometry2d::Direction2D::Down},
+     {utils::geometry2d::Direction2D::Up}},
 };
 
 /**
@@ -177,23 +177,24 @@ void processRecursive(
     utils::geometry2d::Grid2D<char> const& grid,
     utils::geometry2d::Coordinate2D<std::size_t> const& coords,
     utils::geometry2d::Direction2D const& direction,
-    std::unordered_set<utils::geometry2d::Coordinate2D<std::size_t>>
+    std::unordered_set<utils::geometry2d::Coordinate2D<std::size_t>>&
         energizedTiles,
     AnalyzedBeamList& analyzedBeamList)
 {
-    if (!analyzedBeamList.contains(std::make_pair(coords, direction))) {
-        energizedTiles.emplace(coords);
-        analyzedBeamList.emplace(std::make_pair(coords, direction));
-        auto const outputBeams{processPosition(grid, coords, direction)};
-        for (auto const outputBeam : outputBeams) {
-            auto const moveResult{moveAround(grid, coords, outputBeam)};
-            if (!moveResult) {
-                continue;
-            }
+    auto const outputBeams{processPosition(grid, coords, direction)};
+    for (auto const outputBeam : outputBeams) {
+        auto const moveResult{moveAround(grid, coords, outputBeam)};
+        if (!moveResult) {
+            continue;
+        }
+        if (!analyzedBeamList.contains(
+                std::make_pair(*moveResult, outputBeam))) {
+            energizedTiles.emplace(*moveResult);
+            analyzedBeamList.emplace(std::make_pair(*moveResult, outputBeam));
             processRecursive(
                 grid,
                 *moveResult,
-                outputBeam,
+                outputBeam.invert(),
                 energizedTiles,
                 analyzedBeamList);
         }
@@ -207,12 +208,12 @@ void processRecursive(
 std::string solvePart1(std::filesystem::path const& filePath)
 {
     auto const grid{parseInput(filePath)};
-    AnalyzedBeamList analyzedBeamList;
-    std::unordered_set<utils::geometry2d::Coordinate2D<std::size_t>>
-        energizedTiles;
     utils::geometry2d::Coordinate2D<std::size_t> initialCoords{0, 0};
     utils::geometry2d::Direction2D initialDirection{
-        utils::geometry2d::Direction2D::Right};
+        utils::geometry2d::Direction2D::Left};
+    AnalyzedBeamList analyzedBeamList{{initialCoords, initialDirection}};
+    std::unordered_set<utils::geometry2d::Coordinate2D<std::size_t>>
+        energizedTiles{initialCoords};
     processRecursive(
         grid,
         initialCoords,
