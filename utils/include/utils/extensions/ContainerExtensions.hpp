@@ -13,8 +13,8 @@ namespace utils::extensions {
  *                      modified directly.
  * @param[in]  offset   The number of positions to move the values, which can be
  *                      positive or negative.
- *                        >0: rotate to the right
- *                        <0: rotate to the left
+ *                        * >0: rotate to the right
+ *                        * <0: rotate to the left
  *
  * @tparam     T        Type of the content of the vector.
  */
@@ -43,6 +43,8 @@ void rotate(std::vector<T>& numbers, int32_t const offset)
  *                          valid index within the vector bounds.
  * @param[in]     offset    The number of positions to move the value, which can
  *                          be positive or negative.
+ *                            * >0: moves the item to the right
+ *                             * <0: moves the item to the left
  *
  * @tparam        T         Type of the content of the vector.
  */
@@ -57,7 +59,24 @@ void moveValueCircularly(
         return; // Do nothing
     }
 
-    // TODO
+    std::size_t const newPosition{(position + normalizedOffset) % n};
+
+    // Move the value to the new position by rotating the elements in-between
+    if (normalizedOffset > 0) {
+        T temp = std::move(numbers[position]);
+        for (std::size_t i = position; i != newPosition; i = (i + 1) % n) {
+            std::size_t next = (i + 1) % n;
+            numbers[i] = std::move(numbers[next]);
+        }
+        numbers[newPosition] = std::move(temp);
+    } else {
+        T temp = std::move(numbers[position]);
+        for (std::size_t i = position; i != newPosition; i = (i + n - 1) % n) {
+            std::size_t prev = (i + n - 1) % n;
+            numbers[i] = std::move(numbers[prev]);
+        }
+        numbers[newPosition] = std::move(temp);
+    }
 }
 
 } // namespace utils::extensions
