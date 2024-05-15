@@ -32,6 +32,7 @@ set(_TESTFILES_GEOMETRY3D
     geometry3d/Operations3DTests.cpp)
 set(_TESTFILES_GRAPH graph/GraphTests.cpp graph/VertexTests.cpp
                      graph/AlgorithmsTests.cpp)
+set(_TESTFILES_EXTENSIONS extensions/VectorExtensionsTests.cpp)
 add_executable(
   ${_EXEC_NAME}
   ${_TESTFILES}
@@ -40,7 +41,8 @@ add_executable(
   ${_TESTFILES_CACHE}
   ${_TESTFILES_GEOMETRY2D}
   ${_TESTFILES_GEOMETRY3D}
-  ${_TESTFILES_GRAPH})
+  ${_TESTFILES_GRAPH}
+  ${_TESTFILES_EXTENSIONS})
 set_cpp_standard(${_EXEC_NAME})
 set_compiler_flags(${_EXEC_NAME})
 set_vectorization_flags(${_EXEC_NAME})
@@ -57,5 +59,6 @@ source_group("Source Files/interval" FILES ${_TESTFILES_INTERVAL})
 source_group("Source Files/geometry2d" FILES ${_TESTFILES_GEOMETRY2D})
 source_group("Source Files/geometry3d" FILES ${_TESTFILES_GEOMETRY3D})
 source_group("Source Files/graph" FILES ${_TESTFILES_GRAPH})
+source_group("Source Files/extensions" FILES ${_TESTFILES_EXTENSIONS})
 
 add_subdirectory(test_assets)

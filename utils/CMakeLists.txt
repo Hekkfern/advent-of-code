@@ -48,6 +48,8 @@ set(_SOURCES_UTILS_GEOMETRY3D
 set(_SOURCES_UTILS_GRAPH
     include/utils/graph/Graph.hpp include/utils/graph/Vertex.hpp
     include/utils/graph/Algorithms.hpp)
+set(_SOURCES_UTILS_EXTENSIONS
+    include/utils/extensions/VectorExtensions.hpp)
 add_library(
   ${_LIB_NAME} STATIC
   ${_SOURCES_UTILS}
@@ -56,7 +58,8 @@ add_library(
   ${_SOURCES_UTILS_CACHE}
   ${_SOURCES_UTILS_GEOMETRY2D}
   ${_SOURCES_UTILS_GEOMETRY3D}
-  ${_SOURCES_UTILS_GRAPH})
+  ${_SOURCES_UTILS_GRAPH}
+  ${_SOURCES_UTILS_EXTENSIONS})
 set_cpp_standard(${_LIB_NAME})
 set_compiler_flags(${_LIB_NAME})
 set_vectorization_flags(${_LIB_NAME})
@@ -76,6 +79,7 @@ source_group("Source Files/interval" FILES ${_SOURCES_UTILS_INTERVAL})
 source_group("Source Files/geometry2d" FILES ${_SOURCES_UTILS_GEOMETRY2D})
 source_group("Source Files/geometry3d" FILES ${_SOURCES_UTILS_GEOMETRY3D})
 source_group("Source Files/graph" FILES ${_SOURCES_UTILS_GRAPH})
+source_group("Source Files/extensions" FILES ${_SOURCES_UTILS_EXTENSIONS})
 
 if(GENERATE_PROJECTS STREQUAL "ALL" OR GENERATE_PROJECTS STREQUAL "UNITTESTS")
   add_subdirectory(tests)
