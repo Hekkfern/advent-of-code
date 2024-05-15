@@ -62,21 +62,19 @@ void moveValueCircularly(
     std::size_t const newPosition{(position + normalizedOffset) % n};
 
     // Move the value to the new position by rotating the elements in-between
+    T temp = std::move(numbers[position]);
     if (normalizedOffset > 0) {
-        T temp = std::move(numbers[position]);
         for (std::size_t i = position; i != newPosition; i = (i + 1) % n) {
             std::size_t next = (i + 1) % n;
             numbers[i] = std::move(numbers[next]);
         }
-        numbers[newPosition] = std::move(temp);
     } else {
-        T temp = std::move(numbers[position]);
         for (std::size_t i = position; i != newPosition; i = (i + n - 1) % n) {
             std::size_t prev = (i + n - 1) % n;
             numbers[i] = std::move(numbers[prev]);
         }
-        numbers[newPosition] = std::move(temp);
     }
+    numbers[newPosition] = std::move(temp);
 }
 
 } // namespace utils::extensions
