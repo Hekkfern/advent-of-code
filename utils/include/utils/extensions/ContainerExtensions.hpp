@@ -51,8 +51,9 @@ void moveValueCircularly(
     std::vector<T>& numbers, std::size_t position, int32_t const offset)
 {
     std::size_t const n{numbers.size()};
-    auto const k{utils::math::modulusFloor(offset, static_cast<int32_t>(n))};
-    if (position >= n || n == 0 || k == 0) {
+    auto const normalizedOffset{
+        utils::math::modulusFloor(offset, static_cast<int32_t>(n))};
+    if (n <= 1 || position >= n || normalizedOffset == 0) {
         return; // Do nothing
     }
 
