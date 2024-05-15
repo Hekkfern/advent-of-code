@@ -13,18 +13,23 @@ namespace utils::extensions {
  *                      modified directly.
  * @param[in]  offset   The number of positions to move the values, which can be
  *                      positive or negative.
+ *                        >0: rotate to the right
+ *                        <0: rotate to the left
  *
  * @tparam     T        Type of the content of the vector.
  */
 template <typename T>
 void rotate(std::vector<T>& numbers, int32_t const offset)
 {
-    std::size_t const n{numbers.size()};
-    if (offset == 0 || n <= 1) {
+    auto const n{numbers.size()};
+    auto const normalizedOffset{static_cast<std::size_t>(
+        utils::math::modulusFloor(offset, static_cast<int32_t>(n)))};
+    if (n <= 1 || normalizedOffset == 0) {
         return; // Do nothing
     }
 
-    // TODO
+    std::rotate(
+        numbers.rbegin(), numbers.rbegin() + normalizedOffset, numbers.rend());
 }
 
 /**
