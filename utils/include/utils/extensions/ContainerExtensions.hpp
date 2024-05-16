@@ -75,16 +75,36 @@ void moveValueCircularly(
     auto it{numbers.begin()};
     std::advance(it, position);
 
+    /**
+     * @brief      Advance an iterator by the given amount, with wrap-around
+     *
+     * @param[in]  it      The iterator to move
+     * @param[in]  amount  The amount of position to move @p it
+     * @param[in]  begin   The begin iterator (low limit)
+     * @param[in]  end     The end iterator (high limit)
+     *
+     * @return     { description_of_the_return_value }
+     */
     auto advance = [](auto it, int64_t amount, auto begin, auto end) {
         auto pos = it;
         while (amount > 0) {
             if (pos == end)
+            {
                 pos = begin;
+            }
             ++pos;
             --amount;
         }
         return pos;
     };
+    /**
+     * @brief      { lambda_description }
+     *
+     * @param[in]  it     The iterator
+     * @param[in]  value  The value
+     *
+     * @return     { description_of_the_return_value }
+     */
     auto positive_offset = [&numbers, &advance](auto it, int64_t value) {
         // For zero offset, we need a no-op splice, and since splice
         // inserts before the given iterator, we need next
@@ -96,6 +116,14 @@ void moveValueCircularly(
         // Get the new position
         return advance(pos, amount, numbers.begin(), numbers.end());
     };
+    /**
+     * @brief      { lambda_description }
+     *
+     * @param[in]  it     The iterator
+     * @param[in]  value  The value
+     *
+     * @return     { description_of_the_return_value }
+     */
     auto negative_offset = [&numbers, &advance](auto it, int64_t value) {
         // Use reverse iterator to move in reverse.
         // make_reverse_iterator already returns an offset iterator
