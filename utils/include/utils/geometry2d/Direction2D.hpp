@@ -93,6 +93,7 @@ public:
         default:
             /* Invalid value */
             assert(false);
+            return "";
         }
     }
     /**

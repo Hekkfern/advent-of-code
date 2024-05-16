@@ -41,37 +41,135 @@ TEST_CASE("[Extensions] rotate() function", "[utils][Extensions]")
 
 TEST_CASE("[Extensions] moveValueCircularly() function", "[utils][Extensions]")
 {
-    std::vector<int32_t> input{1, 2, 3, 4, 5, 6, 7};
+    static std::vector<int32_t> const Input{1, 2, 3, 4, 5, 6, 7};
+    auto result{Input};
 
-    SECTION("Positive offset")
+    SECTION("Initial position")
     {
-        SECTION("Smaller than size")
+        static constexpr std::size_t Position{0ULL};
+
+        SECTION("Positive offset")
         {
-            utils::extensions::moveValueCircularly(input, 0ULL, 3);
-            CHECK(input == std::vector<int32_t>{2, 3, 4, 1, 5, 6, 7});
+            static std::vector<int32_t> const ExpectedResult{
+                2, 3, 4, 1, 5, 6, 7};
+
+            SECTION("Smaller than size")
+            {
+                utils::extensions::moveValueCircularly(result, Position, 3);
+                CHECK(result == ExpectedResult);
+            }
+            SECTION("Greater than size")
+            {
+                utils::extensions::moveValueCircularly(result, Position, 10);
+                CHECK(result == ExpectedResult);
+            }
         }
-        SECTION("Greater than size")
+        SECTION("Zero offset")
         {
-            utils::extensions::moveValueCircularly(input, 0ULL, 10);
-            CHECK(input == std::vector<int32_t>{2, 3, 4, 1, 5, 6, 7});
+            utils::extensions::moveValueCircularly(result, Position, 0);
+            CHECK(result == Input);
+        }
+        SECTION("Negative offset")
+        {
+            static std::vector<int32_t> const ExpectedResult{
+                2, 3, 4, 1, 5, 6, 7};
+
+            SECTION("Smaller than size")
+            {
+                utils::extensions::moveValueCircularly(result, Position, -3);
+                CHECK(result == ExpectedResult);
+            }
+            SECTION("Greater than size")
+            {
+                utils::extensions::moveValueCircularly(result, Position, -10);
+                CHECK(result == ExpectedResult);
+            }
         }
     }
-    SECTION("Zero offset")
+    SECTION("Middle position")
     {
-        utils::extensions::moveValueCircularly(input, 0ULL, 0);
-        CHECK(input == std::vector<int32_t>{1, 2, 3, 4, 5, 6, 7});
+        static constexpr std::size_t Position{2ULL};
+
+        SECTION("Positive offset")
+        {
+            static std::vector<int32_t> const ExpectedResult{
+                1, 2, 4, 5, 6, 3, 7};
+
+            SECTION("Smaller than size")
+            {
+                utils::extensions::moveValueCircularly(result, Position, 3);
+                CHECK(result == ExpectedResult);
+            }
+            SECTION("Greater than size")
+            {
+                utils::extensions::moveValueCircularly(result, Position, 10);
+                CHECK(result == ExpectedResult);
+            }
+        }
+        SECTION("Zero offset")
+        {
+            utils::extensions::moveValueCircularly(result, Position, 0);
+            CHECK(result == Input);
+        }
+        SECTION("Negative offset")
+        {
+            static std::vector<int32_t> const ExpectedResult{
+                1, 2, 4, 5, 6, 3, 7};
+
+            SECTION("Smaller than size")
+            {
+                utils::extensions::moveValueCircularly(result, Position, -3);
+                CHECK(result == ExpectedResult);
+            }
+            SECTION("Greater than size")
+            {
+                utils::extensions::moveValueCircularly(result, Position, -10);
+                CHECK(result == ExpectedResult);
+            }
+        }
     }
-    SECTION("Negative offset")
+    SECTION("Final position")
     {
-        SECTION("Smaller than size")
+        static std::size_t const Position{Input.size() - 1ULL};
+
+        SECTION("Positive offset")
         {
-            utils::extensions::moveValueCircularly(input, 0ULL, -3);
-            CHECK(input == std::vector<int32_t>{2, 3, 4, 1, 5, 6, 7});
+            static std::vector<int32_t> const ExpectedResult{
+                1, 2, 3, 7, 4, 5, 6};
+
+            SECTION("Smaller than size")
+            {
+                utils::extensions::moveValueCircularly(result, Position, 3);
+                CHECK(result == ExpectedResult);
+            }
+            SECTION("Greater than size")
+            {
+                utils::extensions::moveValueCircularly(result, Position, 10);
+                CHECK(result == ExpectedResult);
+            }
         }
-        SECTION("Greater than size")
+        SECTION("Zero offset")
         {
-            utils::extensions::moveValueCircularly(input, 0ULL, -10);
-            CHECK(input == std::vector<int32_t>{2, 3, 4, 1, 5, 6, 7});
+            utils::extensions::moveValueCircularly(result, Position, 0);
+            CHECK(result == Input);
+        }
+        SECTION("Negative offset")
+        {
+            static std::vector<int32_t> const ExpectedResult{
+                1, 2, 3, 7, 4, 5, 6};
+
+            SECTION("Smaller than size")
+            {
+                utils::extensions::moveValueCircularly(result, Position, -3);
+                CHECK(result == ExpectedResult);
+            }
+            SECTION("Greater than size")
+            {
+                utils::extensions::moveValueCircularly(result, Position, -10);
+                CHECK(result == ExpectedResult);
+            }
         }
     }
+
+    CHECK(Input.size() == result.size());
 }
