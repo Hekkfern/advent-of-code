@@ -7,7 +7,8 @@
 namespace utils::extensions {
 
 /**
- * @brief      Performs a rotation in the elements of a vector.
+ * @brief      Performs a rotation in the elements of a vector. Modifies the
+ *             vector in-place. If the operation is invalid, does nothing.
  *
  * @param      numbers  The vector of integers to operate on. This vector is
  *                      modified directly.
@@ -15,6 +16,11 @@ namespace utils::extensions {
  *                      positive or negative.
  *                        * >0: rotate to the right
  *                        * <0: rotate to the left
+ *
+ * @test       Given numbers={1, 2, 3, 4, 5, 6, 7} and offset=3, the result is
+ *             {5, 6, 7, 1, 2, 3, 4}.
+ * @test       Given numbers={1, 2, 3, 4, 5, 6, 7} and offset=-3, the result is
+ *             {4, 5, 6, 7, 1, 2, 3}.
  *
  * @tparam     T        Type of the content of the vector.
  */
@@ -44,7 +50,12 @@ void rotate(std::vector<T>& numbers, int32_t const offset)
  * @param[in]     offset    The number of positions to move the value, which can
  *                          be positive or negative.
  *                            * >0: moves the item to the right
- *                             * <0: moves the item to the left
+ *                            * <0: moves the item to the left
+ *
+ * @test          Given numbers={1, 2, 3, 4, 5, 6, 7}, position=0 and offset=3,
+ *                the result is {2, 3, 4, 1, 5, 6, 7}.
+ * @test          Given numbers={1, 2, 3, 4, 5, 6, 7}, position=0 and offset=-3,
+ *                the result is {2, 3, 4, 1, 5, 6, 7}.
  *
  * @tparam        T         Type of the content of the vector.
  */
