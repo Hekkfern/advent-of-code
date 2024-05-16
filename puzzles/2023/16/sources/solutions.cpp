@@ -173,7 +173,7 @@ using AnalyzedBeamList = std::unordered_set<std::pair<
  * @param      direction  The direction
  * @param      cache      The cache
  */
-void processRecursive(
+void processRecursiveForPart1(
     utils::geometry2d::Grid2D<char> const& grid,
     utils::geometry2d::Coordinate2D<std::size_t> const& coords,
     utils::geometry2d::Direction2D const& direction,
@@ -191,7 +191,7 @@ void processRecursive(
                 std::make_pair(*moveResult, outputBeam))) {
             energizedTiles.emplace(*moveResult);
             analyzedBeamList.emplace(std::make_pair(*moveResult, outputBeam));
-            processRecursive(
+            processRecursiveForPart1(
                 grid,
                 *moveResult,
                 outputBeam.invert(),
@@ -199,6 +199,18 @@ void processRecursive(
                 analyzedBeamList);
         }
     }
+}
+
+std::vector<std::pair<
+    utils::geometry2d::Coordinate2D<std::size_t>,
+    utils::geometry2d::Direction2D>>
+getListOfStartingBeams(utils::geometry2d::Grid2D<char> const& grid)
+{
+    static utils::geometry2d::Coordinate2D<std::size_t> initialCoords{0, 0};
+    static utils::geometry2d::Direction2D initialDirection{
+        utils::geometry2d::Direction2D::Left};
+
+    // TODO
 }
 
 // ---------- End of Private Methods ----------
@@ -214,7 +226,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
     AnalyzedBeamList analyzedBeamList{{initialCoords, initialDirection}};
     std::unordered_set<utils::geometry2d::Coordinate2D<std::size_t>>
         energizedTiles{initialCoords};
-    processRecursive(
+    processRecursiveForPart1(
         grid,
         initialCoords,
         initialDirection,
@@ -225,7 +237,11 @@ std::string solvePart1(std::filesystem::path const& filePath)
 
 std::string solvePart2(std::filesystem::path const& filePath)
 {
-    (void)filePath;
+    auto const grid{parseInput(filePath)};
+    utils::geometry2d::Coordinate2D<std::size_t> initialCoords{0, 0};
+    utils::geometry2d::Direction2D initialDirection{
+        utils::geometry2d::Direction2D::Left};
+
     return "";
 }
 
