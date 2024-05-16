@@ -2,6 +2,8 @@
 
 #include "../Math.hpp"
 #include <algorithm>
+#include <iterator>
+#include <list>
 #include <vector>
 
 namespace utils::extensions {
@@ -64,28 +66,66 @@ void moveValueCircularly(
     std::vector<T>& numbers, std::size_t position, int32_t const offset)
 {
     std::size_t const n{numbers.size()};
-    auto const normalizedOffset{
-        utils::math::modulusFloor(offset, static_cast<int32_t>(n))};
-    if (n <= 1 || position >= n || normalizedOffset == 0) {
+    if (n <= 1 || position >= n || offset == 0) {
         return; // Do nothing
     }
 
-    std::size_t const newPosition{(position + normalizedOffset) % n};
+    std::list<T> numbersList{numbers.begin(), numbers.end()};
 
-    // Move the value to the new position by rotating the elements in-between
-    T temp = std::move(numbers[position]);
-    if (normalizedOffset > 0) {
-        for (std::size_t i = position; i != newPosition; i = (i + 1) % n) {
-            std::size_t next = (i + 1) % n;
-            numbers[i] = std::move(numbers[next]);
+    auto it{numbersList.begin()};
+    std::advance(it, position);
+
+    auto advance = [](auto it, int64_t amount, auto begin, auto end) {
+        auto pos = it;
+        while (amount > 0) {
+            if (pos == end)
+                pos = begin;
+            ++pos;
+            --amount;
         }
-    } else {
-        for (std::size_t i = position; i != newPosition; i = (i + n - 1) % n) {
-            std::size_t prev = (i + n - 1) % n;
-            numbers[i] = std::move(numbers[prev]);
-        }
+        return pos;
+    };
+    auto positive_offset = [&numbersList, &advance](auto it, int64_t value) {
+        // For zero offset, we need a no-op splice, and since splice
+        // inserts before the given iterator, we need next
+        auto pos = std::next(it);
+
+        // Moving an element size-1 times ends up in the same position
+        int64_t amount = (value) % (std::ssize(numbersList) - 1);
+
+        // Get the new position
+        return advance(pos, amount, numbersList.begin(), numbersList.end());
+    };
+    auto negative_offset = [&numbersList, &advance](auto it, int64_t value) {
+        // Use reverse iterator to move in reverse.
+        // make_reverse_iterator already returns an offset iterator
+        // so no need for std::next()
+        auto pos = std::make_reverse_iterator(it);
+
+        // Moving an element size-1 times ends up in the same position
+        int64_t amount = (-value) % (std::ssize(numbersList) - 1);
+
+        pos = advance(pos, amount, numbersList.rbegin(), numbersList.rend());
+
+        // data.rend() maps to data.begin() which would make the splice
+        // insert the element at the beginning of the list. When we move
+        // an element past the first element, we actually want it at
+        // the end of the list.
+        if (pos == numbersList.rend())
+            return numbersList.end();
+        else
+            return pos.base();
+    };
+
+    if (offset > 0) {
+        // Use the positive offset for positive numbers
+        numbersList.splice(positive_offset(it, offset), numbersList, it);
+    } else if (offset < 0) {
+        // Use the negative offset for negative numbers
+        numbersList.splice(negative_offset(it, offset), numbersList, it);
     }
-    numbers[newPosition] = std::move(temp);
+
+    numbers = std::vector<T>{numbersList.begin(), numbersList.end()};
 }
 
 } // namespace utils::extensions

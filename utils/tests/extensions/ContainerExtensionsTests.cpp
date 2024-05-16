@@ -50,17 +50,16 @@ TEST_CASE("[Extensions] moveValueCircularly() function", "[utils][Extensions]")
 
         SECTION("Positive offset")
         {
-            static std::vector<int32_t> const ExpectedResult{
-                2, 3, 4, 1, 5, 6, 7};
-
             SECTION("Smaller than size")
             {
                 utils::extensions::moveValueCircularly(result, Position, 3);
+                std::vector<int32_t> const ExpectedResult{2, 3, 4, 1, 5, 6, 7};
                 CHECK(result == ExpectedResult);
             }
             SECTION("Greater than size")
             {
                 utils::extensions::moveValueCircularly(result, Position, 10);
+                std::vector<int32_t> const ExpectedResult{2, 3, 4, 5, 1, 6, 7};
                 CHECK(result == ExpectedResult);
             }
         }
@@ -71,17 +70,16 @@ TEST_CASE("[Extensions] moveValueCircularly() function", "[utils][Extensions]")
         }
         SECTION("Negative offset")
         {
-            static std::vector<int32_t> const ExpectedResult{
-                2, 3, 4, 1, 5, 6, 7};
-
             SECTION("Smaller than size")
             {
                 utils::extensions::moveValueCircularly(result, Position, -3);
+                std::vector<int32_t> const ExpectedResult{2, 3, 4, 1, 5, 6, 7};
                 CHECK(result == ExpectedResult);
             }
             SECTION("Greater than size")
             {
                 utils::extensions::moveValueCircularly(result, Position, -10);
+                std::vector<int32_t> const ExpectedResult{2, 3, 1, 4, 5, 6, 7};
                 CHECK(result == ExpectedResult);
             }
         }
@@ -92,17 +90,16 @@ TEST_CASE("[Extensions] moveValueCircularly() function", "[utils][Extensions]")
 
         SECTION("Positive offset")
         {
-            static std::vector<int32_t> const ExpectedResult{
-                1, 2, 4, 5, 6, 3, 7};
-
             SECTION("Smaller than size")
             {
                 utils::extensions::moveValueCircularly(result, Position, 3);
+                std::vector<int32_t> const ExpectedResult{1, 2, 4, 5, 6, 3, 7};
                 CHECK(result == ExpectedResult);
             }
             SECTION("Greater than size")
             {
                 utils::extensions::moveValueCircularly(result, Position, 10);
+                std::vector<int32_t> const ExpectedResult{1, 2, 4, 5, 6, 7, 3};
                 CHECK(result == ExpectedResult);
             }
         }
@@ -113,17 +110,16 @@ TEST_CASE("[Extensions] moveValueCircularly() function", "[utils][Extensions]")
         }
         SECTION("Negative offset")
         {
-            static std::vector<int32_t> const ExpectedResult{
-                1, 2, 4, 5, 6, 3, 7};
-
             SECTION("Smaller than size")
             {
                 utils::extensions::moveValueCircularly(result, Position, -3);
+                std::vector<int32_t> const ExpectedResult{1, 2, 4, 5, 6, 3, 7};
                 CHECK(result == ExpectedResult);
             }
             SECTION("Greater than size")
             {
                 utils::extensions::moveValueCircularly(result, Position, -10);
+                std::vector<int32_t> const ExpectedResult{1, 2, 4, 5, 3, 6, 7};
                 CHECK(result == ExpectedResult);
             }
         }
@@ -134,17 +130,16 @@ TEST_CASE("[Extensions] moveValueCircularly() function", "[utils][Extensions]")
 
         SECTION("Positive offset")
         {
-            static std::vector<int32_t> const ExpectedResult{
-                1, 2, 3, 7, 4, 5, 6};
-
             SECTION("Smaller than size")
             {
                 utils::extensions::moveValueCircularly(result, Position, 3);
+                std::vector<int32_t> const ExpectedResult{1, 2, 3, 7, 4, 5, 6};
                 CHECK(result == ExpectedResult);
             }
             SECTION("Greater than size")
             {
                 utils::extensions::moveValueCircularly(result, Position, 10);
+                std::vector<int32_t> const ExpectedResult{1, 2, 3, 4, 7, 5, 6};
                 CHECK(result == ExpectedResult);
             }
         }
@@ -155,17 +150,16 @@ TEST_CASE("[Extensions] moveValueCircularly() function", "[utils][Extensions]")
         }
         SECTION("Negative offset")
         {
-            static std::vector<int32_t> const ExpectedResult{
-                1, 2, 3, 7, 4, 5, 6};
-
             SECTION("Smaller than size")
             {
                 utils::extensions::moveValueCircularly(result, Position, -3);
+                std::vector<int32_t> const ExpectedResult{1, 2, 3, 7, 4, 5, 6};
                 CHECK(result == ExpectedResult);
             }
             SECTION("Greater than size")
             {
                 utils::extensions::moveValueCircularly(result, Position, -10);
+                std::vector<int32_t> const ExpectedResult{1, 2, 7, 3, 4, 5, 6};
                 CHECK(result == ExpectedResult);
             }
         }
