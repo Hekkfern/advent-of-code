@@ -45,7 +45,7 @@ void rotate(std::vector<T>& numbers, int32_t const offset)
  *                a given offset. Modifies the vector in-place. If the operation
  *                is invalid, does nothing.
  *
- * @param[in,out] numbers   The vector of integers to operate on. This vector is
+ * @param[in,out] numbers   The list of integers to operate on. This vector is
  *                          modified directly.
  * @param[in]     position  The index of the value to move. This should be a
  *                          valid index within the vector bounds.
@@ -59,20 +59,20 @@ void rotate(std::vector<T>& numbers, int32_t const offset)
  * @test          Given numbers={1, 2, 3, 4, 5, 6, 7}, position=0 and offset=-3,
  *                the result is {2, 3, 4, 1, 5, 6, 7}.
  *
- * @tparam        T         Type of the content of the vector.
+ * @tparam        T         Type of the content of the list.
+ *
+ * @{
  */
 template <typename T>
 void moveValueCircularly(
-    std::vector<T>& numbers, std::size_t position, int32_t const offset)
+    std::list<T>& numbers, std::size_t const position, int32_t const offset)
 {
     std::size_t const n{numbers.size()};
     if (n <= 1 || position >= n || offset == 0) {
         return; // Do nothing
     }
 
-    std::list<T> numbersList{numbers.begin(), numbers.end()};
-
-    auto it{numbersList.begin()};
+    auto it{numbers.begin()};
     std::advance(it, position);
 
     auto advance = [](auto it, int64_t amount, auto begin, auto end) {
@@ -85,47 +85,62 @@ void moveValueCircularly(
         }
         return pos;
     };
-    auto positive_offset = [&numbersList, &advance](auto it, int64_t value) {
+    auto positive_offset = [&numbers, &advance](auto it, int64_t value) {
         // For zero offset, we need a no-op splice, and since splice
         // inserts before the given iterator, we need next
         auto pos = std::next(it);
 
         // Moving an element size-1 times ends up in the same position
-        int64_t amount = (value) % (std::ssize(numbersList) - 1);
+        int64_t amount = (value) % (std::ssize(numbers) - 1);
 
         // Get the new position
-        return advance(pos, amount, numbersList.begin(), numbersList.end());
+        return advance(pos, amount, numbers.begin(), numbers.end());
     };
-    auto negative_offset = [&numbersList, &advance](auto it, int64_t value) {
+    auto negative_offset = [&numbers, &advance](auto it, int64_t value) {
         // Use reverse iterator to move in reverse.
         // make_reverse_iterator already returns an offset iterator
         // so no need for std::next()
         auto pos = std::make_reverse_iterator(it);
 
         // Moving an element size-1 times ends up in the same position
-        int64_t amount = (-value) % (std::ssize(numbersList) - 1);
+        int64_t amount = (-value) % (std::ssize(numbers) - 1);
 
-        pos = advance(pos, amount, numbersList.rbegin(), numbersList.rend());
+        pos = advance(pos, amount, numbers.rbegin(), numbers.rend());
 
         // data.rend() maps to data.begin() which would make the splice
         // insert the element at the beginning of the list. When we move
         // an element past the first element, we actually want it at
         // the end of the list.
-        if (pos == numbersList.rend())
-            return numbersList.end();
-        else
+        if (pos == numbers.rend()) {
+            return numbers.end();
+        } else {
             return pos.base();
+        }
     };
 
     if (offset > 0) {
         // Use the positive offset for positive numbers
-        numbersList.splice(positive_offset(it, offset), numbersList, it);
+        numbers.splice(positive_offset(it, offset), numbers, it);
     } else if (offset < 0) {
         // Use the negative offset for negative numbers
-        numbersList.splice(negative_offset(it, offset), numbersList, it);
+        numbers.splice(negative_offset(it, offset), numbers, it);
     }
+}
+template <typename T>
+void moveValueCircularly(
+    std::vector<T>& numbers, std::size_t const position, int32_t const offset)
+{
+    std::size_t const n{numbers.size()};
+    if (n <= 1 || position >= n || offset == 0) {
+        return; // Do nothing
+    }
+
+    std::list<T> numbersList{numbers.begin(), numbers.end()};
+
+    moveValueCircularly<T>(numbersList, position, offset);
 
     numbers = std::vector<T>{numbersList.begin(), numbersList.end()};
 }
+/** }@ */
 
 } // namespace utils::extensions
