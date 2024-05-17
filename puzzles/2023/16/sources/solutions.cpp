@@ -206,11 +206,39 @@ std::vector<std::pair<
     utils::geometry2d::Direction2D>>
 getListOfStartingBeams(utils::geometry2d::Grid2D<char> const& grid)
 {
-    static utils::geometry2d::Coordinate2D<std::size_t> initialCoords{0, 0};
-    static utils::geometry2d::Direction2D initialDirection{
-        utils::geometry2d::Direction2D::Left};
+    std::vector<std::pair<
+        utils::geometry2d::Coordinate2D<std::size_t>,
+        utils::geometry2d::Direction2D>>
+        list;
 
-    // TODO
+    /* left */
+    for (std::size_t i{0ULL}; i < grid.getHeight(); ++i) {
+        list.emplace_back(
+            utils::geometry2d::Coordinate2D<std::size_t>{0ULL, i},
+            utils::geometry2d::Direction2D::Left);
+    }
+    /* down */
+    for (std::size_t i{0ULL}; i < grid.getWidth(); ++i) {
+        list.emplace_back(
+            utils::geometry2d::Coordinate2D<std::size_t>{
+                i, grid.getHeight() - 1ULL},
+            utils::geometry2d::Direction2D::Up);
+    }
+    /* right */
+    for (std::size_t i{0ULL}; i < grid.getHeight(); ++i) {
+        list.emplace_back(
+            utils::geometry2d::Coordinate2D<std::size_t>{
+                grid.getWidth() - 1ULL, i},
+            utils::geometry2d::Direction2D::Right);
+    }
+    /* up */
+    for (std::size_t i{0ULL}; i < grid.getWidth(); ++i) {
+        list.emplace_back(
+            utils::geometry2d::Coordinate2D<std::size_t>{i, 0ULL},
+            utils::geometry2d::Direction2D::Down);
+    }
+
+    return list;
 }
 
 // ---------- End of Private Methods ----------
@@ -238,9 +266,10 @@ std::string solvePart1(std::filesystem::path const& filePath)
 std::string solvePart2(std::filesystem::path const& filePath)
 {
     auto const grid{parseInput(filePath)};
-    utils::geometry2d::Coordinate2D<std::size_t> initialCoords{0, 0};
-    utils::geometry2d::Direction2D initialDirection{
-        utils::geometry2d::Direction2D::Left};
+
+    for (auto const& startingBeam : getListOfStartingBeams(grid)) {
+        // TODO
+    }
 
     return "";
 }
