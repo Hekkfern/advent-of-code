@@ -135,7 +135,7 @@ void moveValueCircularly(
 
         pos = advance(pos, amount, numbers.rbegin(), numbers.rend());
 
-        // data.rend() maps to data.begin() which would make the splice
+        // numbers.rend() maps to numbers.begin() which would make the splice
         // insert the element at the beginning of the list. When we move
         // an element past the first element, we actually want it at
         // the end of the list.
