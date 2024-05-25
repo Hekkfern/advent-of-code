@@ -266,12 +266,12 @@ std::string solvePart1(std::filesystem::path const& filePath)
 std::string solvePart2(std::filesystem::path const& filePath)
 {
     auto const grid{parseInput(filePath)};
-
+    uint64_t maxNumber{0};
     for (auto const& startingBeam : getListOfStartingBeams(grid)) {
         // TODO
+        AnalyzedBeamList analyzedBeamList{{initialCoords, initialDirection}};
     }
-
-    return "";
+    return std::to_string(maxNumber);
 }
 
 // ---------- End of Public Methods ----------
