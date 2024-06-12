@@ -97,6 +97,8 @@ static std::unordered_map<
      {utils::geometry2d::Direction2D::Up}},
 };
 
+using TileGrid = utils::geometry2d::Grid2D<TileType>;
+
 /**
  * @brief      Parses the whole input file and generates a flatten grid.
  *
@@ -104,8 +106,7 @@ static std::unordered_map<
  *
  * @return     Parsed data.
  */
-utils::geometry2d::Grid2D<TileType>
-parseInput(std::filesystem::path const& filePath)
+TileGrid parseInput(std::filesystem::path const& filePath)
 {
     std::vector<std::vector<TileType>> data;
 
@@ -122,7 +123,7 @@ parseInput(std::filesystem::path const& filePath)
         return {};
     }
 
-    return utils::geometry2d::Grid2D<TileType>{data};
+    return TileGrid{data};
 }
 
 /**
@@ -135,8 +136,8 @@ parseInput(std::filesystem::path const& filePath)
  *
  * @return     One or more output beams.
  */
-std::vector<utils::geometry2d::Direction2D> processPosition(
-    utils::geometry2d::Grid2D<TileType> const& grid, Beam const& beam)
+std::vector<utils::geometry2d::Direction2D>
+processPosition(TileGrid const& grid, Beam const& beam)
 {
     return BeamBehaviours.at(
         std::make_pair(grid.at(beam.coordinates), beam.direction));
@@ -153,7 +154,7 @@ std::vector<utils::geometry2d::Direction2D> processPosition(
  * @return     New position after moving, or std::nullopt otherwise.
  */
 std::optional<utils::geometry2d::Coordinate2D<std::size_t>> moveAround(
-    utils::geometry2d::Grid2D<TileType> const& grid,
+    TileGrid const& grid,
     utils::geometry2d::Coordinate2D<std::size_t> const& coords,
     utils::geometry2d::Direction2D const& direction)
 {
@@ -177,7 +178,7 @@ using AnalyzedBeamList = std::unordered_set<Beam>;
  * @param      cache      The cache
  */
 void processRecursiveForPart1(
-    utils::geometry2d::Grid2D<TileType> const& grid,
+    TileGrid const& grid,
     Beam const& beam,
     std::unordered_set<utils::geometry2d::Coordinate2D<std::size_t>>&
         energizedTiles,
@@ -201,8 +202,7 @@ void processRecursiveForPart1(
     }
 }
 
-std::vector<Beam>
-getListOfStartingBeams(utils::geometry2d::Grid2D<char> const& grid)
+std::vector<Beam> getListOfStartingBeams(TileGrid const& grid)
 {
     std::vector<Beam> list;
 
@@ -255,17 +255,14 @@ std::string solvePart1(std::filesystem::path const& filePath)
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
-{ /*
-     auto const grid{parseInput(filePath)};
-     uint64_t maxNumber{0};
-     for (auto const& startingBeam : getListOfStartingBeams(grid)) {
-         // TODO
-         AnalyzedBeamList analyzedBeamList{{initialCoords, initialDirection}};
-     }
-     return std::to_string(maxNumber);
-     */
-    (void)filePath;
-    return "";
+{
+    auto const grid{parseInput(filePath)};
+    uint64_t maxNumber{0};
+    for (auto const& startingBeam : getListOfStartingBeams(grid)) {
+        // TODO
+        AnalyzedBeamList analyzedBeamList{startingBeam};
+    }
+    return std::to_string(maxNumber);
 }
 
 // ---------- End of Public Methods ----------
