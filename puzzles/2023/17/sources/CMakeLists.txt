@@ -2,11 +2,14 @@ include(${CMAKE_SOURCE_DIR}/cmake/aoc_puzzles.cmake)
 
 cmake_minimum_required(VERSION 3.22)
 
+find_package(range-v3 CONFIG REQUIRED)
+
 # aoc_2023_17_solutions
 set(_LIB_NAME "aoc_2023_17_solutions")
 add_library(${_LIB_NAME} STATIC solutions.cpp solutions.hpp)
 setup_puzzle(${_LIB_NAME})
 target_link_libraries(${_LIB_NAME} PRIVATE aoc_utils)
+target_link_libraries(${_LIB_NAME} PRIVATE range-v3)
 
 # aoc_2023_17
 if(GENERATE_PROJECTS STREQUAL "ALL" OR GENERATE_PROJECTS STREQUAL "EXES")

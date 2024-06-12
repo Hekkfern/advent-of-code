@@ -301,7 +301,7 @@ TEST_CASE("[Grid2D] rotateCounterClockwise() method", "[utils][Grid2D]")
     {
         Grid2D<int> grid2D;
         grid2D.rotateCounterClockwise();
-        CHECK(grid2D == Grid2D<int>{});
+        CHECK(grid2D == Grid2D<int>{std::vector<std::vector<unsigned char>>()});
     }
     SECTION("Filled grid")
     {
@@ -315,7 +315,7 @@ TEST_CASE("[Grid2D] findFirst() method", "[utils][Grid2D]")
 {
     SECTION("Empty grid")
     {
-        Grid2D<int> const grid2D;
+        Grid2D<int> const grid2D(std::vector<std::vector<unsigned char>>());
         REQUIRE_FALSE(grid2D.findFirst(34));
     }
     SECTION("Filled grid")
@@ -340,7 +340,7 @@ TEST_CASE("[Grid2D] findAll() method", "[utils][Grid2D]")
 {
     SECTION("Empty grid")
     {
-        Grid2D<int> const grid2D;
+        Grid2D<int> const grid2D(std::vector<std::vector<unsigned char>>());
         REQUIRE(grid2D.findAll(34).empty());
     }
     SECTION("Filled grid")
