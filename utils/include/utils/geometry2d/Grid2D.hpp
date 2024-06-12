@@ -34,10 +34,12 @@ public:
      * @param[in]  grid  The grid in 2D format.
      */
     explicit Grid2D(std::vector<std::vector<T>> const& grid) noexcept
-        : mFlatGrid{grid | ranges::views::join | ranges::to<std::vector>}
-        , mWidth{grid[0].size()}
-        , mHeight{grid.size()}
     {
+        if (!grid.empty()) {
+            mFlatGrid = grid | ranges::views::join | ranges::to<std::vector>;
+            mWidth = grid[0].size();
+            mHeight = grid.size();
+        }
     }
     /**
      * @brief      Gets the values of the row with the specified index.
@@ -344,7 +346,7 @@ public:
     findFirst(T const& value) const noexcept
     {
         auto const it = ranges::find_if(
-            mFlatGrid, [&value = std::as_const(value)](T const& item) {
+            mFlatGrid, [&value = std::as_const(value)](T const& item) -> bool {
                 return item == value;
             });
 
@@ -362,18 +364,20 @@ public:
      * @return     A vector of pairs of indices (row, col) for each occurrence
      *             of the value.
      */
-    std::vector<std::pair<std::size_t, std::size_t>>
+    std::vector<Coordinate2D<std::size_t>>
     findAll(T const& value) const noexcept
     {
         return mFlatGrid | ranges::views::enumerate
-            | ranges::views::filter([&value](auto const& pair) {
+            | ranges::views::filter([&value](auto const& pair) -> bool {
                    return pair.second == value;
                })
-            | ranges::views::transform([this](auto const& pair) {
-                   std::size_t index = pair.first;
-                   return std::make_pair(index % mWidth, index / mWidth);
-               })
-            | ranges::to<std::vector<std::pair<std::size_t, std::size_t>>>();
+            | ranges::views::transform(
+                   [this](auto const& pair) -> Coordinate2D<std::size_t> {
+                       std::size_t index = pair.first;
+                       return Coordinate2D<std::size_t>{
+                           index % mWidth, index / mWidth};
+                   })
+            | ranges::to<std::vector<Coordinate2D<std::size_t>>>();
     }
     /**
      * @brief      Resizes the grid to a new width and height, filling new

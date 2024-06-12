@@ -14,9 +14,18 @@ TEST_CASE("[Grid2D] Constructor", "[utils][Grid2D]")
     }
     SECTION("Parametrized constructor")
     {
-        Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
-        CHECK(grid2D.getWidth() == 2ULL);
-        CHECK(grid2D.getHeight() == 3ULL);
+        SECTION("Empty grid")
+        {
+            Grid2D<int> const grid2D{{}};
+            CHECK(grid2D.getWidth() == 0ULL);
+            CHECK(grid2D.getHeight() == 0ULL);
+        }
+        SECTION("Filled grid")
+        {
+            Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+            CHECK(grid2D.getWidth() == 2ULL);
+            CHECK(grid2D.getHeight() == 3ULL);
+        }
     }
 }
 
@@ -301,7 +310,7 @@ TEST_CASE("[Grid2D] rotateCounterClockwise() method", "[utils][Grid2D]")
     {
         Grid2D<int> grid2D;
         grid2D.rotateCounterClockwise();
-        CHECK(grid2D == Grid2D<int>{std::vector<std::vector<unsigned char>>()});
+        CHECK(grid2D == Grid2D<int>{std::vector<std::vector<int>>()});
     }
     SECTION("Filled grid")
     {
@@ -315,7 +324,7 @@ TEST_CASE("[Grid2D] findFirst() method", "[utils][Grid2D]")
 {
     SECTION("Empty grid")
     {
-        Grid2D<int> const grid2D(std::vector<std::vector<unsigned char>>());
+        Grid2D<int> const grid2D{std::vector<std::vector<int>>()};
         REQUIRE_FALSE(grid2D.findFirst(34));
     }
     SECTION("Filled grid")
@@ -340,7 +349,7 @@ TEST_CASE("[Grid2D] findAll() method", "[utils][Grid2D]")
 {
     SECTION("Empty grid")
     {
-        Grid2D<int> const grid2D(std::vector<std::vector<unsigned char>>());
+        Grid2D<int> const grid2D{std::vector<std::vector<int>>{}};
         REQUIRE(grid2D.findAll(34).empty());
     }
     SECTION("Filled grid")
@@ -350,8 +359,8 @@ TEST_CASE("[Grid2D] findAll() method", "[utils][Grid2D]")
         {
             auto const result{grid2D.findAll(3)};
             REQUIRE(result.size() == 1);
-            CHECK(result[0].first == 0ULL);
-            CHECK(result[0].second == 1ULL);
+            CHECK(result[0].getX() == 0ULL);
+            CHECK(result[0].getY() == 1ULL);
         }
         SECTION("Not found")
         {
