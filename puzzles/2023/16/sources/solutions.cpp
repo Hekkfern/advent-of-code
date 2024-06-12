@@ -136,11 +136,10 @@ parseInput(std::filesystem::path const& filePath)
  * @return     One or more output beams.
  */
 std::vector<utils::geometry2d::Direction2D> processPosition(
-    utils::geometry2d::Grid2D<TileType> const& grid,
-    utils::geometry2d::Coordinate2D<std::size_t> const& coords,
-    utils::geometry2d::Direction2D const& inputDirection)
+    utils::geometry2d::Grid2D<TileType> const& grid, Beam const& beam)
 {
-    return BeamBehaviours.at(std::make_pair(grid.at(coords), inputDirection));
+    return BeamBehaviours.at(
+        std::make_pair(grid.at(beam.coordinates), beam.direction));
 }
 
 /**
@@ -179,15 +178,14 @@ using AnalyzedBeamList = std::unordered_set<Beam>;
  */
 void processRecursiveForPart1(
     utils::geometry2d::Grid2D<TileType> const& grid,
-    utils::geometry2d::Coordinate2D<std::size_t> const& coords,
-    utils::geometry2d::Direction2D const& direction,
+    Beam const& beam,
     std::unordered_set<utils::geometry2d::Coordinate2D<std::size_t>>&
         energizedTiles,
     AnalyzedBeamList& analyzedBeamList)
 {
-    auto const outputBeams{processPosition(grid, coords, direction)};
+    auto const outputBeams{processPosition(grid, beam)};
     for (auto const outputBeam : outputBeams) {
-        auto const moveResult{moveAround(grid, coords, outputBeam)};
+        auto const moveResult{moveAround(grid, beam.coordinates, outputBeam)};
         if (!moveResult) {
             continue;
         }
@@ -196,23 +194,17 @@ void processRecursiveForPart1(
             analyzedBeamList.emplace(*moveResult, outputBeam);
             processRecursiveForPart1(
                 grid,
-                *moveResult,
-                outputBeam.invert(),
+                Beam{*moveResult, outputBeam.invert()},
                 energizedTiles,
                 analyzedBeamList);
         }
     }
 }
 
-std::vector<std::pair<
-    utils::geometry2d::Coordinate2D<std::size_t>,
-    utils::geometry2d::Direction2D>>
+std::vector<Beam>
 getListOfStartingBeams(utils::geometry2d::Grid2D<char> const& grid)
 {
-    std::vector<std::pair<
-        utils::geometry2d::Coordinate2D<std::size_t>,
-        utils::geometry2d::Direction2D>>
-        list;
+    std::vector<Beam> list;
 
     /* left */
     for (std::size_t i{0ULL}; i < grid.getHeight(); ++i) {
@@ -251,18 +243,14 @@ getListOfStartingBeams(utils::geometry2d::Grid2D<char> const& grid)
 std::string solvePart1(std::filesystem::path const& filePath)
 {
     auto const grid{parseInput(filePath)};
-    utils::geometry2d::Coordinate2D<std::size_t> initialCoords{0, 0};
-    utils::geometry2d::Direction2D initialDirection{
+    Beam initialBeam{
+        utils::geometry2d::Coordinate2D<std::size_t>{0, 0},
         utils::geometry2d::Direction2D::Left};
-    AnalyzedBeamList analyzedBeamList{{initialCoords, initialDirection}};
+    AnalyzedBeamList analyzedBeamList{initialBeam};
     std::unordered_set<utils::geometry2d::Coordinate2D<std::size_t>>
-        energizedTiles{initialCoords};
+        energizedTiles{initialBeam.coordinates};
     processRecursiveForPart1(
-        grid,
-        initialCoords,
-        initialDirection,
-        energizedTiles,
-        analyzedBeamList);
+        grid, initialBeam, energizedTiles, analyzedBeamList);
     return std::to_string(energizedTiles.size());
 }
 
