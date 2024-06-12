@@ -442,13 +442,7 @@ public:
     {
         auto const x{coords.getX()};
         auto const y{coords.getY()};
-        if (x >= mWidth || y >= mHeight) {
-            return PositionStatus::Outside;
-        } else if (x == 0 || x == mWidth - 1 || y == 0 || y == mHeight - 1) {
-            return PositionStatus::OnBorder;
-        } else {
-            return PositionStatus::Inside;
-        }
+        return where(y, x);
     }
 
 private:
