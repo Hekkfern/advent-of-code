@@ -65,6 +65,60 @@ public:
         }
     }
     /**
+     * @brief Turn left.
+     */
+    [[nodiscard]] constexpr Direction2D turnLeft() const noexcept
+    {
+        switch (mValue) {
+        case Up:
+            return Left;
+        case Left:
+            return Down;
+        case Down:
+            return Right;
+        case Right:
+            return Up;
+        case UpLeft:
+            return DownLeft;
+        case DownLeft:
+            return DownRight;
+        case UpRight:
+            return UpLeft;
+        case DownRight:
+            return UpRight;
+        default:
+            /* Invalid value */
+            assert(false);
+        }
+    }
+    /**
+     * @brief Turn left.
+     */
+    [[nodiscard]] constexpr Direction2D turnRight() const noexcept
+    {
+        switch (mValue) {
+        case Up:
+            return Right;
+        case Left:
+            return Up;
+        case Down:
+            return Left;
+        case Right:
+            return Down;
+        case UpLeft:
+            return UpRight;
+        case DownLeft:
+            return UpLeft;
+        case UpRight:
+            return DownRight;
+        case DownRight:
+            return DownLeft;
+        default:
+            /* Invalid value */
+            assert(false);
+        }
+    }
+    /**
      * @brief      Returns a string representation of the object.
      *
      * @return     String representation of the object.
