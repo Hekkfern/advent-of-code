@@ -257,10 +257,14 @@ std::string solvePart1(std::filesystem::path const& filePath)
 std::string solvePart2(std::filesystem::path const& filePath)
 {
     auto const grid{parseInput(filePath)};
-    uint64_t maxNumber{0};
+    std::size_t maxNumber{0U};
     for (auto const& startingBeam : getListOfStartingBeams(grid)) {
-        // TODO
         AnalyzedBeamList analyzedBeamList{startingBeam};
+        std::unordered_set<utils::geometry2d::Coordinate2D<std::size_t>>
+            energizedTiles{startingBeam.coordinates};
+        processRecursiveForPart1(
+            grid, startingBeam, energizedTiles, analyzedBeamList);
+        maxNumber = std::max(maxNumber, energizedTiles.size());
     }
     return std::to_string(maxNumber);
 }

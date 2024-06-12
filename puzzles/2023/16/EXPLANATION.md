@@ -6,4 +6,4 @@
 
 ## Part 2
 
-** To be filled **
+Brute force all the input beams.
