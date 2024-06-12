@@ -111,11 +111,25 @@ static std::unordered_map<
  *
  * @return     Parsed data.
  */
-utils::geometry2d::Grid2D<char>
+utils::geometry2d::Grid2D<TileType>
 parseInput(std::filesystem::path const& filePath)
 {
-    auto const data{*utils::file::readMatrixOfChars(filePath)};
-    return utils::geometry2d::Grid2D<char>{data};
+    std::vector<std::vector<TileType>> data;
+
+    bool const result{
+        utils::file::parseAndIterate(filePath, [&data](std::string_view const line) {
+            std::vector<TileType> row;
+            row.reserve(line.size());
+            for (char const c : line) {
+                row.emplace_back(convertToTileType(c));
+            }
+            data.push_back(std::move(row));
+        })};
+    if (!result) {
+        return {};
+    }
+
+    return utils::geometry2d::Grid2D<TileType>{data};
 }
 
 /**
@@ -129,12 +143,11 @@ parseInput(std::filesystem::path const& filePath)
  * @return     One or more output beams.
  */
 std::vector<utils::geometry2d::Direction2D> processPosition(
-    utils::geometry2d::Grid2D<char> const& grid,
+    utils::geometry2d::Grid2D<TileType> const& grid,
     utils::geometry2d::Coordinate2D<std::size_t> const& coords,
     utils::geometry2d::Direction2D const& inputDirection)
 {
-    auto const tileType{convertToTileType(grid.at(coords))};
-    return BeamBehaviours.at(std::make_pair(tileType, inputDirection));
+    return BeamBehaviours.at(std::make_pair(grid.at(coords), inputDirection));
 }
 
 /**
@@ -148,7 +161,7 @@ std::vector<utils::geometry2d::Direction2D> processPosition(
  * @return     New position after moving, or std::nullopt otherwise.
  */
 std::optional<utils::geometry2d::Coordinate2D<std::size_t>> moveAround(
-    utils::geometry2d::Grid2D<char> const& grid,
+    utils::geometry2d::Grid2D<TileType> const& grid,
     utils::geometry2d::Coordinate2D<std::size_t> const& coords,
     utils::geometry2d::Direction2D const& direction)
 {
@@ -174,7 +187,7 @@ using AnalyzedBeamList = std::unordered_set<std::pair<
  * @param      cache      The cache
  */
 void processRecursiveForPart1(
-    utils::geometry2d::Grid2D<char> const& grid,
+    utils::geometry2d::Grid2D<TileType> const& grid,
     utils::geometry2d::Coordinate2D<std::size_t> const& coords,
     utils::geometry2d::Direction2D const& direction,
     std::unordered_set<utils::geometry2d::Coordinate2D<std::size_t>>&
@@ -264,7 +277,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
-{
+{/*
     auto const grid{parseInput(filePath)};
     uint64_t maxNumber{0};
     for (auto const& startingBeam : getListOfStartingBeams(grid)) {
@@ -272,6 +285,9 @@ std::string solvePart2(std::filesystem::path const& filePath)
         AnalyzedBeamList analyzedBeamList{{initialCoords, initialDirection}};
     }
     return std::to_string(maxNumber);
+    */
+    (void)filePath;
+    return "";
 }
 
 // ---------- End of Public Methods ----------
