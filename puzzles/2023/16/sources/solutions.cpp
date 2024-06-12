@@ -1,10 +1,11 @@
 #include "solutions.hpp"
 
+#include "Beam.hpp"
+#include "TileType.hpp"
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
 #include <utils/File.hpp>
-#include <utils/Hash.hpp>
 #include <utils/geometry2d/Coordinate2D.hpp>
 #include <utils/geometry2d/Direction2D.hpp>
 #include <utils/geometry2d/Grid2D.hpp>
@@ -13,14 +14,6 @@
 namespace aoc_2023_16 {
 
 // ---------- Private Methods ----------
-
-enum class TileType {
-    EmptySpace,
-    MirrorSlash,
-    MirrorBackslash,
-    SplitterVertical,
-    SplitterHorizontal
-};
 
 /**
  * @brief      Converts the character of a tile to its corresponding enum value.
@@ -116,8 +109,8 @@ parseInput(std::filesystem::path const& filePath)
 {
     std::vector<std::vector<TileType>> data;
 
-    bool const result{
-        utils::file::parseAndIterate(filePath, [&data](std::string_view const line) {
+    bool const result{utils::file::parseAndIterate(
+        filePath, [&data](std::string_view const line) {
             std::vector<TileType> row;
             row.reserve(line.size());
             for (char const c : line) {
@@ -174,9 +167,7 @@ std::optional<utils::geometry2d::Coordinate2D<std::size_t>> moveAround(
     return *nextCoord;
 }
 
-using AnalyzedBeamList = std::unordered_set<std::pair<
-    utils::geometry2d::Coordinate2D<std::size_t>,
-    utils::geometry2d::Direction2D>>;
+using AnalyzedBeamList = std::unordered_set<Beam>;
 
 /**
  * @brief      Recursively analyses all the tiles in the path of the beam.
@@ -200,10 +191,9 @@ void processRecursiveForPart1(
         if (!moveResult) {
             continue;
         }
-        if (!analyzedBeamList.contains(
-                std::make_pair(*moveResult, outputBeam))) {
+        if (!analyzedBeamList.contains(Beam{*moveResult, outputBeam})) {
             energizedTiles.emplace(*moveResult);
-            analyzedBeamList.emplace(std::make_pair(*moveResult, outputBeam));
+            analyzedBeamList.emplace(*moveResult, outputBeam);
             processRecursiveForPart1(
                 grid,
                 *moveResult,
@@ -277,15 +267,15 @@ std::string solvePart1(std::filesystem::path const& filePath)
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
-{/*
-    auto const grid{parseInput(filePath)};
-    uint64_t maxNumber{0};
-    for (auto const& startingBeam : getListOfStartingBeams(grid)) {
-        // TODO
-        AnalyzedBeamList analyzedBeamList{{initialCoords, initialDirection}};
-    }
-    return std::to_string(maxNumber);
-    */
+{ /*
+     auto const grid{parseInput(filePath)};
+     uint64_t maxNumber{0};
+     for (auto const& startingBeam : getListOfStartingBeams(grid)) {
+         // TODO
+         AnalyzedBeamList analyzedBeamList{{initialCoords, initialDirection}};
+     }
+     return std::to_string(maxNumber);
+     */
     (void)filePath;
     return "";
 }
