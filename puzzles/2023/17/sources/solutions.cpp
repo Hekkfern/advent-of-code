@@ -1,6 +1,9 @@
 #include "solutions.hpp"
 
+#include <queue>
 #include <utils/File.hpp>
+#include <utils/geometry2d/Coordinate2D.hpp>
+#include <utils/geometry2d/Direction2D.hpp>
 #include <utils/geometry2d/Grid2D.hpp>
 
 namespace aoc_2023_17 {
@@ -9,12 +12,45 @@ namespace aoc_2023_17 {
 
 using HeatLossGrid = utils::geometry2d::Grid2D<uint8_t>;
 
-constexpr int32_t MaxStraightLineLength{3};
-
 HeatLossGrid parseInput(std::filesystem::path const& filePath)
 {
     auto const data{*utils::file::readMatrixOfDigits(filePath)};
     return HeatLossGrid{data};
+}
+
+struct State {
+    State(
+        utils::geometry2d::Coordinate2D<std::size_t> const& position,
+        utils::geometry2d::Direction2D const& direction,
+        int32_t const steps,
+        int32_t const heatLoss)
+        : position(position)
+        , direction(direction)
+        , steps(steps)
+        , heatLoss(heatLoss)
+    {
+    }
+
+    utils::geometry2d::Coordinate2D<std::size_t> position;
+    utils::geometry2d::Direction2D direction;
+    int32_t steps;
+    int32_t heatLoss;
+};
+
+struct CompareStates {
+    bool operator()(State const& a, State const& b) const
+    {
+        return a.heatLoss > b.heatLoss;
+    }
+};
+
+int32_t getLeastHeatLoss(
+    HeatLossGrid const& grid, int32_t const minSteps, int32_t const maxSteps)
+{
+
+    std::priority_queue<State, std::vector<State>, CompareStates> pq;
+
+    // TODO
 }
 
 // ---------- End of Private Methods ----------
