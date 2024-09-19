@@ -7,12 +7,16 @@
 #include <utils/geometry2d/Coordinate2D.hpp>
 #include <utils/geometry2d/Direction2D.hpp>
 #include <utils/geometry2d/Grid2D.hpp>
+#include <vector>
 
 namespace aoc_2023_17 {
 
+using namespace utils::geometry2d;
+using Coord = Coordinate2D<std::size_t>;
+
 // ---------- Private Methods ----------
 
-using HeatLossGrid = utils::geometry2d::Grid2D<uint8_t>;
+using HeatLossGrid = Grid2D<uint8_t>;
 
 HeatLossGrid parseInput(std::filesystem::path const& filePath)
 {
@@ -27,22 +31,54 @@ struct CompareStates {
     }
 };
 
+std::vector<std::pair<Coord, Direction2D>>
+getNextSteps(State const& currentState)
+{
+    std::vector<std::pair<Coord, Direction2D>> nextSteps;
+    switch (currentState.direction) {
+    case Direction2D::Up:
+        nextSteps.emplace(currentState.position.move(Direction2D::Up), Direction2D::Up);
+        break;
+    case Direction2D::Left:
+        break;
+    case Direction2D::Down:
+        break;
+    case Direction2D::Right:
+        break;
+    default:
+        /* Unreachable */
+        assert(false);
+    }
+    return nextSteps;
+}
+
+// TODO: https://github.com/keriati/aocpp/blob/main/2023/17/day17.cpp
 int32_t getLeastHeatLoss(
     HeatLossGrid const& grid, int32_t const minSteps, int32_t const maxSteps)
 {
-    utils::geometry2d::Coordinate2D<std::size_t> const destination{
-        grid.getWidth() - 1ULL, grid.getHeight() - 1ULL};
-    utils::geometry2d::Coordinate2D<std::size_t> const origin{0ULL, 0ULL};
+    Coord const destination{grid.getWidth() - 1ULL, grid.getHeight() - 1ULL};
+    Coord const origin{0ULL, 0ULL};
     State const startingThroughEast{
-        origin, utils::geometry2d::Direction2D::Right, 0, 0};
+        origin, Direction2D::Right, 0, 0};
     State const startingThroughSouth{
-        origin, utils::geometry2d::Direction2D::Up, 0, 0};
-    std::priority_queue<State, std::vector<State>, CompareStates> pq{
-        startingThroughEast, startingThroughSouth};
+        origin, Direction2D::Down, 0, 0};
+    std::priority_queue<State, std::vector<State>, CompareStates> pq{};
+    pq.push(startingThroughEast);
+    pq.push(startingThroughSouth);
     std::unordered_set<State> visited{
         startingThroughEast, startingThroughSouth};
 
-    // TODO: https://github.com/keriati/aocpp/blob/main/2023/17/day17.cpp
+    while (!pq.empty()) {
+        State const current{pq.top()};
+        pq.pop();
+
+        if (current.position == destination) {
+            return current.heatLoss;
+        }
+
+        std::vector<std::pair<Coord, Direction2D>> nextSteps;
+        nextSteps.reserve(3);
+    }
 }
 
 // ---------- End of Private Methods ----------
@@ -51,7 +87,8 @@ int32_t getLeastHeatLoss(
 
 std::string solvePart1(std::filesystem::path const& filePath)
 {
-    HeatLossGrid const input{parseInput(filePath)};
+    HeatLossGrid input{parseInput(filePath)};
+    input.flipHorizontal();
     return std::to_string(getLeastHeatLoss(input, 1, 3));
 }
 

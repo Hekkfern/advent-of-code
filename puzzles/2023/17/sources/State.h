@@ -1,9 +1,9 @@
 #pragma once
 
 #include <functional>
+#include <utils/Hash.hpp>
 #include <utils/geometry2d/Coordinate2D.hpp>
 #include <utils/geometry2d/Direction2D.hpp>
-#include <utils/Hash.hpp>
 
 namespace aoc_2023_17 {
 
@@ -13,6 +13,7 @@ struct State {
         utils::geometry2d::Direction2D const& direction,
         int32_t steps,
         int32_t heatLoss);
+    bool operator==(State const& b) const = default;
 
     utils::geometry2d::Coordinate2D<std::size_t> position;
     utils::geometry2d::Direction2D direction;
