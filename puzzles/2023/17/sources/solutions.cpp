@@ -35,20 +35,16 @@ std::vector<std::pair<Coord, Direction2D>>
 getNextSteps(State const& currentState)
 {
     std::vector<std::pair<Coord, Direction2D>> nextSteps;
-    switch (currentState.direction) {
-    case Direction2D::Up:
-        nextSteps.emplace(currentState.position.move(Direction2D::Up), Direction2D::Up);
-        break;
-    case Direction2D::Left:
-        break;
-    case Direction2D::Down:
-        break;
-    case Direction2D::Right:
-        break;
-    default:
-        /* Unreachable */
-        assert(false);
-    }
+    auto const& direction{currentState.direction};
+    nextSteps.emplace_back(
+        currentState.position.move(direction.goStraight()),
+        direction.goStraight());
+    nextSteps.emplace_back(
+        currentState.position.move(direction.turnLeft()),
+        direction.turnLeft());
+    nextSteps.emplace_back(
+        currentState.position.move(direction.turnRight()),
+        direction.turnRight());
     return nextSteps;
 }
 
@@ -58,10 +54,8 @@ int32_t getLeastHeatLoss(
 {
     Coord const destination{grid.getWidth() - 1ULL, grid.getHeight() - 1ULL};
     Coord const origin{0ULL, 0ULL};
-    State const startingThroughEast{
-        origin, Direction2D::Right, 0, 0};
-    State const startingThroughSouth{
-        origin, Direction2D::Down, 0, 0};
+    State const startingThroughEast{origin, Direction2D::Right, 0, 0};
+    State const startingThroughSouth{origin, Direction2D::Down, 0, 0};
     std::priority_queue<State, std::vector<State>, CompareStates> pq{};
     pq.push(startingThroughEast);
     pq.push(startingThroughSouth);

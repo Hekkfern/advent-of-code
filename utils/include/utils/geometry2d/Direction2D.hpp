@@ -119,6 +119,13 @@ public:
         }
     }
     /**
+     * @brief Go straight.
+     */
+    [[nodiscard]] constexpr Direction2D goStraight() const noexcept
+    {
+        return *this;
+    }
+    /**
      * @brief      Returns a string representation of the object.
      *
      * @return     String representation of the object.
