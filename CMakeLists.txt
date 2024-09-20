@@ -30,6 +30,8 @@ if (USE_CPPCHECK)
     set_cppcheck()
 endif (USE_CPPCHECK)
 
+option(ENABLE_COVERAGE "Enable coverage reporting for gcc/clang" ON)
+
 project(
         AdventOfCode
         VERSION 1.0.0

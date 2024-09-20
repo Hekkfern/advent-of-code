@@ -1,5 +1,6 @@
 include(${CMAKE_SOURCE_DIR}/cmake/compiler_flags.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/cpp_standard.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/coverage.cmake)
 
 cmake_minimum_required(VERSION 3.22)
 
@@ -62,6 +63,9 @@ add_library(
 set_cpp_standard(${_LIB_NAME})
 set_compiler_flags(${_LIB_NAME})
 set_vectorization_flags(${_LIB_NAME})
+if (ENABLE_COVERAGE)
+  set_coverage(${_LIB_NAME})
+endif (ENABLE_COVERAGE)
 target_include_directories(
   ${_LIB_NAME}
   PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
