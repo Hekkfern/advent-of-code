@@ -21,6 +21,11 @@
 
 namespace utils::geometry2d {
 
+/**
+ * @brief      A 2D grid of values. The coordinates are 0-based.
+ *
+ * @tparam     T     The type of the values in the grid.
+ */
 template <typename T>
 class Grid2D {
 public:
@@ -208,11 +213,12 @@ public:
      *
      * @{
      */
-    T& at(std::size_t const row, std::size_t const col) noexcept
+    [[nodiscard]] T& at(std::size_t const row, std::size_t const col) noexcept
     {
         return mFlatGrid[row * mWidth + col];
     }
-    T const& at(std::size_t const row, std::size_t const col) const noexcept
+    [[nodiscard]] T const&
+    at(std::size_t const row, std::size_t const col) const noexcept
     {
         return mFlatGrid[row * mWidth + col];
     }
@@ -229,19 +235,20 @@ public:
      *
      * @{
      */
-    T& at(Coordinate2D<std::size_t> const& coords) noexcept
+    [[nodiscard]] T& at(Coordinate2D<std::size_t> const& coords) noexcept
     {
         return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
-    T const& at(Coordinate2D<std::size_t> const& coords) const noexcept
+    [[nodiscard]] T const&
+    at(Coordinate2D<std::size_t> const& coords) const noexcept
     {
         return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
-    T& at(Coordinate2D<std::size_t>&& coords) noexcept
+    [[nodiscard]] T& at(Coordinate2D<std::size_t>&& coords) noexcept
     {
         return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
-    T const& at(Coordinate2D<std::size_t>&& coords) const noexcept
+    [[nodiscard]] T const& at(Coordinate2D<std::size_t>&& coords) const noexcept
     {
         return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
@@ -342,7 +349,7 @@ public:
      * @return     An optional pair of indices (row, col) if the value is found,
      *             std::nullopt otherwise.
      */
-    std::optional<std::pair<std::size_t, std::size_t>>
+    [[nodiscard]] std::optional<std::pair<std::size_t, std::size_t>>
     findFirst(T const& value) const noexcept
     {
         auto const it = ranges::find_if(
@@ -364,7 +371,7 @@ public:
      * @return     A vector of pairs of indices (row, col) for each occurrence
      *             of the value.
      */
-    std::vector<Coordinate2D<std::size_t>>
+    [[nodiscard]] std::vector<Coordinate2D<std::size_t>>
     findAll(T const& value) const noexcept
     {
         return mFlatGrid | ranges::views::enumerate
@@ -443,6 +450,25 @@ public:
         auto const x{coords.getX()};
         auto const y{coords.getY()};
         return where(y, x);
+    }
+    /**
+     * @brief      Moves a position in the grid according to a given direction.
+     *
+     * @param[in]  position   The current position.
+     * @param[in]  direction  The direction to move.
+     *
+     * @return     The new position after moving in the given direction, or
+     * std::nullopt if the movement is not possible.
+     */
+    [[nodiscard]] constexpr std::optional<Coordinate2D<std::size_t>>
+    move(const Coordinate2D<std::size_t>& position, Direction2D const& direction)
+        const noexcept
+    {
+        auto const result{position.move(direction)};
+        if (!result || where(*result) == PositionStatus::Outside) {
+            return std::nullopt;
+        }
+        return *result;
     }
 
 private:

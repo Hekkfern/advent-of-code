@@ -434,3 +434,66 @@ TEST_CASE("[Grid2D] where() method", "[utils][Grid2D]")
         }
     }
 }
+
+TEST_CASE("[Grid2D] move() method", "[utils][Grid2D]")
+{
+    Grid2D<int> grid2D{{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}};
+
+    SECTION("Success")
+    {
+        SECTION("Move right by 1")
+        {
+            auto const result{grid2D.move(
+                Coordinate2D<std::size_t>{1, 0}, Direction2D::Right)};
+            REQUIRE(result);
+            CHECK(*result == Coordinate2D<std::size_t>{2, 0});
+        }
+
+        SECTION("Move up by 1")
+        {
+            auto const result{
+                grid2D.move(Coordinate2D<std::size_t>{0, 1}, Direction2D::Up)};
+            REQUIRE(result);
+            CHECK(*result == Coordinate2D<std::size_t>{0, 2});
+        }
+
+        SECTION("Move diagonally by 1 right and 1 up")
+        {
+            auto const result{grid2D.move(
+                Coordinate2D<std::size_t>{1, 1}, Direction2D::UpRight)};
+            REQUIRE(result);
+            CHECK(*result == Coordinate2D<std::size_t>{2, 2});
+        }
+    }
+
+    SECTION("Out of bounds")
+    {
+        SECTION("Right side")
+        {
+            auto const result{grid2D.move(
+                Coordinate2D<std::size_t>{3, 3}, Direction2D::Right)};
+            CHECK_FALSE(result);
+        }
+
+        SECTION("Left side")
+        {
+            auto const result{grid2D.move(
+                Coordinate2D<std::size_t>{0, 1}, Direction2D::Left)};
+            CHECK_FALSE(result);
+        }
+
+        SECTION("Up side")
+        {
+            auto const result{
+                grid2D.move(Coordinate2D<std::size_t>{3, 3}, Direction2D::Up)};
+            CHECK_FALSE(result);
+        }
+
+        SECTION("Down side")
+        {
+            auto const result{grid2D.move(
+                Coordinate2D<std::size_t>{3, 0}, Direction2D::Down)};
+            CHECK_FALSE(result);
+        }
+    }
+}
