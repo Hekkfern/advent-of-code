@@ -32,7 +32,8 @@ set(_TESTFILES_GEOMETRY3D
     geometry3d/Operations3DTests.cpp)
 set(_TESTFILES_GRAPH graph/GraphTests.cpp graph/VertexTests.cpp
                      graph/AlgorithmsTests.cpp)
-set(_TESTFILES_EXTENSIONS extensions/ContainerExtensionsTests.cpp)
+set(_TESTFILES_EXTENSIONS extensions/ContainerExtensionsTests.cpp
+                          ../include/utils/extensions/StringCollections.h)
 add_executable(
   ${_EXEC_NAME}
   ${_TESTFILES}

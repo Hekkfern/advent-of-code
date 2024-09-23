@@ -32,8 +32,7 @@ TEST_CASE(
 }
 
 TEST_CASE(
-    "[Direction2D - equality] Equality operators are correct",
-    "[Direction2D]")
+    "[Direction2D - equality] Equality operators are correct", "[Direction2D]")
 {
     Direction2D const d1{Direction2D::Up};
     SECTION("Different")
@@ -50,8 +49,7 @@ TEST_CASE(
     }
 }
 TEST_CASE(
-    "[Direction2D - invert] Invert returns the correct value",
-    "[Direction2D]")
+    "[Direction2D - invert] Invert returns the correct value", "[Direction2D]")
 {
     std::vector<std::pair<Direction2D, Direction2D>> const testCases{
         {Direction2D::Up, Direction2D::Down},

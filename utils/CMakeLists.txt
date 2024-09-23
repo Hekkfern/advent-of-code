@@ -48,7 +48,8 @@ set(_SOURCES_UTILS_GEOMETRY3D
 set(_SOURCES_UTILS_GRAPH
     include/utils/graph/Graph.hpp include/utils/graph/Vertex.hpp
     include/utils/graph/Algorithms.hpp)
-set(_SOURCES_UTILS_EXTENSIONS include/utils/extensions/ContainerExtensions.hpp)
+set(_SOURCES_UTILS_EXTENSIONS include/utils/extensions/ContainerExtensions.hpp
+                              include/utils/extensions/StringHash.h)
 add_library(
   ${_LIB_NAME} STATIC
   ${_SOURCES_UTILS}

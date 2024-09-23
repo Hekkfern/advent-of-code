@@ -460,9 +460,9 @@ public:
      * @return     The new position after moving in the given direction, or
      * std::nullopt if the movement is not possible.
      */
-    [[nodiscard]] constexpr std::optional<Coordinate2D<std::size_t>>
-    move(const Coordinate2D<std::size_t>& position, Direction2D const& direction)
-        const noexcept
+    [[nodiscard]] constexpr std::optional<Coordinate2D<std::size_t>> move(
+        Coordinate2D<std::size_t> const& position,
+        Direction2D const& direction) const noexcept
     {
         auto const result{position.move(direction)};
         if (!result || where(*result) == PositionStatus::Outside) {

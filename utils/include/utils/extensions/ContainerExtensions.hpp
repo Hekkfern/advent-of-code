@@ -88,8 +88,7 @@ void moveValueCircularly(
     auto advance = [](auto it, int64_t amount, auto begin, auto end) {
         auto pos = it;
         while (amount > 0) {
-            if (pos == end)
-            {
+            if (pos == end) {
                 pos = begin;
             }
             ++pos;
