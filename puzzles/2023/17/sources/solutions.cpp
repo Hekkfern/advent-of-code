@@ -32,25 +32,35 @@ struct CompareStates {
 };
 
 std::vector<std::pair<Coord, Direction2D>>
-getNextSteps(State const& currentState)
+getNextSteps(HeatLossGrid const& grid, State const& currentState)
 {
     std::vector<std::pair<Coord, Direction2D>> nextSteps;
-    auto const& direction{currentState.direction};
-    nextSteps.emplace_back(
-        currentState.position.move(direction.goStraight()),
-        direction.goStraight());
-    nextSteps.emplace_back(
-        currentState.position.move(direction.turnLeft()),
-        direction.turnLeft());
-    nextSteps.emplace_back(
-        currentState.position.move(direction.turnRight()),
-        direction.turnRight());
+    nextSteps.reserve(3);
+    /* straight movement */
+    auto straightDirection{currentState.direction.goStraight()};
+    auto straightMovement{grid.move(currentState.position, straightDirection)};
+    if (straightMovement) {
+        nextSteps.emplace_back(*straightMovement, straightDirection);
+    }
+    /* turn-left movement */
+    auto turnLeftDirection{currentState.direction.turnLeft()};
+    auto turnLeftMovement{grid.move(currentState.position, turnLeftDirection)};
+    if (turnLeftMovement) {
+        nextSteps.emplace_back(*turnLeftMovement, turnLeftDirection);
+    }
+    /* turn-right movement */
+    auto turnRightDirection{currentState.direction.turnRight()};
+    auto turnRightMovement{
+        grid.move(currentState.position, turnRightDirection)};
+    if (turnRightMovement) {
+        nextSteps.emplace_back(*turnRightMovement, turnRightDirection);
+    }
     return nextSteps;
 }
 
 // TODO: https://github.com/keriati/aocpp/blob/main/2023/17/day17.cpp
-int32_t getLeastHeatLoss(
-    HeatLossGrid const& grid, int32_t const minSteps, int32_t const maxSteps)
+uint32_t getLeastHeatLoss(
+    HeatLossGrid const& grid, uint8_t const minSteps, uint8_t const maxSteps)
 {
     Coord const destination{grid.getWidth() - 1ULL, grid.getHeight() - 1ULL};
     Coord const origin{0ULL, 0ULL};
@@ -67,12 +77,38 @@ int32_t getLeastHeatLoss(
         pq.pop();
 
         if (current.position == destination) {
+            if (current.steps < minSteps) {
+                continue;
+            };
             return current.heatLoss;
         }
 
-        std::vector<std::pair<Coord, Direction2D>> nextSteps;
-        nextSteps.reserve(3);
+        std::vector<std::pair<Coord, Direction2D>> nextSteps{
+            getNextSteps(grid, current)};
+
+        for (auto const& nextStep : nextSteps) {
+            if (current.steps > (maxSteps - 1)
+                && current.direction == nextStep.second) {
+                continue;
+            }
+            if (current.steps < minSteps
+                && current.direction != nextStep.second) {
+                continue;
+            }
+
+            State nextState{
+                nextStep.first,
+                nextStep.second,
+                current.direction == nextStep.second ? current.steps + 1U : 1U,
+                current.heatLoss + grid.at(nextStep.first)};
+
+            if (!visited.contains(nextState)) {
+                pq.push(nextState);
+                visited.insert(nextState);
+            }
+        }
     }
+    return 0U;
 }
 
 // ---------- End of Private Methods ----------

@@ -11,14 +11,14 @@ struct State {
     State(
         utils::geometry2d::Coordinate2D<std::size_t> const& position,
         utils::geometry2d::Direction2D const& direction,
-        int32_t steps,
-        int32_t heatLoss);
+        uint32_t steps,
+        uint32_t heatLoss);
     bool operator==(State const& b) const = default;
 
     utils::geometry2d::Coordinate2D<std::size_t> position;
     utils::geometry2d::Direction2D direction;
-    int32_t steps;
-    int32_t heatLoss;
+    uint32_t steps;
+    uint32_t heatLoss;
 };
 
 } // namespace aoc_2023_17
