@@ -31,9 +31,9 @@ public:
      */
     [[nodiscard]] virtual uint64_t area() const = 0;
     /**
-     * @brief      Determines whether the specified point is outside.
+     * @brief      Determines whether the specified point is outside of the shape.
      *
-     * @warning    Being in the border (i.e. the perimeter) of the bounding box
+     * @warning    Being in the border (i.e. the perimeter) of the shape
      *             is considered as "not being outside".
      *
      * @param[in]  point  The point to check.
@@ -42,7 +42,7 @@ public:
      */
     [[nodiscard]] virtual bool isOutside(Point2D<T> const& point) const = 0;
     /**
-     * @brief      Determines whether the specified point is inside.
+     * @brief      Determines whether the specified point is inside of the shape.
      *
      * @param[in]  point  The point to check.
      *
@@ -50,7 +50,7 @@ public:
      */
     [[nodiscard]] virtual bool isInside(Point2D<T> const& point) const = 0;
     /**
-     * @brief      Determines whether the specified point is in perimeter.
+     * @brief      Determines whether the specified point is in perimeter of the shape.
      *
      * @param[in]  point  The point to check.
      *

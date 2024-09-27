@@ -20,12 +20,16 @@ template <SignedIntegerType T = int32_t>
 class BoundingBox2D {
 public:
     /**
+     * @brief      Constructs a new instance of a bounding box.
+     */
+    BoundingBox2D() = default;
+    /**
      * @brief      Updates the size of the bounding box to enclose this point
      *             too.
      *
      * @param[in]  point2D  The point to enclose.
      */
-    void update(Point2D<T> const& point2D)
+    void update(Point2D<T> const& point2D) noexcept
     {
         auto const x{point2D.getX()};
         auto const y{point2D.getY()};
@@ -39,25 +43,25 @@ public:
      *
      * @return     The minimum coordinate X.
      */
-    [[nodiscard]] T getMinX() const { return mMinX; }
+    [[nodiscard]] T getMinX() const noexcept { return mMinX; }
     /**
      * @brief      Gets the maximum coordinate X.
      *
      * @return     The maximum coordinate X.
      */
-    [[nodiscard]] T getMaxX() const { return mMaxX; }
+    [[nodiscard]] T getMaxX() const noexcept { return mMaxX; }
     /**
      * @brief      Gets the minimum coordinate X.
      *
      * @return     The minimum coordinate X.
      */
-    [[nodiscard]] T getMinY() const { return mMinY; }
+    [[nodiscard]] T getMinY() const noexcept { return mMinY; }
     /**
      * @brief      Gets the maximum coordinate Y.
      *
      * @return     The maximum coordinate Y.
      */
-    [[nodiscard]] T getMaxY() const { return mMaxY; }
+    [[nodiscard]] T getMaxY() const noexcept { return mMaxY; }
     /**
      * @brief      Determines whether the specified point is outside of the
      *             bounding box.
@@ -69,7 +73,7 @@ public:
      *
      * @return     True if the specified point is outside, False otherwise.
      */
-    [[nodiscard]] bool isOutside(Point2D<T> const& point2D) const
+    [[nodiscard]] bool isOutside(Point2D<T> const& point2D) const noexcept
     {
         auto const x{point2D.getX()};
         auto const y{point2D.getY()};
@@ -86,7 +90,7 @@ public:
      * @return     True if the specified point is outside, False otherwise.
      */
     [[nodiscard]] bool
-    isOutside(Point2D<T> const& point2D, Direction2D direction2D) const
+    isOutside(Point2D<T> const& point2D, Direction2D direction2D) const noexcept
     {
         auto const x{point2D.getX()};
         auto const y{point2D.getY()};
@@ -102,6 +106,16 @@ public:
         default:
             return false;
         }
+    }
+    /**
+     * @brief Resets the bounding box to its initial state.
+     */
+    void clear() noexcept
+    {
+        mMinX = std::numeric_limits<T>::max();
+        mMaxX = std::numeric_limits<T>::min();
+        mMinY = std::numeric_limits<T>::max();
+        mMaxY = std::numeric_limits<T>::min();
     }
 
 private:

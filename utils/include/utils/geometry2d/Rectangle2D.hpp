@@ -74,34 +74,21 @@ public:
         return {mWidth, mHeight};
     }
     /**
-     * @brief      Calculates the area.
-     *
-     * @return     Area of the shape.
+     * @copydoc IShape::area
      */
     [[nodiscard]] uint64_t area() const override
     {
         return static_cast<uint64_t>(mWidth) * static_cast<uint64_t>(mHeight);
     }
     /**
-     * @brief      Determines whether the specified point is outside.
-     *
-     * @warning    Being in the border (i.e. the perimeter) of the bounding box
-     *             is considered as "not being outside".
-     *
-     * @param[in]  point  The point to check.
-     *
-     * @return     True if the specified point is outside, False otherwise.
+     * @copydoc IShape::isOutside
      */
     [[nodiscard]] bool isOutside(Point2D<T> const& point) const override
     {
         return !isInside(point);
     }
     /**
-     * @brief      Determines whether the specified point is inside.
-     *
-     * @param[in]  point  The point to check.
-     *
-     * @return     True if the specified point is inside, False otherwise.
+     * @copydoc IShape::isInside
      */
     [[nodiscard]] bool isInside(Point2D<T> const& point) const override
     {
@@ -113,11 +100,7 @@ public:
             && point.getY() <= topRight.getY();
     }
     /**
-     * @brief      Determines whether the specified point is in perimeter.
-     *
-     * @param[in]  point  The point to check.
-     *
-     * @return     True if the specified point is in perimeter, False otherwise.
+     * @copydoc IShape::isInPerimeter
      */
     [[nodiscard]] bool isInPerimeter(Point2D<T> const& point) const override
     {
@@ -127,9 +110,7 @@ public:
             || v2.isHorizontal();
     }
     /**
-     * @brief      Gets the vertexes of the shape.
-     *
-     * @return     List of vertexes.
+     * @copydoc IShape::getVertexes
      */
     [[nodiscard]] std::vector<Point2D<T>> getVertexes() const override
     {
