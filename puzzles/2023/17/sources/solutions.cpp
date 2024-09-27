@@ -1,8 +1,9 @@
 #include "solutions.hpp"
 
+#include "Node.h"
 #include "State.h"
 #include <queue>
-#include <unordered_set>
+#include <unordered_map>
 #include <utils/File.hpp>
 #include <utils/geometry2d/Coordinate2D.hpp>
 #include <utils/geometry2d/Direction2D.hpp>
@@ -58,7 +59,6 @@ getNextSteps(HeatLossGrid const& grid, State const& currentState)
     return nextSteps;
 }
 
-// TODO: https://github.com/keriati/aocpp/blob/main/2023/17/day17.cpp
 uint32_t getLeastHeatLoss(
     HeatLossGrid const& grid, uint8_t const minSteps, uint8_t const maxSteps)
 {
@@ -69,19 +69,31 @@ uint32_t getLeastHeatLoss(
     std::priority_queue<State, std::vector<State>, CompareStates> pq{};
     pq.push(startingThroughEast);
     pq.push(startingThroughSouth);
-    std::unordered_set<State> visited{
-        startingThroughEast, startingThroughSouth};
+    std::unordered_map<Node, uint32_t> best;
 
-    while (!pq.empty()) {
+    // Helper that adds a given state to the queue if it is better than our best
+    // known for that position, direction and remaining steps
+    auto push_if_better = [&best, &pq](State const& s) {
+        Node const node{s.position, s.direction, s.steps};
+        if (not best.contains(node) || best[node] > s.heatLoss) {
+            best[node] = s.heatLoss;
+            pq.push(s);
+        }
+    };
+
+    /* Two starting states, {0,0}, going right and down. Note that steps == 0
+    and heat_loss == 0 */
+    push_if_better(startingThroughEast);
+    push_if_better(startingThroughSouth);
+
+    while (not pq.empty()) {
         State const current{pq.top()};
-        pq.pop();
-
+        /* If we are at our destination, report the heat_loss, because of the
+         * priority queue we have a guarantee this is the minimum value */
         if (current.position == destination) {
-            if (current.steps < minSteps) {
-                continue;
-            };
             return current.heatLoss;
         }
+        pq.pop();
 
         std::vector<std::pair<Coord, Direction2D>> nextSteps{
             getNextSteps(grid, current)};
@@ -102,10 +114,7 @@ uint32_t getLeastHeatLoss(
                 current.direction == nextStep.second ? current.steps + 1U : 1U,
                 current.heatLoss + grid.at(nextStep.first)};
 
-            if (!visited.contains(nextState)) {
-                pq.push(nextState);
-                visited.insert(nextState);
-            }
+            push_if_better(nextState);
         }
     }
     return 0U;
