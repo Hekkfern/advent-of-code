@@ -62,8 +62,8 @@ getNextSteps(HeatLossGrid const& grid, State const& currentState)
 uint32_t getLeastHeatLoss(
     HeatLossGrid const& grid, uint8_t const minSteps, uint8_t const maxSteps)
 {
-    Coord const destination{grid.getWidth() - 1ULL, grid.getHeight() - 1ULL};
-    Coord const origin{0ULL, 0ULL};
+    Coord const destination{grid.getWidth() - 1ULL, 0ULL};
+    Coord const origin{0ULL, grid.getHeight() - 1ULL};
     State const startingThroughEast{origin, Direction2D::Right, 0, 0};
     State const startingThroughSouth{origin, Direction2D::Down, 0, 0};
     std::priority_queue<State, std::vector<State>, CompareStates> pq{};
@@ -118,13 +118,14 @@ uint32_t getLeastHeatLoss(
 std::string solvePart1(std::filesystem::path const& filePath)
 {
     HeatLossGrid input{parseInput(filePath)};
-    input.flipHorizontal();
+    input.flipVertical();
     return std::to_string(getLeastHeatLoss(input, 1, 3));
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
 {
     HeatLossGrid const input{parseInput(filePath)};
+    input.flipVertical();
     return std::to_string(getLeastHeatLoss(input, 4, 10));
 }
 

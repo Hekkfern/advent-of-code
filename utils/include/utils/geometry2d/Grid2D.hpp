@@ -286,7 +286,7 @@ public:
         return Grid2D<T>(subRows);
     }
     /**
-     * @brief      Flips the grid horizontally (i.e., invert rows).
+     * @brief      Flips the grid horizontally (i.e., invert columns).
      */
     void flipHorizontal() noexcept
     {
@@ -297,7 +297,7 @@ public:
         }
     }
     /**
-     * @brief      Flips the grid vertically (i.e., invert columns).
+     * @brief      Flips the grid vertically (i.e., invert rows).
      */
     void flipVertical() noexcept
     {

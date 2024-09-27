@@ -266,9 +266,16 @@ TEST_CASE("[Grid2D] flipHorizontal() method", "[utils][Grid2D]")
     }
     SECTION("Filled grid")
     {
+        /*
+         * 5 6    6 5
+         * 3 4 -> 4 3
+         * 1 2    2 1
+         */
         Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+        CHECK(grid2D.at(0, 0) == 1);
         grid2D.flipHorizontal();
         CHECK(grid2D == Grid2D<int>{{{2, 1}, {4, 3}, {6, 5}}});
+        CHECK(grid2D.at(0, 0) == 2);
     }
 }
 
@@ -282,9 +289,16 @@ TEST_CASE("[Grid2D] flipVertical() method", "[utils][Grid2D]")
     }
     SECTION("Filled grid")
     {
+        /*
+         * 5 6    1 2
+         * 3 4 -> 3 4
+         * 1 2    5 6
+         */
         Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+        CHECK(grid2D.at(0, 0) == 1);
         grid2D.flipVertical();
         CHECK(grid2D == Grid2D<int>{{{5, 6}, {3, 4}, {1, 2}}});
+        CHECK(grid2D.at(0, 0) == 5);
     }
 }
 
