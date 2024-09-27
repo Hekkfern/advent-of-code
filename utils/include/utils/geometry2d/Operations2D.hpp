@@ -4,6 +4,7 @@
 #include "Direction2D.hpp"
 #include "Point2D.hpp"
 #include "Vector2D.hpp"
+#include <numbers>
 
 namespace utils::geometry2d {
 
@@ -240,6 +241,57 @@ std::size_t calculateNumberOfIntrinsicPointsInsidePolygon(
     auto const area{calculateArbitraryPolygonArea(perimeterPoints)};
     return static_cast<std::size_t>(
         area - (static_cast<double>(perimeterPoints.size()) / 2.0) + 1.0);
+}
+
+/**
+ * @brief      Return the angle between two vectors defined by the origin and an
+ *             arbitrary point.
+ *
+ * @param[in]  p1    The first point.
+ * @param[in]  p2    The second point.
+ *
+ * @tparam     T     Type of the coordinates.
+ *
+ * @return     Angle between the two vectors. The angle is from vector 1 to
+ *             vector 2, positive anticlockwise. The result is between -pi ->
+ *             pi.
+ */
+template <SignedIntegerType T = int32_t>
+double calculateAngleBetweenTwoPointsFromOrigin(
+    Point2D<T> const& p1, Point2D<T> const& p2) noexcept
+{
+    return calculateAngleBetweenTwoVectors(Vector2D<T>{p1}, Vector2D<T>{p2});
+}
+
+/**
+ * @brief      Calculates the angle between two arbitrary vectors.
+ *
+ * @param[in]  v1    The first vector.
+ * @param[in]  v2    The second vector.
+ *
+ * @tparam     T     Type of the coordinates.
+ *
+ * @return     Angle between the two vectors. The angle is from vector 1 to
+ *             vector 2, positive anticlockwise. The result is between -pi ->
+ *             pi.
+ */
+template <SignedIntegerType T = int32_t>
+double calculateAngleBetweenTwoVectors(
+    Vector2D<T> const& v1, Vector2D<T> const& v2) noexcept
+{
+    static constexpr double PI{std::numbers::pi};
+    static constexpr double TWOPI{2 * PI};
+
+    double const theta1{v1.angle()};
+    double const theta2{v2.angle()};
+    double diffTheta{theta2 - theta1};
+    while (diffTheta > PI) {
+        diffTheta -= TWOPI;
+    }
+    while (diffTheta < -PI) {
+        diffTheta += TWOPI;
+    }
+    return diffTheta;
 }
 
 } // namespace utils::geometry2d

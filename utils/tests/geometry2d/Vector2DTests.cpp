@@ -1,5 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
+#include <numbers>
 #include <utils/geometry2d/Vector2D.hpp>
 
 using namespace utils::geometry2d;
@@ -363,6 +364,69 @@ TEST_CASE("[Vector2D] scalar * Vector2D", "[utils][Vector2D]")
                 Vector2D const newVector2D{-2 * vector2D};
                 CHECK(newVector2D.getX() == -4);
                 CHECK(newVector2D.getY() == 6);
+            }
+        }
+    }
+}
+
+TEST_CASE("[Vector2D] angle() method", "[utils][Vector2D]")
+{
+    SECTION("Runtime tests")
+    {
+        SECTION("Horizontal")
+        {
+            SECTION("Right")
+            {
+                Vector2D const v{2, 0};
+                REQUIRE(v.isHorizontal());
+                CHECK_THAT(v.angle(), Catch::Matchers::WithinRel(0.0, 0.001));
+            }
+            SECTION("Left")
+            {
+                Vector2D const v{-2, 0};
+                REQUIRE(v.isHorizontal());
+                CHECK_THAT(
+                    v.angle(),
+                    Catch::Matchers::WithinRel(std::numbers::pi, 0.001));
+            }
+        }
+        SECTION("Vertical")
+        {
+            SECTION("Up")
+            {
+                Vector2D const v{0, 2};
+                REQUIRE(v.isVertical());
+                CHECK_THAT(
+                    v.angle(),
+                    Catch::Matchers::WithinRel(std::numbers::pi / 2.0, 0.001));
+            }
+            SECTION("Down")
+            {
+                Vector2D const v{0, -2};
+                REQUIRE(v.isVertical());
+                CHECK_THAT(
+                    v.angle(),
+                    Catch::Matchers::WithinRel(-std::numbers::pi / 2.0, 0.001));
+            }
+        }
+        SECTION("Diagonal")
+        {
+            SECTION("Up-Right")
+            {
+                Vector2D const v{2, 2};
+                REQUIRE(v.isDiagonal());
+                CHECK_THAT(
+                    v.angle(),
+                    Catch::Matchers::WithinRel(std::numbers::pi / 4.0, 0.001));
+            }
+            SECTION("Down-Left")
+            {
+                Vector2D const v{-2, -2};
+                REQUIRE(v.isDiagonal());
+                CHECK_THAT(
+                    v.angle(),
+                    Catch::Matchers::WithinRel(
+                        -3.0 * std::numbers::pi / 4.0, 0.001));
             }
         }
     }

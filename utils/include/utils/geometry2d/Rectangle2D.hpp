@@ -76,21 +76,22 @@ public:
     /**
      * @copydoc IShape::area
      */
-    [[nodiscard]] uint64_t area() const override
+    [[nodiscard]] uint64_t area() const noexcept override
     {
         return static_cast<uint64_t>(mWidth) * static_cast<uint64_t>(mHeight);
     }
     /**
      * @copydoc IShape::isOutside
      */
-    [[nodiscard]] bool isOutside(Point2D<T> const& point) const override
+    [[nodiscard]] bool
+    isOutside(Point2D<T> const& point) const noexcept override
     {
         return !isInside(point);
     }
     /**
      * @copydoc IShape::isInside
      */
-    [[nodiscard]] bool isInside(Point2D<T> const& point) const override
+    [[nodiscard]] bool isInside(Point2D<T> const& point) const noexcept override
     {
         auto const& bottomLeft{getBottomLeftPoint()};
         auto const& topRight{getTopRightPoint()};
@@ -102,7 +103,8 @@ public:
     /**
      * @copydoc IShape::isInPerimeter
      */
-    [[nodiscard]] bool isInPerimeter(Point2D<T> const& point) const override
+    [[nodiscard]] bool
+    isInPerimeter(Point2D<T> const& point) const noexcept override
     {
         Vector2D const v1{getBottomLeftPoint(), point};
         Vector2D const v2{getTopRightPoint(), point};
@@ -112,7 +114,7 @@ public:
     /**
      * @copydoc IShape::getVertexes
      */
-    [[nodiscard]] std::vector<Point2D<T>> getVertexes() const override
+    [[nodiscard]] std::vector<Point2D<T>> getVertexes() const noexcept override
     {
         return {std::begin(mVertexes), std::end(mVertexes)};
     }

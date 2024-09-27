@@ -64,7 +64,7 @@ public:
      *
      * @return     List of vertexes.
      */
-    [[nodiscard]] std::vector<Point2D<T>> getVertexes() const override
+    [[nodiscard]] std::vector<Point2D<T>> getVertexes() const noexcept override
     {
         return {std::begin(mVertexes), std::end(mVertexes)};
     }
@@ -142,7 +142,8 @@ public:
      *
      * @return     True if the specified point is outside, False otherwise.
      */
-    [[nodiscard]] bool isOutside(Point2D<T> const& point) const override
+    [[nodiscard]] bool
+    isOutside(Point2D<T> const& point) const noexcept override
     {
         return Vector2D{mCenter, point}.distance() > mDistance;
     }
@@ -153,7 +154,7 @@ public:
      *
      * @return     True if the specified point is inside, False otherwise.
      */
-    [[nodiscard]] bool isInside(Point2D<T> const& point) const override
+    [[nodiscard]] bool isInside(Point2D<T> const& point) const noexcept override
     {
         return Vector2D{mCenter, point}.distance() <= mDistance;
     }
@@ -164,7 +165,8 @@ public:
      *
      * @return     True if the specified point is in perimeter, False otherwise.
      */
-    [[nodiscard]] bool isInPerimeter(Point2D<T> const& point) const override
+    [[nodiscard]] bool
+    isInPerimeter(Point2D<T> const& point) const noexcept override
     {
         return Vector2D{mCenter, point}.distance() == mDistance;
     }
@@ -173,7 +175,7 @@ public:
      *
      * @return     Area of the shape.
      */
-    [[nodiscard]] uint64_t area() const override
+    [[nodiscard]] uint64_t area() const noexcept override
     {
         uint64_t const diagonalLength{(2U * mDistance) + 1U};
         return ((diagonalLength * diagonalLength) / 2U) + 1U;

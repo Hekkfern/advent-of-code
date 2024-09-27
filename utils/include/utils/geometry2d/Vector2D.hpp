@@ -5,6 +5,7 @@
 #include "Point2D.hpp"
 #include <algorithm>
 #include <array>
+#include <cmath>
 #include <cstdint>
 #include <cstdlib>
 
@@ -53,6 +54,16 @@ public:
     constexpr explicit Vector2D(Coordinate2D<T> const coords) noexcept
         : mX{coords.getX()}
         , mY{coords.getY()}
+    {
+    }
+    /**
+     * @brief      Constructs a new instance.
+     *
+     * @param[in]  point  Point.
+     */
+    constexpr explicit Vector2D(Point2D<T> const p) noexcept
+        : mX{p.getX()}
+        , mY{p.getY()}
     {
     }
     /**
@@ -246,6 +257,12 @@ public:
         utils::hash::hash_combine(seed, mY);
         return seed;
     }
+    /**
+     * @brief      Calculates the angle of the vector.
+     *
+     * @return     Angle expressed in radians.
+     */
+    [[nodiscard]] double angle() const noexcept { return std::atan2(mY, mX); }
 
 private:
     /**
