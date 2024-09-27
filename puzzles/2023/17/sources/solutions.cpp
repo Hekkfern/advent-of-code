@@ -124,7 +124,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
 
 std::string solvePart2(std::filesystem::path const& filePath)
 {
-    HeatLossGrid const input{parseInput(filePath)};
+    HeatLossGrid input{parseInput(filePath)};
     input.flipVertical();
     return std::to_string(getLeastHeatLoss(input, 4, 10));
 }
