@@ -22,9 +22,13 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/solution1_test.txt
                ${CMAKE_CURRENT_BINARY_DIR}/solution1_test.txt COPYONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/solution1.txt
                ${CMAKE_CURRENT_BINARY_DIR}/solution1.txt COPYONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input2_test.txt
-               ${CMAKE_CURRENT_BINARY_DIR}/input2_test.txt COPYONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/solution2_test.txt
-               ${CMAKE_CURRENT_BINARY_DIR}/solution2_test.txt COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input2a_test.txt
+               ${CMAKE_CURRENT_BINARY_DIR}/input2a_test.txt COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input2b_test.txt
+               ${CMAKE_CURRENT_BINARY_DIR}/input2b_test.txt COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/solution2a_test.txt
+               ${CMAKE_CURRENT_BINARY_DIR}/solution2a_test.txt COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/solution2b_test.txt
+               ${CMAKE_CURRENT_BINARY_DIR}/solution2b_test.txt COPYONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/solution2.txt
                ${CMAKE_CURRENT_BINARY_DIR}/solution2.txt COPYONLY)

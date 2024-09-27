@@ -22,14 +22,27 @@ TEST_CASE(
 }
 
 TEST_CASE(
-    "[2023_17] Use example input for Part 2",
+    "[2023_17] Use example input A for Part 2",
     "[2023][2023_17][part2][2023_17_part2]")
 {
-    constexpr auto InputFile{"input2_test.txt"};
+    constexpr auto InputFile{"input2a_test.txt"};
 
     std::string const mySolution = aoc_2023_17::solvePart2(InputFile);
     std::string const expectedSolution
-        = utils::file::readFirstLine("solution2_test.txt").value();
+        = utils::file::readFirstLine("solution2a_test.txt").value();
+
+    REQUIRE(mySolution == expectedSolution);
+}
+
+TEST_CASE(
+    "[2023_17] Use example input B for Part 2",
+    "[2023][2023_17][part2][2023_17_part2]")
+{
+    constexpr auto InputFile{"input2b_test.txt"};
+
+    std::string const mySolution = aoc_2023_17::solvePart2(InputFile);
+    std::string const expectedSolution
+        = utils::file::readFirstLine("solution2b_test.txt").value();
 
     REQUIRE(mySolution == expectedSolution);
 }
