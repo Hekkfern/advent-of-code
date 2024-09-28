@@ -8,15 +8,30 @@ TEST_CASE(
     "[Operations2D] calculateArbitraryPolygonArea() method",
     "[utils][Operations2D]")
 {
-    std::vector<Point2D<>> const points{
-        Point2D{1, 6},
-        Point2D{3, 1},
-        Point2D{7, 2},
-        Point2D{4, 4},
-        Point2D{8, 5}};
-    CHECK_THAT(
-        calculateArbitraryPolygonArea(points),
-        Catch::Matchers::WithinRel(16.5, 0.001));
+    SECTION ("Shape 1")
+    {
+        std::vector<Point2D<>> const points{
+            Point2D{1, 6},
+            Point2D{3, 1},
+            Point2D{7, 2},
+            Point2D{4, 4},
+            Point2D{8, 5}};
+        CHECK_THAT(
+            calculateArbitraryPolygonArea(points),
+            Catch::Matchers::WithinRel(16.5, 0.001));
+    }
+    SECTION ("Shape 2")
+    {
+        std::vector<Point2D<>> const points{
+            Point2D{2,7},
+            Point2D{10,1},
+            Point2D{8,6},
+            Point2D{11,7},
+            Point2D{7,10}};
+        CHECK_THAT(
+            calculateArbitraryPolygonArea(points),
+            Catch::Matchers::WithinRel(32, 0.001));
+    }
 }
 
 TEST_CASE(

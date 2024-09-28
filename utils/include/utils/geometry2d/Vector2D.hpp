@@ -298,14 +298,15 @@ private:
  * @param[in]  value     The scalar value to scale by.
  *
  * @tparam     T         Type of the coordinate values.
+ * @tparam     U         Type of the scalar value.
  *
  * @return     Scaled vector by a scalar.
  */
-template <SignedIntegerType T>
+template <SignedIntegerType T, IntegerType U>
 [[nodiscard]] constexpr Vector2D<T>
-operator*(Vector2D<T> const& vector2d, int32_t const value) noexcept
+operator*(Vector2D<T> const& vector2d, U const value) noexcept
 {
-    return Vector2D<T>{value * vector2d.getX(), value * vector2d.getY()};
+    return Vector2D<T>{static_cast<T>(value) * vector2d.getX(), static_cast<T>(value) * vector2d.getY()};
 }
 /**
  * @brief      Multiplication operator, which multiplies the coordinates of a
@@ -315,12 +316,13 @@ operator*(Vector2D<T> const& vector2d, int32_t const value) noexcept
  * @param[in]  vector2d  The vector to scale.
  *
  * @tparam     T         Type of the coordinate values.
+ * @tparam     U         Type of the scalar value.
  *
  * @return     Scaled vector by a scalar.
  */
-template <SignedIntegerType T>
+template <SignedIntegerType T, IntegerType U>
 [[nodiscard]] constexpr Vector2D<T>
-operator*(int32_t const value, Vector2D<T> const& vector2d) noexcept
+operator*(U const value, Vector2D<T> const& vector2d) noexcept
 {
     return vector2d * value;
 }

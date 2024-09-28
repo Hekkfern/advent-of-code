@@ -77,6 +77,15 @@ public:
         (void)point;
         return false;
     }
+    /**
+     * @brief Calculates the number of intrinsic points inside this shape.
+     *
+     * @return Number of intrinsic points.
+     */
+    [[nodiscard]] uint64_t calculateNumberOfIntrinsicPoints() const noexcept
+    {
+        return calculateNumberOfIntrinsicPointsInsidePolygon(mVertexes);
+    }
 
 private:
     /**

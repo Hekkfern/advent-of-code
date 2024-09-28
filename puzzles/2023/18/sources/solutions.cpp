@@ -15,7 +15,7 @@ namespace aoc_2023_18 {
 
 // ---------- Private Methods ----------
 
-Direction2D convertToDirection(char const c)
+[[nodiscard]] Direction2D convertToDirection(char const c) noexcept
 {
     switch (c) {
     case 'R':
@@ -32,7 +32,7 @@ Direction2D convertToDirection(char const c)
     }
 }
 
-Instruction parseInstruction(std::string_view const line)
+[[nodiscard]] Instruction parseInstruction(std::string_view const line) noexcept
 {
     std::stringstream ss{std::string{line}};
     std::string direction;
@@ -43,17 +43,30 @@ Instruction parseInstruction(std::string_view const line)
         convertToDirection(direction[0]), steps, colorCode.substr(2, 6)};
 }
 
-std::vector<Instruction> parseInput(std::filesystem::path const& filePath)
+[[nodiscard]] std::vector<Instruction>
+parseInput(std::filesystem::path const& filePath) noexcept
 {
     std::vector<Instruction> instructions;
     bool const result{utils::file::parseAndIterate(
-        filePath, [&instructions](std::string_view const line) {
+        filePath, [&instructions](std::string_view const line) -> void {
             instructions.emplace_back(parseInstruction(line));
         })};
     if (!result) {
         return {};
     }
     return instructions;
+}
+
+[[nodiscard]] uint64_t
+calculatePerimeterLength(std::vector<Point2D<>> const& vertexes) noexcept
+{
+    uint64_t length{0ULL};
+    Point2D<> previousPoint{vertexes[0]};
+    for (std::size_t i{1ULL}; i < vertexes.size(); ++i) {
+        length += Vector2D{previousPoint, vertexes[i]}.distance();
+        previousPoint = vertexes[i];
+    }
+    return length;
 }
 
 // ---------- End of Private Methods ----------
@@ -65,12 +78,16 @@ std::string solvePart1(std::filesystem::path const& filePath)
     auto const instructions{parseInput(filePath)};
     constexpr Point2D<> startingPoint{0, 0};
     Point2D<> currentPoint{startingPoint};
-    std::vector<Point2D<>> vertexes{startingPoint};
+    std::vector<Point2D<>> vertexes{};
     for (auto const& instruction : instructions) {
-        auto vec{toVector2D(instruction.direction)};
+        auto vec{toVector2D(instruction.direction) * instruction.steps};
+        currentPoint += vec;
+        vertexes.emplace_back(currentPoint);
     }
     Polygon2D<> polygon{vertexes};
-    return std::to_string(polygon.area());
+    return std::to_string(
+        polygon.calculateNumberOfIntrinsicPoints()
+        + calculatePerimeterLength(vertexes));
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
