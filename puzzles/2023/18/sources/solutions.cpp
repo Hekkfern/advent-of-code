@@ -4,6 +4,9 @@
 #include <sstream>
 #include <string>
 #include <utils/File.hpp>
+#include <utils/geometry2d/Operations2D.hpp>
+#include <utils/geometry2d/Point2D.hpp>
+#include <utils/geometry2d/Polygon2D.h>
 #include <vector>
 
 using namespace utils::geometry2d;
@@ -12,7 +15,7 @@ namespace aoc_2023_18 {
 
 // ---------- Private Methods ----------
 
-utils::geometry2d::Direction2D convertToDirection(char const c)
+Direction2D convertToDirection(char const c)
 {
     switch (c) {
     case 'R':
@@ -59,8 +62,15 @@ std::vector<Instruction> parseInput(std::filesystem::path const& filePath)
 
 std::string solvePart1(std::filesystem::path const& filePath)
 {
-    (void)filePath;
-    return "";
+    auto const instructions{parseInput(filePath)};
+    constexpr Point2D<> startingPoint{0, 0};
+    Point2D<> currentPoint{startingPoint};
+    std::vector<Point2D<>> vertexes{startingPoint};
+    for (auto const& instruction : instructions) {
+        auto vec{operations::toVector2D(instruction.direction)};
+    }
+    Polygon2D<> polygon{vertexes};
+    return std::to_string(polygon.area());
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
