@@ -111,6 +111,7 @@ uint32_t getLeastHeatLoss(
 
     while (not pq.empty()) {
         State const current{pq.top()};
+        pq.pop();
         /* If we are at our destination, report the heat_loss, because of the
          * priority queue we have a guarantee this is the minimum value */
         if (current.position == destination) {
@@ -119,7 +120,6 @@ uint32_t getLeastHeatLoss(
             }
             return current.heatLoss;
         }
-        pq.pop();
 
         std::vector<std::pair<Coord, Direction2D>> nextSteps{
             getNextSteps(grid, current, minSteps, maxSteps)};
