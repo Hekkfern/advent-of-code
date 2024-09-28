@@ -58,7 +58,7 @@ public:
      */
     explicit Rectangle2D(
         Point2D<T> const& bottomLeft, uint32_t width, uint32_t height)
-        : mVertexes{{bottomLeft, bottomLeft + Vector2D{static_cast<T>(width), 0}, bottomLeft + Vector2D{static_cast<T>(width), static_cast<T>(height)}, bottomLeft + Vector2D{0, static_cast<T>(height)}}}
+        : mVertexes{{bottomLeft, bottomLeft + Vector2D<T>{static_cast<T>(width), 0}, bottomLeft + Vector2D<T>{static_cast<T>(width), static_cast<T>(height)}, bottomLeft + Vector2D<T>{0, static_cast<T>(height)}}}
         , mWidth{width}
         , mHeight{height}
     {

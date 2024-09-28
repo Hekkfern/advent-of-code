@@ -67,7 +67,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
     Point2D<> currentPoint{startingPoint};
     std::vector<Point2D<>> vertexes{startingPoint};
     for (auto const& instruction : instructions) {
-        auto vec{operations::toVector2D(instruction.direction)};
+        auto vec{toVector2D(instruction.direction)};
     }
     Polygon2D<> polygon{vertexes};
     return std::to_string(polygon.area());

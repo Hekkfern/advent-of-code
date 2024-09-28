@@ -115,21 +115,6 @@ public:
         return mCoordinates == other.mCoordinates;
     }
     /**
-     * @brief      Addition operator, which sums the coordinates of both
-     *             objects.
-     *
-     * @param[in]  other  The other object.
-     *
-     * @return     The result of the addition.
-     */
-    [[nodiscard]] constexpr Point2D
-    operator+(Point2D const& other) const noexcept
-    {
-        return Point2D{
-            mCoordinates.getX() + other.mCoordinates.getX(),
-            mCoordinates.getY() + other.mCoordinates.getY()};
-    }
-    /**
      * @brief      Negation operator.
      *
      * @return     The result of the subtraction
@@ -137,18 +122,6 @@ public:
     [[nodiscard]] constexpr Point2D operator-() const noexcept
     {
         return Point2D{-mCoordinates.getX(), -mCoordinates.getY()};
-    }
-    /**
-     * @brief      Subtraction operator.
-     *
-     * @param[in]  other  The other
-     *
-     * @return     The result of the subtraction
-     */
-    [[nodiscard]] constexpr Point2D
-    operator-(Point2D const& other) const noexcept
-    {
-        return *this + (-other);
     }
     /**
      * @brief      Factory method to create a new Point based on the selected

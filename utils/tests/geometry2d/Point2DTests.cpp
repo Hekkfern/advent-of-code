@@ -180,17 +180,6 @@ TEST_CASE("[Point2D] Equality operator", "[utils][Point2D]")
     }
 }
 
-TEST_CASE("[Point2D] Addition operator", "[utils][Point2D]")
-{
-    SECTION("Runtime tests")
-    {
-        Point2D const p1{-2, 3};
-        Point2D const p2{4, 2};
-        CHECK((p1 + p2) == Point2D{2, 5});
-        CHECK((p2 + p1) == Point2D{2, 5});
-    }
-}
-
 TEST_CASE("[Point2D] Negation operator", "[utils][Point2D]")
 {
     SECTION("Runtime tests")
@@ -206,16 +195,5 @@ TEST_CASE("[Point2D] Negation operator", "[utils][Point2D]")
         constexpr Point2D p2{4, -2};
         STATIC_CHECK(-p1 == Point2D{2, -3});
         STATIC_CHECK(-p2 == Point2D{-4, 2});
-    }
-}
-
-TEST_CASE("[Point2D] Subtraction operator", "[utils][Point2D]")
-{
-    SECTION("Runtime tests")
-    {
-        Point2D const p1{-2, 3};
-        Point2D const p2{4, 2};
-        CHECK((p1 - p2) == Point2D{-6, 1});
-        CHECK((p2 - p1) == Point2D{6, -1});
     }
 }

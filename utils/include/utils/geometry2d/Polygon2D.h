@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../Concepts.hpp"
+#include "Calculations2D.hpp"
 #include "IShape2D.hpp"
-#include "Operations2D.hpp"
 #include "Point2D.hpp"
 #include <cmath>
 #include <numbers>
