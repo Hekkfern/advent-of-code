@@ -5,8 +5,8 @@
 #include <string>
 #include <utils/File.hpp>
 #include <utils/geometry2d/Operations2D.hpp>
+#include <utils/geometry2d/OrthogonalPolygon2D.h>
 #include <utils/geometry2d/Point2D.hpp>
-#include <utils/geometry2d/Polygon2D.h>
 #include <vector>
 
 using namespace utils::geometry2d;
@@ -57,18 +57,6 @@ parseInput(std::filesystem::path const& filePath) noexcept
     return instructions;
 }
 
-[[nodiscard]] uint64_t
-calculatePerimeterLength(std::vector<Point2D<>> const& vertexes) noexcept
-{
-    uint64_t length{0ULL};
-    Point2D<> previousPoint{vertexes[0]};
-    for (std::size_t i{1ULL}; i < vertexes.size(); ++i) {
-        length += Vector2D{previousPoint, vertexes[i]}.distance();
-        previousPoint = vertexes[i];
-    }
-    return length;
-}
-
 // ---------- End of Private Methods ----------
 
 // ---------- Public Methods ----------
@@ -84,10 +72,10 @@ std::string solvePart1(std::filesystem::path const& filePath)
         currentPoint += vec;
         vertexes.emplace_back(currentPoint);
     }
-    Polygon2D<> polygon{vertexes};
+    OrthogonalPolygon2D<> polygon{vertexes};
     return std::to_string(
         polygon.calculateNumberOfIntrinsicPoints()
-        + calculatePerimeterLength(vertexes));
+        + polygon.perimeter());
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)

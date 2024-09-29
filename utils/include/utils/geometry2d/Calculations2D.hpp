@@ -23,7 +23,8 @@ namespace utils::geometry2d {
  * @return     Area of the shape.
  */
 template <SignedIntegerType T = int32_t>
-double calculateArbitraryPolygonArea(std::vector<Point2D<T>> perimeterPoints)
+double
+calculateArbitraryPolygonArea(std::vector<Point2D<T>> const& perimeterPoints)
 {
     T leftSum{0};
     T rightSum{0};
@@ -53,7 +54,7 @@ double calculateArbitraryPolygonArea(std::vector<Point2D<T>> perimeterPoints)
  */
 template <SignedIntegerType T = int32_t>
 std::size_t calculateNumberOfIntrinsicPointsInsidePolygon(
-    std::vector<Point2D<T>> perimeterPoints)
+    std::vector<Point2D<T>> const& perimeterPoints)
 {
     auto const area{calculateArbitraryPolygonArea(perimeterPoints)};
     return static_cast<std::size_t>(

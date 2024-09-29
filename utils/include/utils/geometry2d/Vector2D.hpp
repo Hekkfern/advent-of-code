@@ -306,7 +306,9 @@ template <SignedIntegerType T, IntegerType U>
 [[nodiscard]] constexpr Vector2D<T>
 operator*(Vector2D<T> const& vector2d, U const value) noexcept
 {
-    return Vector2D<T>{static_cast<T>(value) * vector2d.getX(), static_cast<T>(value) * vector2d.getY()};
+    return Vector2D<T>{
+        static_cast<T>(value) * vector2d.getX(),
+        static_cast<T>(value) * vector2d.getY()};
 }
 /**
  * @brief      Multiplication operator, which multiplies the coordinates of a

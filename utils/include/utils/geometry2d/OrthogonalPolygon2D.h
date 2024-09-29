@@ -16,7 +16,7 @@ namespace utils::geometry2d {
  * @tparam T Type of the coordinate values.
  */
 template <SignedIntegerType T = int32_t>
-class Polygon2D : public IShape2D<T> {
+class OrthogonalPolygon2D : public IShape2D<T> {
 public:
     /**
      * @brief      Constructs a new instance.
@@ -25,7 +25,7 @@ public:
      *                       following the perimeter (clockwise or
      *                       counterclockwise).
      */
-    Polygon2D(std::vector<Point2D<T>> const& vertexes)
+    OrthogonalPolygon2D(std::vector<Point2D<T>> const& vertexes)
         : mVertexes{vertexes}
     {
     }
@@ -84,10 +84,42 @@ public:
      */
     [[nodiscard]] uint64_t calculateNumberOfIntrinsicPoints() const noexcept
     {
-        return calculateNumberOfIntrinsicPointsInsidePolygon(mVertexes);
+        return calculateNumberOfIntrinsicPointsInsidePolygon(
+            calculateBoundaryPoints(mVertexes));
+    }
+    /**
+     * @brief Calculates the perimeter length of this shape.
+     *
+     * @return Perimeter length.
+     */
+    [[nodiscard]] uint64_t perimeter() const noexcept
+    {
+        uint64_t length{0ULL};
+        Point2D<> previousPoint{mVertexes.front()};
+        for (std::size_t i{1ULL}; i < mVertexes.size(); ++i) {
+            length += Vector2D{previousPoint, mVertexes[i]}.distance();
+            previousPoint = mVertexes[i];
+        }
+        return length;
     }
 
 private:
+    /**
+     * @brief      Calculates the boundary points of this shape.
+     *
+     * @details Given a list of vertexes of the shape, this method calculates
+     * all the points forming its perimeter. It means that it will return all
+     * the vertexes, plus all the points between them.
+     *
+     * @return     List of boundary points. It doesn't contain repeated points.
+     */
+    std::vector<Point2D<T>> calculateBoundaryPoints() const noexcept
+    {
+        std::vector<Point2D<T>> boundaryPoints;
+        // TODOß
+        return boundaryPoints;
+    }
+
     /**
      * Stores the vertexes (points 2D) of this shape.
      */
