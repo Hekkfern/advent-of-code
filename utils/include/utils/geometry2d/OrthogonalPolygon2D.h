@@ -3,6 +3,7 @@
 #include "../Concepts.hpp"
 #include "Calculations2D.hpp"
 #include "IShape2D.hpp"
+#include "OrthogonalLine2D.h"
 #include "Point2D.hpp"
 #include <cmath>
 #include <numbers>
@@ -85,7 +86,7 @@ public:
     [[nodiscard]] uint64_t calculateNumberOfIntrinsicPoints() const noexcept
     {
         return calculateNumberOfIntrinsicPointsInsidePolygon(
-            calculateBoundaryPoints(mVertexes));
+            calculateBoundaryPoints());
     }
     /**
      * @brief Calculates the perimeter length of this shape.
@@ -116,7 +117,19 @@ private:
     std::vector<Point2D<T>> calculateBoundaryPoints() const noexcept
     {
         std::vector<Point2D<T>> boundaryPoints;
-        // TODOß
+        boundaryPoints.reserve(mVertexes.size() * 2);
+        Point2D<T> previousPoint{mVertexes.front()};
+        for (auto const& vertex : mVertexes) {
+            auto const points{
+                OrthogonalLine2D{previousPoint, vertex}.getPoints()};
+            boundaryPoints.insert(
+                std::end(boundaryPoints), std::begin(points), std::end(points));
+            previousPoint = vertex;
+        }
+        auto const points{
+            OrthogonalLine2D{mVertexes.back(), mVertexes.front()}.getPoints()};
+        boundaryPoints.insert(
+            std::end(boundaryPoints), std::begin(points), std::end(points));
         return boundaryPoints;
     }
 
