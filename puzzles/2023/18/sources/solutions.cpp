@@ -74,8 +74,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
     }
     OrthogonalPolygon2D<> polygon{vertexes};
     return std::to_string(
-        polygon.calculateNumberOfIntrinsicPoints()
-        + polygon.perimeter());
+        polygon.calculateNumberOfIntrinsicPoints() + polygon.perimeter());
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)

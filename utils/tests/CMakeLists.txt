@@ -28,7 +28,8 @@ set(_TESTFILES_GEOMETRY2D
     geometry2d/Line2DTests.cpp
     geometry2d/Grid2DTests.cpp
     geometry2d/OrthogonalPolygon2DTests.cpp
-    geometry2d/Calculations2DTests.cpp)
+    geometry2d/Calculations2DTests.cpp
+    geometry2d/OrthogonalLine2DTests.cpp)
 set(_TESTFILES_GEOMETRY3D
     geometry3d/Point3DTests.cpp geometry3d/Vector3DTests.cpp
     geometry3d/Operations3DTests.cpp)

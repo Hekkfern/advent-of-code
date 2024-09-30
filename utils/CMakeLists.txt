@@ -43,7 +43,7 @@ set(_SOURCES_UTILS_GEOMETRY2D
     include/utils/geometry2d/PositionStatus.h
     include/utils/geometry2d/OrthogonalPolygon2D.h
     include/utils/geometry2d/Calculations2D.hpp
-        include/utils/geometry2d/DirectionType.h)
+    include/utils/geometry2d/OrthogonalLine2D.h)
 set(_SOURCES_UTILS_GEOMETRY3D
     include/utils/geometry3d/Point3D.hpp include/utils/geometry3d/Vector3D.hpp
     include/utils/geometry3d/Coord3D.hpp

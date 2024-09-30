@@ -2,7 +2,6 @@
 
 #include "../Concepts.hpp"
 #include "../Hash.hpp"
-#include "DirectionType.h"
 #include "Point2D.hpp"
 #include <algorithm>
 #include <array>
@@ -11,6 +10,11 @@
 #include <cstdlib>
 
 namespace utils::geometry2d {
+
+/**
+ * @brief Enum defining the different types of vectors.
+ */
+enum class Vector2DType { Arbitrary, Zero, Horizontal, Vertical, Diagonal };
 
 /**
  * @brief      Describes a Vector (i.e. a directional arrow) in 2D space.
@@ -43,18 +47,19 @@ public:
      */
     constexpr explicit Vector2D(
         Point2D<T> const& origin, Point2D<T> const& destination) noexcept
-        : mX{destination.getX() - origin.getX()}
-        , mY{destination.getY() - origin.getY()}
+        : Vector2D{
+              destination.getX() - origin.getX(),
+              destination.getY() - origin.getY()}
     {
     }
     /**
-     * @brief      Constructs a new instance where the the origin is the coordinate (0,0) and the destination is the selected coordinate.
+     * @brief      Constructs a new instance where the the origin is the
+     * coordinate (0,0) and the destination is the selected coordinate.
      *
      * @param[in]  coords  Coordinates.
      */
     constexpr explicit Vector2D(Coordinate2D<T> const coords) noexcept
-        : mX{coords.getX()}
-        , mY{coords.getY()}
+        : Vector2D{coords.getX(), coords.getY()}
     {
     }
     /**
@@ -64,8 +69,7 @@ public:
      * @param[in]  p     Point.
      */
     constexpr explicit Vector2D(Point2D<T> const p) noexcept
-        : mX{p.getX()}
-        , mY{p.getY()}
+        : Vector2D{p.getX(), p.getY()}
     {
     }
     /**
@@ -142,18 +146,18 @@ public:
      *
      * @return     Enum with the result.
      */
-    [[nodiscard]] constexpr DirectionType is() const noexcept
+    [[nodiscard]] constexpr Vector2DType is() const noexcept
     {
         if (isZero()) {
-            return DirectionType::Zero;
-        } else if (isHorizontal()){
-            return DirectionType::Horizontal;
-        } else if (isVertical()){
-            return DirectionType::Vertical;
-        } else if (isDiagonal()){
-            return DirectionType::Diagonal;
+            return Vector2DType::Zero;
+        } else if (isHorizontal()) {
+            return Vector2DType::Horizontal;
+        } else if (isVertical()) {
+            return Vector2DType::Vertical;
+        } else if (isDiagonal()) {
+            return Vector2DType::Diagonal;
         } else {
-            return DirectionType::Arbitrary;
+            return Vector2DType::Arbitrary;
         }
     }
     /**

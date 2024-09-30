@@ -49,19 +49,19 @@ TEST_CASE("[Line2D] is() method", "[utils][Line2D]")
     SECTION("Zero")
     {
         Line2D const line2D{Point2D{1, 1}, Point2D{1, 1}};
-        CHECK(line2D.is() == DirectionType::Zero);
+        CHECK(line2D.is() == Line2DType::Zero);
     }
     SECTION("Horizontal")
     {
         SECTION("Right")
         {
             Line2D const line2D{Point2D{1, 1}, Point2D{6, 1}};
-            CHECK(line2D.is() == DirectionType::Horizontal);
+            CHECK(line2D.is() == Line2DType::Horizontal);
         }
         SECTION("Left")
         {
             Line2D const line2D{Point2D{1, 1}, Point2D{-6, 1}};
-            CHECK(line2D.is() == DirectionType::Horizontal);
+            CHECK(line2D.is() == Line2DType::Horizontal);
         }
     }
     SECTION("Vertical")
@@ -69,12 +69,12 @@ TEST_CASE("[Line2D] is() method", "[utils][Line2D]")
         SECTION("Up")
         {
             Line2D const line2D{Point2D{1, 1}, Point2D{1, 6}};
-            CHECK(line2D.is() == DirectionType::Vertical);
+            CHECK(line2D.is() == Line2DType::Vertical);
         }
         SECTION("Down")
         {
             Line2D const line2D{Point2D{1, 1}, Point2D{1, -6}};
-            CHECK(line2D.is() == DirectionType::Vertical);
+            CHECK(line2D.is() == Line2DType::Vertical);
         }
     }
     SECTION("Diagonal")
@@ -82,35 +82,34 @@ TEST_CASE("[Line2D] is() method", "[utils][Line2D]")
         SECTION("Up-Right")
         {
             Line2D const line2D{Point2D{1, 2}, Point2D{3, 4}};
-            CHECK(line2D.is() == DirectionType::Diagonal);
+            CHECK(line2D.is() == Line2DType::Diagonal);
         }
         SECTION("Down-Left")
         {
             Line2D const line2D{Point2D{1, 2}, Point2D{3, 0}};
-            CHECK(line2D.is() == DirectionType::Diagonal);
+            CHECK(line2D.is() == Line2DType::Diagonal);
         }
     }
     SECTION("Arbitrary")
     {
         Line2D const line2D{Point2D{1, 2}, Point2D{3, 5}};
-        CHECK(line2D.is() == DirectionType::Arbitrary);
+        CHECK(line2D.is() == Line2DType::Arbitrary);
     }
 }
 
 TEST_CASE("[Line2D] Equality operator", "[utils][Line2D]")
 {
+    Line2D const obj1{Point2D{2, 3}, Point2D{1, 2}};
+
     SECTION("Different")
     {
-        Line2D const v1{Point2D{2, 3}, Point2D{1, 2}};
-        Line2D const v2{Point2D{3, 1}, Point2D{-2, -2}};
-        CHECK_FALSE(v1 == v2);
-        CHECK(v1 != v2);
+        Line2D const obj2{Point2D{3, 1}, Point2D{-2, -2}};
+        CHECK_FALSE(obj1 == obj2);
+        CHECK(obj1 != obj2);
     }
     SECTION("Equal")
     {
-        Line2D const v1{Point2D{2, 3}, Point2D{1, 2}};
-        Line2D const v2{Point2D{2, 3}, Point2D{1, 2}};
-        CHECK(v1 == v2);
-        CHECK_FALSE(v1 != v2);
+        CHECK(obj1 == obj1);
+        CHECK_FALSE(obj1 != obj1);
     }
 }

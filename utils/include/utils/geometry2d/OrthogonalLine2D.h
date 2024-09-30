@@ -1,17 +1,18 @@
 #pragma once
 
-#include "../Concepts.hpp"
 #include "Point2D.hpp"
 #include "Vector2D.hpp"
+#include "utils/Concepts.hpp"
+#include "utils/Hash.hpp"
 #include <cstdint>
 #include <cstdlib>
 
 namespace utils::geometry2d {
 
 /**
- * @brief Enum defining the different types of lines.
+ * @brief Enum defining the different types of orthogonal lines.
  */
-enum class Line2DType { Arbitrary, Zero, Horizontal, Vertical, Diagonal };
+enum class OrthogonalLine2DType { Zero, Horizontal, Vertical };
 
 /**
  * @brief      Describes a Line in 2D space.
@@ -19,7 +20,7 @@ enum class Line2DType { Arbitrary, Zero, Horizontal, Vertical, Diagonal };
  * @tparam     T     Type of the coordinate values.
  */
 template <SignedIntegerType T = int32_t>
-class Line2D {
+class OrthogonalLine2D {
 public:
     /**
      * Number of vertexes of a Line.
@@ -29,16 +30,20 @@ public:
     /**
      * @brief      Default constructor.
      */
-    explicit Line2D() = default;
+    explicit OrthogonalLine2D() = default;
     /**
      * @brief      Constructs a new instance.
      *
      * @param[in]  vertex1  The first point.
      * @param[in]  vertex2  The second point.
      */
-    explicit Line2D(Point2D<T> const& vertex1, Point2D<T> const& vertex2)
+    explicit OrthogonalLine2D(
+        Point2D<T> const& vertex1, Point2D<T> const& vertex2)
         : mVertexes{vertex1, vertex2}
     {
+        assert(
+            is() == OrthogonalLine2DType::Horizontal
+            || is() == OrthogonalLine2DType::Vertical);
     }
     /**
      * @brief      Constructs a new instance.
@@ -46,9 +51,9 @@ public:
      * @param[in]  coord1  The first point.
      * @param[in]  coord2  The second point.
      */
-    explicit Line2D(
+    explicit OrthogonalLine2D(
         Coordinate2D<T> const& coord1, Coordinate2D<T> const& coord2)
-        : Line2D<T>{Point2D<T>{coord1}, Point2D<T>{coord2}}
+        : OrthogonalLine2D<T>{Point2D<T>{coord1}, Point2D<T>{coord2}}
     {
     }
     /**
@@ -57,8 +62,9 @@ public:
      * @param[in]  origin  The origin
      * @param[in]  vector  The vector
      */
-    explicit Line2D(Point2D<T> const& origin, Vector2D<T> const& vector)
-        : Line2D<T>{origin, origin + vector}
+    explicit OrthogonalLine2D(
+        Point2D<T> const& origin, Vector2D<T> const& vector)
+        : OrthogonalLine2D<T>{origin, origin + vector}
     {
     }
     /**
@@ -104,7 +110,7 @@ public:
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] bool operator==(Line2D<T> const& other) const
+    [[nodiscard]] bool operator==(OrthogonalLine2D<T> const& other) const
     {
         return mVertexes == other.mVertexes;
     }
@@ -114,18 +120,14 @@ public:
      *
      * @return     Enum with the result.
      */
-    [[nodiscard]] constexpr Line2DType is() const noexcept
+    [[nodiscard]] constexpr OrthogonalLine2DType is() const noexcept
     {
-        if (isZero()) {
-            return Line2DType::Zero;
-        } else if (isHorizontal()) {
-            return Line2DType::Horizontal;
+        if (isHorizontal()) {
+            return OrthogonalLine2DType::Horizontal;
         } else if (isVertical()) {
-            return Line2DType::Vertical;
-        } else if (isDiagonal()) {
-            return Line2DType::Diagonal;
+            return OrthogonalLine2DType::Vertical;
         } else {
-            return Line2DType::Arbitrary;
+            return OrthogonalLine2DType::Zero;
         }
     }
     /**
@@ -151,21 +153,11 @@ private:
      *
      * @return     The updated output stream.
      */
-    friend std::ostream& operator<<(std::ostream& os, Line2D<T> const& obj)
+    friend std::ostream&
+    operator<<(std::ostream& os, OrthogonalLine2D<T> const& obj)
     {
         os << obj.mVertexes[0] << ", " << obj.mVertexes[1];
         return os;
-    }
-    /**
-     * @brief      Determines if the line is empty, i.e., both coordinates are
-     *             zero.
-     *
-     * @return     True if it is empty, False otherwise.
-     */
-    [[nodiscard]] constexpr bool isZero() const noexcept
-    {
-        auto const thissize{this->size()};
-        return thissize[0] == 0 && thissize[1] == 0;
     }
     /**
      * @brief      Determines if it is a horizontal vector, i.e. its coordinate
@@ -189,18 +181,6 @@ private:
         auto const thissize{this->size()};
         return thissize[0] == 0;
     }
-    /**
-     * @brief      Determines if it is a diagonal vector, i.e. its coordinate X
-     *             is equal to its coordinate Y.
-     *
-     * @return     True if it is diagonal, False otherwise.
-     */
-    [[nodiscard]] bool isDiagonal() const
-    {
-        auto const thissize{this->size()};
-        return std::abs(static_cast<std::intmax_t>(thissize[0]))
-            == std::abs(static_cast<std::intmax_t>(thissize[1]));
-    }
 
     /**
      * Stores the vertexes (points 2D) of this shape.
@@ -212,9 +192,9 @@ private:
 } // namespace utils::geometry2d
 
 template <SignedIntegerType T>
-struct std::hash<utils::geometry2d::Line2D<T>> {
+struct std::hash<utils::geometry2d::OrthogonalLine2D<T>> {
     std::size_t
-    operator()(utils::geometry2d::Line2D<T> const& obj) const noexcept
+    operator()(utils::geometry2d::OrthogonalLine2D<T> const& obj) const noexcept
     {
         return obj.calculateHash();
     }
