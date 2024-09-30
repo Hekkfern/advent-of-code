@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Operations2D.hpp"
 #include "Point2D.hpp"
 #include "Vector2D.hpp"
 #include "utils/Concepts.hpp"
@@ -142,6 +143,28 @@ public:
             utils::hash::hash_combine(seed, vertex);
         }
         return seed;
+    }
+    /**
+     * @brief      Gets the points that compose this line, included the
+     *             vertexes.
+     *
+     * @note       The order of the points in the list is from the first vertex
+     *             to the last.
+     *
+     * @return     List of points.
+     */
+    [[nodiscard]] std::vector<Point2D<T>> getPoints() const
+    {
+        /* get unary vector of movement */
+        Vector2D<T> const vector{mVertexes[0], mVertexes[1]};
+        auto const unaryVector{vector.normalize()};
+        std::vector<Point2D<T>> points{mVertexes[0]};
+        Point2D point{mVertexes.front()};
+        while (point != mVertexes[1]) {
+            point += unaryVector;
+            points.emplace_back(point);
+        }
+        return points;
     }
 
 private:

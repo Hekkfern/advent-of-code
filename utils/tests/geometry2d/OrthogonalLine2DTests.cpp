@@ -95,3 +95,35 @@ TEST_CASE("[OrthogonalLine2D] Equality operator", "[utils][OrthogonalLine2D]")
         CHECK_FALSE(obj1 != obj1);
     }
 }
+
+TEST_CASE("[OrthogonalLine2D] getPoints() method", "[utils][OrthogonalLine2D]")
+{
+    SECTION("Horizontal")
+    {
+        OrthogonalLine2D const line2D{Point2D{1, 1}, Point2D{6, 1}};
+        auto const points{line2D.getPoints()};
+        CHECK(points[0] == Point2D{1, 1});
+        CHECK(points[1] == Point2D{2, 1});
+        CHECK(points[2] == Point2D{3, 1});
+        CHECK(points[3] == Point2D{4, 1});
+        CHECK(points[4] == Point2D{5, 1});
+        CHECK(points[5] == Point2D{6, 1});
+    }
+    SECTION("Vertical")
+    {
+        OrthogonalLine2D const line2D{Point2D{1, 1}, Point2D{1, 6}};
+        auto const points{line2D.getPoints()};
+        CHECK(points[0] == Point2D{1, 1});
+        CHECK(points[1] == Point2D{1, 2});
+        CHECK(points[2] == Point2D{1, 3});
+        CHECK(points[3] == Point2D{1, 4});
+        CHECK(points[4] == Point2D{1, 5});
+        CHECK(points[5] == Point2D{1, 6});
+    }
+    SECTION("Zero")
+    {
+        OrthogonalLine2D const line2D{Point2D{1, 1}, Point2D{1, 1}};
+        auto const points{line2D.getPoints()};
+        CHECK(points[0] == Point2D{1, 1});
+    }
+}
