@@ -108,8 +108,10 @@ public:
     {
         Vector2D const v1{getBottomLeftPoint(), point};
         Vector2D const v2{getTopRightPoint(), point};
-        return v1.isVertical() || v1.isHorizontal() || v2.isVertical()
-            || v2.isHorizontal();
+        return v1.is() == DirectionType::Vertical
+            || v1.is() == DirectionType::Horizontal
+            || v2.is() == DirectionType::Vertical
+            || v2.is() == DirectionType::Horizontal;
     }
     /**
      * @copydoc IShape::getVertexes

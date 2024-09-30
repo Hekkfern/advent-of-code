@@ -93,6 +93,63 @@ public:
         return mVertexes;
     }
     /**
+     * @brief      Equality operator.
+     *
+     * @param[in]  other  The other object.
+     *
+     * @return     The result of the equality.
+     */
+    [[nodiscard]] bool operator==(Line2D<T> const& other) const
+    {
+        return mVertexes == other.mVertexes;
+    }
+    /**
+     * @brief      Tells if the vector follows any special direction, like being
+     *             horizontal, vertical, or diagonal.
+     *
+     * @return     Enum with the result.
+     */
+    [[nodiscard]] constexpr DirectionType is() const noexcept
+    {
+        if (isZero()) {
+            return DirectionType::Zero;
+        } else if (isHorizontal()) {
+            return DirectionType::Horizontal;
+        } else if (isVertical()) {
+            return DirectionType::Vertical;
+        } else if (isDiagonal()) {
+            return DirectionType::Diagonal;
+        } else {
+            return DirectionType::Arbitrary;
+        }
+    }
+
+private:
+    /**
+     * @brief      "Insert string into stream" operator.
+     *
+     * @param[in]  os    The output stream.
+     * @param[in]  obj   The object.
+     *
+     * @return     The updated output stream.
+     */
+    friend std::ostream& operator<<(std::ostream& os, Line2D<T> const& obj)
+    {
+        os << obj.mVertexes[0] << ", " << obj.mVertexes[1];
+        return os;
+    }
+    /**
+     * @brief      Determines if the line is empty, i.e., both coordinates are
+     *             zero.
+     *
+     * @return     True if it is empty, False otherwise.
+     */
+    [[nodiscard]] constexpr bool isZero() const noexcept
+    {
+        auto const thissize{this->size()};
+        return thissize[0] == 0 && thissize[1] == 0;
+    }
+    /**
      * @brief      Determines if it is a horizontal vector, i.e. its coordinate
      *             Y is zero.
      *
@@ -125,32 +182,6 @@ public:
         auto const thissize{this->size()};
         return std::abs(static_cast<std::intmax_t>(thissize[0]))
             == std::abs(static_cast<std::intmax_t>(thissize[1]));
-    }
-    /**
-     * @brief      Equality operator.
-     *
-     * @param[in]  other  The other object.
-     *
-     * @return     The result of the equality.
-     */
-    [[nodiscard]] bool operator==(Line2D<T> const& other) const
-    {
-        return mVertexes == other.mVertexes;
-    }
-
-private:
-    /**
-     * @brief      "Insert string into stream" operator.
-     *
-     * @param[in]  os    The output stream.
-     * @param[in]  obj   The object.
-     *
-     * @return     The updated output stream.
-     */
-    friend std::ostream& operator<<(std::ostream& os, Line2D<T> const& obj)
-    {
-        os << obj.mVertexes[0] << ", " << obj.mVertexes[1];
-        return os;
     }
 
     /**

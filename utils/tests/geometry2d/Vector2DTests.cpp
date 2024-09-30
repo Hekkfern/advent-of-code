@@ -185,75 +185,62 @@ TEST_CASE("[Vector2D] normalize() method", "[utils][Vector2D]")
     }
 }
 
-TEST_CASE("[Vector2D] isZero() method", "[utils][Vector2D]")
+TEST_CASE("[Vector2D] is() method", "[utils][Vector2D]")
 {
     SECTION("Runtime tests")
     {
         SECTION("Zero vector")
         {
-            Vector2D<> const v1;
-            CHECK(v1.isZero());
+            Vector2D<> const v;
+            CHECK(v.is() == DirectionType::Zero);
         }
         SECTION("Positive values")
         {
-            Vector2D const v1{2, 3};
-            CHECK_FALSE(v1.isZero());
+            Vector2D const v{2, 3};
+            CHECK(v.is() == DirectionType::Arbitrary);
         }
         SECTION("Positive and negatives values")
         {
-            Vector2D const v1{-1, 2};
-            CHECK_FALSE(v1.isZero());
-        }
-        SECTION("Semi-zero vector")
-        {
-            Vector2D const v1{0, -1};
-            CHECK_FALSE(v1.isZero());
-        }
-    }
-}
-
-TEST_CASE(
-    "[Vector2D] isHorizontal(), isVertical() and isDiagonal() methods",
-    "[utils][Vector2D]")
-{
-    SECTION("Runtime tests")
-    {
-        SECTION("Zero vector")
-        {
-            Vector2D<> const v1;
-            CHECK(v1.isHorizontal());
-            CHECK(v1.isVertical());
-            CHECK(v1.isDiagonal());
+            Vector2D const v{-1, 2};
+            CHECK(v.is() == DirectionType::Arbitrary);
         }
         SECTION("Horizontal")
         {
-            Vector2D const v1{2, 0};
-            CHECK(v1.isHorizontal());
-            CHECK_FALSE(v1.isVertical());
-            CHECK_FALSE(v1.isDiagonal());
+            SECTION("Right")
+            {
+                Vector2D const v{1, 0};
+                CHECK(v.is() == DirectionType::Horizontal);
+            }
+            SECTION("Left")
+            {
+                Vector2D const v{-3, 0};
+                CHECK(v.is() == DirectionType::Horizontal);
+            }
         }
         SECTION("Vertical")
         {
-            Vector2D const v1{0, 5};
-            CHECK_FALSE(v1.isHorizontal());
-            CHECK(v1.isVertical());
-            CHECK_FALSE(v1.isDiagonal());
+            SECTION("Up")
+            {
+                Vector2D const v{0, 1};
+                CHECK(v.is() == DirectionType::Vertical);
+            }
+            SECTION("Down")
+            {
+                Vector2D const v{0, -1};
+                CHECK(v.is() == DirectionType::Vertical);
+            }
         }
         SECTION("Diagonal")
         {
-            SECTION("Ascending")
+            SECTION("Up-Right")
             {
-                Vector2D const v1{2, 2};
-                CHECK_FALSE(v1.isHorizontal());
-                CHECK_FALSE(v1.isVertical());
-                CHECK(v1.isDiagonal());
+                Vector2D const v{2, 2};
+                CHECK(v.is() == DirectionType::Diagonal);
             }
-            SECTION("Descending")
+            SECTION("Down-Left")
             {
-                Vector2D const v1{2, -2};
-                CHECK_FALSE(v1.isHorizontal());
-                CHECK_FALSE(v1.isVertical());
-                CHECK(v1.isDiagonal());
+                Vector2D const v{2, -2};
+                CHECK(v.is() == DirectionType::Diagonal);
             }
         }
     }
@@ -378,13 +365,13 @@ TEST_CASE("[Vector2D] angle() method", "[utils][Vector2D]")
             SECTION("Right")
             {
                 Vector2D const v{2, 0};
-                REQUIRE(v.isHorizontal());
+                REQUIRE(v.is()==DirectionType::Horizontal);
                 CHECK_THAT(v.angle(), Catch::Matchers::WithinRel(0.0, 0.001));
             }
             SECTION("Left")
             {
                 Vector2D const v{-2, 0};
-                REQUIRE(v.isHorizontal());
+                REQUIRE(v.is()==DirectionType::Horizontal);
                 CHECK_THAT(
                     v.angle(),
                     Catch::Matchers::WithinRel(std::numbers::pi, 0.001));
@@ -395,7 +382,7 @@ TEST_CASE("[Vector2D] angle() method", "[utils][Vector2D]")
             SECTION("Up")
             {
                 Vector2D const v{0, 2};
-                REQUIRE(v.isVertical());
+                REQUIRE(v.is()==DirectionType::Vertical);
                 CHECK_THAT(
                     v.angle(),
                     Catch::Matchers::WithinRel(std::numbers::pi / 2.0, 0.001));
@@ -403,7 +390,7 @@ TEST_CASE("[Vector2D] angle() method", "[utils][Vector2D]")
             SECTION("Down")
             {
                 Vector2D const v{0, -2};
-                REQUIRE(v.isVertical());
+                REQUIRE(v.is()==DirectionType::Vertical);
                 CHECK_THAT(
                     v.angle(),
                     Catch::Matchers::WithinRel(-std::numbers::pi / 2.0, 0.001));
@@ -414,7 +401,7 @@ TEST_CASE("[Vector2D] angle() method", "[utils][Vector2D]")
             SECTION("Up-Right")
             {
                 Vector2D const v{2, 2};
-                REQUIRE(v.isDiagonal());
+                REQUIRE(v.is()==DirectionType::Diagonal);
                 CHECK_THAT(
                     v.angle(),
                     Catch::Matchers::WithinRel(std::numbers::pi / 4.0, 0.001));
@@ -422,7 +409,7 @@ TEST_CASE("[Vector2D] angle() method", "[utils][Vector2D]")
             SECTION("Down-Left")
             {
                 Vector2D const v{-2, -2};
-                REQUIRE(v.isDiagonal());
+                REQUIRE(v.is()==DirectionType::Diagonal);
                 CHECK_THAT(
                     v.angle(),
                     Catch::Matchers::WithinRel(

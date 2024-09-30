@@ -2,6 +2,7 @@
 
 #include "../Concepts.hpp"
 #include "../Hash.hpp"
+#include "DirectionType.h"
 #include "Point2D.hpp"
 #include <algorithm>
 #include <array>
@@ -47,7 +48,7 @@ public:
     {
     }
     /**
-     * @brief      Constructs a new instance.
+     * @brief      Constructs a new instance where the the origin is the coordinate (0,0) and the destination is the selected coordinate.
      *
      * @param[in]  coords  Coordinates.
      */
@@ -57,9 +58,10 @@ public:
     {
     }
     /**
-     * @brief      Constructs a new instance.
+     * @brief      Constructs a new instance where the the origin is the
+     *             coordinate (0,0) and the destination is the selected point.
      *
-     * @param[in]  point  Point.
+     * @param[in]  p     Point.
      */
     constexpr explicit Vector2D(Point2D<T> const p) noexcept
         : mX{p.getX()}
@@ -135,42 +137,24 @@ public:
         return result;
     }
     /**
-     * @brief      Determines if the vector is empty, i.e., both coordinates are
-     *             zero.
+     * @brief      Tells if the vector follows any special direction, like being
+     *             horizontal, vertical, or diagonal.
      *
-     * @return     True if it is empty, False otherwise.
+     * @return     Enum with the result.
      */
-    [[nodiscard]] constexpr bool isZero() const noexcept
+    [[nodiscard]] constexpr DirectionType is() const noexcept
     {
-        return mX == 0 && mY == 0;
-    }
-    /**
-     * @brief      Determines if it is a horizontal vector, i.e. its coordinate
-     *             Y is zero.
-     *
-     * @return     True if it is horizontal, False otherwise.
-     */
-    [[nodiscard]] constexpr bool isHorizontal() const noexcept
-    {
-        return mY == 0;
-    }
-    /**
-     * @brief      Determines if it is a vertical vector, i.e. its coordinate X
-     *             is zero.
-     *
-     * @return     True if it is vertical, False otherwise.
-     */
-    [[nodiscard]] constexpr bool isVertical() const noexcept { return mX == 0; }
-    /**
-     * @brief      Determines if it is a diagonal vector, i.e. its coordinate X
-     *             is equal to its coordinate Y.
-     *
-     * @return     True if it is diagonal, False otherwise.
-     */
-    [[nodiscard]] constexpr bool isDiagonal() const noexcept
-    {
-        return std::abs(static_cast<std::intmax_t>(mX))
-            == std::abs(static_cast<std::intmax_t>(mY));
+        if (isZero()) {
+            return DirectionType::Zero;
+        } else if (isHorizontal()){
+            return DirectionType::Horizontal;
+        } else if (isVertical()){
+            return DirectionType::Vertical;
+        } else if (isDiagonal()){
+            return DirectionType::Diagonal;
+        } else {
+            return DirectionType::Arbitrary;
+        }
     }
     /**
      * @brief      Equality operator.
@@ -278,6 +262,44 @@ private:
     {
         os << obj.toString();
         return os;
+    }
+    /**
+     * @brief      Determines if the vector is empty, i.e., both coordinates are
+     *             zero.
+     *
+     * @return     True if it is empty, False otherwise.
+     */
+    [[nodiscard]] constexpr bool isZero() const noexcept
+    {
+        return mX == 0 && mY == 0;
+    }
+    /**
+     * @brief      Determines if it is a horizontal vector, i.e. its coordinate
+     *             Y is zero.
+     *
+     * @return     True if it is horizontal, False otherwise.
+     */
+    [[nodiscard]] constexpr bool isHorizontal() const noexcept
+    {
+        return mY == 0;
+    }
+    /**
+     * @brief      Determines if it is a vertical vector, i.e. its coordinate X
+     *             is zero.
+     *
+     * @return     True if it is vertical, False otherwise.
+     */
+    [[nodiscard]] constexpr bool isVertical() const noexcept { return mX == 0; }
+    /**
+     * @brief      Determines if it is a diagonal vector, i.e. its coordinate X
+     *             is equal to its coordinate Y.
+     *
+     * @return     True if it is diagonal, False otherwise.
+     */
+    [[nodiscard]] constexpr bool isDiagonal() const noexcept
+    {
+        return std::abs(static_cast<std::intmax_t>(mX))
+            == std::abs(static_cast<std::intmax_t>(mY));
     }
 
     /**

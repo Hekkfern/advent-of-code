@@ -44,38 +44,56 @@ TEST_CASE("[Line2D] Constructor", "[utils][Line2D]")
     }
 }
 
-TEST_CASE("[Line2D] isHorizontal, isVertical and isDiagonal", "[utils][Line2D]")
+TEST_CASE("[Line2D] is() method", "[utils][Line2D]")
 {
+    SECTION("Zero")
+    {
+        Line2D const line2D{Point2D{1, 1}, Point2D{1, 1}};
+        CHECK(line2D.is() == DirectionType::Zero);
+    }
     SECTION("Horizontal")
     {
-        Line2D const line2D{Point2D{1, 1}, Point2D{5, 1}};
-        CHECK(line2D.isHorizontal());
-        CHECK_FALSE(line2D.isVertical());
-        CHECK_FALSE(line2D.isDiagonal());
+        SECTION("Right")
+        {
+            Line2D const line2D{Point2D{1, 1}, Point2D{6, 1}};
+            CHECK(line2D.is() == DirectionType::Horizontal);
+        }
+        SECTION("Left")
+        {
+            Line2D const line2D{Point2D{1, 1}, Point2D{-6, 1}};
+            CHECK(line2D.is() == DirectionType::Horizontal);
+        }
     }
     SECTION("Vertical")
     {
-        Line2D const line2D{Point2D{1, 1}, Point2D{1, 6}};
-        CHECK_FALSE(line2D.isHorizontal());
-        CHECK(line2D.isVertical());
-        CHECK_FALSE(line2D.isDiagonal());
+        SECTION("Up")
+        {
+            Line2D const line2D{Point2D{1, 1}, Point2D{1, 6}};
+            CHECK(line2D.is() == DirectionType::Vertical);
+        }
+        SECTION("Down")
+        {
+            Line2D const line2D{Point2D{1, 1}, Point2D{1, -6}};
+            CHECK(line2D.is() == DirectionType::Vertical);
+        }
     }
     SECTION("Diagonal")
     {
-        SECTION("Ascending")
+        SECTION("Up-Right")
         {
             Line2D const line2D{Point2D{1, 2}, Point2D{3, 4}};
-            CHECK_FALSE(line2D.isHorizontal());
-            CHECK_FALSE(line2D.isVertical());
-            CHECK(line2D.isDiagonal());
+            CHECK(line2D.is() == DirectionType::Diagonal);
         }
-        SECTION("Ascending")
+        SECTION("Down-Left")
         {
             Line2D const line2D{Point2D{1, 2}, Point2D{3, 0}};
-            CHECK_FALSE(line2D.isHorizontal());
-            CHECK_FALSE(line2D.isVertical());
-            CHECK(line2D.isDiagonal());
+            CHECK(line2D.is() == DirectionType::Diagonal);
         }
+    }
+    SECTION("Arbitrary")
+    {
+        Line2D const line2D{Point2D{1, 2}, Point2D{3, 5}};
+        CHECK(line2D.is() == DirectionType::Arbitrary);
     }
 }
 
