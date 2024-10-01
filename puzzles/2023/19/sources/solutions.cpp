@@ -1,10 +1,15 @@
 #include "solutions.hpp"
 
-#include <utils/File.hpp>
+#include "Part.h"
+#include "System.h"
 
 namespace aoc_2023_19 {
 
 // ---------- Private Methods ----------
+
+System parseWorkflowSystem() { }
+
+std::vector<Part> parseParts() { }
 
 // ---------- End of Private Methods ----------
 

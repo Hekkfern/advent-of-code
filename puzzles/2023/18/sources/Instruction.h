@@ -13,9 +13,7 @@ struct Instruction {
      * @param[in] d Direction to move.
      * @param[in] s Steps to move.
      */
-    Instruction(
-        utils::geometry2d::Direction2D const& d,
-        uint64_t const s)
+    Instruction(utils::geometry2d::Direction2D const& d, uint64_t const s)
         : direction{d}
         , steps{s}
     {

@@ -110,7 +110,8 @@ std::string solve(std::vector<Instruction> const& instructions)
     /* convert instructions into vertexes of a polygon */
     std::vector<Point2D<int64_t>> vertexes{};
     for (auto const& instruction : instructions) {
-        auto vec{toVector2D<int64_t>(instruction.direction) * instruction.steps};
+        auto vec{
+            toVector2D<int64_t>(instruction.direction) * instruction.steps};
         currentPoint += vec;
         vertexes.emplace_back(currentPoint);
     }
