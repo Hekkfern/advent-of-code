@@ -12,15 +12,12 @@ struct Instruction {
      *
      * @param[in] d Direction to move.
      * @param[in] s Steps to move.
-     * @param[in] c Color code.
      */
     Instruction(
         utils::geometry2d::Direction2D const& d,
-        uint32_t const s,
-        std::string_view const c)
+        uint64_t const s)
         : direction{d}
         , steps{s}
-        , color{c}
     {
     }
     /**
@@ -30,11 +27,7 @@ struct Instruction {
     /**
      * Number of steps to move in the given direction. Value > 0.
      */
-    uint32_t steps;
-    /**
-     * Stores the RGB color code. For example, "70c710".
-     */
-    std::string color;
+    uint64_t steps;
 };
 
 } // namespace aoc_2023_18

@@ -117,6 +117,7 @@ public:
     {
         std::vector<Point2D<T>> points;
         std::size_t const n{mVertexes.size()};
+        points.reserve(n * 2);
         for (std::size_t index{0ULL}; index < n; ++index) {
             auto nextIndex{(index + 1ULL) % n};
             /* get unary vector of movement */

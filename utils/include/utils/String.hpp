@@ -59,10 +59,10 @@ namespace utils::string {
  * @{
  */
 template <NumericType T>
-[[nodiscard]] std::optional<T> toNumber(std::string_view s)
+[[nodiscard]] std::optional<T> toNumber(std::string_view s, int base = 10)
 {
-    T value;
-    auto [ptr, ec]{std::from_chars(s.data(), s.data() + s.size(), value)};
+    T value{};
+    auto [ptr, ec]{std::from_chars(s.data(), s.data() + s.size(), value, base)};
     if (ec != std::errc{}) {
         return {};
     }

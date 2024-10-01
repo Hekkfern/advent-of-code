@@ -135,9 +135,9 @@ public:
     {
         Vector2D result{*this};
         // saturate X
-        result.mX = std::clamp(mX, -1, 1);
+        result.mX = std::clamp<T>(mX, -1, 1);
         // saturate Y
-        result.mY = std::clamp(mY, -1, 1);
+        result.mY = std::clamp<T>(mY, -1, 1);
         return result;
     }
     /**
