@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Concepts.hpp"
 #include "../Hash.hpp"
 #include "Point2D.hpp"
+#include "utils/Concepts.hpp"
 #include <algorithm>
 #include <array>
 #include <cmath>

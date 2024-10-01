@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Concepts.hpp"
 #include "Coord3D.hpp"
+#include "utils/Concepts.hpp"
 #include <array>
 #include <cstdint>
 #include <ostream>

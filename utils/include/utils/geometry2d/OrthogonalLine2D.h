@@ -158,6 +158,7 @@ public:
         /* get unary vector of movement */
         Vector2D<T> const vector{mVertexes[0], mVertexes[1]};
         auto const unaryVector{vector.normalize()};
+        /* get points */
         std::vector<Point2D<T>> points{mVertexes[0]};
         Point2D point{mVertexes.front()};
         while (point != mVertexes[1]) {

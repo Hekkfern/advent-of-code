@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../Concepts.hpp"
 #include "Calculations2D.hpp"
 #include "IShape2D.hpp"
 #include "OrthogonalLine2D.h"
 #include "Point2D.hpp"
+#include "utils/Concepts.hpp"
 #include <cmath>
 #include <numbers>
 #include <vector>
@@ -103,8 +103,6 @@ public:
         }
         return length;
     }
-
-private:
     /**
      * @brief      Calculates the boundary points of this shape.
      *
@@ -116,23 +114,24 @@ private:
      */
     std::vector<Point2D<T>> calculateBoundaryPoints() const noexcept
     {
-        std::vector<Point2D<T>> boundaryPoints;
-        boundaryPoints.reserve(mVertexes.size() * 2);
-        Point2D<T> previousPoint{mVertexes.front()};
-        for (auto const& vertex : mVertexes) {
-            auto const points{
-                OrthogonalLine2D{previousPoint, vertex}.getPoints()};
-            boundaryPoints.insert(
-                std::end(boundaryPoints), std::begin(points), std::end(points));
-            previousPoint = vertex;
+        std::vector<Point2D<T>> points;
+        std::size_t const n{mVertexes.size()};
+        for (std::size_t index{0ULL}; index < n; ++index) {
+            auto nextIndex{(index + 1ULL) % n};
+            /* get unary vector of movement */
+            Vector2D<T> const vector{mVertexes[index], mVertexes[nextIndex]};
+            auto const unaryVector{vector.normalize()};
+            /* get points */
+            Point2D currentPoint{mVertexes[index]};
+            while (currentPoint != mVertexes[nextIndex]) {
+                currentPoint += unaryVector;
+                points.emplace_back(currentPoint);
+            }
         }
-        auto const points{
-            OrthogonalLine2D{mVertexes.back(), mVertexes.front()}.getPoints()};
-        boundaryPoints.insert(
-            std::end(boundaryPoints), std::begin(points), std::end(points));
-        return boundaryPoints;
+        return points;
     }
 
+private:
     /**
      * Stores the vertexes (points 2D) of this shape.
      */

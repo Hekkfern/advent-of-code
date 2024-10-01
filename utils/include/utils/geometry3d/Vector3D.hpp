@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Concepts.hpp"
 #include "Point3D.hpp"
+#include "utils/Concepts.hpp"
 #include <algorithm>
 #include <array>
 #include <cstdint>

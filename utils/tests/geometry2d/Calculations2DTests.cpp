@@ -38,16 +38,48 @@ TEST_CASE(
     "[Operations2D] calculateNumberOfIntrinsicPointsInsidePolygon() method",
     "[utils][Operations2D]")
 {
-    std::vector<Point2D<>> const points{
-        Point2D{1, 0},
-        Point2D{2, 1},
-        Point2D{3, 2},
-        Point2D{4, 3},
-        Point2D{4, 4},
-        Point2D{4, 5},
-        Point2D{2, 4},
-        Point2D{0, 3}};
-    CHECK(calculateNumberOfIntrinsicPointsInsidePolygon(points) == 7ULL);
+    SECTION("Shape 1")
+    {
+        std::vector<Point2D<>> const points{
+            Point2D{1, 0},
+            Point2D{2, 1},
+            Point2D{3, 2},
+            Point2D{4, 3},
+            Point2D{4, 4},
+            Point2D{4, 5},
+            Point2D{2, 4},
+            Point2D{0, 3}};
+        CHECK(calculateNumberOfIntrinsicPointsInsidePolygon(points) == 7ULL);
+    }
+    SECTION("Shape 2")
+    {
+        std::vector<Point2D<>> const points{
+            Point2D{1, 0},
+            Point2D{2, 0},
+            Point2D{3, 0},
+            Point2D{3, 1},
+            Point2D{3, 2},
+            Point2D{2, 2},
+            Point2D{1, 2},
+            Point2D{1, 1}};
+        CHECK(calculateNumberOfIntrinsicPointsInsidePolygon(points) == 1ULL);
+    }
+    SECTION("Shape 3")
+    {
+        std::vector<Point2D<>> const points{
+            Point2D{0, 0},  Point2D{1, 0},  Point2D{2, 0},  Point2D{3, 0},
+            Point2D{4, 0},  Point2D{5, 0},  Point2D{6, 0},  Point2D{6, -1},
+            Point2D{6, -2}, Point2D{6, -3}, Point2D{6, -4}, Point2D{6, -5},
+            Point2D{5, -5}, Point2D{4, -5}, Point2D{4, -6}, Point2D{4, -7},
+            Point2D{5, -7}, Point2D{6, -7}, Point2D{6, -8}, Point2D{6, -9},
+            Point2D{5, -9}, Point2D{4, -9}, Point2D{3, -9}, Point2D{2, -9},
+            Point2D{1, -9}, Point2D{1, -8}, Point2D{1, -7}, Point2D{0, -7},
+            Point2D{0, -6}, Point2D{0, -5}, Point2D{1, -5}, Point2D{2, -5},
+            Point2D{2, -4}, Point2D{2, -3}, Point2D{2, -2}, Point2D{1, -2},
+            Point2D{0, -2}, Point2D{0, -1}};
+        REQUIRE(points.size() == 38ULL);
+        CHECK(calculateNumberOfIntrinsicPointsInsidePolygon(points) == 24ULL);
+    }
 }
 
 TEST_CASE(

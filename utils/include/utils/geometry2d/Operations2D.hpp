@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../Concepts.hpp"
 #include "Direction2D.hpp"
 #include "Point2D.hpp"
 #include "Vector2D.hpp"
+#include "utils/Concepts.hpp"
 
 namespace utils::geometry2d {
 

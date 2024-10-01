@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Concepts.hpp"
 #include "Point3D.hpp"
 #include "Vector3D.hpp"
+#include "utils/Concepts.hpp"
 
 namespace utils::geometry3d {
 
