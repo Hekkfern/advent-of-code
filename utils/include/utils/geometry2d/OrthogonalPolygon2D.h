@@ -96,10 +96,11 @@ public:
     [[nodiscard]] uint64_t perimeter() const noexcept
     {
         uint64_t length{0ULL};
-        Point2D<> previousPoint{mVertexes.front()};
-        for (std::size_t i{1ULL}; i < mVertexes.size(); ++i) {
-            length += Vector2D{previousPoint, mVertexes[i]}.distance();
-            previousPoint = mVertexes[i];
+        std::size_t const n{mVertexes.size()};
+        for (std::size_t index{0ULL}; index < n; ++index) {
+            auto nextIndex{(index + 1ULL) % n};
+            length
+                += Vector2D{mVertexes[nextIndex], mVertexes[index]}.distance();
         }
         return length;
     }
