@@ -29,15 +29,20 @@ public:
      */
     RunResult run(Part const& part)
     {
-        auto const firstWorkflow{mWorkflows.at("in").run(part)};
-        switch (firstWorkflow.result) {
-        case Workflow::Result::GoTo:
-            // TODO
-            break;
-        case Workflow::Result::Accepted:
-            return RunResult::Accepted;
-        case Workflow::Result::Rejected:
-            return RunResult::Rejected;
+        constexpr std::string_view firstWorkflowName{"in"};
+
+        std::string currentWorkflow{firstWorkflowName};
+        while (true) {
+            auto const workFlowResult{mWorkflows.at(currentWorkflow).run(part)};
+            switch (workFlowResult.result) {
+            case Workflow::Result::GoTo:
+                currentWorkflow = workFlowResult.goToWorkflow;
+                break;
+            case Workflow::Result::Accepted:
+                return RunResult::Accepted;
+            case Workflow::Result::Rejected:
+                return RunResult::Rejected;
+            }
         }
     }
 
