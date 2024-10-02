@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Workflow.h"
-#include <unordered_map>
+#include <utils/extensions/StringCollections.h>
 
 namespace aoc_2023_19 {
 
@@ -15,7 +15,8 @@ public:
     /**
      * @brief      Constructs a new instance.
      */
-    explicit System(std::unordered_map<std::string, Workflow> const& workflows)
+    explicit System(
+        utils::extensions::UnorderedStringMap<Workflow> const& workflows)
         : mWorkflows{workflows}
     {
     }
@@ -41,7 +42,7 @@ public:
     }
 
 private:
-    std::unordered_map<std::string, Workflow> mWorkflows{};
+    utils::extensions::UnorderedStringMap<Workflow> mWorkflows{};
 };
 
 } // namespace aoc_2023_19
