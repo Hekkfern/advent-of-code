@@ -39,6 +39,7 @@ public:
         /* impossible */
         return RunResult{Result::Rejected};
     }
+    std::string getName() const noexcept { return mName; }
 
 private:
     std::string mName;

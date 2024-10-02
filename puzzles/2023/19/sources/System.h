@@ -15,10 +15,15 @@ public:
     /**
      * @brief      Constructs a new instance.
      */
-    explicit System(
-        utils::extensions::UnorderedStringMap<Workflow> const& workflows)
-        : mWorkflows{workflows}
+    explicit System() = default;
+    /**
+     * @brief      Adds a workflow to the system.
+     *
+     * @param[in] workflow Item to add.
+     */
+    void addWorkflow(Workflow const& workflow)
     {
+        mWorkflows.emplace(workflow.getName(), workflow);
     }
     /**
      * @brief      { function_description }
