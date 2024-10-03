@@ -58,7 +58,9 @@ std::vector<Part> parseParts(std::ifstream& fileStream)
 {
     std::string line;
     std::vector<Part> parts;
-    while (std::getline(fileStream, line) && not line.empty()) { }
+    while (std::getline(fileStream, line) && not line.empty()) {
+        parts.emplace_back(parsePart(line));
+    }
     return parts;
 }
 
