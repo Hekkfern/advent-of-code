@@ -2,12 +2,12 @@
 
 namespace aoc_2023_19 {
 
-void System::addWorkflow(Workflow const& workflow)
+void System::addWorkflow(Workflow const& workflow) noexcept
 {
     mWorkflows.emplace(workflow.getName(), workflow);
 }
 
-System::RunResult System::run(Part const& part)
+System::RunResult System::run(Part const& part) const noexcept
 {
     constexpr std::string_view firstWorkflowName{"in"};
 

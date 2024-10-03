@@ -21,7 +21,7 @@ public:
      *
      * @param[in] workflow Item to add.
      */
-    void addWorkflow(Workflow const& workflow);
+    void addWorkflow(Workflow const& workflow) noexcept;
     /**
      * @brief      { function_description }
      *
@@ -29,9 +29,12 @@ public:
      *
      * @return
      */
-    RunResult run(Part const& part);
+    [[nodiscard]] RunResult run(Part const& part) const noexcept;
 
 private:
+    /**
+     * { item_description }
+     */
     utils::extensions::UnorderedStringMap<Workflow> mWorkflows{};
 };
 

@@ -73,7 +73,13 @@ std::string solvePart1(std::filesystem::path const& filePath)
     std::ifstream inputFile{filePath};
     auto const system{parseWorkflowSystem(inputFile)};
     auto const parts{parseParts(inputFile)};
-    return "";
+    uint32_t partSum{0U};
+    for (auto const& part : parts) {
+        if (system.run(part) == System::RunResult::Accepted) {
+            partSum += part.sum();
+        }
+    }
+    return std::to_string(partSum);
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)
