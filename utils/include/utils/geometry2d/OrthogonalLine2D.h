@@ -43,7 +43,8 @@ public:
         : mVertexes{vertex1, vertex2}
     {
         assert(
-            is() == OrthogonalLine2DType::Horizontal
+            is() == OrthogonalLine2DType::Zero
+            || is() == OrthogonalLine2DType::Horizontal
             || is() == OrthogonalLine2DType::Vertical);
     }
     /**
@@ -123,12 +124,15 @@ public:
      */
     [[nodiscard]] constexpr OrthogonalLine2DType is() const noexcept
     {
-        if (isHorizontal()) {
+        if (isZero()) {
+            return OrthogonalLine2DType::Zero;
+        } else if (isHorizontal()) {
             return OrthogonalLine2DType::Horizontal;
         } else if (isVertical()) {
             return OrthogonalLine2DType::Vertical;
         } else {
-            return OrthogonalLine2DType::Zero;
+            /* impossible */
+            assert(false);
         }
     }
     /**
@@ -182,6 +186,16 @@ private:
     {
         os << obj.mVertexes[0] << ", " << obj.mVertexes[1];
         return os;
+    }
+    /**
+     * @brief      Determines if it is a empty line, i.e. its length is zero.
+     *
+     * @return     True if it is empty, False otherwise.
+     */
+    [[nodiscard]] bool isZero() const
+    {
+        auto const thissize{this->size()};
+        return thissize[0] == 0 && thissize[1] == 0;
     }
     /**
      * @brief      Determines if it is a horizontal vector, i.e. its coordinate
