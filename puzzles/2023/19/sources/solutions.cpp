@@ -12,7 +12,7 @@ Workflow parseWorkflow(std::string_view const line)
 {
     // extract name
     auto const nameEnd{line.find('{')};
-    auto const name{line.substr(0, nameEnd - 1)};
+    auto const name{line.substr(0, nameEnd)};
     Workflow workflow{name};
 
     // extract rules
@@ -36,11 +36,12 @@ Part parsePart(std::string_view line)
     line.remove_prefix(1);
     line.remove_suffix(1);
     auto const partStrings{utils::string::split(line, ",")};
-    std::array<uint32_t, 4> partValues;
+    std::array<uint32_t, 4> partValues{};
     for (std::size_t i{0}; i < partStrings.size(); ++i) {
-        auto const value{utils::string::toNumber<uint32_t>(partStrings[i])};
-        // TODO
+        partValues[i] = *utils::string::toNumber<uint32_t>(
+            partStrings[i].substr(2));
     }
+    return Part{partValues};
 }
 
 System parseWorkflowSystem(std::ifstream& fileStream)

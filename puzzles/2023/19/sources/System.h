@@ -21,10 +21,7 @@ public:
      *
      * @param[in] workflow Item to add.
      */
-    void addWorkflow(Workflow const& workflow)
-    {
-        mWorkflows.emplace(workflow.getName(), workflow);
-    }
+    void addWorkflow(Workflow const& workflow);
     /**
      * @brief      { function_description }
      *
@@ -32,24 +29,7 @@ public:
      *
      * @return
      */
-    RunResult run(Part const& part)
-    {
-        constexpr std::string_view firstWorkflowName{"in"};
-
-        std::string currentWorkflow{firstWorkflowName};
-        while (true) {
-            auto const workFlowResult{mWorkflows.at(currentWorkflow).run(part)};
-            switch (workFlowResult.result) {
-            case Workflow::Result::GoTo:
-                currentWorkflow = workFlowResult.goToWorkflow;
-                break;
-            case Workflow::Result::Accepted:
-                return RunResult::Accepted;
-            case Workflow::Result::Rejected:
-                return RunResult::Rejected;
-            }
-        }
-    }
+    RunResult run(Part const& part);
 
 private:
     utils::extensions::UnorderedStringMap<Workflow> mWorkflows{};
