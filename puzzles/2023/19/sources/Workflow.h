@@ -24,7 +24,7 @@ public:
      * @brief      Constructs a new instance.
      * @param name
      */
-    Workflow(std::string_view const name);
+    explicit Workflow(std::string_view const name);
     /**
      * @brief     Adds a rule to the workflow.
      *
@@ -44,7 +44,7 @@ public:
      *
      * @return
      */
-    std::string getName() const noexcept;
+    [[nodiscard]] std::string getName() const noexcept;
 
 private:
     std::string mName;
