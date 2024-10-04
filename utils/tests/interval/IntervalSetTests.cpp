@@ -501,20 +501,15 @@ TEST_CASE("[IntervalSet] Equality operator", "[utils][IntervalSet]")
 
 TEST_CASE("[IntervalSet] Output stream operator", "[utils][IntervalSet]")
 {
-    std::stringstream buffer;
-    // Redirect std::cout to buffer
-    std::streambuf* prevcoutbuf = std::cout.rdbuf(buffer.rdbuf());
+    std::ostringstream oss;
 
     SECTION("Empty")
     {
         IntervalSet interval1{};
-        std::cout << interval1;
+        oss << interval1;
 
         // Use the string value of buffer to compare against expected output
-        std::string text = buffer.str();
-
-        // Restore original buffer before exiting
-        std::cout.rdbuf(prevcoutbuf);
+        std::string text = oss.str();
 
         CHECK(text.empty());
     }
@@ -522,13 +517,10 @@ TEST_CASE("[IntervalSet] Output stream operator", "[utils][IntervalSet]")
     {
         IntervalSet interval1{
             std::vector<Interval<>>{Interval{1, 2}, Interval{5, 7}}};
-        std::cout << interval1;
+        oss << interval1;
 
         // Use the string value of buffer to compare against expected output
-        std::string text = buffer.str();
-
-        // Restore original buffer before exiting
-        std::cout.rdbuf(prevcoutbuf);
+        std::string text = oss.str();
 
         CHECK(text == "[1,2],[5,7]");
     }

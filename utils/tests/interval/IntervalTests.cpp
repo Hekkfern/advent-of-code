@@ -867,18 +867,13 @@ TEST_CASE("[Interval] toString() method", "[utils][Interval]")
 
 TEST_CASE("[Interval] Output stream operator", "[utils][Interval]")
 {
-    std::stringstream buffer;
-    // Redirect std::cout to buffer
-    std::streambuf* prevcoutbuf = std::cout.rdbuf(buffer.rdbuf());
+    std::ostringstream oss;
 
     Interval const interval1{2, 7};
-    std::cout << interval1.toString();
+    oss << interval1.toString();
 
     // Use the string value of buffer to compare against expected output
-    std::string text = buffer.str();
-
-    // Restore original buffer before exiting
-    std::cout.rdbuf(prevcoutbuf);
+    std::string text = oss.str();
 
     CHECK(text == "[2,7]");
 }
