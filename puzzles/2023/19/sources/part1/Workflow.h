@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 
-namespace aoc_2023_19 {
+namespace aoc_2023_19::part1 {
 
 class Workflow {
 public:

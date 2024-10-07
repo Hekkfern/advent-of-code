@@ -3,7 +3,7 @@
 #include <array>
 #include <cstdint>
 
-namespace aoc_2023_19 {
+namespace aoc_2023_19::part1 {
 
 struct Part {
     /**

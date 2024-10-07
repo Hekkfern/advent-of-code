@@ -1,6 +1,6 @@
 #include "Workflow.h"
 
-namespace aoc_2023_19 {
+namespace aoc_2023_19::part1 {
 
 Workflow::Workflow(std::string_view const name)
     : mName{name}

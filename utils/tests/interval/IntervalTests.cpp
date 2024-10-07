@@ -497,7 +497,7 @@ TEST_CASE("[Interval] hasOneValue() method", "[utils][Interval]")
     }
 }
 
-TEST_CASE("[Interval] areContiguous() method", "[utils][Interval]")
+TEST_CASE("[Interval] isContiguous() method", "[utils][Interval]")
 {
     SECTION("Runtime tests")
     {
@@ -505,27 +505,27 @@ TEST_CASE("[Interval] areContiguous() method", "[utils][Interval]")
         {
             Interval const interval1{2, 7};
             Interval const interval2{-1, 1};
-            CHECK(interval1.areContiguous(interval2));
-            CHECK(interval2.areContiguous(interval1));
+            CHECK(interval1.isContiguous(interval2));
+            CHECK(interval2.isContiguous(interval1));
         }
         SECTION("Contiguous on the right side")
         {
             Interval const interval1{2, 7};
             Interval const interval2{8, 9};
-            CHECK(interval1.areContiguous(interval2));
-            CHECK(interval2.areContiguous(interval1));
+            CHECK(interval1.isContiguous(interval2));
+            CHECK(interval2.isContiguous(interval1));
         }
         SECTION("One interval includes the other one totally")
         {
             Interval const interval1{2, 7};
             Interval const interval2{3, 3};
-            CHECK_FALSE(interval1.areContiguous(interval2));
-            CHECK_FALSE(interval2.areContiguous(interval1));
+            CHECK_FALSE(interval1.isContiguous(interval2));
+            CHECK_FALSE(interval2.isContiguous(interval1));
         }
     }
     SECTION("Static tests")
     {
-        STATIC_CHECK(Interval{2, 7}.areContiguous(Interval{-1, 1}));
+        STATIC_CHECK(Interval{2, 7}.isContiguous(Interval{-1, 1}));
     }
 }
 

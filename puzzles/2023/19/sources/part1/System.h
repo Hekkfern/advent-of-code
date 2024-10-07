@@ -3,7 +3,7 @@
 #include "Workflow.h"
 #include <utils/extensions/StringCollections.h>
 
-namespace aoc_2023_19 {
+namespace aoc_2023_19::part1 {
 
 class System {
 public:

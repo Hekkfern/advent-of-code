@@ -1,19 +1,19 @@
 #include "solutions.hpp"
 
-#include "Part.h"
-#include "System.h"
+#include "part1/Part.h"
+#include "part1/System.h"
 #include <fstream>
 
 namespace aoc_2023_19 {
 
 // ---------- Private Methods ----------
 
-Workflow parseWorkflow(std::string_view const line)
+part1::Workflow parseWorkflowForPart1(std::string_view const line)
 {
     // extract name
     auto const nameEnd{line.find('{')};
     auto const name{line.substr(0, nameEnd)};
-    Workflow workflow{name};
+    part1::Workflow workflow{name};
 
     // extract rules
     auto const rulesStr{line.substr(nameEnd + 1, line.size() - nameEnd - 2)};
@@ -23,15 +23,16 @@ Workflow parseWorkflow(std::string_view const line)
         auto const ruleStringSplit{utils::string::split(ruleString, ":")};
         if (ruleStringSplit.size() < 2) {
             // it is the unconditional rule at the end of the workflow
-            workflow.addRule(Rule{"", ruleString});
+            workflow.addRule(part1::Rule{"", ruleString});
         } else {
-            workflow.addRule(Rule{ruleStringSplit[0], ruleStringSplit[1]});
+            workflow.addRule(
+                part1::Rule{ruleStringSplit[0], ruleStringSplit[1]});
         }
     }
     return workflow;
 }
 
-Part parsePart(std::string_view line)
+part1::Part parsePartForPart1(std::string_view line)
 {
     line.remove_prefix(1);
     line.remove_suffix(1);
@@ -41,25 +42,25 @@ Part parsePart(std::string_view line)
         partValues[i] = *utils::string::toNumber<uint32_t>(
             partStrings[i].substr(2));
     }
-    return Part{partValues};
+    return part1::Part{partValues};
 }
 
-System parseWorkflowSystem(std::ifstream& fileStream)
+part1::System parseWorkflowSystemForPart1(std::ifstream& fileStream)
 {
     std::string line;
-    System system;
+    part1::System system;
     while (std::getline(fileStream, line) && not line.empty()) {
-        system.addWorkflow(parseWorkflow(line));
+        system.addWorkflow(parseWorkflowForPart1(line));
     }
     return system;
 }
 
-std::vector<Part> parseParts(std::ifstream& fileStream)
+std::vector<part1::Part> parsePartsForPart1(std::ifstream& fileStream)
 {
     std::string line;
-    std::vector<Part> parts;
+    std::vector<part1::Part> parts;
     while (std::getline(fileStream, line) && not line.empty()) {
-        parts.emplace_back(parsePart(line));
+        parts.emplace_back(parsePartForPart1(line));
     }
     return parts;
 }
@@ -71,11 +72,11 @@ std::vector<Part> parseParts(std::ifstream& fileStream)
 std::string solvePart1(std::filesystem::path const& filePath)
 {
     std::ifstream inputFile{filePath};
-    auto const system{parseWorkflowSystem(inputFile)};
-    auto const parts{parseParts(inputFile)};
+    auto const system{parseWorkflowSystemForPart1(inputFile)};
+    auto const parts{parsePartsForPart1(inputFile)};
     uint32_t partSum{0U};
     for (auto const& part : parts) {
-        if (system.run(part) == System::RunResult::Accepted) {
+        if (system.run(part) == part1::System::RunResult::Accepted) {
             partSum += part.sum();
         }
     }
@@ -84,8 +85,11 @@ std::string solvePart1(std::filesystem::path const& filePath)
 
 std::string solvePart2(std::filesystem::path const& filePath)
 {
-    (void)filePath;
-    return "";
+    std::ifstream inputFile{filePath};
+    auto const system{parseWorkflowSystemForPart2(inputFile)};
+    uint64_t numCombinations{0ULL};
+
+    return std::to_string(numCombinations);
 }
 
 // ---------- End of Public Methods ----------

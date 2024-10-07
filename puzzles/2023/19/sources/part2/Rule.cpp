@@ -1,6 +1,6 @@
 #include "Rule.h"
 
-namespace aoc_2023_19 {
+namespace aoc_2023_19::part2 {
 
 Rule::Rule(
     std::string_view const conditionStatement, std::string_view const action)
@@ -11,7 +11,7 @@ Rule::Rule(
             [memberName = conditionStatement[0],
              conditionSymbol = conditionStatement[1],
              thresholdValue = *utils::string::toNumber<uint32_t>(
-                 conditionStatement.substr(2))](Part const& part) -> bool {
+                 conditionStatement.substr(2))](PartRange& part) -> bool {
             switch (memberName) {
             case 'x':
                 return conditionSymbol == '<'
@@ -53,4 +53,4 @@ Rule::RunResult Rule::run(Part const& part) const noexcept
     return RunResult{Result::Skip};
 }
 
-} // namespace aoc_2023_19
+} // namespace aoc_2023_19::part2

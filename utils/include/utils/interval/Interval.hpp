@@ -87,7 +87,7 @@ public:
     [[nodiscard]] constexpr std::optional<Interval>
     join(Interval const& other) const noexcept
     {
-        return overlaps(other) || areContiguous(other)
+        return overlaps(other) || isContiguous(other)
             ? std::make_optional<Interval<T>>(
                   std::min(other.mMin, mMin), std::max(other.mMax, mMax))
             : std::nullopt;
@@ -248,7 +248,7 @@ public:
      * @return     True if both intervals are contiguous. False, otherwise.
      */
     [[nodiscard]] constexpr bool
-    areContiguous(Interval const& other) const noexcept
+    isContiguous(Interval const& other) const noexcept
     {
         return other.mMin - mMax == 1 || mMin - other.mMax == 1;
     }

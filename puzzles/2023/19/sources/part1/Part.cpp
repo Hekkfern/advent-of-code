@@ -1,6 +1,6 @@
 #include "Part.h"
 
-namespace aoc_2023_19 {
+namespace aoc_2023_19::part1 {
 
 Part::Part(uint32_t x, uint32_t m, uint32_t a, uint32_t s)
     : x{x}

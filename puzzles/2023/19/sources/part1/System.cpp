@@ -1,6 +1,6 @@
 #include "System.h"
 
-namespace aoc_2023_19 {
+namespace aoc_2023_19::part1 {
 
 void System::addWorkflow(Workflow const& workflow) noexcept
 {

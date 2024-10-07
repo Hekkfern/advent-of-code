@@ -1,26 +1,29 @@
 #pragma once
 
-#include "Part.h"
+#include "PartRange.h"
 #include <cassert>
 #include <cstdint>
 #include <functional>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utils/String.hpp>
 
-namespace aoc_2023_19 {
+namespace aoc_2023_19::part2 {
 
 class Rule {
 public:
     /**
      * @brief      { struct_description }
      */
-    enum class Result { Accepted, Rejected, GoTo, Skip };
+    enum class Result { Accepted, Rejected, GoTo };
     /**
      * @brief      { struct_description }
      */
-    struct RunResult {
+    struct AnalysisResult {
         Result result;
+        PartRange rangeWhenConditionTrue;
+        PartRange rangeWhenConditionFalse;
         std::string goToWorkflow{""};
     };
 
@@ -41,17 +44,17 @@ public:
      *
      * @return     The run result.
      */
-    [[nodiscard]] RunResult run(Part const& part) const noexcept;
+    [[nodiscard]] AnalysisResult analyze(PartRange const& part) const noexcept;
 
 private:
     /**
      * { item_description }
      */
-    std::function<bool(Part const& part)> mCondition;
+    std::function<std::pair<PartRange, PartRange>(PartRange& part)> mCondition;
     /**
      * { item_description }
      */
     std::string mAction;
 };
 
-} // namespace aoc_2023_19
+} // namespace aoc_2023_19::part2
