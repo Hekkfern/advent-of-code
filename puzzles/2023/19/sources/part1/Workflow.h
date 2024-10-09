@@ -30,7 +30,7 @@ public:
      *
      * @param[in] rule ??
      */
-    void addRule(Rule const& rule);
+    void addRule(Rule const& rule) noexcept;
     /**
      * @brief      { function_description }
      *
@@ -51,4 +51,4 @@ private:
     std::vector<Rule> mRules{};
 };
 
-} // namespace aoc_2023_19
+} // namespace aoc_2023_19::part1

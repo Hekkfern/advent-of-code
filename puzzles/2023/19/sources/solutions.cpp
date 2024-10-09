@@ -11,7 +11,8 @@ namespace aoc_2023_19 {
 /**
  * @brief      Parses one line of characters defining a full workflow.
  *
- * @param[in]  line  The line of characters defining a full workflow. For example, "px{a<2006:qkq,m>2090:A,rfg}".
+ * @param[in]  line  The line of characters defining a full workflow. For
+ * example, "px{a<2006:qkq,m>2090:A,rfg}".
  *
  * @return     Instance containing the parsed data.
  */

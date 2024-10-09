@@ -38,9 +38,7 @@ public:
      *                                 It can be "A", "R" or the name of another
      *                                 workflow.
      */
-    Rule(
-        std::string_view const conditionStatement,
-        std::string_view const actionStatement);
+    Rule(std::string_view conditionStatement, std::string_view actionStatement);
     /**
      * @brief      Processes the given part against this rule.
      *
@@ -70,4 +68,4 @@ private:
     std::string mGoToDestination{""};
 };
 
-} // namespace aoc_2023_19
+} // namespace aoc_2023_19::part1

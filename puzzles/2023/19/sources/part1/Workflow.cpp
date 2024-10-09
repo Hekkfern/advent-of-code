@@ -7,7 +7,7 @@ Workflow::Workflow(std::string_view const name)
 {
 }
 
-void Workflow::addRule(Rule const& rule) { mRules.emplace_back(rule); }
+void Workflow::addRule(Rule const& rule) noexcept { mRules.emplace_back(rule); }
 
 Workflow::RunResult Workflow::run(Part const& part) const noexcept
 {
@@ -30,4 +30,4 @@ Workflow::RunResult Workflow::run(Part const& part) const noexcept
 
 std::string Workflow::getName() const noexcept { return mName; }
 
-} // namespace aoc_2023_19
+} // namespace aoc_2023_19::part1

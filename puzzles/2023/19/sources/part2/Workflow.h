@@ -59,4 +59,4 @@ private:
     std::vector<Rule> mRules{};
 };
 
-} // namespace aoc_2023_19
+} // namespace aoc_2023_19::part2

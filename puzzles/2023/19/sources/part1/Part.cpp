@@ -2,7 +2,8 @@
 
 namespace aoc_2023_19::part1 {
 
-Part::Part(uint32_t x, uint32_t m, uint32_t a, uint32_t s)
+Part::Part(
+    uint32_t const x, uint32_t const m, uint32_t const a, uint32_t const s)
     : x{x}
     , m{m}
     , a{a}
@@ -25,4 +26,4 @@ Part::Part(std::array<uint32_t, 4> const& categories)
  */
 uint32_t Part::sum() const noexcept { return x + m + a + s; }
 
-} // namespace aoc_2023_19
+} // namespace aoc_2023_19::part1

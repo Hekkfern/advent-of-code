@@ -25,11 +25,9 @@ public:
      * "x<10", or an empty string.
      * @param[in]  actionStatement              The action
      */
-    Rule(
-        std::string_view const conditionStatement,
-        std::string_view const actionStatement);
+    Rule(std::string_view conditionStatement, std::string_view actionStatement);
     /**
-     *
+     * @brief     { function_description }
      * @return ???
      */
     [[nodiscard]] std::optional<
@@ -38,17 +36,22 @@ public:
 
 private:
     /**
-     * { item_description }
+     * Projection of the category field of @ref PartRange structure.
      */
-    std::function<std::pair<std::optional<PartRange>, std::optional<PartRange>>(
-        PartRange const& part)>
+    std::function<Range&(PartRange&)> mCategoryProjection;
+    /**
+     * Lambda defining the condition of this rule.
+     */
+    std::function<std::pair<std::optional<Range>, std::optional<Range>>(
+        Range const& range)>
         mCondition{nullptr};
     /**
-     * { item_description }
+     * Type of the action to do if the @ref mCondition is true.
      */
     ActionType mActionType;
     /**
-     * { item_description }
+     * If @ref mActionType is @ref ActionType::GoTo, this field tells the name
+     * of the workflow to jump to.
      */
     std::string mGoToDestination{""};
 };

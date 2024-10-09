@@ -4,15 +4,17 @@
 
 namespace aoc_2023_19::part2 {
 
+using Range = utils::interval::Interval<>;
+
 struct PartRange {
     PartRange() = default;
 
     [[nodiscard]] uint64_t calculateNumberOfCombinations() const noexcept;
 
-    utils::interval::Interval<> x{1, 4000};
-    utils::interval::Interval<> m{1, 4000};
-    utils::interval::Interval<> a{1, 4000};
-    utils::interval::Interval<> s{1, 4000};
+    Range x{1, 4000};
+    Range m{1, 4000};
+    Range a{1, 4000};
+    Range s{1, 4000};
 };
 
-} // namespace aoc_2023_19
+} // namespace aoc_2023_19::part2

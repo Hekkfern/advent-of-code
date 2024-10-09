@@ -40,4 +40,4 @@ struct Part {
     /** @}*/
 };
 
-} // namespace aoc_2023_19
+} // namespace aoc_2023_19::part1

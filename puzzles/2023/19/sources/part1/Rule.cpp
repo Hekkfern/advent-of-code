@@ -64,4 +64,4 @@ Rule::RunResult Rule::run(Part const& part) const noexcept
     return RunResult{Result::Skip};
 }
 
-} // namespace aoc_2023_19
+} // namespace aoc_2023_19::part1
