@@ -3,54 +3,30 @@
 namespace aoc_2023_19::part2 {
 
 Rule::Rule(
-    std::string_view const conditionStatement, std::string_view const action)
+    std::string_view const conditionStatement,
+    std::string_view const actionStatement)
 {
-    mAction = action;
-    if (not conditionStatement.empty()) {
-        mCondition =
-            [memberName = conditionStatement[0],
-             conditionSymbol = conditionStatement[1],
-             thresholdValue = *utils::string::toNumber<uint32_t>(
-                 conditionStatement.substr(2))](PartRange& part) -> bool {
-            switch (memberName) {
-            case 'x':
-                return conditionSymbol == '<'
-                    ? part.x < thresholdValue
-                    : part.x > thresholdValue;
-            case 'm':
-                return conditionSymbol == '<'
-                    ? part.m < thresholdValue
-                    : part.m > thresholdValue;
-            case 'a':
-                return conditionSymbol == '<'
-                    ? part.a < thresholdValue
-                    : part.a > thresholdValue;
-            case 's':
-                return conditionSymbol == '<'
-                    ? part.s < thresholdValue
-                    : part.s > thresholdValue;
-            default:
-                /* impossible */
-                assert(false);
-            }
-        };
+    if (actionStatement == "A") {
+        mActionType = ActionType::Accepted;
+    } else if (actionStatement == "R") {
+        mActionType = ActionType::Rejected;
     } else {
-        mCondition = nullptr;
-    }
-}
+        if (not conditionStatement.empty()) {
+            mCondition =
+                [memberName = conditionStatement[0],
+                 conditionSymbol = conditionStatement[1],
+                 thresholdValue = *utils::string::toNumber<uint32_t>(
+                     conditionStatement.substr(2))](PartRange const& part)
+                -> std::
+                    pair<std::optional<PartRange>, std::optional<PartRange>> {
 
-Rule::RunResult Rule::run(Part const& part) const noexcept
+                    };
+        }
+    };
+}
+std::optional<std::pair<std::optional<PartRange>, std::optional<PartRange>>>
+Rule::analyze(PartRange& part) const noexcept
 {
-    if (!mCondition || mCondition(part)) {
-        if (mAction == "A") {
-            return RunResult{Result::Accepted};
-        }
-        if (mAction == "R") {
-            return RunResult{Result::Rejected};
-        }
-        return RunResult{Result::GoTo, mAction};
-    }
-    return RunResult{Result::Skip};
 }
 
 } // namespace aoc_2023_19::part2

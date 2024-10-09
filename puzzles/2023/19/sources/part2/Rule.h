@@ -16,45 +16,41 @@ public:
     /**
      * @brief      { struct_description }
      */
-    enum class Result { Accepted, Rejected, GoTo };
-    /**
-     * @brief      { struct_description }
-     */
-    struct AnalysisResult {
-        Result result;
-        PartRange rangeWhenConditionTrue;
-        PartRange rangeWhenConditionFalse;
-        std::string goToWorkflow{""};
-    };
+    enum class ActionType { Accepted, Rejected, GoTo };
 
     /**
      * @brief      Constructs a new instance.
      *
      * @param[in]  conditionStatement  The condition statement. In the format of
      * "x<10", or an empty string.
-     * @param[in]  action              The action
+     * @param[in]  actionStatement              The action
      */
     Rule(
         std::string_view const conditionStatement,
-        std::string_view const action);
+        std::string_view const actionStatement);
     /**
-     * @brief      { function_description }
      *
-     * @param      part  The part
-     *
-     * @return     The run result.
+     * @return ???
      */
-    [[nodiscard]] AnalysisResult analyze(PartRange const& part) const noexcept;
+    [[nodiscard]] std::optional<
+        std::pair<std::optional<PartRange>, std::optional<PartRange>>>
+    analyze(PartRange const& part) const noexcept;
 
 private:
     /**
      * { item_description }
      */
-    std::function<std::pair<PartRange, PartRange>(PartRange& part)> mCondition;
+    std::function<std::pair<std::optional<PartRange>, std::optional<PartRange>>(
+        PartRange const& part)>
+        mCondition{nullptr};
     /**
      * { item_description }
      */
-    std::string mAction;
+    ActionType mActionType;
+    /**
+     * { item_description }
+     */
+    std::string mGoToDestination{""};
 };
 
 } // namespace aoc_2023_19::part2
