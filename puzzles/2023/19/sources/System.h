@@ -8,7 +8,7 @@ namespace aoc_2023_19 {
 class System {
 public:
     /**
-     * @brief      { struct_description }
+     * @brief      Enum describing the result of @ref run method execution.
      */
     enum class RunResult { Accepted, Rejected };
 
@@ -19,21 +19,22 @@ public:
     /**
      * @brief      Adds a workflow to the system.
      *
-     * @param[in] workflow Item to add.
+     * @param[in]  workflow  Item to add.
      */
     void addWorkflow(Workflow const& workflow) noexcept;
     /**
-     * @brief      { function_description }
+     * @brief      Processes the part against the chain of workflows, starting
+     *             from the workflow named as "in".
      *
-     * @param[in] part
+     * @param[in]  part  The part to process.
      *
-     * @return
+     * @return     The result.
      */
     [[nodiscard]] RunResult run(Part const& part) const noexcept;
 
 private:
     /**
-     * { item_description }
+     * List of workflows.
      */
     utils::extensions::UnorderedStringMap<Workflow> mWorkflows{};
 };

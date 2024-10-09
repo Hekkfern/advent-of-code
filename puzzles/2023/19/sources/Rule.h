@@ -13,45 +13,61 @@ namespace aoc_2023_19 {
 class Rule {
 public:
     /**
-     * @brief      { struct_description }
+     * @brief      Enum describing the result of @ref run method execution.
      */
     enum class Result { Accepted, Rejected, GoTo, Skip };
     /**
-     * @brief      { struct_description }
+     * @brief      Returned data structure by @ref run method.
      */
     struct RunResult {
         Result result;
         std::string goToWorkflow{""};
     };
+    /**
+     * @brief      Types of actions to do when the condition is true.
+     */
+    enum class ActionType { Accepted, Rejected, GoTo };
 
     /**
      * @brief      Constructs a new instance.
      *
-     * @param[in]  conditionStatement  The condition statement. In the format of
-     * "x<10", or an empty string.
-     * @param[in]  action              The action
+     * @param[in]  conditionStatement  The condition statement. Itsformat must
+     *                                 be like "x<10" or "m>145", or an empty
+     *                                 string.
+     * @param[in]  actionStatement     String describing the action of the rule.
+     *                                 It can be "A", "R" or the name of another
+     *                                 workflow.
      */
     Rule(
         std::string_view const conditionStatement,
-        std::string_view const action);
+        std::string_view const actionStatement);
     /**
-     * @brief      { function_description }
+     * @brief      Processes the given part against this rule.
      *
-     * @param      part  The part
+     * @param[in]  part  The part to analyze.
      *
-     * @return     The run result.
+     * @return     The result.
      */
     [[nodiscard]] RunResult run(Part const& part) const noexcept;
 
 private:
     /**
-     * { item_description }
+     * Projection of the category field of @ref Part structure.
      */
-    std::function<bool(Part const& part)> mCondition;
+    std::function<uint32_t&(Part&)> mCategoryProjection;
     /**
-     * { item_description }
+     * Lambda defining the condition of this rule.
      */
-    std::string mAction;
+    std::function<bool(uint32_t value)> mCondition{nullptr};
+    /**
+     * Type of the action to do if the @ref mCondition is true.
+     */
+    ActionType mActionType;
+    /**
+     * If @ref mActionType is @ref ActionType::GoTo, this field tells the name
+     * of the workflow to jump to.
+     */
+    std::string mGoToDestination{""};
 };
 
 } // namespace aoc_2023_19
