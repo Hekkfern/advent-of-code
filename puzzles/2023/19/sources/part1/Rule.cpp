@@ -3,52 +3,63 @@
 namespace aoc_2023_19::part1 {
 
 Rule::Rule(
-    std::string_view const conditionStatement, std::string_view const action)
+    std::string_view const conditionStatement,
+    std::string_view const actionStatement)
 {
-    mAction = action;
-    if (not conditionStatement.empty()) {
-        mCondition =
-            [memberName = conditionStatement[0],
-             conditionSymbol = conditionStatement[1],
-             thresholdValue = *utils::string::toNumber<uint32_t>(
-                 conditionStatement.substr(2))](Part const& part) -> bool {
-            switch (memberName) {
-            case 'x':
-                return conditionSymbol == '<'
-                    ? part.x < thresholdValue
-                    : part.x > thresholdValue;
-            case 'm':
-                return conditionSymbol == '<'
-                    ? part.m < thresholdValue
-                    : part.m > thresholdValue;
-            case 'a':
-                return conditionSymbol == '<'
-                    ? part.a < thresholdValue
-                    : part.a > thresholdValue;
-            case 's':
-                return conditionSymbol == '<'
-                    ? part.s < thresholdValue
-                    : part.s > thresholdValue;
-            default:
-                /* impossible */
-                assert(false);
-            }
-        };
+    if (actionStatement == "A") {
+        mActionType = ActionType::Accepted;
+    } else if (actionStatement == "R") {
+        mActionType = ActionType::Rejected;
     } else {
-        mCondition = nullptr;
+        mActionType = ActionType::GoTo;
+        mGoToDestination = actionStatement;
+    }
+    if (not conditionStatement.empty()) {
+        std::string const categoryStr{conditionStatement[0]};
+        std::string const conditionSymbol{conditionStatement[1]};
+        uint32_t const thresholdValue{
+            *utils::string::toNumber<uint32_t>(conditionStatement.substr(2))};
+        if (categoryStr == "x") {
+            mCategoryProjection = &Part::x;
+        } else if (categoryStr == "m") {
+            mCategoryProjection = &Part::m;
+        } else if (categoryStr == "a") {
+            mCategoryProjection = &Part::a;
+        } else if (categoryStr == "s") {
+            mCategoryProjection = &Part::s;
+        } else {
+            /* impossible */
+            assert(false);
+        }
+        if (conditionSymbol == "<") {
+            mCondition = [thresholdValue](uint32_t const value) -> bool {
+                return value < thresholdValue;
+            };
+        } else if (conditionSymbol == ">") {
+            mCondition = [thresholdValue](uint32_t const value) -> bool {
+                return value > thresholdValue;
+            };
+        } else {
+            /* impossible */
+            assert(false);
+        }
     }
 }
 
 Rule::RunResult Rule::run(Part const& part) const noexcept
 {
-    if (!mCondition || mCondition(part)) {
-        if (mAction == "A") {
+    if (!mCondition
+        || std::invoke(
+            mCondition,
+            std::invoke(mCategoryProjection, const_cast<Part&>(part)))) {
+        switch (mActionType) {
+        case ActionType::Accepted:
             return RunResult{Result::Accepted};
-        }
-        if (mAction == "R") {
+        case ActionType::Rejected:
             return RunResult{Result::Rejected};
+        default:
+            return RunResult{Result::GoTo, mGoToDestination};
         }
-        return RunResult{Result::GoTo, mAction};
     }
     return RunResult{Result::Skip};
 }

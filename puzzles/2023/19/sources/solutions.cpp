@@ -8,6 +8,13 @@ namespace aoc_2023_19 {
 
 // ---------- Private Methods ----------
 
+/**
+ * @brief      Parses one line of characters defining a full workflow.
+ *
+ * @param[in]  line  The line of characters defining a full workflow. For example, "px{a<2006:qkq,m>2090:A,rfg}".
+ *
+ * @return     Instance containing the parsed data.
+ */
 part1::Workflow parseWorkflowForPart1(std::string_view const line)
 {
     // extract name
@@ -32,6 +39,14 @@ part1::Workflow parseWorkflowForPart1(std::string_view const line)
     return workflow;
 }
 
+/**
+ * @brief      Parses one line of characters defining a part.
+ *
+ * @param[in]  line  The line to parse. For example,
+ *                   "{x=787,m=2655,a=1222,s=2876}".
+ *
+ * @return     Instance containing the parsed data.
+ */
 part1::Part parsePartForPart1(std::string_view line)
 {
     line.remove_prefix(1);
@@ -45,6 +60,14 @@ part1::Part parsePartForPart1(std::string_view line)
     return part1::Part{partValues};
 }
 
+/**
+ * @brief         Parses the whole section in the input file containing all the
+ *                workflow definitions.
+ *
+ * @param[in,out] fileStream  The file stream.
+ *
+ * @return        Instance containing the parsed data.
+ */
 part1::System parseWorkflowSystemForPart1(std::ifstream& fileStream)
 {
     std::string line;
@@ -55,6 +78,14 @@ part1::System parseWorkflowSystemForPart1(std::ifstream& fileStream)
     return system;
 }
 
+/**
+ * @brief         Parses the whole section in the input file containing all the
+ *                part definitions.
+ *
+ * @param[in,out] fileStream  The file stream.
+ *
+ * @return        Instance containing the parsed data.
+ */
 std::vector<part1::Part> parsePartsForPart1(std::ifstream& fileStream)
 {
     std::string line;
