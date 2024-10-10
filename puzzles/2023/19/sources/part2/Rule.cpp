@@ -32,12 +32,54 @@ Rule::Rule(
             assert(false);
         }
         if (conditionSymbol == "<") {
-            mCondition = [thresholdValue](uint32_t const value) -> bool {
-                return value < thresholdValue;
+            mCondition =
+                [thresholdValue
+                 = static_cast<int32_t>(thresholdValue)](Range const& range)
+                -> std::pair<std::optional<Range>, std::optional<Range>> {
+                if (range.hasOneValue()) {
+                    return std::make_pair(std::nullopt, std::nullopt);
+                }
+                using enum utils::interval::Location;
+                switch (range.where(thresholdValue)) {
+                case LeftOutside:
+                case LeftBoundary:
+                    return std::make_pair(std::nullopt, range);
+                case RightBoundary:
+                    return std::make_pair(
+                        Range{range.getMin(), thresholdValue - 1},
+                        Range{thresholdValue, thresholdValue});
+                case RightOutside:
+                    return std::make_pair(range, std::nullopt);
+                case Within:
+                    return std::make_pair(
+                        Range{range.getMin(), thresholdValue - 1},
+                        Range{thresholdValue, range.getMax()});
+                }
             };
         } else if (conditionSymbol == ">") {
-            mCondition = [thresholdValue](uint32_t const value) -> bool {
-                return value > thresholdValue;
+            mCondition =
+                [thresholdValue
+                 = static_cast<int32_t>(thresholdValue)](Range const& range)
+                -> std::pair<std::optional<Range>, std::optional<Range>> {
+                if (range.hasOneValue()) {
+                    return std::make_pair(std::nullopt, std::nullopt);
+                }
+                using enum utils::interval::Location;
+                switch (range.where(thresholdValue)) {
+                case LeftOutside:
+                    return std::make_pair(range, std::nullopt);
+                case LeftBoundary:
+                    return std::make_pair(
+                        Range(thresholdValue + 1, range.getMax()),
+                        Range{thresholdValue, thresholdValue});
+                case RightBoundary:
+                case RightOutside:
+                    return std::make_pair(std::nullopt, range);
+                case Within:
+                    return std::make_pair(
+                        Range{thresholdValue + 1, range.getMax()},
+                        Range{range.getMin(), thresholdValue});
+                }
             };
         } else {
             /* impossible */
@@ -45,9 +87,27 @@ Rule::Rule(
         }
     }
 }
-std::optional<std::pair<std::optional<PartRange>, std::optional<PartRange>>>
-Rule::analyze(PartRange& part) const noexcept
+
+Rule::RunResult Rule::analyze(PartRange const& part) const noexcept
 {
+    if (not mCondition) {
+        switch (mActionType) {
+        case ActionType::Accepted:
+            return Rule::RunResult{Result::Finished, part, std::nullopt};
+        case ActionType::Rejected:
+            return Rule::RunResult{Result::Finished, std::nullopt, part};
+        default:
+            return Rule::RunResult{Result::GoTo, part, part, mGoToDestination};
+        }
+    }
+    auto const conditionResult{std::invoke(
+        mCondition,
+        std::invoke(mCategoryProjection, const_cast<PartRange&>(part)))};
+    return Rule::RunResult{
+        Result::Finished,
+        conditionResult.first,
+        conditionResult.second,
+        mGoToDestination};
 }
 
 } // namespace aoc_2023_19::part2

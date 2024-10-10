@@ -48,7 +48,7 @@ Rule::Rule(
 
 Rule::RunResult Rule::run(Part const& part) const noexcept
 {
-    if (!mCondition
+    if (not mCondition
         || std::invoke(
             mCondition,
             std::invoke(mCategoryProjection, const_cast<Part&>(part)))) {

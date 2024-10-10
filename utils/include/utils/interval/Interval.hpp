@@ -12,7 +12,13 @@
 
 namespace utils::interval {
 
-enum class Location { Less, Within, Greater };
+enum class Location {
+    LeftOutside,
+    Within,
+    RightOutside,
+    LeftBoundary,
+    RightBoundary
+};
 enum class Boundary { Start, End };
 enum class Relationship { Subsumed, Overlapped, Isolated };
 
@@ -226,6 +232,17 @@ public:
         return value >= mMin && value <= mMax;
     }
     /**
+     * @brief      Checks if the specified value is a boundary of the interval.
+     *
+     * @param[in]  value  The value to check.
+     *
+     * @return     True if the value is a boundary. False, otherwise.
+     */
+    [[nodiscard]] constexpr bool isBoundary(T const value) const noexcept
+    {
+        return value == mMin || value == mMax;
+    }
+    /**
      * @brief      Checks if the interval has one single value, meaning the
      *             minimum value equals the maximum value.
      *
@@ -261,11 +278,17 @@ public:
      */
     [[nodiscard]] constexpr Location where(T const value) const noexcept
     {
-        if (mMax < value) {
-            return Location::Greater;
+        if (value == mMin) {
+            return Location::LeftBoundary;
         }
         if (value < mMin) {
-            return Location::Less;
+            return Location::LeftOutside;
+        }
+        if (mMax == value) {
+            return Location::RightBoundary;
+        }
+        if (mMax < value) {
+            return Location::RightOutside;
         }
         return Location::Within;
     }

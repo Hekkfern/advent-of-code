@@ -456,7 +456,6 @@ TEST_CASE("[Interval] overlaps() method", "[utils][Interval]")
 
 TEST_CASE("[Interval] contains() method", "[utils][Interval]")
 {
-
     SECTION("Runtime tests")
     {
         Interval const interval1{2, 7};
@@ -473,6 +472,26 @@ TEST_CASE("[Interval] contains() method", "[utils][Interval]")
         }
     }
     SECTION("Static tests") { STATIC_CHECK(Interval{2, 7}.contains(2)); }
+}
+
+TEST_CASE("[Interval] isBoundary() method", "[utils][Interval]")
+{
+    SECTION("Runtime tests")
+    {
+        Interval const interval1{2, 7};
+        SECTION("Left extreme value") { CHECK(interval1.isBoundary(2)); }
+        SECTION("Intermediate value") { CHECK_FALSE(interval1.isBoundary(5)); }
+        SECTION("Right extreme value") { CHECK(interval1.isBoundary(7)); }
+        SECTION("Outside on the right side")
+        {
+            CHECK_FALSE(interval1.isBoundary(21));
+        }
+        SECTION("Outside on the left side")
+        {
+            CHECK_FALSE(interval1.isBoundary(-2));
+        }
+    }
+    SECTION("Static tests") { STATIC_CHECK(Interval{2, 7}.isBoundary(2)); }
 }
 
 TEST_CASE("[Interval] hasOneValue() method", "[utils][Interval]")
@@ -583,31 +602,63 @@ TEST_CASE("[Interval] where() method", "[utils][Interval]")
 {
     SECTION("Runtime tests")
     {
-        Interval const interval1{2, 7};
-        SECTION("Outside left")
+        SECTION("Multiple-value interval")
         {
-            CHECK(interval1.where(-4) == Location::Less);
+            Interval const interval{2, 7};
+            SECTION("Outside left")
+            {
+                CHECK(interval.where(-4) == Location::LeftOutside);
+            }
+            SECTION("Outside right")
+            {
+                CHECK(interval.where(10) == Location::RightOutside);
+            }
+            SECTION("Within") { CHECK(interval.where(3) == Location::Within); }
+            SECTION("Left boundary")
+            {
+                CHECK(interval.where(2) == Location::LeftBoundary);
+            }
+            SECTION("Left boundary")
+            {
+                CHECK(interval.where(7) == Location::RightBoundary);
+            }
         }
-        SECTION("Outside right")
+        SECTION("Single-value interval")
         {
-            CHECK(interval1.where(10) == Location::Greater);
+            Interval const interval{2, 2};
+            CHECK(interval.where(2) == Location::LeftBoundary);
         }
-        SECTION("Within") { CHECK(interval1.where(3) == Location::Within); }
     }
     SECTION("Static tests")
     {
-        constexpr Interval const interval1{2, 7};
-        SECTION("Outside left")
+        SECTION("Multiple-value interval")
         {
-            STATIC_CHECK(interval1.where(-4) == Location::Less);
+            constexpr Interval const interval{2, 7};
+            SECTION("Outside left")
+            {
+                STATIC_CHECK(interval.where(-4) == Location::LeftOutside);
+            }
+            SECTION("Outside right")
+            {
+                STATIC_CHECK(interval.where(10) == Location::RightOutside);
+            }
+            SECTION("Within")
+            {
+                STATIC_CHECK(interval.where(3) == Location::Within);
+            }
+            SECTION("Left boundary")
+            {
+                STATIC_CHECK(interval.where(2) == Location::LeftBoundary);
+            }
+            SECTION("Left boundary")
+            {
+                STATIC_CHECK(interval.where(7) == Location::RightBoundary);
+            }
         }
-        SECTION("Outside right")
+        SECTION("Single-value interval")
         {
-            STATIC_CHECK(interval1.where(10) == Location::Greater);
-        }
-        SECTION("Within")
-        {
-            STATIC_CHECK(interval1.where(3) == Location::Within);
+            constexpr Interval const interval{2, 2};
+            STATIC_CHECK(interval.where(2) == Location::LeftBoundary);
         }
     }
 }

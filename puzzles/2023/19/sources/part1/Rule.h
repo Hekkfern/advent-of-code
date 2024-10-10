@@ -31,7 +31,7 @@ public:
     /**
      * @brief      Constructs a new instance.
      *
-     * @param[in]  conditionStatement  The condition statement. Itsformat must
+     * @param[in]  conditionStatement  The condition statement. Its format must
      *                                 be like "x<10" or "m>145", or an empty
      *                                 string.
      * @param[in]  actionStatement     String describing the action of the rule.
