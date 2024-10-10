@@ -88,26 +88,26 @@ Rule::Rule(
     }
 }
 
-Rule::RunResult Rule::analyze(PartRange const& part) const noexcept
+std::pair<std::optional<PartRange>, std::optional<PartRange>>
+Rule::process(PartRange const& part) const noexcept
 {
     if (not mCondition) {
         switch (mActionType) {
         case ActionType::Accepted:
-            return Rule::RunResult{Result::Finished, part, std::nullopt};
+            return std::make_pair(part, std::nullopt);
         case ActionType::Rejected:
-            return Rule::RunResult{Result::Finished, std::nullopt, part};
+            return std::make_pair(std::nullopt, part);
         default:
-            return Rule::RunResult{Result::GoTo, part, part, mGoToDestination};
+            return std::make_pair(part, part);
         }
     }
-    auto const conditionResult{std::invoke(
-        mCondition,
-        std::invoke(mCategoryProjection, const_cast<PartRange&>(part)))};
-    return Rule::RunResult{
-        Result::Finished,
-        conditionResult.first,
-        conditionResult.second,
-        mGoToDestination};
+    auto const conditionResult{
+        std::invoke(mCondition, std::invoke(mCategoryProjection, part))};
+    PartRange accepted{part};
+    std::invoke(mCategoryProjection, accepted) = *conditionResult.first;
+    PartRange rejected{part};
+    std::invoke(mCategoryProjection, rejected) = *conditionResult.second;
+    return std::make_pair(accepted, rejected);
 }
 
 } // namespace aoc_2023_19::part2

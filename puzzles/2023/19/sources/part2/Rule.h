@@ -14,19 +14,6 @@ namespace aoc_2023_19::part2 {
 class Rule {
 public:
     /**
-     * @brief      Enum describing the result of @ref analyze method execution.
-     */
-    enum class Result { Finished, GoTo };
-    /**
-     * @brief      Returned data structure by @ref analyze method.
-     */
-    struct RunResult {
-        Result result;
-        std::optional<PartRange> accepted;
-        std::optional<PartRange> rejected;
-        std::string goToWorkflow{""};
-    };
-    /**
      * @brief      { struct_description }
      */
     enum class ActionType { Accepted, Rejected, GoTo };
@@ -43,7 +30,8 @@ public:
      * @brief     { function_description }
      * @return ???
      */
-    [[nodiscard]] RunResult analyze(PartRange const& part) const noexcept;
+    [[nodiscard]] std::pair<std::optional<PartRange>, std::optional<PartRange>>
+    process(PartRange const& part) const noexcept;
 
 private:
     /**
