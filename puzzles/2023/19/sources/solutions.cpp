@@ -2,7 +2,9 @@
 
 #include "part1/Part.h"
 #include "part1/System.h"
+#include "part2/System.h"
 #include <fstream>
+#include <range/v3/algorithm/fold_left.hpp>
 
 namespace aoc_2023_19 {
 
@@ -69,7 +71,7 @@ part1::Part parsePartForPart1(std::string_view line)
  *
  * @return        Instance containing the parsed data.
  */
-part1::System parseWorkflowSystemForPart1(std::ifstream& fileStream)
+part1::System parseSystemForPart1(std::ifstream& fileStream)
 {
     std::string line;
     part1::System system;
@@ -97,6 +99,45 @@ std::vector<part1::Part> parsePartsForPart1(std::ifstream& fileStream)
     return parts;
 }
 
+/**
+ * @brief
+ * @param line
+ * @return
+ */
+part2::Workflow parseWorkflowForPart2(std::string_view const line)
+{
+    // extract name
+    auto const nameEnd{line.find('{')};
+    auto const name{line.substr(0, nameEnd)};
+    part2::Workflow workflow{name};
+
+    // extract rules
+    auto const rulesStr{line.substr(nameEnd + 1, line.size() - nameEnd - 2)};
+    auto const ruleStrings{utils::string::split(rulesStr, ",")};
+    for (auto const& ruleString : ruleStrings) {
+        // split condition and action
+        auto const ruleStringSplit{utils::string::split(ruleString, ":")};
+        if (ruleStringSplit.size() < 2) {
+            // it is the unconditional rule at the end of the workflow
+            workflow.addRule(part2::Rule{"", ruleString});
+        } else {
+            workflow.addRule(
+                part2::Rule{ruleStringSplit[0], ruleStringSplit[1]});
+        }
+    }
+    return workflow;
+}
+
+part2::System parseSystemForPart2(std::ifstream& fileStream)
+{
+    std::string line;
+    part2::System system;
+    while (std::getline(fileStream, line) && not line.empty()) {
+        system.addWorkflow(parseWorkflowForPart2(line));
+    }
+    return system;
+}
+
 // ---------- End of Private Methods ----------
 
 // ---------- Public Methods ----------
@@ -104,7 +145,7 @@ std::vector<part1::Part> parsePartsForPart1(std::ifstream& fileStream)
 std::string solvePart1(std::filesystem::path const& filePath)
 {
     std::ifstream inputFile{filePath};
-    auto const system{parseWorkflowSystemForPart1(inputFile)};
+    auto const system{parseSystemForPart1(inputFile)};
     auto const parts{parsePartsForPart1(inputFile)};
     uint32_t partSum{0U};
     for (auto const& part : parts) {
@@ -118,9 +159,12 @@ std::string solvePart1(std::filesystem::path const& filePath)
 std::string solvePart2(std::filesystem::path const& filePath)
 {
     std::ifstream inputFile{filePath};
-    auto const system{parseWorkflowSystemForPart2(inputFile)};
-    uint64_t numCombinations{0ULL};
-
+    auto const system{parseSystemForPart2(inputFile)};
+    auto const accepted{system.search()};
+    uint64_t numCombinations{ranges::fold_left(
+        accepted, 0ULL, [](int64_t acc, part2::PartRange const& partRange) {
+            return acc + partRange.calculateNumberOfCombinations();
+        })};
     return std::to_string(numCombinations);
 }
 

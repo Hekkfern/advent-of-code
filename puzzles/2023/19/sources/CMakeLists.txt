@@ -15,8 +15,15 @@ set(SOURCES_PART1
     part1/Workflow.h
     part1/System.cpp
     part1/System.h)
-set(SOURCES_PART2 part2/PartRange.cpp part2/PartRange.h part2/Rule.cpp
-                  part2/Rule.h part2/Workflow.cpp part2/Workflow.h)
+set(SOURCES_PART2
+    part2/PartRange.cpp
+    part2/PartRange.h
+    part2/Rule.cpp
+    part2/Rule.h
+    part2/Workflow.cpp
+    part2/Workflow.h
+    part2/System.cpp
+    part2/System.h)
 add_library(${_LIB_NAME} STATIC solutions.cpp solutions.hpp ${SOURCES_PART1}
                                 ${SOURCES_PART2})
 setup_puzzle(${_LIB_NAME})
