@@ -101,8 +101,9 @@ Rule::process(PartRange const& part) const noexcept
             return std::make_pair(part, part);
         }
     }
-    auto const conditionResult{
-        std::invoke(mCondition, std::invoke(mCategoryProjection, part))};
+    auto const conditionResult{std::invoke(
+        mCondition,
+        std::invoke(mCategoryProjection, const_cast<PartRange&>(part)))};
     PartRange accepted{part};
     std::invoke(mCategoryProjection, accepted) = *conditionResult.first;
     PartRange rejected{part};
