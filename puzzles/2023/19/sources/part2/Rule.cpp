@@ -7,12 +7,11 @@ Rule::Rule(
     std::string_view const actionStatement)
 {
     if (actionStatement == "A") {
-        mActionType = ActionType::Accepted;
+        mAction = ActionData{ActionType::Accepted};
     } else if (actionStatement == "R") {
-        mActionType = ActionType::Rejected;
+        mAction = ActionData{ActionType::Rejected};
     } else {
-        mActionType = ActionType::GoTo;
-        mGoToDestination = actionStatement;
+        mAction = ActionData{ActionType::GoTo, std::string{actionStatement}};
     }
     if (not conditionStatement.empty()) {
         std::string const categoryStr{conditionStatement[0]};
@@ -92,7 +91,7 @@ std::pair<std::optional<PartRange>, std::optional<PartRange>>
 Rule::process(PartRange const& part) const noexcept
 {
     if (not mCondition) {
-        switch (mActionType) {
+        switch (mAction.type) {
         case ActionType::Accepted:
             return std::make_pair(part, std::nullopt);
         case ActionType::Rejected:
@@ -110,5 +109,12 @@ Rule::process(PartRange const& part) const noexcept
     std::invoke(mCategoryProjection, rejected) = *conditionResult.second;
     return std::make_pair(accepted, rejected);
 }
+
+bool Rule::hasCondition() const noexcept
+{
+    return mCondition && mCategoryProjection;
+}
+
+Rule::ActionData Rule::getAction() const noexcept { return mAction; }
 
 } // namespace aoc_2023_19::part2

@@ -17,6 +17,13 @@ public:
      * @brief      { struct_description }
      */
     enum class ActionType { Accepted, Rejected, GoTo };
+    /**
+     * @brief      { struct_description }
+     */
+    struct ActionData {
+        ActionType type;
+        std::optional<std::string> destination{};
+    };
 
     /**
      * @brief      Constructs a new instance.
@@ -27,7 +34,20 @@ public:
      */
     Rule(std::string_view conditionStatement, std::string_view actionStatement);
     /**
+     * @brief      { struct_description }
+     *
+     * @return
+     */
+    [[nodiscard]] bool hasCondition() const noexcept;
+    /**
+     * @brief      { struct_description }
+     *
+     * @return
+     */
+    [[nodiscard]] ActionData getAction() const noexcept;
+    /**
      * @brief     { function_description }
+     *
      * @return ???
      */
     [[nodiscard]] std::pair<std::optional<PartRange>, std::optional<PartRange>>
@@ -47,12 +67,7 @@ private:
     /**
      * Type of the action to do if the @ref mCondition is true.
      */
-    ActionType mActionType;
-    /**
-     * If @ref mActionType is @ref ActionType::GoTo, this field tells the name
-     * of the workflow to jump to.
-     */
-    std::string mGoToDestination{""};
+    ActionData mAction;
 };
 
 } // namespace aoc_2023_19::part2

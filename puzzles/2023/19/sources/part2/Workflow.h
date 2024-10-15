@@ -13,7 +13,7 @@ public:
      *
      * @param[in]  name  Identifier of the workflow.
      */
-    explicit Workflow(std::string_view const name);
+    explicit Workflow(std::string_view name);
     /**
      * @brief      Adds a rule to the workflow.
      *
