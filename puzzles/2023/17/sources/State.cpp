@@ -1,4 +1,4 @@
-#include "State.h"
+#include "State.hpp"
 
 namespace aoc_2023_17 {
 

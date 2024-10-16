@@ -1,6 +1,6 @@
 #include "solutions.hpp"
 
-#include "Instruction.h"
+#include "Instruction.hpp"
 #include <sstream>
 #include <string>
 #include <string_view>

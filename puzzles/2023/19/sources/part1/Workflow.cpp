@@ -1,4 +1,4 @@
-#include "Workflow.h"
+#include "Workflow.hpp"
 
 namespace aoc_2023_19::part1 {
 

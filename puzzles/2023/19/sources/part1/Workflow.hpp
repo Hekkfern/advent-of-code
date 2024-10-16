@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Part.h"
-#include "Rule.h"
+#include "Part.hpp"
+#include "Rule.hpp"
 #include <string>
 #include <unordered_map>
 

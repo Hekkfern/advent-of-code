@@ -1,7 +1,7 @@
 #include "solutions.hpp"
 
-#include "Node.h"
-#include "State.h"
+#include "Node.hpp"
+#include "State.hpp"
 #include <queue>
 #include <unordered_map>
 #include <utils/File.hpp>

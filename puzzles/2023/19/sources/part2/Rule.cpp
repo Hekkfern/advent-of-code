@@ -1,4 +1,4 @@
-#include "Rule.h"
+#include "Rule.hpp"
 
 namespace aoc_2023_19::part2 {
 

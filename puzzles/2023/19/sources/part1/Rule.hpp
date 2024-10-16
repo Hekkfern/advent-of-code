@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Part.h"
+#include "Part.hpp"
 #include <cassert>
 #include <cstdint>
 #include <functional>

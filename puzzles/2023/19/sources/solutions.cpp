@@ -1,8 +1,8 @@
 #include "solutions.hpp"
 
-#include "part1/Part.h"
-#include "part1/System.h"
-#include "part2/System.h"
+#include "part1/Part.hpp"
+#include "part1/System.hpp"
+#include "part2/System.hpp"
 #include <fstream>
 #include <range/v3/algorithm/fold_left.hpp>
 

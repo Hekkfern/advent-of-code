@@ -1,4 +1,4 @@
-#include "System.h"
+#include "System.hpp"
 
 namespace aoc_2023_19::part2 {
 

@@ -1,12 +1,17 @@
 #pragma once
 
-#include "Workflow.h"
+#include "Workflow.hpp"
 #include <utils/extensions/StringCollections.h>
 
-namespace aoc_2023_19::part2 {
+namespace aoc_2023_19::part1 {
 
 class System {
 public:
+    /**
+     * @brief      Enum describing the result of @ref run method execution.
+     */
+    enum class RunResult { Accepted, Rejected };
+
     /**
      * @brief      Constructs a new instance.
      */
@@ -21,9 +26,11 @@ public:
      * @brief      Processes the part against the chain of workflows, starting
      *             from the workflow named as "in".
      *
+     * @param[in]  part  The part to process.
+     *
      * @return     The result.
      */
-    [[nodiscard]] std::vector<part2::PartRange> search() const noexcept;
+    [[nodiscard]] RunResult run(Part const& part) const noexcept;
 
 private:
     /**
@@ -32,4 +39,4 @@ private:
     utils::extensions::UnorderedStringMap<Workflow> mWorkflows{};
 };
 
-} // namespace aoc_2023_19::part2
+} // namespace aoc_2023_19::part1

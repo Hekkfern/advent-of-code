@@ -1,4 +1,4 @@
-#include "PartRange.h"
+#include "PartRange.hpp"
 
 namespace aoc_2023_19::part2 {
 

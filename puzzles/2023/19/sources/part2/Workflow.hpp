@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Rule.h"
+#include "Rule.hpp"
 #include <string>
 #include <unordered_map>
 

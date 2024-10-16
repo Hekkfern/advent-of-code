@@ -1,4 +1,4 @@
-#include "Part.h"
+#include "Part.hpp"
 
 namespace aoc_2023_19::part1 {
 
