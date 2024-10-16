@@ -13,8 +13,8 @@ public:
      *
      * @param name
      */
-    explicit IModule(ModuleName name) noexcept
-        : mModuleName(std::move(name))
+    explicit IModule(ModuleName const& name) noexcept
+        : mModuleName(name)
     {
     }
     /**
@@ -36,11 +36,6 @@ public:
     {
         return mModuleName;
     }
-    /**
-     *
-     * @param destination
-     */
-    virtual void addDestination(ModuleName destination) noexcept = 0;
 
 protected:
     /**

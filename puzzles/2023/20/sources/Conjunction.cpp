@@ -1,12 +1,13 @@
 #include "Conjunction.hpp"
 
 #include <range/v3/algorithm/all_of.hpp>
+#include <range/v3/view/map.hpp>
 #include <utility>
 
 namespace aoc_2023_20 {
 
-Conjunction::Conjunction(ModuleName name) noexcept
-    : IModule{std::move(name)}
+Conjunction::Conjunction(ModuleName const& name) noexcept
+    : IModule{name}
 {
 }
 
@@ -16,10 +17,11 @@ std::vector<Signal> Conjunction::process(Signal const& input) noexcept
     mLastValues[input.origin] = input.value;
     /* generate output */
     std::vector<Signal> output;
+    output.reserve(mDestinations.size());
     if (ranges::all_of(
-            mLastValues,
-            [](std::pair<ModuleName, SignalValue> const& item) -> bool {
-                return item.second == SignalValue::High;
+            mLastValues | ranges::views::values,
+            [](SignalValue const sig) -> bool {
+                return sig == SignalValue::High;
             })) {
         // TODO
     } else {
@@ -28,9 +30,14 @@ std::vector<Signal> Conjunction::process(Signal const& input) noexcept
     return output;
 }
 
-void Conjunction::addDestination(ModuleName destination) noexcept
+void Conjunction::addDestination(ModuleName const& destination) noexcept
 {
-    mDestinations.push_back(std::move(destination));
+    mDestinations.push_back(destination);
+}
+
+void Conjunction::addInput(ModuleName const& input) noexcept
+{
+    mLastValues[input] = SignalValue::Low;
 }
 
 } // namespace aoc_2023_20

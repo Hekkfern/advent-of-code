@@ -1,7 +1,5 @@
 #include "FlipFlop.hpp"
 
-#include <utility>
-
 namespace aoc_2023_20 {
 
 namespace {
@@ -18,8 +16,8 @@ namespace {
 
 } // namespace
 
-FlipFlop::FlipFlop(ModuleName name) noexcept
-    : IModule(std::move(name))
+FlipFlop::FlipFlop(ModuleName const& name) noexcept
+    : IModule(name)
 {
 }
 
@@ -30,6 +28,7 @@ std::vector<Signal> FlipFlop::process(Signal const& input) noexcept
         /* update the last value */
         mLastValue = flip(mLastValue);
         /* generate output */
+        output.reserve(mDestinations.size());
         for (auto const& destination : mDestinations) {
             output.emplace_back(mModuleName, destination, mLastValue);
         }
@@ -37,9 +36,9 @@ std::vector<Signal> FlipFlop::process(Signal const& input) noexcept
     return output;
 }
 
-void FlipFlop::addDestination(ModuleName destination) noexcept
+void FlipFlop::addDestination(ModuleName const& destination) noexcept
 {
-    mDestinations.push_back(std::move(destination));
+    mDestinations.push_back(destination);
 }
 
 } // namespace aoc_2023_20

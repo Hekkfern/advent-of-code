@@ -11,12 +11,17 @@ public:
     /**
      *
      */
-    explicit Conjunction(ModuleName name) noexcept;
+    explicit Conjunction(ModuleName const& name) noexcept;
     /**
      *
      * @param destination
      */
-    void addDestination(ModuleName destination) noexcept override;
+    void addDestination(ModuleName const& destination) noexcept;
+    /**
+     *
+     * @param input
+     */
+    void addInput(ModuleName const& input) noexcept;
     /**
      * @copydoc IModule::process
      */

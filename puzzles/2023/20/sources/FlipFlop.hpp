@@ -13,12 +13,12 @@ public:
      * @param name
      * @param destination
      */
-    explicit FlipFlop(ModuleName name) noexcept;
+    explicit FlipFlop(ModuleName const& name) noexcept;
     /**
      *
      * @param destination
      */
-    void addDestination(ModuleName destination) noexcept override;
+    void addDestination(ModuleName const& destination) noexcept;
     /**
      * @copydoc IModule::process
      */
