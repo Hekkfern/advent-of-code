@@ -5,6 +5,7 @@
 namespace aoc_2023_20 {
 
 struct Signal {
+    ModuleName origin;
     ModuleName destination;
     SignalValue value;
 };

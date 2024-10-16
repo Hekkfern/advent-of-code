@@ -16,7 +16,7 @@ public:
      *
      * @param destination
      */
-    void addDestination(ModuleName destination) noexcept;
+    void addDestination(ModuleName destination) noexcept override;
     /**
      * @copydoc IModule::process
      */
@@ -26,7 +26,11 @@ private:
     /**
      *
      */
-    std::unordered_map<ModuleName, SignalValue> mLastValues;
+    std::unordered_map<ModuleName, SignalValue> mLastValues{};
+    /**
+     *
+     */
+    std::vector<ModuleName> mDestinations{};
 };
 
 } // namespace aoc_2023_20

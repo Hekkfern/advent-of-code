@@ -13,7 +13,12 @@ public:
      * @param name
      * @param destination
      */
-    FlipFlop(ModuleName name, ModuleName destination) noexcept;
+    explicit FlipFlop(ModuleName name) noexcept;
+    /**
+     *
+     * @param destination
+     */
+    void addDestination(ModuleName destination) noexcept override;
     /**
      * @copydoc IModule::process
      */
@@ -27,7 +32,7 @@ private:
     /**
      *
      */
-    ModuleName mDestination;
+    std::vector<ModuleName> mDestinations{};
 };
 
 } // namespace aoc_2023_20

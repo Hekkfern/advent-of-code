@@ -18,9 +18,8 @@ namespace {
 
 } // namespace
 
-FlipFlop::FlipFlop(ModuleName name, ModuleName destination) noexcept
+FlipFlop::FlipFlop(ModuleName name) noexcept
     : IModule(std::move(name))
-    , mDestination(std::move(destination))
 {
 }
 
@@ -28,10 +27,19 @@ std::vector<Signal> FlipFlop::process(Signal const& input) noexcept
 {
     std::vector<Signal> output;
     if (input.value == SignalValue::Low) {
+        /* update the last value */
         mLastValue = flip(mLastValue);
-        output.emplace_back(mDestination, mLastValue);
+        /* generate output */
+        for (auto const& destination : mDestinations) {
+            output.emplace_back(mModuleName, destination, mLastValue);
+        }
     }
     return output;
+}
+
+void FlipFlop::addDestination(ModuleName destination) noexcept
+{
+    mDestinations.push_back(std::move(destination));
 }
 
 } // namespace aoc_2023_20

@@ -36,8 +36,13 @@ public:
     {
         return mModuleName;
     }
+    /**
+     *
+     * @param destination
+     */
+    virtual void addDestination(ModuleName destination) noexcept = 0;
 
-private:
+protected:
     /**
      *
      */
