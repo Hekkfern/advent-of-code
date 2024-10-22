@@ -36,12 +36,32 @@ public:
     {
         return mModuleName;
     }
+    /**
+     *
+     * @param destination
+     */
+    void addDestination(ModuleName const& destination) noexcept
+    {
+        mDestinations.push_back(destination);
+    }
+    /**
+     *
+     * @param destination
+     */
+    [[nodiscard]] std::vector<ModuleName> getDestinations() const noexcept
+    {
+        return mDestinations;
+    }
 
 protected:
     /**
      *
      */
     ModuleName mModuleName;
+    /**
+     *
+     */
+    std::vector<ModuleName> mDestinations{};
 };
 
 } // namespace aoc_2023_20

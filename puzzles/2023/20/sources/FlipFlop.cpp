@@ -36,9 +36,4 @@ std::vector<Signal> FlipFlop::process(Signal const& input) noexcept
     return output;
 }
 
-void FlipFlop::addDestination(ModuleName const& destination) noexcept
-{
-    mDestinations.push_back(destination);
-}
-
 } // namespace aoc_2023_20

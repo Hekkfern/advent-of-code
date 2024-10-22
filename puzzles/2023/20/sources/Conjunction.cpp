@@ -2,7 +2,6 @@
 
 #include <range/v3/algorithm/all_of.hpp>
 #include <range/v3/view/map.hpp>
-#include <utility>
 
 namespace aoc_2023_20 {
 
@@ -28,11 +27,6 @@ std::vector<Signal> Conjunction::process(Signal const& input) noexcept
         // TODO
     }
     return output;
-}
-
-void Conjunction::addDestination(ModuleName const& destination) noexcept
-{
-    mDestinations.push_back(destination);
 }
 
 void Conjunction::addInput(ModuleName const& input) noexcept

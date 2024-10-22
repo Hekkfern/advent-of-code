@@ -15,24 +15,16 @@ public:
      */
     explicit FlipFlop(ModuleName const& name) noexcept;
     /**
-     *
-     * @param destination
-     */
-    void addDestination(ModuleName const& destination) noexcept;
-    /**
      * @copydoc IModule::process
      */
-    std::vector<Signal> process(Signal const& input) noexcept override;
+    [[nodiscard]] std::vector<Signal>
+    process(Signal const& input) noexcept override;
 
 private:
     /**
      *
      */
     SignalValue mLastValue{SignalValue::Low};
-    /**
-     *
-     */
-    std::vector<ModuleName> mDestinations{};
 };
 
 } // namespace aoc_2023_20

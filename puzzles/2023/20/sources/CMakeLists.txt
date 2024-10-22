@@ -6,20 +6,21 @@ find_package(range-v3 CONFIG REQUIRED)
 
 # aoc_2023_20_solutions
 set(_LIB_NAME "aoc_2023_20_solutions")
-add_library(${_LIB_NAME} STATIC solutions.cpp solutions.hpp
-        IModule.hpp
-        Signal.hpp
-        Broadcaster.cpp
-        Broadcaster.hpp
-        FlipFlop.cpp
-        FlipFlop.hpp
-        Conjunction.cpp
-        Conjunction.hpp
-        Types.hpp
-        Button.cpp
-        Button.hpp
-        Mesh.cpp
-        Mesh.h)
+add_library(
+  ${_LIB_NAME} STATIC
+  solutions.cpp
+  solutions.hpp
+  IModule.hpp
+  Signal.hpp
+  Broadcaster.cpp
+  Broadcaster.hpp
+  FlipFlop.cpp
+  FlipFlop.hpp
+  Conjunction.cpp
+  Conjunction.hpp
+  Types.hpp
+  Mesh.cpp
+  Mesh.h)
 setup_puzzle(${_LIB_NAME})
 target_link_libraries(${_LIB_NAME} PRIVATE aoc_utils)
 target_link_libraries(${_LIB_NAME} PRIVATE range-v3)

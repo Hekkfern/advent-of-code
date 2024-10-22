@@ -15,7 +15,10 @@ public:
     /**
      * @copydoc IModule::process
      */
-    std::vector<Signal> process(Signal const& input) noexcept override;
+    [[nodiscard]] std::vector<Signal>
+    process(Signal const& input) noexcept override;
+
+private:
     /**
      *
      */

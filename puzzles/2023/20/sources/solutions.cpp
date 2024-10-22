@@ -74,8 +74,8 @@ parseInput(std::filesystem::path const& filePath) noexcept
     if (!result) {
         return {};
     }
-    /* set inputs of Conjunctions */
-    //TODO
+
+    // TODO
     return modules;
 }
 
