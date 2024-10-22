@@ -17,7 +17,9 @@ add_library(${_LIB_NAME} STATIC solutions.cpp solutions.hpp
         Conjunction.hpp
         Types.hpp
         Button.cpp
-        Button.hpp)
+        Button.hpp
+        Mesh.cpp
+        Mesh.h)
 setup_puzzle(${_LIB_NAME})
 target_link_libraries(${_LIB_NAME} PRIVATE aoc_utils)
 target_link_libraries(${_LIB_NAME} PRIVATE range-v3)

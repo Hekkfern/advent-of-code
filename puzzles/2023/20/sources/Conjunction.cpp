@@ -37,7 +37,9 @@ void Conjunction::addDestination(ModuleName const& destination) noexcept
 
 void Conjunction::addInput(ModuleName const& input) noexcept
 {
-    mLastValues[input] = SignalValue::Low;
+    if (not mLastValues.contains(input)) {
+        mLastValues.emplace(input, SignalValue::Low);
+    }
 }
 
 } // namespace aoc_2023_20
