@@ -13,6 +13,12 @@ namespace aoc_2023_20 {
 
 // ---------- Private Methods ----------
 
+/**
+ * @brief Parse the destinations of a module.
+ *
+ * @param line
+ * @return std::vector<std::string>
+ */
 [[nodiscard]] std::vector<std::string>
 parseDestinations(std::string_view const line)
 {
@@ -67,21 +73,25 @@ void parseLine(Mesh& mesh, std::string_view const line)
     }
 }
 
-[[nodiscard]] std::vector<std::unique_ptr<IModule>>
-parseInput(std::filesystem::path const& filePath) noexcept
+/**
+ *
+ * @param filePath
+ * @return
+ */
+[[nodiscard]] Mesh parseInput(std::filesystem::path const& filePath) noexcept
 {
     Mesh mesh;
     /* parse the file */
     bool const result{utils::file::parseAndIterate(
-        filePath, [&modules](std::string_view const line) -> void {
-            modules.emplace_back(parseLine(line));
+        filePath, [&mesh](std::string_view const line) -> void {
+            parseLine(mesh, line);
         })};
     if (!result) {
         return {};
     }
-
-    // TODO
-    return modules;
+    /* set up the mesh */
+    mesh.setup();
+    return mesh;
 }
 
 // ---------- End of Private Methods ----------
@@ -90,7 +100,7 @@ parseInput(std::filesystem::path const& filePath) noexcept
 
 std::string solvePart1(std::filesystem::path const& filePath)
 {
-    auto modules{parseInput(filePath)};
+    auto mesh{parseInput(filePath)};
     return "";
 }
 
