@@ -4,9 +4,10 @@
 #include "Conjunction.hpp"
 #include "FlipFlop.hpp"
 #include "IModule.hpp"
-#include "utils/String.hpp"
+#include "Mesh.h"
 #include <memory>
 #include <utils/File.hpp>
+#include <utils/String.hpp>
 
 namespace aoc_2023_20 {
 
@@ -29,35 +30,39 @@ parseDestinations(std::string_view const line)
     return utils::string::split(destinationPart, ", ");
 }
 
-[[nodiscard]] std::unique_ptr<IModule> parseLine(std::string_view const line)
+/**
+ * @brief Parse a line and create the corresponding module. Then, it is added to
+ * the mesh.
+ */
+void parseLine(Mesh& mesh, std::string_view const line)
 {
     /* check first char to know the module type */
     switch (line[0]) {
     case '%': {
         /* it is a flip-flop */
         std::string name{line.substr(1, line.find(' ') - 1)};
-        auto module{std::make_unique<FlipFlop>(name)};
+        FlipFlop module{name};
         for (auto const& destination : parseDestinations(line)) {
-            module->addDestination(destination);
+            module.addDestination(destination);
         }
-        return module;
+        mesh.addModule<FlipFlop>(std::move(module));
     }
     case '&': {
         /* it is a conjunction */
         std::string name{line.substr(1, line.find(' ') - 1)};
-        auto module{std::make_unique<Conjunction>(name)};
+        Conjunction module{name};
         for (auto const& destination : parseDestinations(line)) {
-            module->addDestination(destination);
+            module.addDestination(destination);
         }
-        return module;
+        mesh.addModule<Conjunction>(std::move(module));
     }
     default: {
         /* it is a broadcaster */
-        auto module{std::make_unique<Broadcaster>()};
+        Broadcaster module;
         for (auto const& destination : parseDestinations(line)) {
-            module->addDestination(destination);
+            module.addDestination(destination);
         }
-        return module;
+        mesh.addModule<Broadcaster>(std::move(module));
     }
     }
 }
@@ -65,7 +70,7 @@ parseDestinations(std::string_view const line)
 [[nodiscard]] std::vector<std::unique_ptr<IModule>>
 parseInput(std::filesystem::path const& filePath) noexcept
 {
-    std::vector<std::unique_ptr<IModule>> modules;
+    Mesh mesh;
     /* parse the file */
     bool const result{utils::file::parseAndIterate(
         filePath, [&modules](std::string_view const line) -> void {

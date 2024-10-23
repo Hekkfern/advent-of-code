@@ -17,14 +17,15 @@ std::vector<Signal> Conjunction::process(Signal const& input) noexcept
     /* generate output */
     std::vector<Signal> output;
     output.reserve(mDestinations.size());
-    if (ranges::all_of(
-            mLastValues | ranges::views::values,
-            [](SignalValue const sig) -> bool {
-                return sig == SignalValue::High;
-            })) {
-        // TODO
-    } else {
-        // TODO
+    bool const allHigh{ranges::all_of(
+        mLastValues | ranges::views::values, [](SignalValue const sig) -> bool {
+            return sig == SignalValue::High;
+        })};
+    for (auto const& destination : mDestinations) {
+        output.emplace_back(
+            getModuleName(),
+            destination,
+            allHigh ? SignalValue::Low : SignalValue::High);
     }
     return output;
 }

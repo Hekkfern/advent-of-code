@@ -21,9 +21,4 @@ std::vector<Signal> Broadcaster::process(Signal const& input) noexcept
     return signals;
 }
 
-void Broadcaster::addDestination(ModuleName const& destination) noexcept
-{
-    mDestinations.push_back(destination);
-}
-
 } // namespace aoc_2023_20

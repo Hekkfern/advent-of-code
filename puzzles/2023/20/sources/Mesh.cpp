@@ -1,6 +1,18 @@
 #include "Mesh.h"
 
+#include <range/v3/view/filter.hpp>
+#include <range/v3/view/map.hpp>
+
 namespace aoc_2023_20 {
+
+namespace {
+std::string getModuleNameFromVariant(
+    std::variant<Broadcaster, FlipFlop, Conjunction> const& var) noexcept
+{
+    return std::visit(
+        [](auto&& var) -> std::string { return var.getModuleName(); }, var);
+}
+} // namespace
 
 void Mesh::setup() noexcept
 {
