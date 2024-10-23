@@ -52,7 +52,8 @@ set(_SOURCES_UTILS_GRAPH
     include/utils/graph/Graph.hpp include/utils/graph/Vertex.hpp
     include/utils/graph/Algorithms.hpp)
 set(_SOURCES_UTILS_EXTENSIONS include/utils/extensions/ContainerExtensions.hpp
-                              include/utils/extensions/StringHash.h)
+                              include/utils/extensions/StringHash.h
+        include/utils/extensions/ContainerTools.h)
 add_library(
   ${_LIB_NAME} STATIC
   ${_SOURCES_UTILS}

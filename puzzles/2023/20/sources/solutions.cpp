@@ -5,13 +5,27 @@
 #include "FlipFlop.hpp"
 #include "IModule.hpp"
 #include "Mesh.h"
+#include "utils/extensions/ContainerTools.h"
 #include <memory>
+#include <queue>
 #include <utils/File.hpp>
 #include <utils/String.hpp>
 
 namespace aoc_2023_20 {
 
 // ---------- Private Methods ----------
+
+/**
+ * @brief      Appends the other vector to the original one.
+ *
+ * @param[in]  v      Original vector.
+ * @param[in]  other  The other vector.
+ */
+void appendVector(std::vector<Signal>& v, std::vector<Signal> const& other)
+{
+    v.reserve(v.size() + other.size());
+    v.insert(other.begin(), other.end());
+}
 
 /**
  * @brief Parse the destinations of a module.
@@ -101,6 +115,25 @@ void parseLine(Mesh& mesh, std::string_view const line)
 std::string solvePart1(std::filesystem::path const& filePath)
 {
     auto mesh{parseInput(filePath)};
+    Signal const buttonSignal{"button", "broadcaster", SignalValue::Low};
+    uint32_t lowPulses{0U};
+    uint32_t highPulses{0U};
+    for (uint32_t i = 0U; i < 1000U; ++i) {
+        std::queue<Signal> signalsQueue;
+        /* process the button signal */
+        signalsQueue.emplace(buttonSignal);
+        ++lowPulses;
+        /* process the signals */
+        auto signalToProcess{utils::extensions::try_take_front(signalsQueue)};
+        while( signalToProcess) {
+                auto const outputSignals{signalToProcess.process(*signalToProcess)};
+            if (signal.value == SignalValue::Low) {
+                ++lowPulses;
+            } else {
+                ++highPulses;
+            }
+        }
+    }
     return "";
 }
 
