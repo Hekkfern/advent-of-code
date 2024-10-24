@@ -24,7 +24,7 @@ namespace aoc_2023_20 {
 void appendVector(std::vector<Signal>& v, std::vector<Signal> const& other)
 {
     v.reserve(v.size() + other.size());
-    v.insert(other.begin(), other.end());
+    std::move(other.begin(), other.end(), back_inserter(v));
 }
 
 /**
@@ -125,16 +125,18 @@ std::string solvePart1(std::filesystem::path const& filePath)
         ++lowPulses;
         /* process the signals */
         auto signalToProcess{utils::extensions::try_take_front(signalsQueue)};
-        while( signalToProcess) {
-                auto const outputSignals{signalToProcess.process(*signalToProcess)};
-            if (signal.value == SignalValue::Low) {
-                ++lowPulses;
-            } else {
-                ++highPulses;
+        while (signalToProcess) {
+            auto const outputSignals{mesh.process(*signalToProcess)};
+            for (auto const& outputSignal : outputSignals) {
+                if (outputSignal.value == SignalValue::Low) {
+                    ++lowPulses;
+                } else {
+                    ++highPulses;
+                }
             }
         }
     }
-    return "";
+    return std::to_string(lowPulses * highPulses);
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)

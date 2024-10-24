@@ -21,7 +21,8 @@ public:
     template <std::derived_from<IModule> ModuleClass>
     void addModule(ModuleClass&& module) noexcept
     {
-        mModules.emplace(module.getModuleName(), std::forward<ModuleClass>(module));
+        mModules.emplace(
+            module.getModuleName(), std::forward<ModuleClass>(module));
     }
     /**
      * @brief
@@ -29,6 +30,12 @@ public:
      * @pre Have called all the addModule functions.
      */
     void setup() noexcept;
+    /**
+     *
+     * @param input
+     * @return
+     */
+    [[nodiscard]] std::vector<Signal> process(Signal const& input);
 
 private:
     /**

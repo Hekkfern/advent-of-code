@@ -36,4 +36,17 @@ void Mesh::setup() noexcept
     }
 }
 
+std::vector<Signal> Mesh::process(Signal const& input)
+{
+    auto const module{mModules.find(input.destination)};
+    if (module == mModules.cend()) {
+        return {};
+    }
+    return std::visit(
+        [&input](auto&& var) -> std::vector<Signal> {
+            return var.process(input);
+        },
+        module->second);
+}
+
 } // namespace aoc_2023_20
