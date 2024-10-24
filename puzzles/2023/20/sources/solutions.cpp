@@ -136,7 +136,13 @@ std::string solvePart1(std::filesystem::path const& filePath)
 
 std::string solvePart2(std::filesystem::path const& filePath)
 {
-    (void)filePath;
+    auto mesh{parseInput(filePath)};
+    Signal const buttonSignal{"button", "broadcaster", SignalValue::Low};
+    /* find the conjunctions connected to the conjunction connected to rx node
+     */
+    auto const connectedConjunctions{
+        mesh.getModulesConnectedTo(mesh.getModulesConnectedTo("rx")[0])};
+    uint32_t buttonPresses{0U};
     return "";
 }
 

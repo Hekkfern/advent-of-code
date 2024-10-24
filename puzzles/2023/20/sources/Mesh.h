@@ -16,6 +16,7 @@ public:
      * @brief
      *
      * @tparam ModuleClass
+     *
      * @param module
      */
     template <std::derived_from<IModule> ModuleClass>
@@ -33,9 +34,19 @@ public:
     /**
      *
      * @param input
+     *
      * @return
      */
     [[nodiscard]] std::vector<Signal> process(Signal const& input);
+    /**
+     * @brief
+     *
+     * @param moduleName
+     *
+     * @return
+     */
+    [[nodiscard]] std::vector<ModuleName>
+    getModulesConnectedTo(ModuleName const& moduleName) const noexcept;
 
 private:
     /**

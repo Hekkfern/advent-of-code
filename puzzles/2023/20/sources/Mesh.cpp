@@ -63,4 +63,16 @@ std::vector<Signal> Mesh::process(Signal const& input)
         module->second);
 }
 
+std::vector<ModuleName>
+Mesh::getModulesConnectedTo(ModuleName const& moduleName) const noexcept
+{
+    std::vector<ModuleName> output;
+    for (auto const& [name, module] : mModules) {
+        if (containsDestinationFromVariant(module, moduleName)) {
+            output.emplace_back(name);
+        }
+    }
+    return output;
+}
+
 } // namespace aoc_2023_20
