@@ -1,5 +1,6 @@
 #include "Mesh.h"
 
+#include <range/v3/algorithm/find.hpp>
 #include <range/v3/view/filter.hpp>
 #include <range/v3/view/map.hpp>
 
@@ -11,6 +12,19 @@ std::string getModuleNameFromVariant(
 {
     return std::visit(
         [](auto&& var) -> std::string { return var.getModuleName(); }, var);
+}
+
+bool containsDestinationFromVariant(
+    std::variant<Broadcaster, FlipFlop, Conjunction> const& var,
+    ModuleName const& destination) noexcept
+{
+    return std::visit(
+        [&destination](auto&& var) -> bool {
+            auto const destinations{var.getDestinations()};
+            return ranges::find(destinations, destination)
+                != destinations.cend();
+        },
+        var);
 }
 } // namespace
 
@@ -28,8 +42,8 @@ void Mesh::setup() noexcept
                  | ranges::views::filter(
                      [conjunctionName
                       = conjunction.getModuleName()](auto const& item) -> bool {
-                         return getModuleNameFromVariant(item)
-                             == conjunctionName;
+                         return containsDestinationFromVariant(
+                             item, conjunctionName);
                      })) {
             conjunction.addInput(getModuleNameFromVariant(connectedModule));
         }

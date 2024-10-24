@@ -16,18 +16,6 @@ namespace aoc_2023_20 {
 // ---------- Private Methods ----------
 
 /**
- * @brief      Appends the other vector to the original one.
- *
- * @param[in]  v      Original vector.
- * @param[in]  other  The other vector.
- */
-void appendVector(std::vector<Signal>& v, std::vector<Signal> const& other)
-{
-    v.reserve(v.size() + other.size());
-    std::move(other.begin(), other.end(), back_inserter(v));
-}
-
-/**
  * @brief Parse the destinations of a module.
  *
  * @param line
@@ -128,12 +116,16 @@ std::string solvePart1(std::filesystem::path const& filePath)
         while (signalToProcess) {
             auto const outputSignals{mesh.process(*signalToProcess)};
             for (auto const& outputSignal : outputSignals) {
+                /* increase signal counters */
                 if (outputSignal.value == SignalValue::Low) {
                     ++lowPulses;
                 } else {
                     ++highPulses;
                 }
+                /* add the signal to the queue */
+                signalsQueue.push(outputSignal);
             }
+            signalToProcess = utils::extensions::try_take_front(signalsQueue);
         }
     }
     return std::to_string(lowPulses * highPulses);

@@ -23,15 +23,16 @@ FlipFlop::FlipFlop(ModuleName const& name) noexcept
 
 std::vector<Signal> FlipFlop::process(Signal const& input) noexcept
 {
+    if (input.value == SignalValue::High) {
+        return {};
+    }
+    /* update the last value */
+    mLastValue = flip(mLastValue);
+    /* generate output */
     std::vector<Signal> output;
-    if (input.value == SignalValue::Low) {
-        /* update the last value */
-        mLastValue = flip(mLastValue);
-        /* generate output */
-        output.reserve(mDestinations.size());
-        for (auto const& destination : mDestinations) {
-            output.emplace_back(mModuleName, destination, mLastValue);
-        }
+    output.reserve(mDestinations.size());
+    for (auto const& destination : mDestinations) {
+        output.emplace_back(mModuleName, destination, mLastValue);
     }
     return output;
 }
