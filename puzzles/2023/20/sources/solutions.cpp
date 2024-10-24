@@ -54,6 +54,7 @@ void parseLine(Mesh& mesh, std::string_view const line)
             module.addDestination(destination);
         }
         mesh.addModule<FlipFlop>(std::move(module));
+        break;
     }
     case '&': {
         /* it is a conjunction */
@@ -63,6 +64,7 @@ void parseLine(Mesh& mesh, std::string_view const line)
             module.addDestination(destination);
         }
         mesh.addModule<Conjunction>(std::move(module));
+        break;
     }
     default: {
         /* it is a broadcaster */
@@ -71,6 +73,7 @@ void parseLine(Mesh& mesh, std::string_view const line)
             module.addDestination(destination);
         }
         mesh.addModule<Broadcaster>(std::move(module));
+        break;
     }
     }
 }
