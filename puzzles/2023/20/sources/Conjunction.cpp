@@ -23,7 +23,7 @@ std::vector<Signal> Conjunction::process(Signal const& input) noexcept
         })};
     for (auto const& destination : mDestinations) {
         output.emplace_back(
-            getModuleName(),
+            mModuleName,
             destination,
             allHigh ? SignalValue::Low : SignalValue::High);
     }
