@@ -13,12 +13,12 @@ Broadcaster::Broadcaster() noexcept
 
 std::vector<Signal> Broadcaster::process(Signal const& input) noexcept
 {
-    std::vector<Signal> signals;
-    signals.reserve(mDestinations.size());
+    std::vector<Signal> output;
+    output.reserve(mDestinations.size());
     for (auto const& destination : mDestinations) {
-        signals.emplace_back(mModuleName, destination, input.value);
+        output.emplace_back(mModuleName, destination, input.value);
     }
-    return signals;
+    return output;
 }
 
 } // namespace aoc_2023_20
