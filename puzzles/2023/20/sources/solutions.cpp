@@ -7,7 +7,11 @@
 #include "Mesh.h"
 #include "utils/extensions/ContainerTools.h"
 #include <memory>
+#include <numeric>
 #include <queue>
+#include <range/v3/algorithm/contains.hpp>
+#include <range/v3/algorithm/fold_left.hpp>
+#include <range/v3/view/map.hpp>
 #include <utils/File.hpp>
 #include <utils/String.hpp>
 
@@ -106,12 +110,13 @@ void parseLine(Mesh& mesh, std::string_view const line)
 std::string solvePart1(std::filesystem::path const& filePath)
 {
     auto mesh{parseInput(filePath)};
-    Signal const buttonSignal{"button", "broadcaster", SignalValue::Low};
-    uint32_t lowPulses{0U};
-    uint32_t highPulses{0U};
+    uint64_t lowPulses{0U};
+    uint64_t highPulses{0U};
     for (uint32_t i = 0U; i < 1000U; ++i) {
         std::queue<Signal> signalsQueue;
         /* process the button signal */
+        static Signal const buttonSignal{
+            "button", "broadcaster", SignalValue::Low};
         signalsQueue.emplace(buttonSignal);
         ++lowPulses;
         /* process the signals */
@@ -137,13 +142,45 @@ std::string solvePart1(std::filesystem::path const& filePath)
 std::string solvePart2(std::filesystem::path const& filePath)
 {
     auto mesh{parseInput(filePath)};
-    Signal const buttonSignal{"button", "broadcaster", SignalValue::Low};
     /* find the conjunctions connected to the conjunction connected to rx node
      */
     auto const connectedConjunctions{
         mesh.getModulesConnectedTo(mesh.getModulesConnectedTo("rx")[0])};
-    uint32_t buttonPresses{0U};
-    return "";
+    uint64_t buttonPresses{0ULL};
+    std::unordered_map<ModuleName, uint64_t> last;
+    std::unordered_map<ModuleName, uint64_t> loops;
+    while (loops.size() < connectedConjunctions.size()) {
+        std::queue<Signal> signalsQueue;
+        /* process the button signal */
+        static Signal const buttonSignal{
+            "button", "broadcaster", SignalValue::Low};
+        signalsQueue.emplace(buttonSignal);
+        ++buttonPresses;
+        /* process the signals */
+        auto signalToProcess{utils::extensions::try_take_front(signalsQueue)};
+        while (signalToProcess) {
+            auto const outputSignals{mesh.process(*signalToProcess)};
+            for (auto const& outputSignal : outputSignals) {
+                /* look for high signals to the layer of conjunctions prior to
+                 * rx node */
+                if (ranges::contains(
+                        connectedConjunctions, outputSignal.destination)
+                    && outputSignal.value == SignalValue::High) {
+                    if (last.contains(outputSignal.destination)) {
+                        loops.emplace(
+                            outputSignal.destination,
+                            buttonPresses - last[outputSignal.destination]);
+                    }
+                    last.emplace(outputSignal.destination, buttonPresses);
+                }
+                /* add the signal to the queue */
+                signalsQueue.push(outputSignal);
+            }
+            signalToProcess = utils::extensions::try_take_front(signalsQueue);
+        }
+    }
+    return std::to_string(ranges::fold_left(
+        loops | ranges::views::values, 1ULL, std::lcm<uint64_t, uint64_t>));
 }
 
 // ---------- End of Public Methods ----------
