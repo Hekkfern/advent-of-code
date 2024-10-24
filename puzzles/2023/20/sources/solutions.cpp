@@ -9,7 +9,6 @@
 #include <memory>
 #include <numeric>
 #include <queue>
-#include <range/v3/algorithm/contains.hpp>
 #include <range/v3/algorithm/fold_left.hpp>
 #include <range/v3/view/map.hpp>
 #include <utils/File.hpp>
@@ -144,12 +143,13 @@ std::string solvePart2(std::filesystem::path const& filePath)
     auto mesh{parseInput(filePath)};
     /* find the conjunctions connected to the conjunction connected to rx node
      */
-    auto const connectedConjunctions{
-        mesh.getModulesConnectedTo(mesh.getModulesConnectedTo("rx")[0])};
+    auto const previousNodeToRx{mesh.getModulesConnectedTo("rx")[0]};
+    auto const morePreviousNodesToRx{
+        mesh.getModulesConnectedTo(previousNodeToRx)};
     uint64_t buttonPresses{0ULL};
     std::unordered_map<ModuleName, uint64_t> last;
     std::unordered_map<ModuleName, uint64_t> loops;
-    while (loops.size() < connectedConjunctions.size()) {
+    while (loops.size() < morePreviousNodesToRx.size()) {
         std::queue<Signal> signalsQueue;
         /* process the button signal */
         static Signal const buttonSignal{
@@ -163,15 +163,14 @@ std::string solvePart2(std::filesystem::path const& filePath)
             for (auto const& outputSignal : outputSignals) {
                 /* look for high signals to the layer of conjunctions prior to
                  * rx node */
-                if (ranges::contains(
-                        connectedConjunctions, outputSignal.destination)
+                if (previousNodeToRx == outputSignal.destination
                     && outputSignal.value == SignalValue::High) {
-                    if (last.contains(outputSignal.destination)) {
+                    if (last.contains(outputSignal.origin)) {
                         loops.emplace(
-                            outputSignal.destination,
-                            buttonPresses - last[outputSignal.destination]);
+                            outputSignal.origin,
+                            buttonPresses - last[outputSignal.origin]);
                     }
-                    last.emplace(outputSignal.destination, buttonPresses);
+                    last.emplace(outputSignal.origin, buttonPresses);
                 }
                 /* add the signal to the queue */
                 signalsQueue.push(outputSignal);
