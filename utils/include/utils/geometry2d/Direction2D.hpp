@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <string>
+#include <vector>
 
 namespace utils::geometry2d {
 
@@ -163,6 +164,38 @@ public:
      * @return     The value.
      */
     [[nodiscard]] constexpr Value getValue() const noexcept { return mValue; }
+    /**
+     * @brief Get a list of all the possible directions.
+     *
+     * @return List of all the directions.
+     */
+    [[nodiscard]] constexpr static std::vector<Direction2D> all() noexcept
+    {
+        return {
+            Direction2D{Value::Up},
+            Direction2D{Value::Left},
+            Direction2D{Value::Down},
+            Direction2D{Value::Right},
+            Direction2D{Value::UpLeft},
+            Direction2D{Value::DownLeft},
+            Direction2D{Value::UpRight},
+            Direction2D{Value::DownRight}};
+    }
+    /**
+     * @brief Get a list of all the possible cardinal directions (without
+     * diagonals).
+     *
+     * @return List of cardinal directions.
+     */
+    [[nodiscard]] constexpr static std::vector<Direction2D>
+    cardinalAll() noexcept
+    {
+        return {
+            Direction2D{Value::Up},
+            Direction2D{Value::Left},
+            Direction2D{Value::Down},
+            Direction2D{Value::Right}};
+    }
 
 private:
     /**

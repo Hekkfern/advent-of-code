@@ -1,5 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
+#include <range/v3/algorithm/contains.hpp>
 #include <utils/geometry2d/Grid2D.hpp>
 
 using namespace utils::geometry2d;
@@ -508,6 +509,55 @@ TEST_CASE("[Grid2D] move() method", "[utils][Grid2D]")
             auto const result{grid2D.move(
                 Coordinate2D<std::size_t>{3, 0}, Direction2D::Down)};
             CHECK_FALSE(result);
+        }
+    }
+}
+
+TEST_CASE("[Grid2D] getCardinalNeighbors() method", "[utils][Grid2D]")
+{
+    Grid2D<int> grid2D{{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}};
+
+    SECTION("Position inside")
+    {
+        std::vector<Coordinate2D<std::size_t>> const expected{
+            Coordinate2D<std::size_t>{0ULL, 1ULL},
+            Coordinate2D<std::size_t>{2ULL, 1ULL},
+            Coordinate2D<std::size_t>{1ULL, 0ULL},
+            Coordinate2D<std::size_t>{1ULL, 2ULL}};
+        auto const result{
+            grid2D.getCardinalNeighbors(Coordinate2D<std::size_t>{1, 1})};
+        REQUIRE(result.size() == expected.size());
+        for (auto const& item : result) {
+            CHECK(ranges::contains(result, item));
+        }
+    }
+
+    SECTION("Out of bounds")
+    {
+        SECTION("Top-right corner")
+        {
+            std::vector<Coordinate2D<std::size_t>> const expected{
+                Coordinate2D<std::size_t>{1ULL, 2ULL},
+                Coordinate2D<std::size_t>{2ULL, 1ULL}};
+            auto const result{
+                grid2D.getCardinalNeighbors(Coordinate2D<std::size_t>{2, 2})};
+            REQUIRE(result.size() == expected.size());
+            for (auto const& item : result) {
+                CHECK(ranges::contains(result, item));
+            }
+        }
+
+        SECTION("Bottom-left corner")
+        {
+            std::vector<Coordinate2D<std::size_t>> const expected{
+                Coordinate2D<std::size_t>{1ULL, 0ULL},
+                Coordinate2D<std::size_t>{0ULL, 1ULL}};
+            auto const result{
+                grid2D.getCardinalNeighbors(Coordinate2D<std::size_t>{0, 0})};
+            REQUIRE(result.size() == expected.size());
+            for (auto const& item : result) {
+                CHECK(ranges::contains(result, item));
+            }
         }
     }
 }

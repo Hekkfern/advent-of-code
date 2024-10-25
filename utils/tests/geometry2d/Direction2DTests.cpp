@@ -1,5 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
+#include <range/v3/algorithm/contains.hpp>
 #include <utils/geometry2d/Direction2D.hpp>
 
 using namespace utils::geometry2d;
@@ -120,5 +121,39 @@ TEST_CASE(
 
     for (auto const& [direction, expectedValue] : testCases) {
         CHECK(direction.goStraight() == expectedValue);
+    }
+}
+
+TEST_CASE("[Direction2D - all] all returns the correct value", "[Direction2D]")
+{
+    std::vector<Direction2D> const expected{
+        Direction2D::Up,
+        Direction2D::Left,
+        Direction2D::Down,
+        Direction2D::Right,
+        Direction2D::DownRight,
+        Direction2D::DownLeft,
+        Direction2D::UpRight,
+        Direction2D::UpLeft};
+    auto const result{Direction2D::all()};
+    REQUIRE(result.size() == expected.size());
+    for (auto const& item : result) {
+        CHECK(ranges::contains(result, item));
+    }
+}
+
+TEST_CASE(
+    "[Direction2D - cardinalAll] cardinalAll returns the correct value",
+    "[Direction2D]")
+{
+    std::vector<Direction2D> const expected{
+        Direction2D::Up,
+        Direction2D::Left,
+        Direction2D::Down,
+        Direction2D::Right};
+    auto const result{Direction2D::cardinalAll()};
+    REQUIRE(result.size() == expected.size());
+    for (auto const& item : result) {
+        CHECK(ranges::contains(result, item));
     }
 }

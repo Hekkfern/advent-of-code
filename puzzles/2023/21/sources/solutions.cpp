@@ -1,5 +1,7 @@
 #include "solutions.hpp"
 
+#include <range/v3/view/filter.hpp>
+#include <range/v3/view/iota.hpp>
 #include <utils/File.hpp>
 #include <utils/geometry2d/Coordinate2D.hpp>
 #include <utils/geometry2d/Grid2D.hpp>
@@ -13,6 +15,7 @@ namespace aoc_2023_21 {
 enum class PositionType { GardenPlot, Rock };
 
 using GardenGrid = Grid2D<PositionType>;
+using Steps = uint32_t;
 
 PositionType convertToPositionType(char const c)
 {
@@ -48,7 +51,22 @@ parseInput(std::filesystem::path const& filePath)
     if (!result) {
         return std::make_pair(GardenGrid{}, Coordinate2D<std::size_t>{});
     }
-    return std::make_pair(GardenGrid{data}, startPosition);
+    GardenGrid grid{data};
+    grid.flipVertical();
+    return std::make_pair(std::move(grid), startPosition);
+}
+
+std::vector<Coordinate2D<std::size_t>>
+getNeighbours(GardenGrid const& grid, Coordinate2D<std::size_t> const& position)
+{
+    std::vector<Coordinate2D<std::size_t>> neighbourCandidates{
+        grid.getCardinalNeighbors(position)};
+    return neighbourCandidates
+        | ranges::views::
+            filter([&grid](Coordinate2D<std::size_t> const& candidate) -> bool {
+                return grid.at(candidate) == PositionType::GardenPlot;
+            })
+        | ranges::to<std::vector>;
 }
 
 // ---------- End of Private Methods ----------
@@ -56,11 +74,23 @@ parseInput(std::filesystem::path const& filePath)
 // ---------- Public Methods ----------
 
 std::string
-solvePart1(std::filesystem::path const& filePath, uint32_t const maxSteps)
+solvePart1(std::filesystem::path const& filePath, Steps const maxSteps)
 {
     auto const [grid, startPosition]{parseInput(filePath)};
-    (void)maxSteps;
-    return "";
+    /* analyze the garden */
+    std::unordered_map<Coordinate2D<std::size_t>, Steps> visited{
+        {startPosition, 0}};
+    for (auto const step : ranges::views::iota(0ULL, maxSteps)) {
+        for (
+            auto const visitedPosition :
+            visited
+                | ranges::views::filter(
+                    [step](std::pair<Coordinate2D<std::size_t>, Steps> const&
+                               item) -> bool { return item.second == step; })) {
+
+        }
+    }
+    return std::to_string(visited.size());
 }
 
 std::string solvePart2(std::filesystem::path const& filePath)

@@ -470,6 +470,25 @@ public:
         }
         return *result;
     }
+    /**
+     * @brief     Gets all the valid neighbors (in the four main directions) of a given position in the grid.
+     *
+     * @param[in] position The position to get the neighbors of.
+     *
+     * @return List of valid positions.
+     */
+    [[nodiscard]] std::vector<Coordinate2D<std::size_t>> getCardinalNeighbors(
+        Coordinate2D<std::size_t> const& position) const noexcept
+    {
+        std::vector<Coordinate2D<std::size_t>> neighbors;
+        for (auto const direction : Direction2D::cardinalAll()) {
+            auto const newPosition{move(position, direction)};
+            if (newPosition) {
+                neighbors.push_back(*newPosition);
+            }
+        }
+        return neighbors;
+    }
 
 private:
     /**
