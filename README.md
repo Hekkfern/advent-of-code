@@ -93,6 +93,8 @@ First read [SETUP_DEV_ENVIRONMENT.md](./docs/SETUP_DEV_ENVIRONMENT.md) page to i
 
 ### Installation
 
+Install [Git LFS](https://git-lfs.com/) tool in your machine.
+
 Clone the repository and all its submodules:
 
 ```bash
