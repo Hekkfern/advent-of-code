@@ -12,4 +12,4 @@
 
 Our result would then be the least common multiple of the periods.
 
-I should note, however, that this is a bit loosey-goosey. Technically, I’m not exactly checking the correct period. The high signals must also line up inside the signal processing loop, i.e. on the correct signal count offset. However, the answer this approach generated was accepted as correct.
+I should note, however, that this is a bit loosey-goosey. Technically, I'm not exactly checking the correct period. The high signals must also line up inside the signal processing loop, i.e. on the correct signal count offset. However, the answer this approach generated was accepted as correct.

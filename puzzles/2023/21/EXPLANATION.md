@@ -14,7 +14,7 @@ Our input is a square with some interesting properties. The row and column with 
 
 Now, consider which spaces will be reached in 65 and 65+131 steps.
 
-![](part2_explanation.png "")
+![](part2_explanation.png)
 
 This is a suspiciously regular structure. If you investigate the requested number of steps, that number has the form q*131+65.
 
