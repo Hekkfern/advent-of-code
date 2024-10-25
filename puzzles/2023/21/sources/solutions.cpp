@@ -89,7 +89,7 @@ solvePart1(std::filesystem::path const& filePath, Steps const maxSteps)
                 continue;
             }
             visited.emplace(neighbour, positionToVisit->second + 1U);
-            if (positionToVisit->second + 1 < maxSteps) {
+            if (positionToVisit->second + 1U < maxSteps) {
                 positionsToVisit.emplace(
                     neighbour, positionToVisit->second + 1);
             }
