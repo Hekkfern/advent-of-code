@@ -83,16 +83,14 @@ solvePart1(std::filesystem::path const& filePath, Steps const maxSteps)
     positionsToVisit.emplace(startPosition, 0);
     auto positionToVisit{utils::extensions::try_take_front(positionsToVisit)};
     while (positionToVisit) {
+        visited.emplace(*positionToVisit);
         auto const neighbours{getNeighbours(grid, positionToVisit->first)};
+        auto const newStepCount{positionToVisit->second + 1U};
         for (auto const& neighbour : neighbours) {
-            if (visited.contains(neighbour)) {
+            if (visited.contains(neighbour) || newStepCount >= maxSteps) {
                 continue;
             }
-            visited.emplace(neighbour, positionToVisit->second + 1U);
-            if (positionToVisit->second + 1U < maxSteps) {
-                positionsToVisit.emplace(
-                    neighbour, positionToVisit->second + 1);
-            }
+            positionsToVisit.emplace(neighbour, newStepCount);
         }
         /* get next */
         positionToVisit = utils::extensions::try_take_front(positionsToVisit);
