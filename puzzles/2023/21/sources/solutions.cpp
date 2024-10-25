@@ -1,9 +1,8 @@
 #include "solutions.hpp"
 
-#include <queue>
+#include <range/v3/algorithm/for_each.hpp>
+#include <unordered_set>
 #include <utils/File.hpp>
-#include <utils/extensions/ContainerTools.h>
-#include <utils/geometry2d/Coordinate2D.hpp>
 #include <utils/geometry2d/Grid2D.hpp>
 
 using namespace utils::geometry2d;
@@ -28,19 +27,18 @@ PositionType convertToPositionType(char const c) noexcept
     }
 }
 
-[[nodiscard]] std::pair<GardenGrid, Coordinate2D<std::size_t>>
+[[nodiscard]] std::pair<GardenGrid, GardenGrid::Coord>
 parseInput(std::filesystem::path const& filePath) noexcept
 {
     std::vector<std::vector<PositionType>> data;
-    Coordinate2D<std::size_t> startPosition;
+    GardenGrid::Coord startPosition;
     bool const result{utils::file::parseAndIterate(
         filePath, [&data, &startPosition](std::string_view const line) {
             std::vector<PositionType> row;
             row.reserve(line.size());
             for (char const c : line) {
                 if (c == 'S') {
-                    startPosition = Coordinate2D<std::size_t>{
-                        row.size(), data.size()};
+                    startPosition = GardenGrid::Coord{row.size(), data.size()};
                     row.emplace_back(PositionType::GardenPlot);
                 } else {
                     row.emplace_back(convertToPositionType(c));
@@ -49,21 +47,21 @@ parseInput(std::filesystem::path const& filePath) noexcept
             data.push_back(std::move(row));
         })};
     if (!result) {
-        return std::make_pair(GardenGrid{}, Coordinate2D<std::size_t>{});
+        return std::make_pair(GardenGrid{}, GardenGrid::Coord{});
     }
     GardenGrid grid{data};
     grid.flipVertical();
     return std::make_pair(std::move(grid), startPosition);
 }
 
-std::vector<Coordinate2D<std::size_t>> getNeighbours(
-    GardenGrid const& grid, Coordinate2D<std::size_t> const& position) noexcept
+std::vector<GardenGrid::Coord> getNeighbours(
+    GardenGrid const& grid, GardenGrid::Coord const& position) noexcept
 {
-    std::vector<Coordinate2D<std::size_t>> neighbourCandidates{
+    std::vector<GardenGrid::Coord> neighbourCandidates{
         grid.getCardinalNeighbors(position)};
     return neighbourCandidates
         | ranges::views::
-            filter([&grid](Coordinate2D<std::size_t> const& candidate) -> bool {
+            filter([&grid](GardenGrid::Coord const& candidate) -> bool {
                 return grid.at(candidate) == PositionType::GardenPlot;
             })
         | ranges::to<std::vector>;
@@ -78,30 +76,24 @@ solvePart1(std::filesystem::path const& filePath, Steps const maxSteps)
 {
     auto const [grid, startPosition]{parseInput(filePath)};
     /* analyze the garden */
-    std::unordered_map<Coordinate2D<std::size_t>, Steps> visited{};
-    std::queue<std::pair<Coordinate2D<std::size_t>, Steps>> positionsToVisit;
-    positionsToVisit.emplace(startPosition, 0);
-    auto positionToVisit{utils::extensions::try_take_front(positionsToVisit)};
-    while (positionToVisit) {
-        visited.emplace(*positionToVisit);
-        auto const neighbours{getNeighbours(grid, positionToVisit->first)};
-        auto const newStepCount{positionToVisit->second + 1U};
-        for (auto const& neighbour : neighbours) {
-            if (visited.contains(neighbour) || newStepCount >= maxSteps) {
-                continue;
+    std::unordered_set<GardenGrid::Coord> current;
+    std::unordered_set<GardenGrid::Coord> next{startPosition};
+    ranges::for_each(ranges::views::iota(0U, maxSteps), [&](uint32_t) -> void {
+        current = next;
+        next.clear();
+        for (auto coord : current) {
+            for (auto const& neighbor : getNeighbours(grid, coord)) {
+                next.emplace(neighbor);
             }
-            positionsToVisit.emplace(neighbour, newStepCount);
         }
-        /* get next */
-        positionToVisit = utils::extensions::try_take_front(positionsToVisit);
-    }
-    return std::to_string(visited.size());
+    });
+    return std::to_string(next.size());
 }
 
-std::string solvePart2(std::filesystem::path const& filePath)
+std::string
+solvePart2(std::filesystem::path const& filePath, uint32_t const maxSteps)
 {
-    (void)filePath;
-    return "";
+    // TODO
 }
 
 // ---------- End of Public Methods ----------

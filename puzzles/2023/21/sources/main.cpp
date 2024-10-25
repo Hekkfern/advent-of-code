@@ -11,18 +11,19 @@ int main()
 {
     std::string const inputFile{"input.txt"};
 
-    constexpr uint32_t MaxSteps{64};
+    static constexpr uint32_t MaxStepsForPart1{64};
     std::string solution1;
     auto const part1ExecTime = utils::time::calculateExecutionTime(
         [&solution1, &inputFile = std::as_const(inputFile)]() {
-            solution1 = aoc_2023_21::solvePart1(inputFile, MaxSteps);
+            solution1 = aoc_2023_21::solvePart1(inputFile, MaxStepsForPart1);
         });
     utils::aoc::printPart1Solution(solution1, part1ExecTime);
 
+    static constexpr uint32_t MaxStepsForPart2{26501365};
     std::string solution2;
     auto const part2ExecTime = utils::time::calculateExecutionTime(
         [&solution2, &inputFile = std::as_const(inputFile)]() {
-            solution2 = aoc_2023_21::solvePart2(inputFile);
+            solution2 = aoc_2023_21::solvePart2(inputFile, MaxStepsForPart2);
         });
     utils::aoc::printPart2Solution(solution2, part2ExecTime);
 

@@ -29,6 +29,7 @@ namespace utils::geometry2d {
 template <typename T>
 class Grid2D {
 public:
+    using Coord = Coordinate2D<std::size_t>;
     /**
      * @brief      Constructs a new instance.
      */
@@ -235,20 +236,20 @@ public:
      *
      * @{
      */
-    [[nodiscard]] T& at(Coordinate2D<std::size_t> const& coords) noexcept
+    [[nodiscard]] T& at(Coord const& coords) noexcept
     {
         return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
     [[nodiscard]] T const&
-    at(Coordinate2D<std::size_t> const& coords) const noexcept
+    at(Coord const& coords) const noexcept
     {
         return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
-    [[nodiscard]] T& at(Coordinate2D<std::size_t>&& coords) noexcept
+    [[nodiscard]] T& at(Coord&& coords) noexcept
     {
         return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
-    [[nodiscard]] T const& at(Coordinate2D<std::size_t>&& coords) const noexcept
+    [[nodiscard]] T const& at(Coord&& coords) const noexcept
     {
         return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
@@ -371,7 +372,7 @@ public:
      * @return     A vector of pairs of indices (row, col) for each occurrence
      *             of the value.
      */
-    [[nodiscard]] std::vector<Coordinate2D<std::size_t>>
+    [[nodiscard]] std::vector<Coord>
     findAll(T const& value) const noexcept
     {
         return mFlatGrid | ranges::views::enumerate
@@ -379,12 +380,12 @@ public:
                    return pair.second == value;
                })
             | ranges::views::transform(
-                   [this](auto const& pair) -> Coordinate2D<std::size_t> {
+                   [this](auto const& pair) -> Coord {
                        std::size_t index = pair.first;
-                       return Coordinate2D<std::size_t>{
+                       return Coord{
                            index % mWidth, index / mWidth};
                    })
-            | ranges::to<std::vector<Coordinate2D<std::size_t>>>();
+            | ranges::to<std::vector<Coord>>();
     }
     /**
      * @brief      Resizes the grid to a new width and height, filling new
@@ -445,7 +446,7 @@ public:
      *             coordinates.
      */
     [[nodiscard]] PositionStatus
-    where(Coordinate2D<std::size_t> const& coords) const noexcept
+    where(Coord const& coords) const noexcept
     {
         auto const x{coords.getX()};
         auto const y{coords.getY()};
@@ -460,8 +461,8 @@ public:
      * @return     The new position after moving in the given direction, or
      * std::nullopt if the movement is not possible.
      */
-    [[nodiscard]] constexpr std::optional<Coordinate2D<std::size_t>> move(
-        Coordinate2D<std::size_t> const& position,
+    [[nodiscard]] constexpr std::optional<Coord> move(
+        Coord const& position,
         Direction2D const& direction) const noexcept
     {
         auto const result{position.move(direction)};
@@ -478,10 +479,10 @@ public:
      *
      * @return List of valid positions.
      */
-    [[nodiscard]] std::vector<Coordinate2D<std::size_t>> getCardinalNeighbors(
-        Coordinate2D<std::size_t> const& position) const noexcept
+    [[nodiscard]] std::vector<Coord> getCardinalNeighbors(
+        Coord const& position) const noexcept
     {
-        std::vector<Coordinate2D<std::size_t>> neighbors;
+        std::vector<Coord> neighbors;
         for (auto const direction : Direction2D::cardinalAll()) {
             auto const newPosition{move(position, direction)};
             if (newPosition) {
