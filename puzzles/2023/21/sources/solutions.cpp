@@ -94,6 +94,9 @@ std::string
 solvePart2(std::filesystem::path const& filePath, uint32_t const maxSteps)
 {
     // TODO
+    (void)filePath;
+    (void)maxSteps;
+    return "";
 }
 
 // ---------- End of Public Methods ----------
