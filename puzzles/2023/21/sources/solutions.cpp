@@ -1,8 +1,8 @@
 #include "solutions.hpp"
 
-#include <range/v3/view/filter.hpp>
-#include <range/v3/view/iota.hpp>
+#include <queue>
 #include <utils/File.hpp>
+#include <utils/extensions/ContainerTools.h>
 #include <utils/geometry2d/Coordinate2D.hpp>
 #include <utils/geometry2d/Grid2D.hpp>
 
@@ -17,7 +17,7 @@ enum class PositionType { GardenPlot, Rock };
 using GardenGrid = Grid2D<PositionType>;
 using Steps = uint32_t;
 
-PositionType convertToPositionType(char const c)
+PositionType convertToPositionType(char const c) noexcept
 {
     switch (c) {
     case '.':
@@ -29,7 +29,7 @@ PositionType convertToPositionType(char const c)
 }
 
 [[nodiscard]] std::pair<GardenGrid, Coordinate2D<std::size_t>>
-parseInput(std::filesystem::path const& filePath)
+parseInput(std::filesystem::path const& filePath) noexcept
 {
     std::vector<std::vector<PositionType>> data;
     Coordinate2D<std::size_t> startPosition;
@@ -56,8 +56,8 @@ parseInput(std::filesystem::path const& filePath)
     return std::make_pair(std::move(grid), startPosition);
 }
 
-std::vector<Coordinate2D<std::size_t>>
-getNeighbours(GardenGrid const& grid, Coordinate2D<std::size_t> const& position)
+std::vector<Coordinate2D<std::size_t>> getNeighbours(
+    GardenGrid const& grid, Coordinate2D<std::size_t> const& position) noexcept
 {
     std::vector<Coordinate2D<std::size_t>> neighbourCandidates{
         grid.getCardinalNeighbors(position)};
@@ -78,17 +78,24 @@ solvePart1(std::filesystem::path const& filePath, Steps const maxSteps)
 {
     auto const [grid, startPosition]{parseInput(filePath)};
     /* analyze the garden */
-    std::unordered_map<Coordinate2D<std::size_t>, Steps> visited{
-        {startPosition, 0}};
-    for (auto const step : ranges::views::iota(0ULL, maxSteps)) {
-        for (
-            auto const visitedPosition :
-            visited
-                | ranges::views::filter(
-                    [step](std::pair<Coordinate2D<std::size_t>, Steps> const&
-                               item) -> bool { return item.second == step; })) {
-
+    std::unordered_map<Coordinate2D<std::size_t>, Steps> visited{};
+    std::queue<std::pair<Coordinate2D<std::size_t>, Steps>> positionsToVisit;
+    positionsToVisit.emplace(startPosition, 0);
+    auto positionToVisit{utils::extensions::try_take_front(positionsToVisit)};
+    while (positionToVisit) {
+        auto const neighbours{getNeighbours(grid, positionToVisit->first)};
+        for (auto const& neighbour : neighbours) {
+            if (visited.contains(neighbour)) {
+                continue;
+            }
+            visited.emplace(neighbour, positionToVisit->second + 1U);
+            if (positionToVisit->second + 1 < maxSteps) {
+                positionsToVisit.emplace(
+                    neighbour, positionToVisit->second + 1);
+            }
         }
+        /* get next */
+        positionToVisit = utils::extensions::try_take_front(positionsToVisit);
     }
     return std::to_string(visited.size());
 }

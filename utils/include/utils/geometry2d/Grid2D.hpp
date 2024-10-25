@@ -471,7 +471,8 @@ public:
         return *result;
     }
     /**
-     * @brief     Gets all the valid neighbors (in the four main directions) of a given position in the grid.
+     * @brief     Gets all the valid neighbors (in the four main directions) of
+     * a given position in the grid.
      *
      * @param[in] position The position to get the neighbors of.
      *
