@@ -106,7 +106,7 @@ using TileGrid = utils::geometry2d::Grid2D<TileType>;
  *
  * @return     Parsed data.
  */
-TileGrid parseInput(std::filesystem::path const& filePath)
+[[nodiscard]] TileGrid parseInput(std::filesystem::path const& filePath)
 {
     std::vector<std::vector<TileType>> data;
 
