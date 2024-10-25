@@ -10,9 +10,11 @@ namespace aoc_2023_21 {
 
 // ---------- Public Methods ----------
 
-std::string solvePart1(std::filesystem::path const& filePath)
+std::string
+solvePart1(std::filesystem::path const& filePath, uint32_t const maxSteps)
 {
     (void)filePath;
+    (void)maxSteps;
     return "";
 }
 

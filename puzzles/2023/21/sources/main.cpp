@@ -9,12 +9,13 @@
 
 int main()
 {
-    std::string const inputFile{ "input.txt" };
+    std::string const inputFile{"input.txt"};
 
+    constexpr uint32_t MaxSteps{64};
     std::string solution1;
     auto const part1ExecTime = utils::time::calculateExecutionTime(
         [&solution1, &inputFile = std::as_const(inputFile)]() {
-            solution1 = aoc_2023_21::solvePart1(inputFile);
+            solution1 = aoc_2023_21::solvePart1(inputFile, MaxSteps);
         });
     utils::aoc::printPart1Solution(solution1, part1ExecTime);
 
