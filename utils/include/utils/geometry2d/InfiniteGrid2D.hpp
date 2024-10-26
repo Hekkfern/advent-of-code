@@ -5,7 +5,8 @@
 namespace utils::geometry2d {
 
 /**
- * @brief      A 2D grid of values. The coordinates are 0-based.
+ * @brief      A 2D grid of values that repeats the base grid infinitely in
+ *             every direction in 2D spaces.
  *
  * @tparam     T     The type of the values in the grid.
  */
