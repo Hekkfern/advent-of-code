@@ -303,10 +303,10 @@ public:
     {
         std::size_t const totalSwaps = mHeight / 2;
 
-        for (std::size_t i = 0; i < totalSwaps; ++i) {
-            auto const topRowStart{mFlatGrid.begin() + i * mWidth};
+        for (std::size_t i{0ULL}; i < totalSwaps; ++i) {
+            auto const topRowStart{std::next(mFlatGrid.begin(), i * mWidth)};
             auto const bottomRowStart{
-                mFlatGrid.begin() + (mHeight - 1 - i) * mWidth};
+                std::next(mFlatGrid.begin(), (mHeight - 1ULL - i) * mWidth)};
             ranges::swap_ranges(
                 topRowStart, topRowStart + mWidth, bottomRowStart);
         }
@@ -317,9 +317,9 @@ public:
     void rotateClockwise() noexcept
     {
         std::vector<T> rotatedGrid(mWidth * mHeight);
-        for (std::size_t row = 0; row < mHeight; ++row) {
-            for (std::size_t col = 0; col < mWidth; ++col) {
-                rotatedGrid[col * mHeight + (mHeight - 1 - row)] = mFlatGrid
+        for (std::size_t row{0ULL}; row < mHeight; ++row) {
+            for (std::size_t col{0ULL}; col < mWidth; ++col) {
+                rotatedGrid[col * mHeight + (mHeight - 1ULL - row)] = mFlatGrid
                     [row * mWidth + col];
             }
         }
@@ -332,9 +332,9 @@ public:
     void rotateCounterClockwise() noexcept
     {
         std::vector<T> rotatedGrid(mWidth * mHeight);
-        for (std::size_t row = 0; row < mHeight; ++row) {
-            for (std::size_t col = 0; col < mWidth; ++col) {
-                rotatedGrid[(mWidth - 1 - col) * mHeight + row] = mFlatGrid
+        for (std::size_t row{0ULL}; row < mHeight; ++row) {
+            for (std::size_t col{0ULL}; col < mWidth; ++col) {
+                rotatedGrid[(mWidth - 1ULL - col) * mHeight + row] = mFlatGrid
                     [row * mWidth + col];
             }
         }
