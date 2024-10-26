@@ -65,27 +65,41 @@ TEST_CASE("[Math] getLowestDegreePolynomial() method", "[utils][Math]")
 
     SECTION("Input with three different points")
     {
-        std::vector<std::pair<double, double>> const coords{
-            {1.0, 1.0}, {2.0, 4.0}, {3.0, 9.0}};
-        auto const result{getLowestDegreePolynomial(coords)};
-        std::vector<double> const expected{0.0, 0.0, 1.0}; // f(x) = x^2
-        REQUIRE(areVectorsApproxEqual(result, expected));
-    }
-
-    SECTION("Input with three identical points")
-    {
-        std::vector<std::pair<double, double>> const coords{
-            {2.0, 4.0}, {2.0, 4.0}, {2.0, 4.0}};
-        auto const result{getLowestDegreePolynomial(coords)};
-        std::vector<double> const expected{4.0}; // f(x) = 4
-        REQUIRE(areVectorsApproxEqual(result, expected));
+        SECTION("Resulting in a simple parabola")
+        {
+            std::vector<std::pair<double, double>> const coords{
+                {1.0, 1.0}, {2.0, 4.0}, {3.0, 9.0}};
+            auto const result{getLowestDegreePolynomial(coords)};
+            // f(x) = x^2
+            std::vector<double> const expected{0.0, 0.0, 1.0};
+            REQUIRE(areVectorsApproxEqual(result, expected));
+        }
+        SECTION("Resulting in a line")
+        {
+            std::vector<std::pair<double, double>> const coords{
+                {1.0, 1.0}, {2.0, 2.0}, {3.0, 3.0}};
+            auto const result{getLowestDegreePolynomial(coords)};
+            // f(x) = x
+            std::vector<double> const expected{0.0, 1.0, 0.0};
+            REQUIRE(areVectorsApproxEqual(result, expected));
+        }
+        SECTION("Resulting in a complex parabola")
+        {
+            std::vector<std::pair<double, double>> const coords{
+                {0.0, -1.0}, {1.0, 1.0}, {4.0, 1.0}};
+            auto const result{getLowestDegreePolynomial(coords)};
+            // f(x) = -0.5x^2 + 2.5x - 1
+            std::vector<double> const expected{-1.0, 2.5, -0.5};
+            REQUIRE(areVectorsApproxEqual(result, expected));
+        }
     }
 
     SECTION("Input with no points")
     {
         std::vector<std::pair<double, double>> const coords{};
         auto const result{getLowestDegreePolynomial(coords)};
-        std::vector<double> const expected{}; // No polynomial possible
+        // No polynomial possible
+        std::vector<double> const expected;
         REQUIRE(result == expected);
     }
 
@@ -93,7 +107,8 @@ TEST_CASE("[Math] getLowestDegreePolynomial() method", "[utils][Math]")
     {
         std::vector<std::pair<double, double>> const coords{{2.0, 4.0}};
         auto const result{getLowestDegreePolynomial(coords)};
-        std::vector<double> const expected{4.0}; // f(x) = 4
+        // f(x) = 4
+        std::vector<double> const expected{4.0};
         REQUIRE(areVectorsApproxEqual(result, expected));
     }
 }

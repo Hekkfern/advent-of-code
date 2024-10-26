@@ -24,10 +24,10 @@ struct std::hash<Item> {
 TEST_CASE("[LoopCache] run() method", "[utils][LoopCache]")
 {
     Item item{0};
-    LoopCache::run<Item>(item, 1000ULL, [](Item& item) -> void {
-        ++item.value;
-        if (item.value > 7) {
-            item.value = 0;
+    LoopCache::run<Item>(item, 1000ULL, [](Item& x) -> void {
+        ++x.value;
+        if (x.value > 7) {
+            x.value = 0;
         }
     });
     CHECK(item.value == 0);

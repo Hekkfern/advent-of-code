@@ -72,8 +72,8 @@ void moveValueCircularly(
         return; // Do nothing
     }
 
-    auto it{numbers.begin()};
-    std::advance(it, position);
+    auto numbersIt{numbers.begin()};
+    std::advance(numbersIt, position);
 
     /**
      * @brief      Advance an iterator by the given amount, with wrap-around
@@ -147,10 +147,10 @@ void moveValueCircularly(
 
     if (offset > 0) {
         // Use the positive offset for positive numbers
-        numbers.splice(positive_offset(it, offset), numbers, it);
+        numbers.splice(positive_offset(numbersIt, offset), numbers, numbersIt);
     } else if (offset < 0) {
         // Use the negative offset for negative numbers
-        numbers.splice(negative_offset(it, offset), numbers, it);
+        numbers.splice(negative_offset(numbersIt, offset), numbers, numbersIt);
     }
 }
 template <typename T>

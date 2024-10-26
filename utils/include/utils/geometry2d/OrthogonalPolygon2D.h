@@ -42,7 +42,7 @@ public:
      */
     [[nodiscard]] uint64_t area() const noexcept override
     {
-        return calculateArbitraryPolygonArea(mVertexes);
+        return static_cast<uint64_t>(calculateArbitraryPolygonArea(mVertexes));
     }
     /**
      * @copydoc IShape::isOutside

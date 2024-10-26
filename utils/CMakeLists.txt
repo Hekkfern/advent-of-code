@@ -55,7 +55,8 @@ set(_SOURCES_UTILS_GRAPH
 set(_SOURCES_UTILS_EXTENSIONS
     include/utils/extensions/ContainerExtensions.hpp
     include/utils/extensions/StringHash.h
-    include/utils/extensions/ContainerTools.h)
+    include/utils/extensions/ContainerTools.h
+        include/utils/algorithms/RemoveDuplicates.hpp)
 add_library(
   ${_LIB_NAME} STATIC
   ${_SOURCES_UTILS}

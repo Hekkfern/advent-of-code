@@ -5,7 +5,11 @@ namespace utils::math {
 std::vector<double> getLowestDegreePolynomial(
     std::vector<std::pair<double, double>> const& coords) noexcept
 {
-    std::size_t n = coords.size();
+    if (coords.empty()) {
+        return {};
+    }
+
+    std::size_t const n{coords.size()};
     std::vector<double> coefficients(n, 0.0);
 
     for (std::size_t i = 0; i < n; ++i) {

@@ -11,7 +11,8 @@ set(_TESTFILES
     StringTests.cpp MathTests.cpp FileTests.cpp DynamicProgrammingTests.cpp
     CombinationsTests.cpp ConceptsTests.cpp)
 set(_TESTFILES_ALGORITHMS algorithms/ClampedCountIfTests.cpp
-                          algorithms/SteppedIotaTests.cpp)
+                          algorithms/SteppedIotaTests.cpp
+        algorithms/RemoveDuplicatesTests.cpp)
 set(_TESTFILES_CACHE cache/LRUCacheTests.cpp cache/MemoizationTests.cpp
                      cache/LoopCacheTests.cpp cache/InfiniteCacheTests.cpp)
 set(_TESTFILES_INTERVAL interval/IntervalTests.cpp
