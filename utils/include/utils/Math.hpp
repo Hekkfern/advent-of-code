@@ -2,6 +2,8 @@
 
 #include "Concepts.hpp"
 #include <numeric>
+#include <span>
+#include <vector>
 
 namespace utils::math {
 
@@ -24,8 +26,8 @@ template <IntegerType T>
 /**
  * @brief      Computes the "least common multiple" of the selected integers
  *
- * @param      m     First number.
- * @param      n     Second number.
+ * @param[in]  m     First number.
+ * @param[in]  n     Second number.
  *
  * @tparam     M     Type of the first number.
  * @tparam     N     Type of the second number.
@@ -40,8 +42,8 @@ template <NumericType M, NumericType N>
 /**
  * @brief      Computes the "least common multiple" of the selected integers
  *
- * @param      first  First number.
- * @param      rest   Other numbers.
+ * @param[in]  first  First number.
+ * @param[in]  rest   Other numbers.
  *
  * @tparam     M      Type of the first number.
  * @tparam     Rest   Type of the other numbers.
@@ -85,5 +87,18 @@ template <NumericType M, NumericType... Rest>
 {
     return std::gcd(first, gcd(rest...));
 }
+/**
+ * @brief      Applies "Lagrange Polynomial"
+ *             (https://en.wikipedia.org/wiki/Lagrange_polynomial) technique to
+ *             get the coefficients of the lowest degree polynomial that
+ *             interpolates the given set of points.
+ *
+ * @param[in]  coords  The coordinates to use.
+ *
+ * @return     Coefficients of the resulting polynomial, ordered from lowest to
+ *             highest degree.
+ */
+[[nodiscard]] std::vector<double> getLowestDegreePolynomial(
+    std::vector<std::pair<double, double>> const& coords) noexcept;
 
 } // namespace utils::math
