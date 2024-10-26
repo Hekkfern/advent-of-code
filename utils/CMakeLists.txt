@@ -22,7 +22,7 @@ set(_SOURCES_UTILS
     src/DynamicProgramming.cpp
     include/utils/DynamicProgramming.hpp
     include/utils/Hash.hpp
-        src/Math.cpp)
+    src/Math.cpp)
 set(_SOURCES_UTILS_ALGORITHMS include/utils/algorithms/ClampedCountIf.hpp
                               include/utils/algorithms/SteppedIota.hpp)
 set(_SOURCES_UTILS_INTERVAL include/utils/interval/Interval.hpp
@@ -56,7 +56,7 @@ set(_SOURCES_UTILS_EXTENSIONS
     include/utils/extensions/ContainerExtensions.hpp
     include/utils/extensions/StringHash.h
     include/utils/extensions/ContainerTools.h
-        include/utils/algorithms/RemoveDuplicates.hpp)
+    include/utils/algorithms/RemoveDuplicates.hpp)
 add_library(
   ${_LIB_NAME} STATIC
   ${_SOURCES_UTILS}

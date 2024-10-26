@@ -240,8 +240,7 @@ public:
     {
         return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
-    [[nodiscard]] T const&
-    at(Coord const& coords) const noexcept
+    [[nodiscard]] T const& at(Coord const& coords) const noexcept
     {
         return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
@@ -372,19 +371,16 @@ public:
      * @return     A vector of pairs of indices (row, col) for each occurrence
      *             of the value.
      */
-    [[nodiscard]] std::vector<Coord>
-    findAll(T const& value) const noexcept
+    [[nodiscard]] std::vector<Coord> findAll(T const& value) const noexcept
     {
         return mFlatGrid | ranges::views::enumerate
             | ranges::views::filter([&value](auto const& pair) -> bool {
                    return pair.second == value;
                })
-            | ranges::views::transform(
-                   [this](auto const& pair) -> Coord {
-                       std::size_t index = pair.first;
-                       return Coord{
-                           index % mWidth, index / mWidth};
-                   })
+            | ranges::views::transform([this](auto const& pair) -> Coord {
+                   std::size_t index = pair.first;
+                   return Coord{index % mWidth, index / mWidth};
+               })
             | ranges::to<std::vector<Coord>>();
     }
     /**
@@ -445,8 +441,7 @@ public:
      * @return     A @ref PositionStatus enum indicating the status of the
      *             coordinates.
      */
-    [[nodiscard]] PositionStatus
-    where(Coord const& coords) const noexcept
+    [[nodiscard]] PositionStatus where(Coord const& coords) const noexcept
     {
         auto const x{coords.getX()};
         auto const y{coords.getY()};
@@ -461,9 +456,8 @@ public:
      * @return     The new position after moving in the given direction, or
      * std::nullopt if the movement is not possible.
      */
-    [[nodiscard]] constexpr std::optional<Coord> move(
-        Coord const& position,
-        Direction2D const& direction) const noexcept
+    [[nodiscard]] constexpr std::optional<Coord>
+    move(Coord const& position, Direction2D const& direction) const noexcept
     {
         auto const result{position.move(direction)};
         if (!result || where(*result) == PositionStatus::Outside) {
@@ -479,8 +473,8 @@ public:
      *
      * @return List of valid positions.
      */
-    [[nodiscard]] std::vector<Coord> getCardinalNeighbors(
-        Coord const& position) const noexcept
+    [[nodiscard]] std::vector<Coord>
+    getCardinalNeighbors(Coord const& position) const noexcept
     {
         std::vector<Coord> neighbors;
         for (auto const direction : Direction2D::cardinalAll()) {

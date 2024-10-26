@@ -93,7 +93,8 @@ template <NumericType M, NumericType... Rest>
  *             get the coefficients of the lowest degree polynomial that
  *             interpolates the given set of points.
  *
- * @param[in]  coords  The coordinates to use. It CANNOT contain duplicated points.
+ * @param[in]  coords  The coordinates to use. It CANNOT contain duplicated
+ *                     points.
  *
  * @return     Coefficients of the resulting polynomial, ordered from lowest to
  *             highest degree.
