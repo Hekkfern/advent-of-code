@@ -8,7 +8,6 @@
 #include <range/v3/algorithm/find_if.hpp>
 #include <range/v3/algorithm/swap_ranges.hpp>
 #include <range/v3/range/conversion.hpp>
-#include <range/v3/view.hpp>
 #include <range/v3/view/chunk.hpp>
 #include <range/v3/view/drop.hpp>
 #include <range/v3/view/enumerate.hpp>

@@ -1,6 +1,9 @@
 #pragma once
 
-#include "Grid2D.hpp"
+#include "Coordinate2D.hpp"
+#include <range/v3/range/conversion.hpp>
+#include <range/v3/view/join.hpp>
+#include <utils/Math.hpp>
 
 namespace utils::geometry2d {
 
@@ -23,18 +26,13 @@ public:
      *
      * @param[in]  grid  The grid in 2D format.
      */
-    explicit InfiniteGrid2D(Grid2D<T>& grid) noexcept
-        : mGrid{grid}
+    explicit InfiniteGrid2D(std::vector<std::vector<T>> const& grid) noexcept
     {
-    }
-    /**
-     * @brief      Constructs a new instance.
-     *
-     * @param[in]  grid  The grid in 2D format.
-     */
-    explicit InfiniteGrid2D(Grid2D<T>&& grid) noexcept
-        : mGrid{std::move(grid)}
-    {
+        if (!grid.empty()) {
+            mFlatGrid = grid | ranges::views::join | ranges::to<std::vector>;
+            mWidth = grid[0].size();
+            mHeight = grid.size();
+        }
     }
     /**
      * @brief      Equality operator.
@@ -46,7 +44,8 @@ public:
     [[nodiscard]] constexpr bool
     operator==(InfiniteGrid2D const& other) const noexcept
     {
-        return mGrid == other.mGrid;
+        return mWidth == other.mWidth && mHeight == other.mHeight
+            && mFlatGrid == other.mFlatGrid;
     }
     /**
      * @brief      Accesses the element at the specified row and column.
@@ -63,12 +62,12 @@ public:
      */
     [[nodiscard]] T& at(int64_t const row, int64_t const col) noexcept
     {
-        return mGrid.at(row, col);
+        return mFlatGrid[row * mWidth + col];
     }
     [[nodiscard]] T const&
     at(int64_t const row, int64_t const col) const noexcept
     {
-        return mGrid.at(row, col);
+        return mFlatGrid[row * mWidth + col];
     }
     /** }@ */
     /**
@@ -85,19 +84,20 @@ public:
      */
     [[nodiscard]] T& at(Coord const& coords) noexcept
     {
-        return mGrid.at(coords.getY(), coords.getX());
+        auto const x{static_cast<std::size_t>(
+            utils::math::modulusFloor<int64_t>(coords.getX(), mWidth))};
+        auto const y{static_cast<std::size_t>(
+            utils::math::modulusFloor<int64_t>(coords.getY(), mHeight))};
+        return mFlatGrid[y * mWidth + x];
     }
     [[nodiscard]] T const& at(Coord const& coords) const noexcept
     {
-        return mGrid.at(coords.getY(), coords.getX());
+        return at(coords);
     }
-    [[nodiscard]] T& at(Coord&& coords) noexcept
-    {
-        return mGrid.at(coords.getY(), coords.getX());
-    }
+    [[nodiscard]] T& at(Coord&& coords) noexcept { return at(coords); }
     [[nodiscard]] T const& at(Coord&& coords) const noexcept
     {
-        return mGrid.at(coords.getY(), coords.getX());
+        return at(coords);
     }
     /** }@ */
     /**
@@ -112,7 +112,11 @@ public:
     [[nodiscard]] constexpr std::optional<Coord>
     move(Coord const& position, Direction2D const& direction) const noexcept
     {
-        // TODO
+        auto const result{position.move(direction)};
+        if (!result) {
+            return std::nullopt;
+        }
+        return *result;
     }
     /**
      * @brief     Gets all the valid neighbors (in the four main directions) of
@@ -125,11 +129,31 @@ public:
     [[nodiscard]] std::vector<Coord>
     getCardinalNeighbors(Coord const& position) const noexcept
     {
-        // TODO
+        std::vector<Coord> neighbors;
+        for (auto const direction : Direction2D::cardinalAll()) {
+            auto const newPosition{move(position, direction)};
+            if (newPosition) {
+                neighbors.push_back(*newPosition);
+            }
+        }
+        return neighbors;
     }
 
 private:
-    Grid2D<T> mGrid;
+    /**
+     * Flat representation of the 2D grid of rocks.
+     *
+     * @details    Rows are concatenated one after another.
+     */
+    std::vector<T> mFlatGrid{};
+    /**
+     * The width of the grid.
+     */
+    std::size_t mWidth{0ULL};
+    /**
+     * The height of the grid.
+     */
+    std::size_t mHeight{0ULL};
 };
 
 } // namespace utils::geometry2d
