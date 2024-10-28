@@ -208,13 +208,13 @@ TEST_CASE("[Grid2D] at() method", "[utils][Grid2D]")
         SECTION("Read")
         {
             Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
-            auto& item{grid2D.at(1, 1)};
+            auto& item{grid2D.at(1ULL, 1ULL)};
             CHECK(item == 4);
         }
-        SECTION("Write and write")
+        SECTION("Read and write")
         {
             Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
-            auto& item{grid2D.at(1, 1)};
+            auto& item{grid2D.at(1ULL, 1ULL)};
             CHECK(item == 4);
             item = 57;
             CHECK(item == 57);
@@ -225,13 +225,13 @@ TEST_CASE("[Grid2D] at() method", "[utils][Grid2D]")
         SECTION("Read")
         {
             Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
-            auto& item{grid2D.at(Coordinate2D<std::size_t>{1ULL, 1ULL})};
+            auto& item{grid2D.at(Grid2D<int>::Coord{1ULL, 1ULL})};
             CHECK(item == 4);
         }
-        SECTION("Write and write")
+        SECTION("Read and write")
         {
             Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
-            auto& item{grid2D.at(Coordinate2D<std::size_t>{1ULL, 1ULL})};
+            auto& item{grid2D.at(Grid2D<int>::Coord{1ULL, 1ULL})};
             CHECK(item == 4);
             item = 57;
             CHECK(item == 57);
@@ -273,10 +273,10 @@ TEST_CASE("[Grid2D] flipHorizontal() method", "[utils][Grid2D]")
          * 1 2    2 1
          */
         Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
-        CHECK(grid2D.at(0, 0) == 1);
+        CHECK(grid2D.at(0ULL, 0ULL) == 1);
         grid2D.flipHorizontal();
         CHECK(grid2D == Grid2D<int>{{{2, 1}, {4, 3}, {6, 5}}});
-        CHECK(grid2D.at(0, 0) == 2);
+        CHECK(grid2D.at(0ULL, 0ULL) == 2);
     }
 }
 
@@ -296,10 +296,10 @@ TEST_CASE("[Grid2D] flipVertical() method", "[utils][Grid2D]")
          * 1 2    5 6
          */
         Grid2D<int> grid2D{{{1, 2}, {3, 4}, {5, 6}}};
-        CHECK(grid2D.at(0, 0) == 1);
+        CHECK(grid2D.at(0ULL, 0ULL) == 1);
         grid2D.flipVertical();
         CHECK(grid2D == Grid2D<int>{{{5, 6}, {3, 4}, {1, 2}}});
-        CHECK(grid2D.at(0, 0) == 5);
+        CHECK(grid2D.at(0ULL, 0ULL) == 5);
     }
 }
 
@@ -429,22 +429,22 @@ TEST_CASE("[Grid2D] where() method", "[utils][Grid2D]")
         SECTION("Inside")
         {
             CHECK(
-                grid2D.where(Coordinate2D<std::size_t>{1, 1})
+                grid2D.where(Grid2D<int>::Coord{1, 1})
                 == PositionStatus::Inside);
         }
         SECTION("On Border")
         {
             CHECK(
-                grid2D.where(Coordinate2D<std::size_t>{0, 0})
+                grid2D.where(Grid2D<int>::Coord{0, 0})
                 == PositionStatus::OnBorder);
             CHECK(
-                grid2D.where(Coordinate2D<std::size_t>{2, 2})
+                grid2D.where(Grid2D<int>::Coord{2, 2})
                 == PositionStatus::OnBorder);
         }
         SECTION("Outside")
         {
             CHECK(
-                grid2D.where(Coordinate2D<std::size_t>{7, 4})
+                grid2D.where(Grid2D<int>::Coord{7, 4})
                 == PositionStatus::Outside);
         }
     }
@@ -458,26 +458,26 @@ TEST_CASE("[Grid2D] move() method", "[utils][Grid2D]")
     {
         SECTION("Move right by 1")
         {
-            auto const result{grid2D.move(
-                Coordinate2D<std::size_t>{1, 0}, Direction2D::Right)};
+            auto const result{
+                grid2D.move(Grid2D<int>::Coord{1, 0}, Direction2D::Right)};
             REQUIRE(result);
-            CHECK(*result == Coordinate2D<std::size_t>{2, 0});
+            CHECK(*result == Grid2D<int>::Coord{2, 0});
         }
 
         SECTION("Move up by 1")
         {
             auto const result{
-                grid2D.move(Coordinate2D<std::size_t>{0, 1}, Direction2D::Up)};
+                grid2D.move(Grid2D<int>::Coord{0, 1}, Direction2D::Up)};
             REQUIRE(result);
-            CHECK(*result == Coordinate2D<std::size_t>{0, 2});
+            CHECK(*result == Grid2D<int>::Coord{0, 2});
         }
 
         SECTION("Move diagonally by 1 right and 1 up")
         {
-            auto const result{grid2D.move(
-                Coordinate2D<std::size_t>{1, 1}, Direction2D::UpRight)};
+            auto const result{
+                grid2D.move(Grid2D<int>::Coord{1, 1}, Direction2D::UpRight)};
             REQUIRE(result);
-            CHECK(*result == Coordinate2D<std::size_t>{2, 2});
+            CHECK(*result == Grid2D<int>::Coord{2, 2});
         }
     }
 
@@ -485,29 +485,29 @@ TEST_CASE("[Grid2D] move() method", "[utils][Grid2D]")
     {
         SECTION("Right side")
         {
-            auto const result{grid2D.move(
-                Coordinate2D<std::size_t>{3, 3}, Direction2D::Right)};
+            auto const result{
+                grid2D.move(Grid2D<int>::Coord{3, 3}, Direction2D::Right)};
             CHECK_FALSE(result);
         }
 
         SECTION("Left side")
         {
-            auto const result{grid2D.move(
-                Coordinate2D<std::size_t>{0, 1}, Direction2D::Left)};
+            auto const result{
+                grid2D.move(Grid2D<int>::Coord{0, 1}, Direction2D::Left)};
             CHECK_FALSE(result);
         }
 
         SECTION("Up side")
         {
             auto const result{
-                grid2D.move(Coordinate2D<std::size_t>{3, 3}, Direction2D::Up)};
+                grid2D.move(Grid2D<int>::Coord{3, 3}, Direction2D::Up)};
             CHECK_FALSE(result);
         }
 
         SECTION("Down side")
         {
-            auto const result{grid2D.move(
-                Coordinate2D<std::size_t>{3, 0}, Direction2D::Down)};
+            auto const result{
+                grid2D.move(Grid2D<int>::Coord{3, 0}, Direction2D::Down)};
             CHECK_FALSE(result);
         }
     }
@@ -519,13 +519,13 @@ TEST_CASE("[Grid2D] getCardinalNeighbors() method", "[utils][Grid2D]")
 
     SECTION("Position inside")
     {
-        std::vector<Coordinate2D<std::size_t>> const expected{
-            Coordinate2D<std::size_t>{0ULL, 1ULL},
-            Coordinate2D<std::size_t>{2ULL, 1ULL},
-            Coordinate2D<std::size_t>{1ULL, 0ULL},
-            Coordinate2D<std::size_t>{1ULL, 2ULL}};
+        std::vector<Grid2D<int>::Coord> const expected{
+            Grid2D<int>::Coord{0ULL, 1ULL},
+            Grid2D<int>::Coord{2ULL, 1ULL},
+            Grid2D<int>::Coord{1ULL, 0ULL},
+            Grid2D<int>::Coord{1ULL, 2ULL}};
         auto const result{
-            grid2D.getCardinalNeighbors(Coordinate2D<std::size_t>{1, 1})};
+            grid2D.getCardinalNeighbors(Grid2D<int>::Coord{1, 1})};
         REQUIRE(result.size() == expected.size());
         for (auto const& item : result) {
             CHECK(ranges::contains(result, item));
@@ -536,11 +536,10 @@ TEST_CASE("[Grid2D] getCardinalNeighbors() method", "[utils][Grid2D]")
     {
         SECTION("Top-right corner")
         {
-            std::vector<Coordinate2D<std::size_t>> const expected{
-                Coordinate2D<std::size_t>{1ULL, 2ULL},
-                Coordinate2D<std::size_t>{2ULL, 1ULL}};
+            std::vector<Grid2D<int>::Coord> const expected{
+                Grid2D<int>::Coord{1ULL, 2ULL}, Grid2D<int>::Coord{2ULL, 1ULL}};
             auto const result{
-                grid2D.getCardinalNeighbors(Coordinate2D<std::size_t>{2, 2})};
+                grid2D.getCardinalNeighbors(Grid2D<int>::Coord{2, 2})};
             REQUIRE(result.size() == expected.size());
             for (auto const& item : result) {
                 CHECK(ranges::contains(result, item));
@@ -549,11 +548,10 @@ TEST_CASE("[Grid2D] getCardinalNeighbors() method", "[utils][Grid2D]")
 
         SECTION("Bottom-left corner")
         {
-            std::vector<Coordinate2D<std::size_t>> const expected{
-                Coordinate2D<std::size_t>{1ULL, 0ULL},
-                Coordinate2D<std::size_t>{0ULL, 1ULL}};
+            std::vector<Grid2D<int>::Coord> const expected{
+                Grid2D<int>::Coord{1ULL, 0ULL}, Grid2D<int>::Coord{0ULL, 1ULL}};
             auto const result{
-                grid2D.getCardinalNeighbors(Coordinate2D<std::size_t>{0, 0})};
+                grid2D.getCardinalNeighbors(Grid2D<int>::Coord{0, 0})};
             REQUIRE(result.size() == expected.size());
             for (auto const& item : result) {
                 CHECK(ranges::contains(result, item));

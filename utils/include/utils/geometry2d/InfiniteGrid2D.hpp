@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Coordinate2D.hpp"
+#include <range/v3/algorithm/swap_ranges.hpp>
 #include <range/v3/range/conversion.hpp>
+#include <range/v3/view/iota.hpp>
 #include <range/v3/view/join.hpp>
 #include <utils/Math.hpp>
 
@@ -84,22 +86,81 @@ public:
      */
     [[nodiscard]] T& at(Coord const& coords) noexcept
     {
-        auto const x{static_cast<std::size_t>(
-            utils::math::modulusFloor<int64_t>(coords.getX(), mWidth))};
-        auto const y{static_cast<std::size_t>(
-            utils::math::modulusFloor<int64_t>(coords.getY(), mHeight))};
-        return mFlatGrid[y * mWidth + x];
+        auto const clampedCoords{clampCoordinates(coords)};
+        return mFlatGrid[clampedCoords.getY() * mWidth + clampedCoords.getX()];
     }
     [[nodiscard]] T const& at(Coord const& coords) const noexcept
     {
-        return at(coords);
+        auto const clampedCoords{clampCoordinates(coords)};
+        return mFlatGrid[clampedCoords.getY() * mWidth + clampedCoords.getX()];
     }
-    [[nodiscard]] T& at(Coord&& coords) noexcept { return at(coords); }
+    [[nodiscard]] T& at(Coord&& coords) noexcept
+    {
+        auto const clampedCoords{clampCoordinates(coords)};
+        return mFlatGrid[clampedCoords.getY() * mWidth + clampedCoords.getX()];
+    }
     [[nodiscard]] T const& at(Coord&& coords) const noexcept
     {
-        return at(coords);
+        auto const clampedCoords{clampCoordinates(coords)};
+        return mFlatGrid[clampedCoords.getY() * mWidth + clampedCoords.getX()];
     }
     /** }@ */
+    /**
+     * @brief      Flips the grid horizontally (i.e., invert columns).
+     */
+    void flipHorizontal() noexcept
+    {
+        for (auto row : ranges::views::iota(0ULL, mHeight)) {
+            auto const rowStart{mFlatGrid.begin() + row * mWidth};
+            auto const rowEnd{rowStart + mWidth};
+            std::reverse(rowStart, rowEnd);
+        }
+    }
+    /**
+     * @brief      Flips the grid vertically (i.e., invert rows).
+     */
+    void flipVertical() noexcept
+    {
+        std::size_t const totalSwaps = mHeight / 2;
+
+        for (std::size_t i{0ULL}; i < totalSwaps; ++i) {
+            auto const topRowStart{std::next(mFlatGrid.begin(), i * mWidth)};
+            auto const bottomRowStart{
+                std::next(mFlatGrid.begin(), (mHeight - 1ULL - i) * mWidth)};
+            ranges::swap_ranges(
+                topRowStart, topRowStart + mWidth, bottomRowStart);
+        }
+    }
+    /**
+     * @brief      Rotates the grid 90 degrees clockwise.
+     */
+    void rotateClockwise() noexcept
+    {
+        std::vector<T> rotatedGrid(mWidth * mHeight);
+        for (std::size_t row{0ULL}; row < mHeight; ++row) {
+            for (std::size_t col{0ULL}; col < mWidth; ++col) {
+                rotatedGrid[col * mHeight + (mHeight - 1ULL - row)] = mFlatGrid
+                    [row * mWidth + col];
+            }
+        }
+        std::swap(mWidth, mHeight);
+        mFlatGrid = std::move(rotatedGrid);
+    }
+    /**
+     * @brief      Rotates the grid 90 degrees counterclockwise.
+     */
+    void rotateCounterClockwise() noexcept
+    {
+        std::vector<T> rotatedGrid(mWidth * mHeight);
+        for (std::size_t row{0ULL}; row < mHeight; ++row) {
+            for (std::size_t col{0ULL}; col < mWidth; ++col) {
+                rotatedGrid[(mWidth - 1ULL - col) * mHeight + row] = mFlatGrid
+                    [row * mWidth + col];
+            }
+        }
+        std::swap(mWidth, mHeight);
+        mFlatGrid = std::move(rotatedGrid);
+    }
     /**
      * @brief      Moves a position in the grid according to a given direction.
      *
@@ -107,7 +168,7 @@ public:
      * @param[in]  direction  The direction to move.
      *
      * @return     The new position after moving in the given direction, or
-     * std::nullopt if the movement is not possible.
+     *             std::nullopt if the movement is not possible.
      */
     [[nodiscard]] constexpr std::optional<Coord>
     move(Coord const& position, Direction2D const& direction) const noexcept
@@ -119,12 +180,12 @@ public:
         return *result;
     }
     /**
-     * @brief     Gets all the valid neighbors (in the four main directions) of
-     * a given position in the grid.
+     * @brief      Gets all the valid neighbors (in the four main directions) of
+     *             a given position in the grid.
      *
-     * @param[in] position The position to get the neighbors of.
+     * @param[in]  position  The position to get the neighbors of.
      *
-     * @return List of valid positions.
+     * @return     List of valid positions.
      */
     [[nodiscard]] std::vector<Coord>
     getCardinalNeighbors(Coord const& position) const noexcept
@@ -140,6 +201,23 @@ public:
     }
 
 private:
+    /**
+     * @brief      Clamps the coordinates to the grid boundaries.
+     *
+     * @param[in]  coords  The coordinates to clamp.
+     *
+     * @return     The clamped coordinates.
+     */
+    [[nodiscard]] constexpr
+    Coord clampCoordinates(Coord& coords) const noexcept
+    {
+        return Coord{
+            static_cast<std::size_t>(
+                utils::math::modulusFloor<int64_t>(coords.getX(), mWidth)),
+            static_cast<std::size_t>(
+                utils::math::modulusFloor<int64_t>(coords.getY(), mHeight))};
+    }
+
     /**
      * Flat representation of the 2D grid of rocks.
      *

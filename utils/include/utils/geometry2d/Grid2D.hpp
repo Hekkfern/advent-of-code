@@ -413,8 +413,8 @@ public:
      * @brief      Determines the position status of given coordinates in the
      *             grid.
      *
-     * @param[in]  row     The row index.
-     * @param[in]  col     The column index.
+     * @param[in]  row   The row index.
+     * @param[in]  col   The column index.
      *
      * @return     A @ref PositionStatus enum indicating the status of the
      *             coordinates.
@@ -453,7 +453,7 @@ public:
      * @param[in]  direction  The direction to move.
      *
      * @return     The new position after moving in the given direction, or
-     * std::nullopt if the movement is not possible.
+     *             std::nullopt if the movement is not possible.
      */
     [[nodiscard]] constexpr std::optional<Coord>
     move(Coord const& position, Direction2D const& direction) const noexcept
@@ -465,12 +465,12 @@ public:
         return *result;
     }
     /**
-     * @brief     Gets all the valid neighbors (in the four main directions) of
-     * a given position in the grid.
+     * @brief      Gets all the valid neighbors (in the four main directions) of
+     *             a given position in the grid.
      *
-     * @param[in] position The position to get the neighbors of.
+     * @param[in]  position  The position to get the neighbors of.
      *
-     * @return List of valid positions.
+     * @return     List of valid positions.
      */
     [[nodiscard]] std::vector<Coord>
     getCardinalNeighbors(Coord const& position) const noexcept
