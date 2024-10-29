@@ -122,7 +122,7 @@ getStartingNeighbor(Field const& field, Point2D<int32_t> const& start)
 
 std::string solvePart1(std::filesystem::path const& filePath)
 {
-    auto const [field, start]{parseInput(filePath)};
+    auto const [field, start]{parseInputForPart1(filePath)};
     // look for two pipes connected to the start
     auto currentPosition{getStartingNeighbor(field, start)};
     auto previousPosition{start};
@@ -139,7 +139,7 @@ std::string solvePart1(std::filesystem::path const& filePath)
 
 std::string solvePart2(std::filesystem::path const& filePath)
 {
-    auto const [field, start]{parseInput(filePath)};
+    auto const [field, start]{parseInputForPart1(filePath)};
     // look for two pipes connected to the start
     auto currentPosition{getStartingNeighbor(field, start)};
     auto previousPosition{start};
