@@ -5,6 +5,7 @@
 #include <utils/File.hpp>
 #include <utils/geometry2d/Grid2D.hpp>
 #include <utils/geometry2d/InfiniteGrid2D.hpp>
+#include <utils/Math.hpp>
 
 using namespace utils::geometry2d;
 
@@ -158,9 +159,13 @@ solvePart2(std::filesystem::path const& filePath, uint32_t const maxSteps)
 {
     auto const [grid, startPosition]{parseInputForPart2(filePath)};
     auto const x0{calculateNumberOfPlotsForPart2(grid, startPosition, 65)};
-    auto const x1{calculateNumberOfPlotsForPart2(grid, startPosition, 131 + 65)};
-    auto const x2{calculateNumberOfPlotsForPart2(grid, startPosition, 131 * 2 + 65)};
-    return "";
+    auto const x1{
+        calculateNumberOfPlotsForPart2(grid, startPosition, 131 + 65)};
+    auto const x2{
+        calculateNumberOfPlotsForPart2(grid, startPosition, 131 * 2 + 65)};
+    const auto coefficients{utils::math::getLowestDegreePolynomial({x0, x1, x2})};
+    int64_t rounds = (maxSteps - 65) / 131;
+    return coefficients[0] + coefficients[1] * rounds + coefficients[2] * rounds * rounds;
 }
 
 // ---------- End of Public Methods ----------
