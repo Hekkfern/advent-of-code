@@ -64,12 +64,14 @@ public:
      */
     [[nodiscard]] T& at(int64_t const row, int64_t const col) noexcept
     {
-        return mFlatGrid[row * mWidth + col];
+        auto const clampedCoords{clampCoordinates(Coord{col, row})};
+        return mFlatGrid[clampedCoords.getY() * mWidth + clampedCoords.getX()];
     }
     [[nodiscard]] T const&
     at(int64_t const row, int64_t const col) const noexcept
     {
-        return mFlatGrid[row * mWidth + col];
+        auto const clampedCoords{clampCoordinates(Coord{col, row})};
+        return mFlatGrid[clampedCoords.getY() * mWidth + clampedCoords.getX()];
     }
     /** }@ */
     /**
@@ -208,8 +210,8 @@ private:
      *
      * @return     The clamped coordinates.
      */
-    [[nodiscard]] constexpr
-    Coord clampCoordinates(Coord& coords) const noexcept
+    [[nodiscard]] constexpr Coord
+    clampCoordinates(Coord const& coords) const noexcept
     {
         return Coord{
             static_cast<std::size_t>(

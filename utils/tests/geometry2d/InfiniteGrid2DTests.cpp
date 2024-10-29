@@ -54,8 +54,8 @@ TEST_CASE("[InfiniteGrid2D] at() method", "[utils][InfiniteGrid2D]")
             }
             SECTION("Outside")
             {
-                auto& item{grid2D.at(-10LL, 20LL)};
-                CHECK(item == 3);
+                auto& item{grid2D.at(4LL, -3LL)};
+                CHECK(item == 4);
             }
         }
         SECTION("Read and write")
@@ -79,8 +79,8 @@ TEST_CASE("[InfiniteGrid2D] at() method", "[utils][InfiniteGrid2D]")
             }
             SECTION("Outside")
             {
-                auto& item{grid2D.at(InfiniteGrid2D<int>::Coord{-10LL, 20LL})};
-                CHECK(item == 3);
+                auto& item{grid2D.at(InfiniteGrid2D<int>::Coord{-3LL, 4LL})};
+                CHECK(item == 4);
             }
         }
         SECTION("Read and write")
@@ -212,28 +212,32 @@ TEST_CASE("[InfiniteGrid2D] move() method", "[utils][InfiniteGrid2D]")
         {
             auto const result{grid2D.move(
                 InfiniteGrid2D<int>::Coord{3, 3}, Direction2D::Right)};
-            CHECK_FALSE(result);
+            REQUIRE(result);
+            CHECK(*result == InfiniteGrid2D<int>::Coord{4, 3});
         }
 
         SECTION("Left side")
         {
             auto const result{grid2D.move(
                 InfiniteGrid2D<int>::Coord{0, 1}, Direction2D::Left)};
-            CHECK_FALSE(result);
+            REQUIRE(result);
+            CHECK(*result == InfiniteGrid2D<int>::Coord{-1, 1});
         }
 
         SECTION("Up side")
         {
             auto const result{
                 grid2D.move(InfiniteGrid2D<int>::Coord{3, 3}, Direction2D::Up)};
-            CHECK_FALSE(result);
+            REQUIRE(result);
+            CHECK(*result == InfiniteGrid2D<int>::Coord{3, 4});
         }
 
         SECTION("Down side")
         {
             auto const result{grid2D.move(
                 InfiniteGrid2D<int>::Coord{3, 0}, Direction2D::Down)};
-            CHECK_FALSE(result);
+            REQUIRE(result);
+            CHECK(*result == InfiniteGrid2D<int>::Coord{3, -1});
         }
     }
 }
@@ -258,32 +262,18 @@ TEST_CASE(
         }
     }
 
-    SECTION("Out of bounds")
+    SECTION("Position outside")
     {
-        SECTION("Top-right corner")
-        {
-            std::vector<InfiniteGrid2D<int>::Coord> const expected{
-                InfiniteGrid2D<int>::Coord{1ULL, 2ULL},
-                InfiniteGrid2D<int>::Coord{2ULL, 1ULL}};
-            auto const result{
-                grid2D.getCardinalNeighbors(InfiniteGrid2D<int>::Coord{2, 2})};
-            REQUIRE(result.size() == expected.size());
-            for (auto const& item : result) {
-                CHECK(ranges::contains(result, item));
-            }
-        }
-
-        SECTION("Bottom-left corner")
-        {
-            std::vector<InfiniteGrid2D<int>::Coord> const expected{
-                InfiniteGrid2D<int>::Coord{1ULL, 0ULL},
-                InfiniteGrid2D<int>::Coord{0ULL, 1ULL}};
-            auto const result{
-                grid2D.getCardinalNeighbors(InfiniteGrid2D<int>::Coord{0, 0})};
-            REQUIRE(result.size() == expected.size());
-            for (auto const& item : result) {
-                CHECK(ranges::contains(result, item));
-            }
+        std::vector<InfiniteGrid2D<int>::Coord> const expected{
+            InfiniteGrid2D<int>::Coord{2ULL, 2ULL},
+            InfiniteGrid2D<int>::Coord{4ULL, 2ULL},
+            InfiniteGrid2D<int>::Coord{3ULL, 1ULL},
+            InfiniteGrid2D<int>::Coord{3ULL, 3ULL}};
+        auto const result{
+            grid2D.getCardinalNeighbors(InfiniteGrid2D<int>::Coord{3, 2})};
+        REQUIRE(result.size() == expected.size());
+        for (auto const& item : result) {
+            CHECK(ranges::contains(result, item));
         }
     }
 }

@@ -28,7 +28,7 @@ set(_TESTFILES_GEOMETRY2D
     geometry2d/Operations2DTests.cpp
     geometry2d/Line2DTests.cpp
     geometry2d/Grid2DTests.cpp
-        geometry2d/InfiniteGrid2DTests.cpp
+    geometry2d/InfiniteGrid2DTests.cpp
     geometry2d/OrthogonalPolygon2DTests.cpp
     geometry2d/Calculations2DTests.cpp
     geometry2d/OrthogonalLine2DTests.cpp)
