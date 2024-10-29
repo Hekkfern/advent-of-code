@@ -37,6 +37,18 @@ public:
         }
     }
     /**
+     * @brief      Gets the width of the base grid.
+     *
+     * @return     The width.
+     */
+    [[nodiscard]] std::size_t getBaseWidth() const noexcept { return mWidth; }
+    /**
+     * @brief      Gets the height of the base grid.
+     *
+     * @return     The height.
+     */
+    [[nodiscard]] std::size_t getBaseHeight() const noexcept { return mHeight; }
+    /**
      * @brief      Equality operator.
      *
      * @param[in]  other  The other object.
