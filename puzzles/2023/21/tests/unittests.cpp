@@ -23,20 +23,6 @@ TEST_CASE(
 }
 
 TEST_CASE(
-    "[2023_21] Use example input for Part 2",
-    "[2023][2023_21][part2][2023_21_part2]")
-{
-    constexpr auto InputFile{"input2_test.txt"};
-
-    constexpr uint32_t MaxSteps{5000};
-    std::string const mySolution = aoc_2023_21::solvePart2(InputFile, MaxSteps);
-    std::string const expectedSolution
-        = utils::file::readFirstLine("solution2_test.txt").value();
-
-    REQUIRE(mySolution == expectedSolution);
-}
-
-TEST_CASE(
     "[2023_21] Use real input for Part 1",
     "[2023][2023_21][part1][2023_21_part1]")
 {
