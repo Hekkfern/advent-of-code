@@ -10,8 +10,8 @@
 namespace aoc_2023_21 {
 
 std::string
-solvePart1(std::filesystem::path const& filePath, uint32_t maxSteps);
+solvePart1(std::filesystem::path const& filePath, uint64_t maxSteps);
 std::string
-solvePart2(std::filesystem::path const& filePath, uint32_t maxSteps);
+solvePart2(std::filesystem::path const& filePath, uint64_t maxSteps);
 
 } // namespace aoc_2023_21

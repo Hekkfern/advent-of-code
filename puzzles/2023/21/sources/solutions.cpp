@@ -1,9 +1,11 @@
 #include "solutions.hpp"
 
-#include <range/v3/algorithm/for_each.hpp>
+#include <queue>
+#include <range/v3/algorithm/fold_left.hpp>
+#include <unordered_map>
 #include <unordered_set>
 #include <utils/File.hpp>
-#include <utils/Math.hpp>
+#include <utils/extensions/ContainerTools.h>
 #include <utils/geometry2d/Grid2D.hpp>
 #include <utils/geometry2d/InfiniteGrid2D.hpp>
 
@@ -17,7 +19,7 @@ enum class PositionType { GardenPlot, Rock };
 
 using Garden1Grid = Grid2D<PositionType>;
 using Garden2Grid = InfiniteGrid2D<PositionType>;
-using Steps = uint32_t;
+using Steps = uint64_t;
 
 PositionType convertToPositionType(char const c) noexcept
 {
@@ -117,40 +119,61 @@ uint64_t calculateNumberOfPlotsForPart1(
     Garden1Grid::Coord const& startPosition,
     uint64_t const maxSteps) noexcept
 {
-    std::unordered_set<Garden1Grid::Coord> current;
-    std::unordered_set<Garden1Grid::Coord> next{startPosition};
-    ranges::for_each(ranges::views::iota(0U, maxSteps), [&](uint32_t) -> void {
-        current = next;
-        next.clear();
-        for (auto coord : current) {
-            for (auto const& neighbor : getNeighboursForPart1(grid, coord)) {
-                next.emplace(neighbor);
+    std::unordered_map<Steps, uint64_t> stepsToPlots;
+    std::unordered_set<Garden1Grid::Coord> visited;
+    std::queue<std::pair<Garden1Grid::Coord, Steps>> queue;
+    queue.emplace(startPosition, 0);
+    auto current = utils::extensions::try_take_front(queue);
+    while (current) {
+        auto const [position, steps]{*current};
+        if (steps <= maxSteps && not visited.contains(position)) {
+            stepsToPlots[steps] += 1;
+            visited.emplace(position);
+            for (
+                auto const& neighbour : getNeighboursForPart1(grid, position)) {
+                queue.emplace(neighbour, steps + 1);
             }
         }
-    });
-    return next.size();
+        /* get next */
+        current = utils::extensions::try_take_front(queue);
+    }
+    return ranges::fold_left(
+        stepsToPlots,
+        0ULL,
+        [maxSteps](uint64_t const acc, std::pair<Steps, uint64_t> const& pair) {
+            return acc + (pair.first % 2 == maxSteps % 2 ? pair.second : 0);
+        });
 }
 
 uint64_t calculateNumberOfPlotsForPart2(
     Garden2Grid const& grid,
     Garden2Grid::Coord const& startPosition,
-    uint64_t const rounds) noexcept
+    uint64_t const maxSteps) noexcept
 {
-    int64_t const fullSize{static_cast<int64_t>(grid.getBaseWidth())};
-    int64_t const edgeSize{fullSize / 2};
-    std::unordered_set<Garden2Grid::Coord> current;
-    std::unordered_set<Garden2Grid::Coord> next{startPosition};
-    auto const maxSteps{edgeSize + fullSize * rounds};
-    ranges::for_each(ranges::views::iota(0U, maxSteps), [&](uint32_t) -> void {
-        current = next;
-        next.clear();
-        for (auto coord : current) {
-            for (auto const& neighbor : getNeighboursForPart2(grid, coord)) {
-                next.emplace(neighbor);
+    std::unordered_map<Steps, uint64_t> stepsToPlots;
+    std::unordered_set<Garden2Grid::Coord> visited;
+    std::queue<std::pair<Garden2Grid::Coord, Steps>> queue;
+    queue.emplace(startPosition, 0);
+    auto current = utils::extensions::try_take_front(queue);
+    while (current) {
+        auto const [position, steps]{*current};
+        if (steps <= maxSteps && not visited.contains(position)) {
+            stepsToPlots[steps] += 1;
+            visited.emplace(position);
+            for (
+                auto const& neighbour : getNeighboursForPart2(grid, position)) {
+                queue.emplace(neighbour, steps + 1);
             }
         }
-    });
-    return next.size();
+        /* get next */
+        current = utils::extensions::try_take_front(queue);
+    }
+    return ranges::fold_left(
+        stepsToPlots,
+        0ULL,
+        [maxSteps](uint64_t const acc, std::pair<Steps, uint64_t> const& pair) {
+            return acc + (pair.first % 2 == maxSteps % 2 ? pair.second : 0);
+        });
 }
 
 /**
@@ -185,16 +208,19 @@ solvePart1(std::filesystem::path const& filePath, Steps const maxSteps)
 }
 
 std::string
-solvePart2(std::filesystem::path const& filePath, uint32_t const maxSteps)
+solvePart2(std::filesystem::path const& filePath, Steps const maxSteps)
 {
     auto const [grid, startPosition]{parseInputForPart2(filePath)};
     int64_t const fullSize{static_cast<int64_t>(grid.getBaseWidth())};
     int64_t const edgeSize{fullSize / 2};
-    auto const y0{calculateNumberOfPlotsForPart2(grid, startPosition, 0)};
-    auto const y1{calculateNumberOfPlotsForPart2(grid, startPosition, 1)};
-    auto const y2{calculateNumberOfPlotsForPart2(grid, startPosition, 2)};
+    auto const y0{calculateNumberOfPlotsForPart2(grid, startPosition, 65)};
+    auto const y1{
+        calculateNumberOfPlotsForPart2(grid, startPosition, 65 + 131)};
+    auto const y2{
+        calculateNumberOfPlotsForPart2(grid, startPosition, 65 + (2 * 131))};
     auto const coefficients{solveQuadraticSystem(y0, y1, y2)};
-    int64_t const maxRounds = (maxSteps - edgeSize) / fullSize;
+    int64_t const maxRounds = (static_cast<int64_t>(maxSteps) - edgeSize)
+        / fullSize;
     return std::to_string(
         coefficients[0] + coefficients[1] * maxRounds
         + coefficients[2] * maxRounds * maxRounds);

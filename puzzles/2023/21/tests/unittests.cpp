@@ -14,7 +14,7 @@ TEST_CASE(
 {
     constexpr auto InputFile{"input1_test.txt"};
 
-    constexpr uint32_t MaxSteps{6};
+    constexpr uint64_t MaxSteps{6};
     std::string const mySolution = aoc_2023_21::solvePart1(InputFile, MaxSteps);
     std::string const expectedSolution
         = utils::file::readFirstLine("solution1_test.txt").value();
@@ -28,7 +28,7 @@ TEST_CASE(
 {
     constexpr auto InputFile{"input.txt"};
 
-    constexpr uint32_t MaxSteps{64};
+    constexpr uint64_t MaxSteps{64};
     std::string const mySolution = aoc_2023_21::solvePart1(InputFile, MaxSteps);
     std::string const expectedSolution
         = utils::file::readFirstLine("solution1.txt").value();
@@ -42,7 +42,7 @@ TEST_CASE(
 {
     constexpr auto InputFile{"input.txt"};
 
-    constexpr uint32_t MaxSteps{26501365};
+    constexpr uint64_t MaxSteps{26501365};
     std::string const mySolution = aoc_2023_21::solvePart2(InputFile, MaxSteps);
     std::string const expectedSolution
         = utils::file::readFirstLine("solution2.txt").value();

@@ -11,7 +11,7 @@ int main()
 {
     std::string const inputFile{"input.txt"};
 
-    static constexpr uint32_t MaxStepsForPart1{64};
+    static constexpr uint64_t MaxStepsForPart1{64};
     std::string solution1;
     auto const part1ExecTime = utils::time::calculateExecutionTime(
         [&solution1, &inputFile = std::as_const(inputFile)]() {
@@ -19,7 +19,7 @@ int main()
         });
     utils::aoc::printPart1Solution(solution1, part1ExecTime);
 
-    static constexpr uint32_t MaxStepsForPart2{26501365};
+    static constexpr uint64_t MaxStepsForPart2{26501365};
     std::string solution2;
     auto const part2ExecTime = utils::time::calculateExecutionTime(
         [&solution2, &inputFile = std::as_const(inputFile)]() {
