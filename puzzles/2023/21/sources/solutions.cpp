@@ -112,10 +112,29 @@ std::vector<Garden2Grid::Coord> getNeighboursForPart2(
         | ranges::to<std::vector>;
 }
 
+uint64_t calculateNumberOfPlotsForPart1(
+    Garden1Grid const& grid,
+    Garden1Grid::Coord const& startPosition,
+    uint64_t const maxSteps) noexcept
+{
+    std::unordered_set<Garden1Grid::Coord> current;
+    std::unordered_set<Garden1Grid::Coord> next{startPosition};
+    ranges::for_each(ranges::views::iota(0U, maxSteps), [&](uint32_t) -> void {
+        current = next;
+        next.clear();
+        for (auto coord : current) {
+            for (auto const& neighbor : getNeighboursForPart1(grid, coord)) {
+                next.emplace(neighbor);
+            }
+        }
+    });
+    return next.size();
+}
+
 uint64_t calculateNumberOfPlotsForPart2(
     Garden2Grid const& grid,
     Garden2Grid::Coord const& startPosition,
-    uint64_t rounds) noexcept
+    uint64_t const rounds) noexcept
 {
     int64_t const fullSize{static_cast<int64_t>(grid.getBaseWidth())};
     int64_t const edgeSize{fullSize / 2};
@@ -160,19 +179,9 @@ std::string
 solvePart1(std::filesystem::path const& filePath, Steps const maxSteps)
 {
     auto const [grid, startPosition]{parseInputForPart1(filePath)};
-    /* analyze the garden */
-    std::unordered_set<Garden1Grid::Coord> current;
-    std::unordered_set<Garden1Grid::Coord> next{startPosition};
-    ranges::for_each(ranges::views::iota(0U, maxSteps), [&](uint32_t) -> void {
-        current = next;
-        next.clear();
-        for (auto coord : current) {
-            for (auto const& neighbor : getNeighboursForPart1(grid, coord)) {
-                next.emplace(neighbor);
-            }
-        }
-    });
-    return std::to_string(next.size());
+    auto const result{
+        calculateNumberOfPlotsForPart1(grid, startPosition, maxSteps)};
+    return std::to_string(result);
 }
 
 std::string
