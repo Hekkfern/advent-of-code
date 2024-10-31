@@ -34,7 +34,7 @@ public:
      * @param[in]  x     Coordinate X.
      * @param[in]  y     Coordinate Y.
      */
-    constexpr explicit Vector2D(T const x, T const y)
+    constexpr explicit Vector2D(T const x, T const y) noexcept
         : mX{x}
         , mY{y}
     {
@@ -320,7 +320,7 @@ private:
  * @brief      Multiplication operator, which multiplies the coordinates of a
  *             vector by a scalar value.
  *
- * @param[in]  vector2d  The vector to scale.
+ * @param[in]  v  The vector to scale.
  * @param[in]  value     The scalar value to scale by.
  *
  * @tparam     T         Type of the coordinate values.
@@ -330,18 +330,17 @@ private:
  */
 template <SignedIntegerType T, IntegerType U>
 [[nodiscard]] constexpr Vector2D<T>
-operator*(Vector2D<T> const& vector2d, U const value) noexcept
+operator*(Vector2D<T> const& v, U const value) noexcept
 {
     return Vector2D<T>{
-        static_cast<T>(value) * vector2d.getX(),
-        static_cast<T>(value) * vector2d.getY()};
+        static_cast<T>(value) * v.getX(), static_cast<T>(value) * v.getY()};
 }
 /**
  * @brief      Multiplication operator, which multiplies the coordinates of a
  *             vector by a scalar value.
  *
  * @param[in]  value     The scalar value to scale by.
- * @param[in]  vector2d  The vector to scale.
+ * @param[in]  v  The vector to scale.
  *
  * @tparam     T         Type of the coordinate values.
  * @tparam     U         Type of the scalar value.
@@ -350,9 +349,9 @@ operator*(Vector2D<T> const& vector2d, U const value) noexcept
  */
 template <SignedIntegerType T, IntegerType U>
 [[nodiscard]] constexpr Vector2D<T>
-operator*(U const value, Vector2D<T> const& vector2d) noexcept
+operator*(U const value, Vector2D<T> const& v) noexcept
 {
-    return vector2d * value;
+    return v * value;
 }
 
 } // namespace utils::geometry2d
@@ -362,6 +361,6 @@ struct std::hash<utils::geometry2d::Vector2D<T>> {
     std::size_t
     operator()(utils::geometry2d::Vector2D<T> const& k) const noexcept
     {
-        return std::hash<T>()(k.getX()) ^ std::hash<T>()(k.getY());
+        return k.calculateHash();
     }
 };

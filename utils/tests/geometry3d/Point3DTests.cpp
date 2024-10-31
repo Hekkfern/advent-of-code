@@ -64,7 +64,7 @@ TEST_CASE("[Point3D] Constructor", "[Point3D]")
     {
         SECTION("Positive values")
         {
-            Point3D<> const point3D{Coord3D<>{2, 4, 5}};
+            Point3D<> const point3D{Coordinate3D<>{2, 4, 5}};
             CHECK(point3D.getX() == 2);
             CHECK(point3D.getY() == 4);
             CHECK(point3D.getZ() == 5);
@@ -75,7 +75,7 @@ TEST_CASE("[Point3D] Constructor", "[Point3D]")
         }
         SECTION("Positive and negatives values")
         {
-            Point3D<> const point3D{Coord3D<>{-2, 3, -1}};
+            Point3D<> const point3D{Coordinate3D<>{-2, 3, -1}};
             CHECK(point3D.getX() == -2);
             CHECK(point3D.getY() == 3);
             CHECK(point3D.getZ() == -1);
@@ -89,7 +89,7 @@ TEST_CASE("[Point3D] Constructor", "[Point3D]")
 
 TEST_CASE("[Point3D] getNeighbors() method", "[utils][Point3D]")
 {
-    Point3D<> const point3D{Coord3D<>{2, 4, 5}};
+    Point3D<> const point3D{Coordinate3D<>{2, 4, 5}};
     auto const neighbors{point3D.getNeighbors()};
     CHECK(neighbors.size() == 6U);
 }

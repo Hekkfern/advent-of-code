@@ -9,7 +9,7 @@
 
 int main()
 {
-    std::string const inputFile{ "input.txt" };
+    std::string const inputFile{"input.txt"};
 
     std::string solution1;
     auto const part1ExecTime = utils::time::calculateExecutionTime(

@@ -76,9 +76,7 @@ public:
      */
     [[nodiscard]] constexpr bool
     operator==(Coordinate2D const& other) const noexcept
-    {
-        return mX == other.mX && mY == other.mY;
-    }
+        = default;
     /**
      * @brief      Represents this class as a @ref std::string
      *

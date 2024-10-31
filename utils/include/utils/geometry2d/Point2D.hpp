@@ -111,9 +111,7 @@ public:
      */
     [[nodiscard]] constexpr bool
     operator==(Point2D<T> const& other) const noexcept
-    {
-        return mCoordinates == other.mCoordinates;
-    }
+        = default;
     /**
      * @brief      Negation operator.
      *

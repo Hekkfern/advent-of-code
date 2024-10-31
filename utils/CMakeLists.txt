@@ -48,7 +48,7 @@ set(_SOURCES_UTILS_GEOMETRY2D
     include/utils/geometry2d/InfiniteGrid2D.hpp)
 set(_SOURCES_UTILS_GEOMETRY3D
     include/utils/geometry3d/Point3D.hpp include/utils/geometry3d/Vector3D.hpp
-    include/utils/geometry3d/Coord3D.hpp
+    include/utils/geometry3d/Coordinate3D.hpp
     include/utils/geometry3d/Operations3D.hpp)
 set(_SOURCES_UTILS_GRAPH
     include/utils/graph/Graph.hpp include/utils/graph/Vertex.hpp

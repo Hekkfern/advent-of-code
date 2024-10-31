@@ -6,27 +6,24 @@
 
 namespace utils::geometry3d {
 
+/**
+ * @brief      Calculates the point result of applying an arbitrary
+ * movement to the selected point.
+ *
+ * @param[in]  origin      The origin point.
+ * @param[in]  movement  The vector of the movement.
+ *
+ * @return     Resulting position of the movement.
+ */
 template <SignedIntegerType T = int32_t>
-class Operations3D {
-public:
-    /**
-     * @brief      Calculates the point result of applying an arbitrary
-     * movement to the selected point.
-     *
-     * @param[in]  origin      The origin point.
-     * @param[in]  movement  The vector of the movement.
-     *
-     * @return     Resulting position of the movement.
-     */
-    [[nodiscard]] static Point3D<T>
-    move(Point3D<T> const& origin, Vector3D<T> const& movement)
-    {
-        return Point3D<T>{
-            origin.getX() + movement.getX(),
-            origin.getY() + movement.getY(),
-            origin.getZ() + movement.getZ()};
-    }
-};
+[[nodiscard]] static Point3D<T>
+move(Point3D<T> const& origin, Vector3D<T> const& movement) noexcept
+{
+    return Point3D<T>{
+        origin.getX() + movement.getX(),
+        origin.getY() + movement.getY(),
+        origin.getZ() + movement.getZ()};
+}
 
 /**
  * @brief      Addition operator to move a @ref Point3D according to a @ref
@@ -39,10 +36,11 @@ public:
  */
 template <SignedIntegerType T = int32_t>
 [[nodiscard]] Point3D<T>
-operator+(Point3D<T> const& origin, Vector3D<T> const& movement)
+operator+(Point3D<T> const& origin, Vector3D<T> const& movement) noexcept
 {
-    return Operations3D<T>::move(origin, movement);
+    return move(origin, movement);
 }
+
 /**
  * @brief      Addition operator to move a @ref Point3D according to a @ref
  * Vector3D.
@@ -54,10 +52,11 @@ operator+(Point3D<T> const& origin, Vector3D<T> const& movement)
  */
 template <SignedIntegerType T = int32_t>
 [[nodiscard]] Point3D<T>
-operator+(Vector3D<T> const& movement, Point3D<T> const& origin)
+operator+(Vector3D<T> const& movement, Point3D<T> const& origin) noexcept
 {
-    return Operations3D<T>::move(origin, movement);
+    return move(origin, movement);
 }
+
 /**
  * @brief      Addition assignment operator to move a @ref Point3D according to
  *             a @ref Vector3D.
@@ -70,7 +69,7 @@ operator+(Vector3D<T> const& movement, Point3D<T> const& origin)
  * @return     The result of the movement.
  */
 template <SignedIntegerType T = int32_t>
-void operator+=(Point3D<T>& point, Vector3D<T> const& movement)
+void operator+=(Point3D<T>& point, Vector3D<T> const& movement) noexcept
 {
     point = point + movement;
 }

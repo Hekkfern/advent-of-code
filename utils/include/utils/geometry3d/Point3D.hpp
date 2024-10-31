@@ -1,11 +1,10 @@
 #pragma once
 
-#include "Coord3D.hpp"
+#include "Coordinate3D.hpp"
 #include "utils/Concepts.hpp"
 #include <array>
 #include <cstdint>
 #include <ostream>
-#include <vector>
 
 namespace utils::geometry3d {
 
@@ -15,7 +14,7 @@ public:
     /**
      * @brief      Default constructor.
      */
-    explicit Point3D() = default;
+    constexpr explicit Point3D() = default;
     /**
      * @brief      Constructs a new instance.
      *
@@ -23,10 +22,8 @@ public:
      * @param[in]  y     Coordinate Y.
      * @param[in]  z     Coordinate Z.
      */
-    explicit Point3D(T x, T y, T z)
-        : mX{x}
-        , mY{y}
-        , mZ{z}
+    constexpr explicit Point3D(T x, T y, T z)
+        : mCoordinates{Coordinate3D<T>{x, y, z}}
     {
     }
     /**
@@ -34,10 +31,8 @@ public:
      *
      * @param[in]  coords     Coordinates.
      */
-    explicit Point3D(Coord3D<T> const coords)
-        : mX{coords.mX}
-        , mY{coords.mY}
-        , mZ{coords.mZ}
+    constexpr explicit Point3D(Coordinate3D<T> const& coords)
+        : mCoordinates{coords}
     {
     }
     /**
@@ -45,58 +40,89 @@ public:
      *
      * @return     The coordinates as a group (X,Y,Z).
      */
-    [[nodiscard]] Coord3D<T> getCoordinates() const { return {mX, mY, mZ}; }
+    [[nodiscard]] constexpr Coordinate3D<T> getCoordinates() const
+    {
+        return mCoordinates;
+    }
     /**
      * @brief      Gets the coordinate X.
      *
      * @return     The coordinate X.
      */
-    [[nodiscard]] T getX() const { return mX; }
+    [[nodiscard]] constexpr T getX() const { return mCoordinates.getX(); }
     /**
      * @brief      Gets the coordinate Y.
      *
      * @return     The coordinate Y.
      */
-    [[nodiscard]] T getY() const { return mY; }
+    [[nodiscard]] constexpr T getY() const { mCoordinates.getY(); }
     /**
      * @brief      Gets the coordinate Z.
      *
      * @return     The coordinate Z.
      */
-    [[nodiscard]] T getZ() const { return mZ; }
+    [[nodiscard]] constexpr T getZ() const { mCoordinates.getZ(); }
     /**
      * @brief Gets a list of all the colliding points.
      *
      * @return List of colliding points.
      */
-    [[nodiscard]] std::vector<Point3D<T>> getNeighbors() const noexcept
+    [[nodiscard]] constexpr std::array<Point3D, 6ULL>
+    getNeighbors() const noexcept
     {
-        return std::vector<Point3D<T>>{
-            Point3D{mX, mY + 1, mZ},
-            Point3D{mX + 1, mY, mZ},
-            Point3D{mX, mY - 1, mZ},
-            Point3D{mX - 1, mY + 1, mZ},
-            Point3D{mX, mY, mZ + 1},
-            Point3D{mX, mY, mZ - 1}};
+        return {
+            Point3D{
+                mCoordinates.getX(),
+                mCoordinates.getY() + 1,
+                mCoordinates.getZ()},
+            Point3D{
+                mCoordinates.getX() + 1,
+                mCoordinates.getY(),
+                mCoordinates.getZ()},
+            Point3D{
+                mCoordinates.getX(),
+                mCoordinates.getY() - 1,
+                mCoordinates.getZ()},
+            Point3D{
+                mCoordinates.getX() - 1,
+                mCoordinates.getY() + 1,
+                mCoordinates.getZ()},
+            Point3D{
+                mCoordinates.getX(),
+                mCoordinates.getY(),
+                mCoordinates.getZ() + 1},
+            Point3D{
+                mCoordinates.getX(),
+                mCoordinates.getY(),
+                mCoordinates.getZ() - 1}};
     }
     /**
      * @brief      Sets the coordinate X.
      *
      * @param[in]  x     The coordinate X.
      */
-    void setX(T const x) { mX = x; }
+    [[nodiscard]] constexpr Point3D setX(T const x) const noexcept
+    {
+        return Point3D{mCoordinates.setX(x)};
+    }
     /**
      * @brief      Sets the coordinate Y.
      *
      * @param[in]  y     The coordinate Y.
      */
-    void setY(T const y) { mY = y; }
+    [[nodiscard]] constexpr Point3D setY(T const y) const noexcept
+    {
+        return Point3D{mCoordinates.setY(y)};
+    }
     /**
      * @brief      Sets the coordinate Z.
      *
      * @param[in]  z     The coordinate Z.
      */
-    void setZ(T const z) { mZ = z; }
+    [[nodiscard]] constexpr Point3D setZ(T const z) const noexcept
+    {
+        return Point3D{mCoordinates.setZ(z)};
+    }
     /**
      * @brief      Equality operator.
      *
@@ -104,38 +130,16 @@ public:
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] bool operator==(Point3D const& other) const
-    {
-        return (mX == other.mX) && (mY == other.mY) && (mZ == other.mZ);
-    }
-    /**
-     * @brief      Addition operator, which sums the coordinates of both
-     *             objects.
-     *
-     * @param[in]  other  The other object.
-     *
-     * @return     The result of the addition.
-     */
-    [[nodiscard]] Point3D operator+(Point3D const& other) const
-    {
-        return Point3D{mX + other.mX, mY + other.mY, mZ + other.mZ};
-    }
+    [[nodiscard]] bool operator==(Point3D const& other) const = default;
     /**
      * @brief      Negation operator.
      *
      * @return     The result of the subtraction
      */
-    [[nodiscard]] Point3D operator-() const { return Point3D{-mX, -mY, -mZ}; }
-    /**
-     * @brief      Subtraction operator.
-     *
-     * @param[in]  other  The other
-     *
-     * @return     The result of the subtraction
-     */
-    [[nodiscard]] Point3D operator-(Point3D const& other) const
+    [[nodiscard]] Point3D operator-() const
     {
-        return *this + (-other);
+        return Point3D{
+            -mCoordinates.getX(), -mCoordinates.getY(), -mCoordinates.getZ()};
     }
     /**
      * @brief      Factory method to create a new Point based on the selected
@@ -153,27 +157,45 @@ public:
     {
         return Point3D{static_cast<T>(x), static_cast<T>(y), static_cast<T>(z)};
     }
+    /**
+     * @brief      Represents this class as a @ref std::string
+     *
+     * @return     String representing this class.
+     */
+    [[nodiscard]] std::string toString() const
+    {
+        return mCoordinates.toString();
+    }
+    /**
+     * @brief      Calculates the hash of this instance
+     *
+     * @return     Hash of the instance
+     */
+    [[nodiscard]] std::size_t calculateHash() const noexcept
+    {
+        return mCoordinates.calculateHash();
+    }
 
 private:
-    friend std::ostream& operator<<(std::ostream& os, Point3D const& point2d)
+    /**
+     * @brief      "Insert string into stream" operator.
+     *
+     * @param[in]  os    The output stream.
+     * @param[in]  obj   The object.
+     *
+     * @return     The updated output stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& os, Point3D<T> const& obj) noexcept
     {
-        os << '(' << point2d.mX << ',' << point2d.mY << ',' << point2d.mZ
-           << ')';
+        os << obj.toString();
         return os;
     }
 
     /**
-     * Stores coordinate X.
+     * Stores coordinate X, Y and Z.
      */
-    int32_t mX{0U};
-    /**
-     * Stores coordinate Y.
-     */
-    int32_t mY{0U};
-    /**
-     * Stores coordinate Z.
-     */
-    int32_t mZ{0U};
+    Coordinate3D<T> mCoordinates{};
 };
 
 } // namespace utils::geometry3d
@@ -181,9 +203,8 @@ private:
 template <SignedIntegerType T>
 struct std::hash<utils::geometry3d::Point3D<T>> {
     std::size_t
-    operator()(utils::geometry3d::Point3D<T> const& k) const noexcept
+    operator()(utils::geometry3d::Point3D<T> const& obj) const noexcept
     {
-        return std::hash<T>()(k.getX()) ^ std::hash<T>()(k.getY())
-            ^ std::hash<T>()(k.getZ());
+        return obj.calculateHash();
     }
 };

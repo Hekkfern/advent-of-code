@@ -72,7 +72,7 @@ TEST_CASE("[Vector3D] Constructor", "[utils][Vector3D]")
     {
         SECTION("Positive values")
         {
-            Vector3D<> const vector3D{Coord3D<>{2, 4, 5}};
+            Vector3D<> const vector3D{Coordinate3D<>{2, 4, 5}};
             CHECK(vector3D.getX() == 2);
             CHECK(vector3D.getY() == 4);
             CHECK(vector3D.getZ() == 5);
@@ -83,7 +83,7 @@ TEST_CASE("[Vector3D] Constructor", "[utils][Vector3D]")
         }
         SECTION("Positive and negatives values")
         {
-            Vector3D<> const vector3D{Coord3D<>{-2, 3, -1}};
+            Vector3D<> const vector3D{Coordinate3D<>{-2, 3, -1}};
             CHECK(vector3D.getX() == -2);
             CHECK(vector3D.getY() == 3);
             CHECK(vector3D.getZ() == -1);
