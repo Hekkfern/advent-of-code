@@ -6,161 +6,194 @@ using namespace utils::geometry3d;
 
 TEST_CASE("[Point3D] create() method", "[utils][Point3D]")
 {
-    SECTION("Positive values")
+    SECTION("Runtime tests")
     {
-        Point3D<> const point3D{Point3D<>::create(2, 4, 5)};
-        CHECK(point3D.getX() == 2);
-        CHECK(point3D.getY() == 4);
-        CHECK(point3D.getZ() == 5);
-    }
-    SECTION("Positive and negatives values")
-    {
-        Point3D<> const point3D{Point3D<>::create(-2, 3, -1)};
-        CHECK(point3D.getX() == -2);
-        CHECK(point3D.getY() == 3);
-        CHECK(point3D.getZ() == -1);
+        SECTION("Positive values")
+        {
+            Point3D const point3D{Point3D<>::create(2, 4)};
+            CHECK(point3D.getX() == 2);
+            CHECK(point3D.getY() == 4);
+        }
+        SECTION("Positive and negatives values")
+        {
+            Point3D const point3D{Point3D<>::create(-2, 3)};
+            CHECK(point3D.getX() == -2);
+            CHECK(point3D.getY() == 3);
+        }
     }
 }
 
 TEST_CASE("[Point3D] Constructor", "[Point3D]")
 {
-    SECTION("Default constructor")
+    SECTION("Runtime tests")
     {
-        Point3D<> const point3D;
-        CHECK(point3D.getX() == 0);
-        CHECK(point3D.getY() == 0);
-        CHECK(point3D.getZ() == 0);
-        auto const coords{point3D.getCoordinates()};
-        CHECK(coords.mX == 0);
-        CHECK(coords.mY == 0);
-        CHECK(coords.mZ == 0);
+        SECTION("Default constructor")
+        {
+            Point3D<> const point3D;
+            CHECK(point3D.getX() == 0);
+            CHECK(point3D.getY() == 0);
+            auto const coords{point3D.getCoordinates()};
+            CHECK(coords.getX() == 0);
+            CHECK(coords.getY() == 0);
+        }
+        SECTION("Parametrized constructor")
+        {
+            SECTION("Positive values")
+            {
+                Point3D const point3D{2, 4};
+                CHECK(point3D.getX() == 2);
+                CHECK(point3D.getY() == 4);
+                auto const coords{point3D.getCoordinates()};
+                CHECK(coords.getX() == 2);
+                CHECK(coords.getY() == 4);
+            }
+            SECTION("Positive and negatives values")
+            {
+                Point3D const point3D{-2, 3};
+                CHECK(point3D.getX() == -2);
+                CHECK(point3D.getY() == 3);
+                auto const coords{point3D.getCoordinates()};
+                CHECK(coords.getX() == -2);
+                CHECK(coords.getY() == 3);
+            }
+        }
+        SECTION("Group constructor")
+        {
+            SECTION("Positive values")
+            {
+                Point3D const point3D{Coordinate3D{2, 4}};
+                CHECK(point3D.getX() == 2);
+                CHECK(point3D.getY() == 4);
+                auto const coords{point3D.getCoordinates()};
+                CHECK(coords.getX() == 2);
+                CHECK(coords.getY() == 4);
+            }
+            SECTION("Positive and negatives values")
+            {
+                Point3D const point3D{Coordinate3D{-2, 3}};
+                CHECK(point3D.getX() == -2);
+                CHECK(point3D.getY() == 3);
+                auto const coords{point3D.getCoordinates()};
+                CHECK(coords.getX() == -2);
+                CHECK(coords.getY() == 3);
+            }
+        }
     }
-    SECTION("Parametrized constructor")
+}
+
+TEST_CASE("[Point3D] Constructor and containers", "[Point3D]")
+{
+    SECTION("Runtime tests")
     {
-        SECTION("Positive values")
+        SECTION("Array")
         {
-            Point3D<> const point3D{2, 4, 5};
-            CHECK(point3D.getX() == 2);
-            CHECK(point3D.getY() == 4);
-            CHECK(point3D.getZ() == 5);
-            auto const coords{point3D.getCoordinates()};
-            CHECK(coords.mX == 2);
-            CHECK(coords.mY == 4);
-            CHECK(coords.mZ == 5);
-        }
-        SECTION("Positive and negatives values")
-        {
-            Point3D<> const point3D{-2, 3, -1};
-            CHECK(point3D.getX() == -2);
-            CHECK(point3D.getY() == 3);
-            CHECK(point3D.getZ() == -1);
-            auto const coords{point3D.getCoordinates()};
-            CHECK(coords.mX == -2);
-            CHECK(coords.mY == 3);
-            CHECK(coords.mZ == -1);
-        }
-    }
-    SECTION("Group constructor")
-    {
-        SECTION("Positive values")
-        {
-            Point3D<> const point3D{Coordinate3D<>{2, 4, 5}};
-            CHECK(point3D.getX() == 2);
-            CHECK(point3D.getY() == 4);
-            CHECK(point3D.getZ() == 5);
-            auto const coords{point3D.getCoordinates()};
-            CHECK(coords.mX == 2);
-            CHECK(coords.mY == 4);
-            CHECK(coords.mZ == 5);
-        }
-        SECTION("Positive and negatives values")
-        {
-            Point3D<> const point3D{Coordinate3D<>{-2, 3, -1}};
-            CHECK(point3D.getX() == -2);
-            CHECK(point3D.getY() == 3);
-            CHECK(point3D.getZ() == -1);
-            auto const coords{point3D.getCoordinates()};
-            CHECK(coords.mX == -2);
-            CHECK(coords.mY == 3);
-            CHECK(coords.mZ == -1);
+            std::array<Point3D<int32_t>, 2U> const points;
+            for (auto const& p : points) {
+                CHECK(p.getX() == 0);
+                CHECK(p.getY() == 0);
+            }
         }
     }
 }
 
 TEST_CASE("[Point3D] getNeighbors() method", "[utils][Point3D]")
 {
-    Point3D<> const point3D{Coordinate3D<>{2, 4, 5}};
-    auto const neighbors{point3D.getNeighbors()};
-    CHECK(neighbors.size() == 6U);
+    SECTION("Runtime tests")
+    {
+        Point3D const point3D{Coordinate3D{2, 4}};
+        auto const neighbors{point3D.getNeighbors()};
+        CHECK(neighbors.size() == 4U);
+    }
 }
 
 TEST_CASE("[Point3D] Setter methods", "[utils][Point3D]")
 {
-    Point3D<> point3D{2, 4, 1};
-    REQUIRE(point3D.getX() == 2);
-    REQUIRE(point3D.getY() == 4);
-    REQUIRE(point3D.getZ() == 1);
-    SECTION("Set X")
+    SECTION("Runtime tests")
     {
-        point3D.setX(3);
-        REQUIRE(point3D.getX() == 3);
-        REQUIRE(point3D.getY() == 4);
-        REQUIRE(point3D.getZ() == 1);
+        Point3D const point3D{2, 4};
+        SECTION("Set X")
+        {
+            auto const p2{point3D.setX(3)};
+            CHECK(p2.getX() == 3);
+            CHECK(p2.getY() == 4);
+        }
+        SECTION("Set Y")
+        {
+            auto const p2{point3D.setY(5)};
+            CHECK(p2.getX() == 2);
+            CHECK(p2.getY() == 5);
+        }
     }
-    SECTION("Set Y")
+    SECTION("Static tests")
     {
-        point3D.setY(5);
-        REQUIRE(point3D.getX() == 2);
-        REQUIRE(point3D.getY() == 5);
-        REQUIRE(point3D.getZ() == 1);
-    }
-    SECTION("Set Z")
-    {
-        point3D.setZ(7);
-        REQUIRE(point3D.getX() == 2);
-        REQUIRE(point3D.getY() == 4);
-        REQUIRE(point3D.getZ() == 7);
+        constexpr Point3D point3D{2, 4};
+        SECTION("Set X")
+        {
+            constexpr auto p2{point3D.setX(3)};
+            STATIC_CHECK(p2.getX() == 3);
+            STATIC_CHECK(p2.getY() == 4);
+        }
+        SECTION("Set Y")
+        {
+            constexpr auto p2{point3D.setY(5)};
+            STATIC_CHECK(p2.getX() == 2);
+            STATIC_CHECK(p2.getY() == 5);
+        }
     }
 }
 
 TEST_CASE("[Point3D] Equality operator", "[utils][Point3D]")
 {
-    SECTION("Different")
+    SECTION("Runtime tests")
     {
-        Point3D const p1{2, 3, 5};
-        Point3D const p2{-4, 2, -3};
-        CHECK_FALSE(p1 == p2);
-        CHECK(p1 != p2);
+        SECTION("Different")
+        {
+            Point3D const p1{2, 3};
+            Point3D const p2{-4, 2};
+            CHECK_FALSE(p1 == p2);
+            CHECK(p1 != p2);
+        }
+        SECTION("Equal")
+        {
+            Point3D const p1{2, 3};
+            Point3D const p2{2, 3};
+            CHECK(p1 == p2);
+            CHECK_FALSE(p1 != p2);
+        }
     }
-    SECTION("Equal")
+    SECTION("Static tests")
     {
-        Point3D const p1{2, 3, 5};
-        Point3D const p2{2, 3, 5};
-        CHECK(p1 == p2);
-        CHECK_FALSE(p1 != p2);
+        SECTION("Different")
+        {
+            constexpr Point3D p1{2, 3};
+            constexpr Point3D p2{-4, 2};
+            STATIC_CHECK_FALSE(p1 == p2);
+            STATIC_CHECK(p1 != p2);
+        }
+        SECTION("Equal")
+        {
+            constexpr Point3D p1{2, 3};
+            constexpr Point3D p2{2, 3};
+            STATIC_CHECK(p1 == p2);
+            STATIC_CHECK_FALSE(p1 != p2);
+        }
     }
-}
-
-TEST_CASE("[Point3D] Addition operator", "[utils][Point3D]")
-{
-    Point3D const p1{-2, 3, 5};
-    Point3D const p2{4, 2, 4};
-    CHECK((p1 + p2) == Point3D{2, 5, 9});
-    CHECK((p2 + p1) == Point3D{2, 5, 9});
 }
 
 TEST_CASE("[Point3D] Negation operator", "[utils][Point3D]")
 {
-    Point3D const p1{-2, 3, 5};
-    Point3D const p2{4, -2, 4};
-    CHECK(-p1 == Point3D{2, -3, -5});
-    CHECK(-p2 == Point3D{-4, 2, -4});
-}
-
-TEST_CASE("[Point3D] Subtraction operator", "[utils][Point3D]")
-{
-    Point3D const p1{-2, 3, 5};
-    Point3D const p2{4, 2, 4};
-    CHECK((p1 - p2) == Point3D{-6, 1, 1});
-    CHECK((p2 - p1) == Point3D{6, -1, -1});
+    SECTION("Runtime tests")
+    {
+        Point3D const p1{-2, 3};
+        Point3D const p2{4, -2};
+        CHECK(-p1 == Point3D{2, -3});
+        CHECK(-p2 == Point3D{-4, 2});
+    }
+    SECTION("Static tests")
+    {
+        constexpr Point3D p1{-2, 3};
+        constexpr Point3D p2{4, -2};
+        STATIC_CHECK(-p1 == Point3D{2, -3});
+        STATIC_CHECK(-p2 == Point3D{-4, 2});
+    }
 }

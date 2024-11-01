@@ -33,12 +33,13 @@ set(_TESTFILES_GEOMETRY2D
     geometry2d/Calculations2DTests.cpp
     geometry2d/OrthogonalLine2DTests.cpp)
 set(_TESTFILES_GEOMETRY3D
-    geometry3d/Point3DTests.cpp geometry3d/Vector3DTests.cpp
-    geometry3d/Operations3DTests.cpp)
+    geometry3d/Coordinate3DTests.cpp geometry3d/Point3DTests.cpp
+    geometry3d/Vector3DTests.cpp geometry3d/Operations3DTests.cpp
+    geometry3d/Line3DTests.cpp geometry3d/OrthogonalLine3DTests.cpp)
 set(_TESTFILES_GRAPH graph/GraphTests.cpp graph/VertexTests.cpp
                      graph/AlgorithmsTests.cpp)
 set(_TESTFILES_EXTENSIONS extensions/ContainerExtensionsTests.cpp
-        ../include/utils/extensions/StringCollections.hpp)
+                          ../include/utils/extensions/StringCollections.hpp)
 add_executable(
   ${_EXEC_NAME}
   ${_TESTFILES}

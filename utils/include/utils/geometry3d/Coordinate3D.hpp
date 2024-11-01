@@ -102,6 +102,24 @@ public:
             + std::to_string(mZ) + "]";
     }
     /**
+     * @brief      Getter for structured binding
+     *
+     * @tparam     N     Number of tuple-like parameters.
+     *
+     * @return     The value of the internal variable, according to @p N.
+     */
+    template <std::size_t N>
+    [[nodiscard]] decltype(auto) get() const
+    {
+        if constexpr (N == 0) {
+            return mX;
+        } else if constexpr (N == 1) {
+            return mY;
+        } else if constexpr (N == 2) {
+            return mZ;
+        }
+    }
+    /**
      * @brief      Calculates the hash of this instance
      *
      * @return     Hash of the instance
@@ -151,4 +169,21 @@ struct std::hash<utils::geometry3d::Coordinate3D<T>> {
     {
         return obj.calculateHash();
     }
+};
+
+/* Support for structured binding */
+template <class T>
+struct std::tuple_size<utils::geometry3d::Coordinate3D<T>>
+    : std::integral_constant<std::size_t, 3> { };
+template <class T>
+struct std::tuple_element<0, utils::geometry3d::Coordinate3D<T>> {
+    using type = T;
+};
+template <class T>
+struct std::tuple_element<1, utils::geometry3d::Coordinate3D<T>> {
+    using type = T;
+};
+template <class T>
+struct std::tuple_element<2, utils::geometry3d::Coordinate3D<T>> {
+    using type = T;
 };
