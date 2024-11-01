@@ -5,6 +5,7 @@
 #include "Vector2D.hpp"
 #include "utils/Concepts.hpp"
 #include "utils/Hash.hpp"
+#include <cassert>
 #include <cstdint>
 #include <cstdlib>
 

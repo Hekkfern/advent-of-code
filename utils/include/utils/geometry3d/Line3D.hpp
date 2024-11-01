@@ -9,6 +9,17 @@
 namespace utils::geometry3d {
 
 /**
+ * @brief Enum defining the different types of lines.
+ */
+enum class Line3DType {
+    Arbitrary,
+    Zero,
+    AcrossXAxis,
+    AcrossYAxis,
+    AcrossZAxis
+};
+
+/**
  * @brief      Describes a Line in 3D space.
  *
  * @tparam     T     Type of the coordinate values.
@@ -24,14 +35,15 @@ public:
     /**
      * @brief      Default constructor.
      */
-    explicit Line3D() = default;
+    explicit Line3D() noexcept = default;
     /**
      * @brief      Constructs a new instance.
      *
      * @param[in]  vertex1  The first point.
      * @param[in]  vertex2  The second point.
      */
-    explicit Line3D(Point3D<T> const& vertex1, Point3D<T> const& vertex2)
+    explicit Line3D(
+        Point3D<T> const& vertex1, Point3D<T> const& vertex2) noexcept
         : mVertexes{vertex1, vertex2}
     {
     }
@@ -42,7 +54,7 @@ public:
      * @param[in]  coord2  The second point.
      */
     explicit Line3D(
-        Coordinate3D<T> const& coord1, Coordinate3D<T> const& coord2)
+        Coordinate3D<T> const& coord1, Coordinate3D<T> const& coord2) noexcept
         : Line3D<T>{Point3D<T>{coord1}, Point3D<T>{coord2}}
     {
     }
@@ -52,22 +64,25 @@ public:
      * @param[in]  origin  The origin
      * @param[in]  vector  The vector
      */
-    explicit Line3D(Point3D<T> const& origin, Vector3D<T> const& vector)
+    explicit Line3D(
+        Point3D<T> const& origin, Vector3D<T> const& vector) noexcept
         : Line3D<T>{origin, origin + vector}
     {
     }
     /**
      * @brief      Gets the absolute length of each coordinate.
      *
-     * @return     Pair of absolute coordinates (X,Y).
+     * @return     Pair of absolute coordinates (X,Y,Z).
      */
-    [[nodiscard]] std::array<uint64_t, NumberOfVertexes> size() const
+    [[nodiscard]] std::array<uint64_t, 3U> size() const noexcept
     {
         return {
             static_cast<uint64_t>(
                 std::abs(mVertexes[0].getX() - mVertexes[1].getX())),
             static_cast<uint64_t>(
-                std::abs(mVertexes[0].getY() - mVertexes[1].getY()))};
+                std::abs(mVertexes[0].getY() - mVertexes[1].getY())),
+            static_cast<uint64_t>(
+                std::abs(mVertexes[0].getZ() - mVertexes[1].getZ()))};
     }
     /**
      * @brief      Calculates the Manhattan Distance.
@@ -76,19 +91,22 @@ public:
      *
      * @see        https://en.wikipedia.org/wiki/Taxicab_geometry
      */
-    [[nodiscard]] uint64_t distance() const
+    [[nodiscard]] uint64_t distance() const noexcept
     {
         return static_cast<uint64_t>(
                    std::abs(mVertexes[0].getX() - mVertexes[1].getX()))
             + static_cast<uint64_t>(std::abs(
-                std::abs(mVertexes[0].getY() - mVertexes[1].getY())));
+                std::abs(mVertexes[0].getY() - mVertexes[1].getY())))
+            + static_cast<uint64_t>(std::abs(
+                mVertexes[0].getZ() - mVertexes[1].getZ()));
     }
     /**
      * @brief      Gets the vertexes.
      *
      * @return     List of vertexes.
      */
-    [[nodiscard]] std::array<Point3D<T>, NumberOfVertexes> getVertexes() const
+    [[nodiscard]] std::array<Point3D<T>, NumberOfVertexes>
+    getVertexes() const noexcept
     {
         return mVertexes;
     }
@@ -99,10 +117,8 @@ public:
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] bool operator==(Line3D<T> const& other) const
-    {
-        return mVertexes == other.mVertexes;
-    }
+    [[nodiscard]] bool operator==(Line3D<T> const& other) const noexcept
+        = default;
     /**
      * @brief      Tells if the vector follows any special direction, like being
      *             horizontal, vertical, or diagonal.
@@ -113,12 +129,12 @@ public:
     {
         if (isZero()) {
             return Line3DType::Zero;
-        } else if (isHorizontal()) {
-            return Line3DType::Horizontal;
-        } else if (isVertical()) {
-            return Line3DType::Vertical;
-        } else if (isDiagonal()) {
-            return Line3DType::Diagonal;
+        } else if (isAcrossX()) {
+            return Line3DType::AcrossXAxis;
+        } else if (isAcrossY()) {
+            return Line3DType::AcrossYAxis;
+        } else if (isAcrossZ()) {
+            return Line3DType::AcrossZAxis;
         } else {
             return Line3DType::Arbitrary;
         }
@@ -146,7 +162,8 @@ private:
      *
      * @return     The updated output stream.
      */
-    friend std::ostream& operator<<(std::ostream& os, Line3D<T> const& obj)
+    friend std::ostream&
+    operator<<(std::ostream& os, Line3D<T> const& obj) noexcept
     {
         os << obj.mVertexes[0] << ", " << obj.mVertexes[1];
         return os;
@@ -160,41 +177,40 @@ private:
     [[nodiscard]] constexpr bool isZero() const noexcept
     {
         auto const thissize{this->size()};
-        return thissize[0] == 0 && thissize[1] == 0;
+        return thissize[0] == 0ULL && thissize[1] == 0ULL;
     }
     /**
-     * @brief      Determines if it is a horizontal vector, i.e. its coordinate
-     *             Y is zero.
+     * @brief      Determines if the line is drawn across X axis only, i.e. its
+     * coordinate X is the only one changing between both vertexes.
      *
-     * @return     True if it is horizontal, False otherwise.
+     * @return     True if the line moves across X axis, False otherwise.
      */
-    [[nodiscard]] bool isHorizontal() const
+    [[nodiscard]] bool isAcrossX() const noexcept
     {
         auto const thissize{this->size()};
-        return thissize[1] == 0;
+        return thissize[1] == 0ULL && thissize[2] == 0ULL;
     }
     /**
-     * @brief      Determines if it is a vertical vector, i.e. its coordinate X
-     *             is zero.
+     * @brief      Determines if the line is drawn across Y axis only, i.e. its
+     * coordinate Y is the only one changing between both vertexes.
      *
-     * @return     True if it is vertical, False otherwise.
+     * @return     True if the line moves across X axis, False otherwise.
      */
-    [[nodiscard]] bool isVertical() const
+    [[nodiscard]] bool isAcrossY() const noexcept
     {
         auto const thissize{this->size()};
-        return thissize[0] == 0;
+        return thissize[0] == 0ULL && thissize[2] == 0ULL;
     }
     /**
-     * @brief      Determines if it is a diagonal vector, i.e. its coordinate X
-     *             is equal to its coordinate Y.
+     * @brief      Determines if the line is drawn across Z axis only, i.e. its
+     * coordinate Z is the only one changing between both vertexes.
      *
-     * @return     True if it is diagonal, False otherwise.
+     * @return     True if the line moves across X axis, False otherwise.
      */
-    [[nodiscard]] bool isDiagonal() const
+    [[nodiscard]] bool isAcrossZ() const noexcept
     {
         auto const thissize{this->size()};
-        return std::abs(static_cast<std::intmax_t>(thissize[0]))
-            == std::abs(static_cast<std::intmax_t>(thissize[1]));
+        return thissize[0] == 0ULL && thissize[1] == 0ULL;
     }
 
     /**
@@ -207,9 +223,9 @@ private:
 } // namespace utils::geometry3d
 
 template <SignedIntegerType T>
-struct std::hash<utils::geometry2d::Line3D<T>> {
+struct std::hash<utils::geometry3d::Line3D<T>> {
     std::size_t
-    operator()(utils::geometry2d::Line3D<T> const& obj) const noexcept
+    operator()(utils::geometry3d::Line3D<T> const& obj) const noexcept
     {
         return obj.calculateHash();
     }

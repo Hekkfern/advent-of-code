@@ -66,7 +66,7 @@ public:
      *
      * @return     Pair of absolute coordinates (X,Y).
      */
-    [[nodiscard]] std::array<uint64_t, NumberOfVertexes> size() const
+    [[nodiscard]] std::array<uint64_t, 2U> size() const
     {
         return {
             static_cast<uint64_t>(
@@ -104,10 +104,8 @@ public:
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] bool operator==(Line2D<T> const& other) const
-    {
-        return mVertexes == other.mVertexes;
-    }
+    [[nodiscard]] bool operator==(Line2D<T> const& other) const noexcept
+        = default;
     /**
      * @brief      Tells if the vector follows any special direction, like being
      *             horizontal, vertical, or diagonal.
@@ -165,7 +163,7 @@ private:
     [[nodiscard]] constexpr bool isZero() const noexcept
     {
         auto const thissize{this->size()};
-        return thissize[0] == 0 && thissize[1] == 0;
+        return thissize[0] == 0ULL && thissize[1] == 0ULL;
     }
     /**
      * @brief      Determines if it is a horizontal vector, i.e. its coordinate
@@ -176,7 +174,7 @@ private:
     [[nodiscard]] bool isHorizontal() const
     {
         auto const thissize{this->size()};
-        return thissize[1] == 0;
+        return thissize[1] == 0ULL;
     }
     /**
      * @brief      Determines if it is a vertical vector, i.e. its coordinate X
@@ -187,7 +185,7 @@ private:
     [[nodiscard]] bool isVertical() const
     {
         auto const thissize{this->size()};
-        return thissize[0] == 0;
+        return thissize[0] == 0ULL;
     }
     /**
      * @brief      Determines if it is a diagonal vector, i.e. its coordinate X
@@ -198,8 +196,7 @@ private:
     [[nodiscard]] bool isDiagonal() const
     {
         auto const thissize{this->size()};
-        return std::abs(static_cast<std::intmax_t>(thissize[0]))
-            == std::abs(static_cast<std::intmax_t>(thissize[1]));
+        return thissize[0] == thissize[1];
     }
 
     /**
