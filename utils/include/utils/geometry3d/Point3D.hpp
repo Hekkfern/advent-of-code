@@ -14,7 +14,7 @@ public:
     /**
      * @brief      Default constructor.
      */
-    constexpr explicit Point3D() = default;
+    constexpr explicit Point3D() noexcept = default;
     /**
      * @brief      Constructs a new instance.
      *
@@ -22,7 +22,7 @@ public:
      * @param[in]  y     Coordinate Y.
      * @param[in]  z     Coordinate Z.
      */
-    constexpr explicit Point3D(T x, T y, T z)
+    constexpr explicit Point3D(T x, T y, T z) noexcept
         : mCoordinates{Coordinate3D<T>{x, y, z}}
     {
     }
@@ -31,7 +31,7 @@ public:
      *
      * @param[in]  coords     Coordinates.
      */
-    constexpr explicit Point3D(Coordinate3D<T> const& coords)
+    constexpr explicit Point3D(Coordinate3D<T> const& coords) noexcept
         : mCoordinates{coords}
     {
     }
@@ -40,7 +40,7 @@ public:
      *
      * @return     The coordinates as a group (X,Y,Z).
      */
-    [[nodiscard]] constexpr Coordinate3D<T> getCoordinates() const
+    [[nodiscard]] constexpr Coordinate3D<T> getCoordinates() const noexcept
     {
         return mCoordinates;
     }
@@ -49,19 +49,28 @@ public:
      *
      * @return     The coordinate X.
      */
-    [[nodiscard]] constexpr T getX() const { return mCoordinates.getX(); }
+    [[nodiscard]] constexpr T getX() const noexcept
+    {
+        return mCoordinates.getX();
+    }
     /**
      * @brief      Gets the coordinate Y.
      *
      * @return     The coordinate Y.
      */
-    [[nodiscard]] constexpr T getY() const { mCoordinates.getY(); }
+    [[nodiscard]] constexpr T getY() const noexcept
+    {
+        return mCoordinates.getY();
+    }
     /**
      * @brief      Gets the coordinate Z.
      *
      * @return     The coordinate Z.
      */
-    [[nodiscard]] constexpr T getZ() const { mCoordinates.getZ(); }
+    [[nodiscard]] constexpr T getZ() const noexcept
+    {
+        return mCoordinates.getZ();
+    }
     /**
      * @brief Gets a list of all the colliding points.
      *
@@ -130,13 +139,14 @@ public:
      *
      * @return     The result of the equality.
      */
-    [[nodiscard]] bool operator==(Point3D const& other) const = default;
+    [[nodiscard]] constexpr bool operator==(Point3D const& other) const noexcept
+        = default;
     /**
      * @brief      Negation operator.
      *
      * @return     The result of the subtraction
      */
-    [[nodiscard]] Point3D operator-() const
+    [[nodiscard]] constexpr Point3D operator-() const noexcept
     {
         return Point3D{
             -mCoordinates.getX(), -mCoordinates.getY(), -mCoordinates.getZ()};
@@ -153,7 +163,7 @@ public:
      * @return     New point.
      */
     template <std::integral U>
-    [[nodiscard]] static Point3D create(U x, U y, U z)
+    [[nodiscard]] constexpr static Point3D create(U x, U y, U z) noexcept
     {
         return Point3D{static_cast<T>(x), static_cast<T>(y), static_cast<T>(z)};
     }
@@ -162,7 +172,7 @@ public:
      *
      * @return     String representing this class.
      */
-    [[nodiscard]] std::string toString() const
+    [[nodiscard]] std::string toString() const noexcept
     {
         return mCoordinates.toString();
     }
@@ -171,7 +181,7 @@ public:
      *
      * @return     Hash of the instance
      */
-    [[nodiscard]] std::size_t calculateHash() const noexcept
+    [[nodiscard]] constexpr std::size_t calculateHash() const noexcept
     {
         return mCoordinates.calculateHash();
     }

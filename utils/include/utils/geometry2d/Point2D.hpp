@@ -142,7 +142,7 @@ public:
      *
      * @return     String representing this class.
      */
-    [[nodiscard]] std::string toString() const
+    [[nodiscard]] std::string toString() const noexcept
     {
         return mCoordinates.toString();
     }
@@ -151,7 +151,7 @@ public:
      *
      * @return     Hash of the instance
      */
-    [[nodiscard]] std::size_t calculateHash() const noexcept
+    [[nodiscard]] constexpr std::size_t calculateHash() const noexcept
     {
         return mCoordinates.calculateHash();
     }
