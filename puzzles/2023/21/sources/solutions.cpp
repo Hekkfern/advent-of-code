@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <utils/File.hpp>
-#include <utils/extensions/ContainerTools.h>
+#include <utils/extensions/ContainerTools.hpp>
 #include <utils/geometry2d/Grid2D.hpp>
 #include <utils/geometry2d/InfiniteGrid2D.hpp>
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Coordinate2D.hpp"
-#include "PositionStatus.h"
+#include "PositionStatus.hpp"
 #include <algorithm>
 #include <functional>
 #include <optional>

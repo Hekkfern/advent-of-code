@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Workflow.hpp"
-#include <utils/extensions/StringCollections.h>
+#include <utils/extensions/StringCollections.hpp>
 
 namespace aoc_2023_19::part2 {
 

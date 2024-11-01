@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Point2D.hpp"
-#include "PositionStatus.h"
+#include "PositionStatus.hpp"
 #include <vector>
 
 namespace utils::geometry2d {

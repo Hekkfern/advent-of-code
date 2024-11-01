@@ -2,7 +2,7 @@
 
 #include "Calculations2D.hpp"
 #include "IShape2D.hpp"
-#include "OrthogonalLine2D.h"
+#include "OrthogonalLine2D.hpp"
 #include "Point2D.hpp"
 #include "utils/Concepts.hpp"
 #include <cmath>

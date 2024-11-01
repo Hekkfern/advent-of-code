@@ -1,6 +1,6 @@
 #pragma once
 
-#include "StringHash.h"
+#include "StringHash.hpp"
 #include <map>
 #include <set>
 #include <unordered_map>

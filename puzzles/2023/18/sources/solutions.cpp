@@ -7,7 +7,7 @@
 #include <utils/File.hpp>
 #include <utils/String.hpp>
 #include <utils/geometry2d/Operations2D.hpp>
-#include <utils/geometry2d/OrthogonalPolygon2D.h>
+#include <utils/geometry2d/OrthogonalPolygon2D.hpp>
 #include <utils/geometry2d/Point2D.hpp>
 #include <vector>
 
