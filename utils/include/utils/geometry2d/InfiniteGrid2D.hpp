@@ -226,9 +226,9 @@ private:
     clampCoordinates(Coord const& coords) const noexcept
     {
         return Coord{
-            static_cast<std::size_t>(
+            static_cast<int64_t>(
                 utils::math::modulusFloor<int64_t>(coords.getX(), mWidth)),
-            static_cast<std::size_t>(
+            static_cast<int64_t>(
                 utils::math::modulusFloor<int64_t>(coords.getY(), mHeight))};
     }
 

@@ -11,6 +11,17 @@
 namespace utils::geometry3d {
 
 /**
+ * @brief Enum defining the different types of vectors.
+ */
+enum class Vector3DType {
+    Arbitrary,
+    Zero,
+    AcrossXAxis,
+    AcrossYAxis,
+    AcrossZAxis
+};
+
+/**
  * @brief      Describes a Vector (i.e. a directional arrow) in 3D space.
  *
  * @tparam     T     Type of the coordinate values.
@@ -149,23 +160,24 @@ public:
         return result;
     }
     /**
-     * @brief      Determines if the vector is empty, i.e., all the coordinates
-     * are zero.
+     * @brief      Tells if the vector follows any special direction, like being
+     *             horizontal, vertical, or diagonal.
      *
-     * @return     True if it is empty, False otherwise.
+     * @return     Enum with the result.
      */
-    [[nodiscard]] bool isZero() const { return mX == 0 && mY == 0 && mZ == 0; }
-    /**
-     * @brief      Determines if it is an orthogonal vector, i.e. all its
-     * coordinates but one are zero.
-     *
-     * @return     True if it is orthogonal, False otherwise.
-     */
-    [[nodiscard]] bool isOrthogonal() const
+    [[nodiscard]] constexpr Vector3DType is() const noexcept
     {
-        return (mX == 0 && mY == 0 && mZ != 0)
-            || (mX == 0 && mY != 0 && mZ == 0)
-            || (mX != 0 && mY == 0 && mZ == 0);
+        if (isZero()) {
+            return Vector3DType::Zero;
+        } else if (isAcrossX()) {
+            return Vector3DType::AcrossXAxis;
+        } else if (isAcrossY()) {
+            return Vector3DType::AcrossYAxis;
+        } else if (isAcrossZ()) {
+            return Vector3DType::AcrossZAxis;
+        } else {
+            return Vector3DType::Arbitrary;
+        }
     }
     /**
      * @brief      Equality operator.
@@ -268,6 +280,54 @@ private:
     {
         os << obj.toString();
         return os;
+    }
+    /**
+     * @brief      Determines if the line is empty, i.e., both coordinates are
+     *             zero.
+     *
+     * @return     True if it is empty, False otherwise.
+     */
+    [[nodiscard]] constexpr bool isZero() const noexcept
+    {
+        auto const thissize{this->size()};
+        return thissize[0] == 0ULL && thissize[1] == 0ULL
+            && thissize[2] == 0ULL;
+    }
+    /**
+     * @brief      Determines if the line is drawn across X axis only, i.e. its
+     * coordinate X is the only one changing between both vertexes.
+     *
+     * @return     True if the line moves across X axis, False otherwise.
+     */
+    [[nodiscard]] bool isAcrossX() const noexcept
+    {
+        auto const thissize{this->size()};
+        return thissize[0] != 0ULL && thissize[1] == 0ULL
+            && thissize[2] == 0ULL;
+    }
+    /**
+     * @brief      Determines if the line is drawn across Y axis only, i.e. its
+     * coordinate Y is the only one changing between both vertexes.
+     *
+     * @return     True if the line moves across X axis, False otherwise.
+     */
+    [[nodiscard]] bool isAcrossY() const noexcept
+    {
+        auto const thissize{this->size()};
+        return thissize[0] == 0ULL && thissize[1] != 0ULL
+            && thissize[2] == 0ULL;
+    }
+    /**
+     * @brief      Determines if the line is drawn across Z axis only, i.e. its
+     * coordinate Z is the only one changing between both vertexes.
+     *
+     * @return     True if the line moves across X axis, False otherwise.
+     */
+    [[nodiscard]] bool isAcrossZ() const noexcept
+    {
+        auto const thissize{this->size()};
+        return thissize[0] == 0ULL && thissize[1] == 0ULL
+            && thissize[2] != 0ULL;
     }
 
     /**

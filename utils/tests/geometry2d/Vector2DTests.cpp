@@ -47,7 +47,7 @@ TEST_CASE("[Vector2D] Constructor", "[utils][Vector2D]")
         {
             SECTION("Positive values")
             {
-                Vector2D const vector2D{2, 4};
+                Vector2D<> const vector2D{2, 4};
                 CHECK(vector2D.getX() == 2);
                 CHECK(vector2D.getY() == 4);
                 auto const coords{vector2D.getCoordinates()};
@@ -56,7 +56,7 @@ TEST_CASE("[Vector2D] Constructor", "[utils][Vector2D]")
             }
             SECTION("Positive and negatives values")
             {
-                Vector2D const vector2D{-2, 3};
+                Vector2D<> const vector2D{-2, 3};
                 CHECK(vector2D.getX() == -2);
                 CHECK(vector2D.getY() == 3);
                 auto const coords{vector2D.getCoordinates()};
@@ -68,7 +68,7 @@ TEST_CASE("[Vector2D] Constructor", "[utils][Vector2D]")
         {
             SECTION("Positive values")
             {
-                Vector2D const vector2D{Coordinate2D{2, 4}};
+                Vector2D<> const vector2D{Coordinate2D{2, 4}};
                 CHECK(vector2D.getX() == 2);
                 CHECK(vector2D.getY() == 4);
                 auto const coords{vector2D.getCoordinates()};
@@ -77,7 +77,7 @@ TEST_CASE("[Vector2D] Constructor", "[utils][Vector2D]")
             }
             SECTION("Positive and negatives values")
             {
-                Vector2D const vector2D{Coordinate2D{-2, 3}};
+                Vector2D<> const vector2D{Coordinate2D{-2, 3}};
                 CHECK(vector2D.getX() == -2);
                 CHECK(vector2D.getY() == 3);
                 auto const coords{vector2D.getCoordinates()};
@@ -95,17 +95,17 @@ TEST_CASE("[Vector2D] size() method", "[utils][Vector2D]")
         SECTION("Zero vector")
         {
             Vector2D<> const v1;
-            CHECK(v1.size() == std::array<uint64_t, 2ULL>{0ULL, 0ULL});
+            CHECK(v1.size() == std::to_array<uint64_t>({0ULL, 0ULL}));
         }
         SECTION("Positive values")
         {
-            Vector2D const v1{2, 3};
-            CHECK(v1.size() == std::array<uint64_t, 2ULL>{2ULL, 3ULL});
+            Vector2D<> const v1{2, 3};
+            CHECK(v1.size() == std::to_array<uint64_t>({2ULL, 3ULL}));
         }
         SECTION("Positive and negatives values")
         {
-            Vector2D const v1{-2, 1};
-            CHECK(v1.size() == std::array<uint64_t, 2ULL>{2ULL, 1ULL});
+            Vector2D<> const v1{-2, 1};
+            CHECK(v1.size() == std::to_array<uint64_t>({2ULL, 1ULL}));
         }
     }
 }
@@ -117,17 +117,17 @@ TEST_CASE("[Vector2D] range() method", "[utils][Vector2D]")
         SECTION("Zero vector")
         {
             Vector2D<> const v1;
-            CHECK(v1.range() == 0UL);
+            CHECK(v1.range() == 0ULL);
         }
         SECTION("Positive values")
         {
-            Vector2D const v1{2, 3};
-            CHECK(v1.range() == 3UL);
+            Vector2D<> const v1{2, 3};
+            CHECK(v1.range() == 3ULL);
         }
         SECTION("Positive and negatives values")
         {
-            Vector2D const v1{-2, 1};
-            CHECK(v1.range() == 2UL);
+            Vector2D<> const v1{-2, 1};
+            CHECK(v1.range() == 2ULL);
         }
     }
 }
@@ -143,12 +143,12 @@ TEST_CASE("[Vector2D] distance() method", "[utils][Vector2D]")
         }
         SECTION("Positive values")
         {
-            Vector2D const v1{2, 3};
+            Vector2D<> const v1{2, 3};
             CHECK(v1.distance() == 5UL);
         }
         SECTION("Positive and negatives values")
         {
-            Vector2D const v1{-2, 1};
+            Vector2D<> const v1{-2, 1};
             CHECK(v1.distance() == 3UL);
         }
     }
@@ -166,19 +166,19 @@ TEST_CASE("[Vector2D] normalize() method", "[utils][Vector2D]")
         }
         SECTION("Positive values")
         {
-            Vector2D const v1{2, 3};
+            Vector2D<> const v1{2, 3};
             auto const v2{v1.normalize()};
             CHECK(v2 == Vector2D{1, 1});
         }
         SECTION("Positive and negatives values")
         {
-            Vector2D const v1{-2, 1};
+            Vector2D<> const v1{-2, 1};
             auto const v2{v1.normalize()};
             CHECK(v2 == Vector2D{-1, 1});
         }
         SECTION("Already-normalized vector")
         {
-            Vector2D const v1{-1, 0};
+            Vector2D<> const v1{-1, 0};
             auto const v2{v1.normalize()};
             CHECK(v2 == Vector2D{-1, 0});
         }

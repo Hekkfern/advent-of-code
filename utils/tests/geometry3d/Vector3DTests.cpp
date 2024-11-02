@@ -11,21 +11,25 @@ TEST_CASE("[Vector3D] create() method", "[utils][Vector3D]")
     {
         SECTION("Positive values")
         {
-            Vector3D const vector3D{Vector3D<>::create(2, 4)};
+            Vector3D<> const vector3D{Vector3D<>::create(2, 4, 1)};
             CHECK(vector3D.getX() == 2);
             CHECK(vector3D.getY() == 4);
+            CHECK(vector3D.getZ() == 1);
             auto const coords{vector3D.getCoordinates()};
             CHECK(coords.getX() == 2);
             CHECK(coords.getY() == 4);
+            CHECK(coords.getZ() == 1);
         }
         SECTION("Positive and negatives values")
         {
-            Vector3D const vector3D{Vector3D<>::create(-2, 3)};
+            Vector3D<> const vector3D{Vector3D<>::create(-2, 3, 1)};
             CHECK(vector3D.getX() == -2);
             CHECK(vector3D.getY() == 3);
+            CHECK(vector3D.getZ() == 1);
             auto const coords{vector3D.getCoordinates()};
             CHECK(coords.getX() == -2);
             CHECK(coords.getY() == 3);
+            CHECK(coords.getZ() == 1);
         }
     }
 }
@@ -39,50 +43,60 @@ TEST_CASE("[Vector3D] Constructor", "[utils][Vector3D]")
             Vector3D<> const vector3D;
             CHECK(vector3D.getX() == 0);
             CHECK(vector3D.getY() == 0);
+            CHECK(vector3D.getZ() == 0);
             auto const coords{vector3D.getCoordinates()};
             CHECK(coords.getX() == 0);
             CHECK(coords.getY() == 0);
+            CHECK(coords.getZ() == 0);
         }
         SECTION("Parametrized constructor")
         {
             SECTION("Positive values")
             {
-                Vector3D const vector3D{2, 4};
+                Vector3D<> const vector3D{2, 4, 1};
                 CHECK(vector3D.getX() == 2);
                 CHECK(vector3D.getY() == 4);
+                CHECK(vector3D.getZ() == 1);
                 auto const coords{vector3D.getCoordinates()};
                 CHECK(coords.getX() == 2);
                 CHECK(coords.getY() == 4);
+                CHECK(coords.getZ() == 1);
             }
             SECTION("Positive and negatives values")
             {
-                Vector3D const vector3D{-2, 3};
+                Vector3D<> const vector3D{-2, 3, 1};
                 CHECK(vector3D.getX() == -2);
                 CHECK(vector3D.getY() == 3);
+                CHECK(vector3D.getZ() == 1);
                 auto const coords{vector3D.getCoordinates()};
                 CHECK(coords.getX() == -2);
                 CHECK(coords.getY() == 3);
+                CHECK(coords.getZ() == 1);
             }
         }
         SECTION("Group constructor")
         {
             SECTION("Positive values")
             {
-                Vector3D const vector3D{Coordinate3D{2, 4}};
+                Vector3D<> const vector3D{Coordinate3D{2, 4, 1}};
                 CHECK(vector3D.getX() == 2);
                 CHECK(vector3D.getY() == 4);
+                CHECK(vector3D.getZ() == 1);
                 auto const coords{vector3D.getCoordinates()};
                 CHECK(coords.getX() == 2);
                 CHECK(coords.getY() == 4);
+                CHECK(coords.getZ() == 1);
             }
             SECTION("Positive and negatives values")
             {
-                Vector3D const vector3D{Coordinate3D{-2, 3}};
+                Vector3D<> const vector3D{Coordinate3D{-2, 3, 1}};
                 CHECK(vector3D.getX() == -2);
                 CHECK(vector3D.getY() == 3);
+                CHECK(vector3D.getZ() == 1);
                 auto const coords{vector3D.getCoordinates()};
                 CHECK(coords.getX() == -2);
                 CHECK(coords.getY() == 3);
+                CHECK(coords.getZ() == 1);
             }
         }
     }
@@ -95,17 +109,17 @@ TEST_CASE("[Vector3D] size() method", "[utils][Vector3D]")
         SECTION("Zero vector")
         {
             Vector3D<> const v1;
-            CHECK(v1.size() == std::array<uint64_t, 2ULL>{0ULL, 0ULL});
+            CHECK(v1.size() == std::to_array<uint64_t>({0ULL, 0ULL, 0ULL}));
         }
         SECTION("Positive values")
         {
-            Vector3D const v1{2, 3};
-            CHECK(v1.size() == std::array<uint64_t, 2ULL>{2ULL, 3ULL});
+            Vector3D<> const v1{2, 3, 1};
+            CHECK(v1.size() == std::to_array<uint64_t>({2ULL, 3ULL, 1ULL}));
         }
         SECTION("Positive and negatives values")
         {
-            Vector3D const v1{-2, 1};
-            CHECK(v1.size() == std::array<uint64_t, 2ULL>{2ULL, 1ULL});
+            Vector3D<> const v1{-2, 1, 1};
+            CHECK(v1.size() == std::to_array<uint64_t>({2ULL, 1ULL, 1ULL}));
         }
     }
 }
@@ -117,17 +131,17 @@ TEST_CASE("[Vector3D] range() method", "[utils][Vector3D]")
         SECTION("Zero vector")
         {
             Vector3D<> const v1;
-            CHECK(v1.range() == 0UL);
+            CHECK(v1.range() == 0ULL);
         }
         SECTION("Positive values")
         {
-            Vector3D const v1{2, 3};
-            CHECK(v1.range() == 3UL);
+            Vector3D<> const v1{2, 3, 1};
+            CHECK(v1.range() == 3ULL);
         }
         SECTION("Positive and negatives values")
         {
-            Vector3D const v1{-2, 1};
-            CHECK(v1.range() == 2UL);
+            Vector3D<> const v1{-2, 1, 1};
+            CHECK(v1.range() == 2ULL);
         }
     }
 }
@@ -139,17 +153,17 @@ TEST_CASE("[Vector3D] distance() method", "[utils][Vector3D]")
         SECTION("Zero vector")
         {
             Vector3D<> const v1;
-            CHECK(v1.distance() == 0UL);
+            CHECK(v1.distance() == 0ULL);
         }
         SECTION("Positive values")
         {
-            Vector3D const v1{2, 3};
-            CHECK(v1.distance() == 5UL);
+            Vector3D<> const v1{2, 3, 1};
+            CHECK(v1.distance() == 6ULL);
         }
         SECTION("Positive and negatives values")
         {
-            Vector3D const v1{-2, 1};
-            CHECK(v1.distance() == 3UL);
+            Vector3D<> const v1{-2, 1, 1};
+            CHECK(v1.distance() == 4ULL);
         }
     }
 }
@@ -162,25 +176,25 @@ TEST_CASE("[Vector3D] normalize() method", "[utils][Vector3D]")
         {
             Vector3D<> const v1;
             auto const v2{v1.normalize()};
-            CHECK(v2 == Vector3D{0, 0});
+            CHECK(v2 == Vector3D{0, 0, 0});
         }
         SECTION("Positive values")
         {
-            Vector3D const v1{2, 3};
+            Vector3D<> const v1{2, 3, 1};
             auto const v2{v1.normalize()};
-            CHECK(v2 == Vector3D{1, 1});
+            CHECK(v2 == Vector3D{1, 1, 1});
         }
         SECTION("Positive and negatives values")
         {
-            Vector3D const v1{-2, 1};
+            Vector3D<> const v1{-2, 1, 1};
             auto const v2{v1.normalize()};
-            CHECK(v2 == Vector3D{-1, 1});
+            CHECK(v2 == Vector3D{-1, 1, 1});
         }
         SECTION("Already-normalized vector")
         {
-            Vector3D const v1{-1, 0};
+            Vector3D<> const v1{-1, 0, 0};
             auto const v2{v1.normalize()};
-            CHECK(v2 == Vector3D{-1, 0});
+            CHECK(v2 == Vector3D{-1, 0, 0});
         }
     }
 }
@@ -196,51 +210,51 @@ TEST_CASE("[Vector3D] is() method", "[utils][Vector3D]")
         }
         SECTION("Positive values")
         {
-            Vector3D const v{2, 3};
+            Vector3D const v{2, 3, 1};
             CHECK(v.is() == Vector3DType::Arbitrary);
         }
         SECTION("Positive and negatives values")
         {
-            Vector3D const v{-1, 2};
+            Vector3D const v{-1, 2, 1};
             CHECK(v.is() == Vector3DType::Arbitrary);
         }
-        SECTION("Horizontal")
+        SECTION("Across X Axis")
         {
             SECTION("Right")
             {
-                Vector3D const v{1, 0};
-                CHECK(v.is() == Vector3DType::Horizontal);
+                Vector3D const v{1, 0, 0};
+                CHECK(v.is() == Vector3DType::AcrossXAxis);
             }
             SECTION("Left")
             {
-                Vector3D const v{-3, 0};
-                CHECK(v.is() == Vector3DType::Horizontal);
+                Vector3D const v{-3, 0, 0};
+                CHECK(v.is() == Vector3DType::AcrossXAxis);
             }
         }
-        SECTION("Vertical")
+        SECTION("Across Y Axis")
         {
-            SECTION("Up")
+            SECTION("Right")
             {
-                Vector3D const v{0, 1};
-                CHECK(v.is() == Vector3DType::Vertical);
+                Vector3D const v{0, 1, 0};
+                CHECK(v.is() == Vector3DType::AcrossYAxis);
             }
-            SECTION("Down")
+            SECTION("Left")
             {
-                Vector3D const v{0, -1};
-                CHECK(v.is() == Vector3DType::Vertical);
+                Vector3D const v{0, -1, 0};
+                CHECK(v.is() == Vector3DType::AcrossYAxis);
             }
         }
-        SECTION("Diagonal")
+        SECTION("Across Z Axis")
         {
-            SECTION("Up-Right")
+            SECTION("Right")
             {
-                Vector3D const v{2, 2};
-                CHECK(v.is() == Vector3DType::Diagonal);
+                Vector3D const v{0, 0, 1};
+                CHECK(v.is() == Vector3DType::AcrossZAxis);
             }
-            SECTION("Down-Left")
+            SECTION("Left")
             {
-                Vector3D const v{2, -2};
-                CHECK(v.is() == Vector3DType::Diagonal);
+                Vector3D const v{0, 0, -1};
+                CHECK(v.is() == Vector3DType::AcrossZAxis);
             }
         }
     }
@@ -252,15 +266,15 @@ TEST_CASE("[Vector3D] Equality operator", "[utils][Vector3D]")
     {
         SECTION("Different")
         {
-            Vector3D const v1{2, 3};
-            Vector3D const v2{-4, 2};
+            Vector3D const v1{2, 3, 1};
+            Vector3D const v2{-4, 2, 2};
             CHECK_FALSE(v1 == v2);
             CHECK(v1 != v2);
         }
         SECTION("Equal")
         {
-            Vector3D const v1{2, 3};
-            Vector3D const v2{2, 3};
+            Vector3D const v1{2, 3, 1};
+            Vector3D const v2{2, 3, 1};
             CHECK(v1 == v2);
             CHECK_FALSE(v1 != v2);
         }
@@ -271,10 +285,10 @@ TEST_CASE("[Vector3D] Addition operator", "[utils][Vector3D]")
 {
     SECTION("Runtime tests")
     {
-        Vector3D const v1{-2, 3};
-        Vector3D const v2{4, 2};
-        CHECK((v1 + v2) == Vector3D{2, 5});
-        CHECK((v2 + v1) == Vector3D{2, 5});
+        Vector3D const v1{-2, 3, 1};
+        Vector3D const v2{4, 2, 1};
+        CHECK((v1 + v2) == Vector3D{2, 5, 2});
+        CHECK((v2 + v1) == Vector3D{2, 5, 2});
     }
 }
 
@@ -282,14 +296,14 @@ TEST_CASE("[Vector3D] Negation operator", "[utils][Vector3D]")
 {
     SECTION("Runtime tests")
     {
-        Vector3D const v1{-2, 3};
-        CHECK(-v1 == Vector3D{2, -3});
-        Vector3D const v2{4, -2};
-        CHECK(-v2 == Vector3D{-4, 2});
-        Vector3D const v3{2, 3};
-        CHECK(-v3 == Vector3D{-2, -3});
-        Vector3D const v4{-2, -3};
-        CHECK(-v4 == Vector3D{2, 3});
+        Vector3D const v1{-2, 3, 1};
+        CHECK(-v1 == Vector3D{2, -3, -1});
+        Vector3D const v2{4, -2, 1};
+        CHECK(-v2 == Vector3D{-4, 2, -1});
+        Vector3D const v3{2, 3, -1};
+        CHECK(-v3 == Vector3D{-2, -3, 1});
+        Vector3D const v4{-2, -3, -1};
+        CHECK(-v4 == Vector3D{2, 3, 1});
     }
 }
 
@@ -297,10 +311,10 @@ TEST_CASE("[Vector3D] Subtraction operator", "[utils][Vector3D]")
 {
     SECTION("Runtime tests")
     {
-        Vector3D const v1{-2, 3};
-        Vector3D const v2{4, 2};
-        CHECK((v1 - v2) == Vector3D{-6, 1});
-        CHECK((v2 - v1) == Vector3D{6, -1});
+        Vector3D const v1{-2, 3, 2};
+        Vector3D const v2{4, 2, 1};
+        CHECK((v1 - v2) == Vector3D{-6, 1, 1});
+        CHECK((v2 - v1) == Vector3D{6, -1, -1});
     }
 }
 
@@ -308,10 +322,11 @@ TEST_CASE("[Vector3D] Vector3D * scalar", "[utils][Vector3D]")
 {
     SECTION("Runtime tests")
     {
-        Vector3D const vector3D{2, 3};
+        Vector3D const vector3D{2, 3, 1};
         Vector3D const newVector3D{vector3D * 2};
         CHECK(newVector3D.getX() == 4);
         CHECK(newVector3D.getY() == 6);
+        CHECK(newVector3D.getZ() == 2);
     }
 }
 
@@ -323,97 +338,38 @@ TEST_CASE("[Vector3D] scalar * Vector3D", "[utils][Vector3D]")
         {
             SECTION("Positive values")
             {
-                Vector3D const vector3D{2, 3};
+                Vector3D const vector3D{2, 3, 1};
                 Vector3D const newVector3D{2 * vector3D};
                 CHECK(newVector3D.getX() == 4);
                 CHECK(newVector3D.getY() == 6);
+                CHECK(newVector3D.getZ() == 2);
             }
             SECTION("Positive and negatives values")
             {
-                Vector3D const vector3D{2, -3};
+                Vector3D const vector3D{2, -3, -1};
                 Vector3D const newVector3D{2 * vector3D};
                 CHECK(newVector3D.getX() == 4);
                 CHECK(newVector3D.getY() == -6);
+                CHECK(newVector3D.getZ() == -2);
             }
         }
         SECTION("Negative scalar")
         {
             SECTION("Positive values")
             {
-                Vector3D const vector3D{2, 3};
+                Vector3D const vector3D{2, 3, 1};
                 Vector3D const newVector3D{-2 * vector3D};
                 CHECK(newVector3D.getX() == -4);
                 CHECK(newVector3D.getY() == -6);
+                CHECK(newVector3D.getZ() == -2);
             }
             SECTION("Positive and negatives values")
             {
-                Vector3D const vector3D{2, -3};
+                Vector3D const vector3D{2, -3, -1};
                 Vector3D const newVector3D{-2 * vector3D};
                 CHECK(newVector3D.getX() == -4);
                 CHECK(newVector3D.getY() == 6);
-            }
-        }
-    }
-}
-
-TEST_CASE("[Vector3D] angle() method", "[utils][Vector3D]")
-{
-    SECTION("Runtime tests")
-    {
-        SECTION("Horizontal")
-        {
-            SECTION("Right")
-            {
-                Vector3D const v{2, 0};
-                REQUIRE(v.is() == Vector3DType::Horizontal);
-                CHECK_THAT(v.angle(), Catch::Matchers::WithinRel(0.0, 0.001));
-            }
-            SECTION("Left")
-            {
-                Vector3D const v{-2, 0};
-                REQUIRE(v.is() == Vector3DType::Horizontal);
-                CHECK_THAT(
-                    v.angle(),
-                    Catch::Matchers::WithinRel(std::numbers::pi, 0.001));
-            }
-        }
-        SECTION("Vertical")
-        {
-            SECTION("Up")
-            {
-                Vector3D const v{0, 2};
-                REQUIRE(v.is() == Vector3DType::Vertical);
-                CHECK_THAT(
-                    v.angle(),
-                    Catch::Matchers::WithinRel(std::numbers::pi / 2.0, 0.001));
-            }
-            SECTION("Down")
-            {
-                Vector3D const v{0, -2};
-                REQUIRE(v.is() == Vector3DType::Vertical);
-                CHECK_THAT(
-                    v.angle(),
-                    Catch::Matchers::WithinRel(-std::numbers::pi / 2.0, 0.001));
-            }
-        }
-        SECTION("Diagonal")
-        {
-            SECTION("Up-Right")
-            {
-                Vector3D const v{2, 2};
-                REQUIRE(v.is() == Vector3DType::Diagonal);
-                CHECK_THAT(
-                    v.angle(),
-                    Catch::Matchers::WithinRel(std::numbers::pi / 4.0, 0.001));
-            }
-            SECTION("Down-Left")
-            {
-                Vector3D const v{-2, -2};
-                REQUIRE(v.is() == Vector3DType::Diagonal);
-                CHECK_THAT(
-                    v.angle(),
-                    Catch::Matchers::WithinRel(
-                        -3.0 * std::numbers::pi / 4.0, 0.001));
+                CHECK(newVector3D.getZ() == 2);
             }
         }
     }

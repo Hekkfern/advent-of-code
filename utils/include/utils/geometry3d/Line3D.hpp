@@ -177,7 +177,8 @@ private:
     [[nodiscard]] constexpr bool isZero() const noexcept
     {
         auto const thissize{this->size()};
-        return thissize[0] == 0ULL && thissize[1] == 0ULL;
+        return thissize[0] == 0ULL && thissize[1] == 0ULL
+            && thissize[2] == 0ULL;
     }
     /**
      * @brief      Determines if the line is drawn across X axis only, i.e. its
@@ -188,7 +189,8 @@ private:
     [[nodiscard]] bool isAcrossX() const noexcept
     {
         auto const thissize{this->size()};
-        return thissize[1] == 0ULL && thissize[2] == 0ULL;
+        return thissize[0] != 0ULL && thissize[1] == 0ULL
+            && thissize[2] == 0ULL;
     }
     /**
      * @brief      Determines if the line is drawn across Y axis only, i.e. its
@@ -199,7 +201,8 @@ private:
     [[nodiscard]] bool isAcrossY() const noexcept
     {
         auto const thissize{this->size()};
-        return thissize[0] == 0ULL && thissize[2] == 0ULL;
+        return thissize[0] == 0ULL && thissize[1] != 0ULL
+            && thissize[2] == 0ULL;
     }
     /**
      * @brief      Determines if the line is drawn across Z axis only, i.e. its
@@ -210,7 +213,8 @@ private:
     [[nodiscard]] bool isAcrossZ() const noexcept
     {
         auto const thissize{this->size()};
-        return thissize[0] == 0ULL && thissize[1] == 0ULL;
+        return thissize[0] == 0ULL && thissize[1] == 0ULL
+            && thissize[2] != 0ULL;
     }
 
     /**

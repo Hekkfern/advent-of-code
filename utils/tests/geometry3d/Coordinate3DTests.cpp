@@ -20,7 +20,7 @@ TEST_CASE("[Coordinate3D] Constructor", "[utils][Coordinate3D]")
             Coordinate3D<> const coords{1, 2, 3};
             CHECK(coords.getX() == 1);
             CHECK(coords.getY() == 2);
-            CHECK(coords.getZ() == 2);
+            CHECK(coords.getZ() == 3);
         }
     }
     SECTION("Static tests")
