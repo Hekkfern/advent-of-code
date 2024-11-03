@@ -127,3 +127,22 @@ TEST_CASE("[OrthogonalLine2D] getPoints() method", "[utils][OrthogonalLine2D]")
         CHECK(points[0] == Point2D<>{1, 1});
     }
 }
+
+TEST_CASE("[OrthogonalLine2D] move() method", "[utils][OrthogonalLine2D]")
+{
+    OrthogonalLine2D<> obj1{Point2D<>{2, 3}, Point2D<>{2, 2}};
+    SECTION("Positive vector")
+    {
+        Vector2D<> const v{1, 2};
+        obj1.move(v);
+        CHECK(obj1.getVertexes()[0] == Point2D<>{3, 5});
+        CHECK(obj1.getVertexes()[1] == Point2D<>{3, 4});
+    }
+    SECTION("Negative vector")
+    {
+        Vector2D<> const v{-1, -3};
+        obj1.move(v);
+        CHECK(obj1.getVertexes()[0] == Point2D<>{1, 0});
+        CHECK(obj1.getVertexes()[1] == Point2D<>{1, -1});
+    }
+}

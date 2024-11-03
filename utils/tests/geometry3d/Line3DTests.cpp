@@ -122,3 +122,22 @@ TEST_CASE("[Line3D] Equality operator", "[utils][Line3D]")
         CHECK_FALSE(obj1 != obj1);
     }
 }
+
+TEST_CASE("[Line3D] move() method", "[utils][Line3D]")
+{
+    Line3D<> obj1{Point3D<>{2, 3, 1}, Point3D<>{1, 2, 1}};
+    SECTION("Positive vector")
+    {
+        Vector3D<> const v{1, 2, 2};
+        obj1.move(v);
+        CHECK(obj1.getVertexes()[0] == Point3D<>{3, 5, 3});
+        CHECK(obj1.getVertexes()[1] == Point3D<>{2, 4, 3});
+    }
+    SECTION("Negative vector")
+    {
+        Vector3D<> const v{-1, -3, -1};
+        obj1.move(v);
+        CHECK(obj1.getVertexes()[0] == Point3D<>{1, 0, 0});
+        CHECK(obj1.getVertexes()[1] == Point3D<>{0, -1, 0});
+    }
+}

@@ -172,6 +172,17 @@ public:
         }
         return points;
     }
+    /**
+     * @brief Moves both vertexes as the provided vector indicates.
+     *
+     * @param[in] v Vector of movement of both vertexes.
+     */
+    void move(Vector2D<T> const& v) noexcept
+    {
+        for (auto& vertex : mVertexes) {
+            vertex = utils::geometry2d::move(vertex, v);
+        }
+    }
 
 private:
     /**

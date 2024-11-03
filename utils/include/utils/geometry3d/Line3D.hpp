@@ -1,10 +1,11 @@
 #pragma once
 
+#include "Operations3D.hpp"
 #include "Point3D.hpp"
 #include "Vector3D.hpp"
-#include "utils/Concepts.hpp"
 #include <cstdint>
 #include <cstdlib>
+#include <utils/Concepts.hpp>
 
 namespace utils::geometry3d {
 
@@ -151,6 +152,17 @@ public:
             utils::hash::hash_combine(seed, vertex);
         }
         return seed;
+    }
+    /**
+     * @brief Moves both vertexes as the provided vector indicates.
+     *
+     * @param[in] v Vector of movement of both vertexes.
+     */
+    void move(Vector3D<T> const& v) noexcept
+    {
+        for (auto& vertex : mVertexes) {
+            vertex = utils::geometry3d::move(vertex, v);
+        }
     }
 
 private:

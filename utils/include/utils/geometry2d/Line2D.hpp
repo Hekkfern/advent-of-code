@@ -1,10 +1,11 @@
 #pragma once
 
+#include "Operations2D.hpp"
 #include "Point2D.hpp"
 #include "Vector2D.hpp"
-#include "utils/Concepts.hpp"
 #include <cstdint>
 #include <cstdlib>
+#include <utils/Concepts.hpp>
 
 namespace utils::geometry2d {
 
@@ -138,6 +139,17 @@ public:
             utils::hash::hash_combine(seed, vertex);
         }
         return seed;
+    }
+    /**
+     * @brief Moves both vertexes as the provided vector indicates.
+     *
+     * @param[in] v Vector of movement of both vertexes.
+     */
+    void move(Vector2D<T> const& v) noexcept
+    {
+        for (auto& vertex : mVertexes) {
+            vertex = utils::geometry2d::move(vertex, v);
+        }
     }
 
 private:

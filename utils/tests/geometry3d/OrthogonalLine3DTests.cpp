@@ -183,3 +183,22 @@ TEST_CASE("[OrthogonalLine3D] getPoints() method", "[utils][OrthogonalLine3D]")
         CHECK(points[0] == Point3D<>{1, 1, 1});
     }
 }
+
+TEST_CASE("[OrthogonalLine3D] move() method", "[utils][OrthogonalLine3D]")
+{
+    OrthogonalLine3D<> obj1{Point3D<>{2, 3, 1}, Point3D<>{2, 2, 1}};
+    SECTION("Positive vector")
+    {
+        Vector3D<> const v{1, 2, 2};
+        obj1.move(v);
+        CHECK(obj1.getVertexes()[0] == Point3D<>{3, 5, 3});
+        CHECK(obj1.getVertexes()[1] == Point3D<>{3, 4, 3});
+    }
+    SECTION("Negative vector")
+    {
+        Vector3D<> const v{-1, -3, -1};
+        obj1.move(v);
+        CHECK(obj1.getVertexes()[0] == Point3D<>{1, 0, 0});
+        CHECK(obj1.getVertexes()[1] == Point3D<>{1, -1, 0});
+    }
+}

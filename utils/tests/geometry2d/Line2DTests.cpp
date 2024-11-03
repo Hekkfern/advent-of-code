@@ -10,12 +10,12 @@ TEST_CASE("[Line2D] Constructor", "[utils][Line2D]")
     {
         Line2D const line2D;
         auto const thisSize{line2D.size()};
-        REQUIRE(thisSize.size()==2ULL);
+        REQUIRE(thisSize.size() == 2ULL);
         CHECK(thisSize[0] == 0U);
         CHECK(thisSize[1] == 0U);
         CHECK(line2D.distance() == 0ULL);
         auto const vertexes{line2D.getVertexes()};
-        REQUIRE(vertexes.size()==2ULL);
+        REQUIRE(vertexes.size() == 2ULL);
         CHECK(vertexes[0] == Point2D<>{});
         CHECK(vertexes[1] == Point2D<>{});
     }
@@ -30,7 +30,7 @@ TEST_CASE("[Line2D] Constructor", "[utils][Line2D]")
             CHECK(thisSize[1] == 2U);
             CHECK(line2D.distance() == 3ULL);
             auto const vertexes{line2D.getVertexes()};
-            REQUIRE(vertexes.size()==2ULL);
+            REQUIRE(vertexes.size() == 2ULL);
             CHECK(vertexes[0] == Point2D<>{1, 1});
             CHECK(vertexes[1] == Point2D<>{2, 3});
         }
@@ -43,7 +43,7 @@ TEST_CASE("[Line2D] Constructor", "[utils][Line2D]")
             CHECK(thisSize[1] == 4U);
             CHECK(line2D.distance() == 7ULL);
             auto const vertexes{line2D.getVertexes()};
-            REQUIRE(vertexes.size()==2ULL);
+            REQUIRE(vertexes.size() == 2ULL);
             CHECK(vertexes[0] == Point2D<>{-1, 1});
             CHECK(vertexes[1] == Point2D<>{2, -3});
         }
@@ -117,5 +117,24 @@ TEST_CASE("[Line2D] Equality operator", "[utils][Line2D]")
     {
         CHECK(obj1 == obj1);
         CHECK_FALSE(obj1 != obj1);
+    }
+}
+
+TEST_CASE("[Line2D] move() method", "[utils][Line2D]")
+{
+    Line2D<> obj1{Point2D<>{2, 3}, Point2D<>{1, 2}};
+    SECTION("Positive vector")
+    {
+        Vector2D<> const v{1, 2};
+        obj1.move(v);
+        CHECK(obj1.getVertexes()[0] == Point2D<>{3, 5});
+        CHECK(obj1.getVertexes()[1] == Point2D<>{2, 4});
+    }
+    SECTION("Negative vector")
+    {
+        Vector2D<> const v{-1, -3};
+        obj1.move(v);
+        CHECK(obj1.getVertexes()[0] == Point2D<>{1, 0});
+        CHECK(obj1.getVertexes()[1] == Point2D<>{0, -1});
     }
 }
