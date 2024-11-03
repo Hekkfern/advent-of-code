@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Coordinate2D.hpp"
-#include "utils/Concepts.hpp"
 #include <array>
 #include <cstdint>
 #include <ostream>
+#include <utils/Concepts.hpp>
+#include <utils/Hash.hpp>
 
 namespace utils::geometry2d {
 
@@ -16,6 +16,7 @@ namespace utils::geometry2d {
 template <SignedIntegerType T = int32_t>
 class Point2D {
 public:
+    static uint32_t const Dimension{2U};
     /**
      * @brief      Default constructor.
      */
@@ -27,16 +28,8 @@ public:
      * @param[in]  y     Coordinate Y.
      */
     constexpr explicit Point2D(T x, T y) noexcept
-        : mCoordinates{Coordinate2D<T>{x, y}}
-    {
-    }
-    /**
-     * @brief      Constructs a new instance.
-     *
-     * @param[in]  coords  Coordinates.
-     */
-    constexpr explicit Point2D(Coordinate2D<T> const& coords) noexcept
-        : mCoordinates{coords}
+        : mX{x}
+        , mY{y}
     {
     }
     /**
@@ -44,41 +37,36 @@ public:
      *
      * @return     The coordinates as a pair (X,Y).
      */
-    [[nodiscard]] constexpr Coordinate2D<T> getCoordinates() const noexcept
+    [[nodiscard]] constexpr std::array<T, Dimension>
+    getCoordinates() const noexcept
     {
-        return mCoordinates;
+        return std::to_array(mX, mY);
     }
     /**
      * @brief      Gets the coordinate X.
      *
      * @return     The coordinate X.
      */
-    [[nodiscard]] constexpr T getX() const noexcept
-    {
-        return mCoordinates.getX();
-    }
+    [[nodiscard]] constexpr T getX() const noexcept { return mX; }
     /**
      * @brief      Gets the coordinate Y.
      *
      * @return     The coordinate Y.
      */
-    [[nodiscard]] constexpr T getY() const noexcept
-    {
-        return mCoordinates.getY();
-    }
+    [[nodiscard]] constexpr T getY() const noexcept { return mY; }
     /**
      * @brief      Gets a list of all the colliding points.
      *
      * @return     List of colliding points.
      */
-    [[nodiscard]] constexpr std::array<Point2D, 4ULL>
+    [[nodiscard]] constexpr std::array<Point2D, 2 * Dimension>
     getNeighbors() const noexcept
     {
         return {
-            Point2D{mCoordinates.getX(), mCoordinates.getY() + 1},
-            Point2D{mCoordinates.getX() + 1, mCoordinates.getY()},
-            Point2D{mCoordinates.getX(), mCoordinates.getY() - 1},
-            Point2D{mCoordinates.getX() - 1, mCoordinates.getY() + 1}};
+            Point2D{mX, mY + 1},
+            Point2D{mX + 1, mY},
+            Point2D{mX, mY - 1},
+            Point2D{mX - 1, mY + 1}};
     }
     /**
      * @brief      Sets the coordinate X.
@@ -89,7 +77,9 @@ public:
      */
     [[nodiscard]] constexpr Point2D setX(T const x) const noexcept
     {
-        return Point2D{mCoordinates.setX(x)};
+        Point2D result{*this};
+        result.mX = x;
+        return result;
     }
     /**
      * @brief      Sets the coordinate Y.
@@ -100,7 +90,9 @@ public:
      */
     [[nodiscard]] constexpr Point2D setY(T const y) const noexcept
     {
-        return Point2D{mCoordinates.setY(y)};
+        Point2D result{*this};
+        result.mY = y;
+        return result;
     }
     /**
      * @brief      Equality operator.
@@ -113,13 +105,40 @@ public:
     operator==(Point2D<T> const& other) const noexcept
         = default;
     /**
+     * @brief      Invert the coordinates respect origin.
+     *
+     * @return     The resulting object.
+     */
+    [[nodiscard]] constexpr Point2D invert() const noexcept
+    {
+        return Point2D{-mX, -mY};
+    }
+    /**
      * @brief      Negation operator.
      *
      * @return     The result of the subtraction
      */
     [[nodiscard]] constexpr Point2D operator-() const noexcept
     {
-        return Point2D{-mCoordinates.getX(), -mCoordinates.getY()};
+        return invert();
+    }
+    /**
+     * @brief      Mirror respect X axis.
+     *
+     * @return     The resulting object.
+     */
+    [[nodiscard]] constexpr Point2D mirrorX() const noexcept
+    {
+        return Point2D{mX, -mY};
+    }
+    /**
+     * @brief      Mirror respect Y axis.
+     *
+     * @return     The resulting object.
+     */
+    [[nodiscard]] constexpr Point2D mirrorY() const noexcept
+    {
+        return Point2D{-mX, mY};
     }
     /**
      * @brief      Factory method to create a new Point based on the selected
@@ -144,7 +163,23 @@ public:
      */
     [[nodiscard]] std::string toString() const noexcept
     {
-        return mCoordinates.toString();
+        return "[" + std::to_string(mX) + "," + std::to_string(mY) + "]";
+    }
+    /**
+     * @brief      Getter for structured binding
+     *
+     * @tparam     N     Number of tuple-like parameters.
+     *
+     * @return     The value of the internal variable, according to @p N.
+     */
+    template <std::size_t N>
+    [[nodiscard]] decltype(auto) get() const
+    {
+        if constexpr (N == 0) {
+            return mX;
+        } else if constexpr (N == 1) {
+            return mY;
+        }
     }
     /**
      * @brief      Calculates the hash of this instance
@@ -153,7 +188,10 @@ public:
      */
     [[nodiscard]] constexpr std::size_t calculateHash() const noexcept
     {
-        return mCoordinates.calculateHash();
+        std::size_t seed{0ULL};
+        utils::hash::hash_combine(seed, mX);
+        utils::hash::hash_combine(seed, mY);
+        return seed;
     }
 
 private:
@@ -173,9 +211,13 @@ private:
     }
 
     /**
-     * Stores coordinate X and Y.
+     * Stores coordinate X.
      */
-    Coordinate2D<T> mCoordinates{};
+    T mX{0};
+    /**
+     * Stores coordinate Y.
+     */
+    T mY{0};
 };
 
 } // namespace utils::geometry2d
@@ -187,4 +229,19 @@ struct std::hash<utils::geometry2d::Point2D<T>> {
     {
         return obj.calculateHash();
     }
+};
+
+/* Support for structured binding */
+template <class T>
+struct std::tuple_size<utils::geometry2d::Point2D<T>>
+    : std::integral_constant<
+          std::size_t,
+          utils::geometry2d::Point2D<T>::Dimension> { };
+template <class T>
+struct std::tuple_element<0, utils::geometry2d::Point2D<T>> {
+    using type = T;
+};
+template <class T>
+struct std::tuple_element<1, utils::geometry2d::Point2D<T>> {
+    using type = T;
 };

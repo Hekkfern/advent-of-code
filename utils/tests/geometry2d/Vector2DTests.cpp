@@ -14,18 +14,12 @@ TEST_CASE("[Vector2D] create() method", "[utils][Vector2D]")
             Vector2D const vector2D{Vector2D<>::create(2, 4)};
             CHECK(vector2D.getX() == 2);
             CHECK(vector2D.getY() == 4);
-            auto const coords{vector2D.getCoordinates()};
-            CHECK(coords.getX() == 2);
-            CHECK(coords.getY() == 4);
         }
         SECTION("Positive and negatives values")
         {
             Vector2D const vector2D{Vector2D<>::create(-2, 3)};
             CHECK(vector2D.getX() == -2);
             CHECK(vector2D.getY() == 3);
-            auto const coords{vector2D.getCoordinates()};
-            CHECK(coords.getX() == -2);
-            CHECK(coords.getY() == 3);
         }
     }
 }
@@ -39,9 +33,6 @@ TEST_CASE("[Vector2D] Constructor", "[utils][Vector2D]")
             Vector2D<> const vector2D;
             CHECK(vector2D.getX() == 0);
             CHECK(vector2D.getY() == 0);
-            auto const coords{vector2D.getCoordinates()};
-            CHECK(coords.getX() == 0);
-            CHECK(coords.getY() == 0);
         }
         SECTION("Parametrized constructor")
         {
@@ -50,39 +41,27 @@ TEST_CASE("[Vector2D] Constructor", "[utils][Vector2D]")
                 Vector2D<> const vector2D{2, 4};
                 CHECK(vector2D.getX() == 2);
                 CHECK(vector2D.getY() == 4);
-                auto const coords{vector2D.getCoordinates()};
-                CHECK(coords.getX() == 2);
-                CHECK(coords.getY() == 4);
             }
             SECTION("Positive and negatives values")
             {
                 Vector2D<> const vector2D{-2, 3};
                 CHECK(vector2D.getX() == -2);
                 CHECK(vector2D.getY() == 3);
-                auto const coords{vector2D.getCoordinates()};
-                CHECK(coords.getX() == -2);
-                CHECK(coords.getY() == 3);
             }
         }
         SECTION("Group constructor")
         {
             SECTION("Positive values")
             {
-                Vector2D<> const vector2D{Coordinate2D{2, 4}};
+                Vector2D<> const vector2D{2, 4};
                 CHECK(vector2D.getX() == 2);
                 CHECK(vector2D.getY() == 4);
-                auto const coords{vector2D.getCoordinates()};
-                CHECK(coords.getX() == 2);
-                CHECK(coords.getY() == 4);
             }
             SECTION("Positive and negatives values")
             {
-                Vector2D<> const vector2D{Coordinate2D{-2, 3}};
+                Vector2D<> const vector2D{-2, 3};
                 CHECK(vector2D.getX() == -2);
                 CHECK(vector2D.getY() == 3);
-                auto const coords{vector2D.getCoordinates()};
-                CHECK(coords.getX() == -2);
-                CHECK(coords.getY() == 3);
             }
         }
     }

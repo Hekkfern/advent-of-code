@@ -1,13 +1,13 @@
 #pragma once
 
-#include "../Hash.hpp"
 #include "Point2D.hpp"
-#include "utils/Concepts.hpp"
 #include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
+#include <utils/Concepts.hpp>
+#include <utils/Hash.hpp>
 
 namespace utils::geometry2d {
 
@@ -24,6 +24,7 @@ enum class Vector2DType { Arbitrary, Zero, Horizontal, Vertical, Diagonal };
 template <SignedIntegerType T = int32_t>
 class Vector2D {
 public:
+    static uint32_t const Dimension{2U};
     /**
      * @brief      Default constructor.
      */
@@ -54,16 +55,6 @@ public:
     }
     /**
      * @brief      Constructs a new instance where the the origin is the
-     * coordinate (0,0) and the destination is the selected coordinate.
-     *
-     * @param[in]  coords  Coordinates.
-     */
-    constexpr explicit Vector2D(Coordinate2D<T> const coords) noexcept
-        : Vector2D{coords.getX(), coords.getY()}
-    {
-    }
-    /**
-     * @brief      Constructs a new instance where the the origin is the
      *             coordinate (0,0) and the destination is the selected point.
      *
      * @param[in]  p     Point.
@@ -77,9 +68,10 @@ public:
      *
      * @return     The coordinates as a pair (X,Y).
      */
-    [[nodiscard]] constexpr Coordinate2D<T> getCoordinates() const noexcept
+    [[nodiscard]] constexpr std::array<T, Dimension>
+    getCoordinates() const noexcept
     {
-        return Coordinate2D<T>{mX, mY};
+        return std::to_array(mX, mY);
     }
     /**
      * @brief      Gets the coordinate X.
@@ -98,7 +90,8 @@ public:
      *
      * @return     Pair of absolute coordinates (X,Y).
      */
-    [[nodiscard]] constexpr std::array<uint64_t, 2ULL> size() const noexcept
+    [[nodiscard]] constexpr std::array<uint64_t, Dimension>
+    size() const noexcept
     {
         return {
             static_cast<uint64_t>(std::abs(mX)),
@@ -169,9 +162,7 @@ public:
      */
     [[nodiscard]] constexpr bool
     operator==(Vector2D<T> const& other) const noexcept
-    {
-        return (mX == other.mX) && (mY == other.mY);
-    }
+        = default;
     /**
      * @brief      Addition operator, which sums the coordinates of both
      *             objects.
@@ -186,14 +177,40 @@ public:
         return Vector2D{mX + other.mX, mY + other.mY};
     }
     /**
-     * @brief      Negation operator, which inverts the sign of both coordinates
-     *             of the vector, i.e. inverts the direction of the vector.
+     * @brief      Invert the coordinates respect origin.
      *
-     * @return     The inverted vector.
+     * @return     The resulting object.
+     */
+    [[nodiscard]] constexpr Vector2D invert() const noexcept
+    {
+        return Vector2D{-mX, -mY};
+    }
+    /**
+     * @brief      Negation operator.
+     *
+     * @return     The result of the subtraction
      */
     [[nodiscard]] constexpr Vector2D operator-() const noexcept
     {
-        return Vector2D{-mX, -mY};
+        return invert();
+    }
+    /**
+     * @brief      Mirror respect X axis.
+     *
+     * @return     The resulting object.
+     */
+    [[nodiscard]] constexpr Vector2D mirrorX() const noexcept
+    {
+        return Vector2D{mX, -mY};
+    }
+    /**
+     * @brief      Mirror respect Y axis.
+     *
+     * @return     The resulting object.
+     */
+    [[nodiscard]] constexpr Vector2D mirrorY() const noexcept
+    {
+        return Vector2D{-mX, mY};
     }
     /**
      * @brief      Subtraction operator, which subtracts the coordinates of both
@@ -251,6 +268,22 @@ public:
      * @return     Angle expressed in radians.
      */
     [[nodiscard]] double angle() const noexcept { return std::atan2(mY, mX); }
+    /**
+     * @brief      Getter for structured binding
+     *
+     * @tparam     N     Number of tuple-like parameters.
+     *
+     * @return     The value of the internal variable, according to @p N.
+     */
+    template <std::size_t N>
+    [[nodiscard]] decltype(auto) get() const
+    {
+        if constexpr (N == 0) {
+            return mX;
+        } else if constexpr (N == 1) {
+            return mY;
+        }
+    }
 
 private:
     /**
@@ -363,4 +396,19 @@ struct std::hash<utils::geometry2d::Vector2D<T>> {
     {
         return k.calculateHash();
     }
+};
+
+/* Support for structured binding */
+template <class T>
+struct std::tuple_size<utils::geometry2d::Vector2D<T>>
+    : std::integral_constant<
+          std::size_t,
+          utils::geometry2d::Vector2D<T>::Dimension> { };
+template <class T>
+struct std::tuple_element<0, utils::geometry2d::Vector2D<T>> {
+    using type = T;
+};
+template <class T>
+struct std::tuple_element<1, utils::geometry2d::Vector2D<T>> {
+    using type = T;
 };

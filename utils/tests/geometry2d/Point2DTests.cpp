@@ -32,9 +32,6 @@ TEST_CASE("[Point2D] Constructor", "[Point2D]")
             Point2D<> const point2D;
             CHECK(point2D.getX() == 0);
             CHECK(point2D.getY() == 0);
-            auto const coords{point2D.getCoordinates()};
-            CHECK(coords.getX() == 0);
-            CHECK(coords.getY() == 0);
         }
         SECTION("Parametrized constructor")
         {
@@ -43,39 +40,27 @@ TEST_CASE("[Point2D] Constructor", "[Point2D]")
                 Point2D<> const point2D{2, 4};
                 CHECK(point2D.getX() == 2);
                 CHECK(point2D.getY() == 4);
-                auto const coords{point2D.getCoordinates()};
-                CHECK(coords.getX() == 2);
-                CHECK(coords.getY() == 4);
             }
             SECTION("Positive and negatives values")
             {
                 Point2D<> const point2D{-2, 3};
                 CHECK(point2D.getX() == -2);
                 CHECK(point2D.getY() == 3);
-                auto const coords{point2D.getCoordinates()};
-                CHECK(coords.getX() == -2);
-                CHECK(coords.getY() == 3);
             }
         }
         SECTION("Group constructor")
         {
             SECTION("Positive values")
             {
-                Point2D<> const point2D{Coordinate2D{2, 4}};
+                Point2D<> const point2D{2, 4};
                 CHECK(point2D.getX() == 2);
                 CHECK(point2D.getY() == 4);
-                auto const coords{point2D.getCoordinates()};
-                CHECK(coords.getX() == 2);
-                CHECK(coords.getY() == 4);
             }
             SECTION("Positive and negatives values")
             {
-                Point2D<> const point2D{Coordinate2D{-2, 3}};
+                Point2D<> const point2D{-2, 3};
                 CHECK(point2D.getX() == -2);
                 CHECK(point2D.getY() == 3);
-                auto const coords{point2D.getCoordinates()};
-                CHECK(coords.getX() == -2);
-                CHECK(coords.getY() == 3);
             }
         }
     }
@@ -100,7 +85,7 @@ TEST_CASE("[Point2D] getNeighbors() method", "[utils][Point2D]")
 {
     SECTION("Runtime tests")
     {
-        Point2D<> const point2D{Coordinate2D{2, 4}};
+        Point2D<> const point2D{2, 4};
         auto const neighbors{point2D.getNeighbors()};
         CHECK(neighbors.size() == 4U);
     }
@@ -195,5 +180,59 @@ TEST_CASE("[Point2D] Negation operator", "[utils][Point2D]")
         constexpr Point2D<> p2{4, -2};
         STATIC_CHECK(-p1 == Point2D<>{2, -3});
         STATIC_CHECK(-p2 == Point2D<>{-4, 2});
+    }
+}
+
+TEST_CASE("[Point2D] invert() method", "[utils][Point2D]")
+{
+    SECTION("Runtime tests")
+    {
+        Point2D<> const p1{-2, 3};
+        Point2D<> const p2{4, -2};
+        CHECK(p1.invert() == Point2D<>{2, -3});
+        CHECK(p2.invert() == Point2D<>{-4, 2});
+    }
+    SECTION("Static tests")
+    {
+        constexpr Point2D<> p1{-2, 3};
+        constexpr Point2D<> p2{4, -2};
+        STATIC_CHECK(p1.invert() == Point2D<>{2, -3});
+        STATIC_CHECK(p2.invert() == Point2D<>{-4, 2});
+    }
+}
+
+TEST_CASE("[Point2D] mirrorX() method", "[utils][Point2D]")
+{
+    SECTION("Runtime tests")
+    {
+        Point2D<> const p1{-2, 3};
+        Point2D<> const p2{4, -2};
+        CHECK(p1.mirrorX() == Point2D<>{-2, -3});
+        CHECK(p2.mirrorX() == Point2D<>{4, 2});
+    }
+    SECTION("Static tests")
+    {
+        constexpr Point2D<> p1{-2, 3};
+        constexpr Point2D<> p2{4, -2};
+        STATIC_CHECK(p1.mirrorX() == Point2D<>{-2, -3});
+        STATIC_CHECK(p2.mirrorX() == Point2D<>{4, 2});
+    }
+}
+
+TEST_CASE("[Point2D] mirrorY() method", "[utils][Point2D]")
+{
+    SECTION("Runtime tests")
+    {
+        Point2D<> const p1{-2, 3};
+        Point2D<> const p2{4, -2};
+        CHECK(p1.mirrorY() == Point2D<>{2, -3});
+        CHECK(p2.mirrorY() == Point2D<>{-4, 2});
+    }
+    SECTION("Static tests")
+    {
+        constexpr Point2D<> p1{-2, 3};
+        constexpr Point2D<> p2{4, -2};
+        STATIC_CHECK(p1.mirrorY() == Point2D<>{2, 3});
+        STATIC_CHECK(p2.mirrorY() == Point2D<>{-4, -2});
     }
 }

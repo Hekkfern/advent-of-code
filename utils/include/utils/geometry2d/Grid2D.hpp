@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Coordinate2D.hpp"
+#include "Direction2D.hpp"
+#include "Point2D.hpp"
 #include "PositionStatus.hpp"
 #include <algorithm>
 #include <functional>
@@ -28,7 +29,8 @@ namespace utils::geometry2d {
 template <typename T>
 class Grid2D {
 public:
-    using Coord = Coordinate2D<std::size_t>;
+    typedef int64_t CoordType;
+    using Coord = Point2D<CoordType>;
     /**
      * @brief      Constructs a new instance.
      */
@@ -100,10 +102,7 @@ public:
      * @return     The result of the equality.
      */
     [[nodiscard]] constexpr bool operator==(Grid2D const& other) const noexcept
-    {
-        return mWidth == other.mWidth && mHeight == other.mHeight
-            && mFlatGrid == other.mFlatGrid;
-    }
+        = default;
     /**
      * @brief      Iterates over each item in the specified row.
      *

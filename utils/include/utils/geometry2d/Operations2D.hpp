@@ -3,7 +3,7 @@
 #include "Direction2D.hpp"
 #include "Point2D.hpp"
 #include "Vector2D.hpp"
-#include "utils/Concepts.hpp"
+#include <utils/Concepts.hpp>
 
 namespace utils::geometry2d {
 
@@ -25,7 +25,6 @@ move(Point2D<T> const& origin, Vector2D<T> const& movement)
     return Point2D{
         origin.getX() + movement.getX(), origin.getY() + movement.getY()};
 }
-
 /**
  * @brief      Converts the direction to an unitary @ref Vector2D object.
  *
@@ -73,7 +72,6 @@ toVector2D(Direction2D const& direction)
     }
     return Vector2D<T>{coordX, coordY};
 }
-
 /**
  * @brief      Calculates the point result of applying an unitary movement
  *             towards the given direction to the selected point.
@@ -91,7 +89,6 @@ move(Point2D<T> const& origin, Direction2D const& direction)
 {
     return origin + toVector2D(direction);
 }
-
 /**
  * @brief      Addition operator to move a @ref Point2D according to a @ref
  *             Vector2D.
@@ -109,7 +106,6 @@ operator+(Point2D<T> const& origin, Vector2D<T> const& movement)
 {
     return move(origin, movement);
 }
-
 /**
  * @brief      Addition operator to move a @ref Point2D according to a @ref
  *             Vector2D.
@@ -127,7 +123,6 @@ operator+(Vector2D<T> const& movement, Point2D<T> const& origin)
 {
     return move(origin, movement);
 }
-
 /**
  * @brief      Addition assignment operator to move a @ref Point2D according to
  *             a @ref Vector2D.
@@ -145,7 +140,6 @@ void operator+=(Point2D<T>& point, Vector2D<T> const& movement)
 {
     point = point + movement;
 }
-
 /**
  * @brief      Addition operator to move a @ref Point2D according to a @ref
  *             Direction2D.
@@ -163,7 +157,6 @@ operator+(Point2D<T> const& origin, Direction2D const& direction)
 {
     return move(origin, direction);
 }
-
 /**
  * @brief      Addition operator to move a @ref Point2D according to a @ref
  *             Direction2D.
@@ -181,7 +174,6 @@ operator+(Direction2D const& direction, Point2D<T> const& origin)
 {
     return move(origin, direction);
 }
-
 /**
  * @brief         Addition assignment operator to move a @ref Point2D according
  *                to a @ref Direction2D.
