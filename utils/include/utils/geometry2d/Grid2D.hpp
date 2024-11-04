@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Direction2D.hpp"
+#include "Operations2D.hpp"
 #include "Point2D.hpp"
 #include "PositionStatus.hpp"
 #include <algorithm>
@@ -24,12 +25,13 @@ namespace utils::geometry2d {
 /**
  * @brief      A 2D grid of values. The coordinates are 0-based.
  *
- * @tparam     T     The type of the values in the grid.
+ * @tparam     ValueType     The type of the values in the grid.
+ * @tparam     CoordinateType     Type of the coordinate values.
  */
-template <typename T>
+template <typename ValueType, SignedIntegerType CoordinateType = int32_t>
 class Grid2D {
 public:
-    typedef int64_t CoordType;
+    using CoordType = CoordinateType;
     using Coord = Point2D<CoordType>;
     /**
      * @brief      Constructs a new instance.
@@ -40,7 +42,7 @@ public:
      *
      * @param[in]  grid  The grid in 2D format.
      */
-    explicit Grid2D(std::vector<std::vector<T>> const& grid) noexcept
+    explicit Grid2D(std::vector<std::vector<ValueType>> const& grid) noexcept
     {
         if (!grid.empty()) {
             mFlatGrid = grid | ranges::views::join | ranges::to<std::vector>;
@@ -55,7 +57,7 @@ public:
      *
      * @return     The row values.
      */
-    [[nodiscard]] std::vector<T>
+    [[nodiscard]] std::vector<ValueType>
     getRow(std::size_t const rowIndex) const noexcept
     {
         if (rowIndex >= mHeight) {
@@ -72,7 +74,7 @@ public:
      *
      * @return     The column values.
      */
-    [[nodiscard]] std::vector<T>
+    [[nodiscard]] std::vector<ValueType>
     getColumn(std::size_t const colIndex) const noexcept
     {
         if (colIndex >= mWidth) {
@@ -115,7 +117,7 @@ public:
      */
     void iterateRow(
         std::size_t const rowIndex,
-        std::function<bool(T const& item)> callback) const noexcept
+        std::function<bool(ValueType const& item)> callback) const noexcept
     {
         if (rowIndex >= mHeight) {
             return;
@@ -138,7 +140,7 @@ public:
     }
     void iterateRow(
         std::size_t const rowIndex,
-        std::function<bool(T& item)> callback) noexcept
+        std::function<bool(ValueType& item)> callback) noexcept
     {
         if (rowIndex >= mHeight) {
             return;
@@ -165,7 +167,7 @@ public:
      */
     void iterateColumn(
         std::size_t colIndex,
-        std::function<bool(T const& item)> callback) const noexcept
+        std::function<bool(ValueType const& item)> callback) const noexcept
     {
         if (colIndex >= mWidth) {
             return;
@@ -185,7 +187,8 @@ public:
         }
     }
     void iterateColumn(
-        std::size_t colIndex, std::function<bool(T& item)> callback) noexcept
+        std::size_t colIndex,
+        std::function<bool(ValueType& item)> callback) noexcept
     {
         if (colIndex >= mWidth) {
             return;
@@ -212,11 +215,12 @@ public:
      *
      * @{
      */
-    [[nodiscard]] T& at(std::size_t const row, std::size_t const col) noexcept
+    [[nodiscard]] ValueType&
+    at(std::size_t const row, std::size_t const col) noexcept
     {
         return mFlatGrid[row * mWidth + col];
     }
-    [[nodiscard]] T const&
+    [[nodiscard]] ValueType const&
     at(std::size_t const row, std::size_t const col) const noexcept
     {
         return mFlatGrid[row * mWidth + col];
@@ -234,19 +238,19 @@ public:
      *
      * @{
      */
-    [[nodiscard]] T& at(Coord const& coords) noexcept
+    [[nodiscard]] ValueType& at(Coord const& coords) noexcept
     {
         return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
-    [[nodiscard]] T const& at(Coord const& coords) const noexcept
+    [[nodiscard]] ValueType const& at(Coord const& coords) const noexcept
     {
         return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
-    [[nodiscard]] T& at(Coord&& coords) noexcept
+    [[nodiscard]] ValueType& at(Coord&& coords) noexcept
     {
         return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
-    [[nodiscard]] T const& at(Coord&& coords) const noexcept
+    [[nodiscard]] ValueType const& at(Coord&& coords) const noexcept
     {
         return mFlatGrid[coords.getY() * mWidth + coords.getX()];
     }
@@ -261,7 +265,7 @@ public:
      *
      * @return     A new Grid2D object representing the subgrid.
      */
-    [[nodiscard]] Grid2D<T> subgrid(
+    [[nodiscard]] Grid2D<ValueType> subgrid(
         std::size_t const startRow,
         std::size_t const startCol,
         std::size_t const numRows,
@@ -278,10 +282,11 @@ public:
                   [this, startCol, numCols](std::size_t const rowIndex) {
                       auto const rowStart{
                           mFlatGrid.begin() + rowIndex * mWidth + startCol};
-                      return std::vector<T>(rowStart, rowStart + numCols);
+                      return std::vector<ValueType>(
+                          rowStart, rowStart + numCols);
                   })
-            | ranges::to<std::vector<std::vector<T>>>();
-        return Grid2D<T>(subRows);
+            | ranges::to<std::vector<std::vector<ValueType>>>();
+        return Grid2D<ValueType>(subRows);
     }
     /**
      * @brief      Flips the grid horizontally (i.e., invert columns).
@@ -314,7 +319,7 @@ public:
      */
     void rotateClockwise() noexcept
     {
-        std::vector<T> rotatedGrid(mWidth * mHeight);
+        std::vector<ValueType> rotatedGrid(mWidth * mHeight);
         for (std::size_t row{0ULL}; row < mHeight; ++row) {
             for (std::size_t col{0ULL}; col < mWidth; ++col) {
                 rotatedGrid[col * mHeight + (mHeight - 1ULL - row)] = mFlatGrid
@@ -329,7 +334,7 @@ public:
      */
     void rotateCounterClockwise() noexcept
     {
-        std::vector<T> rotatedGrid(mWidth * mHeight);
+        std::vector<ValueType> rotatedGrid(mWidth * mHeight);
         for (std::size_t row{0ULL}; row < mHeight; ++row) {
             for (std::size_t col{0ULL}; col < mWidth; ++col) {
                 rotatedGrid[(mWidth - 1ULL - col) * mHeight + row] = mFlatGrid
@@ -348,10 +353,11 @@ public:
      *             std::nullopt otherwise.
      */
     [[nodiscard]] std::optional<std::pair<std::size_t, std::size_t>>
-    findFirst(T const& value) const noexcept
+    findFirst(ValueType const& value) const noexcept
     {
         auto const it = ranges::find_if(
-            mFlatGrid, [&value = std::as_const(value)](T const& item) -> bool {
+            mFlatGrid,
+            [&value = std::as_const(value)](ValueType const& item) -> bool {
                 return item == value;
             });
 
@@ -369,7 +375,8 @@ public:
      * @return     A vector of pairs of indices (row, col) for each occurrence
      *             of the value.
      */
-    [[nodiscard]] std::vector<Coord> findAll(T const& value) const noexcept
+    [[nodiscard]] std::vector<Coord>
+    findAll(ValueType const& value) const noexcept
     {
         return mFlatGrid | ranges::views::enumerate
             | ranges::views::filter([&value](auto const& pair) -> bool {
@@ -393,9 +400,9 @@ public:
     void resize(
         std::size_t const newHeight,
         std::size_t const newWidth,
-        T const& defaultValue = T{}) noexcept
+        ValueType const& defaultValue = ValueType{}) noexcept
     {
-        std::vector<T> newFlatGrid(newHeight * newWidth, defaultValue);
+        std::vector<ValueType> newFlatGrid(newHeight * newWidth, defaultValue);
 
         for (std::size_t row = 0; row < std::min(newHeight, mHeight); ++row) {
             for (std::size_t col = 0; col < std::min(newWidth, mWidth); ++col) {
@@ -419,12 +426,11 @@ public:
      *             coordinates.
      */
     [[nodiscard]] PositionStatus
-    where(std::size_t const row, std::size_t const col) const noexcept
+    where(CoordinateType const x, CoordinateType const y) const noexcept
     {
-        if (col >= mWidth || row >= mHeight) {
+        if (x < 0 || x >= mWidth || y < 0 || y >= mHeight) {
             return PositionStatus::Outside;
-        } else if (
-            col == 0 || col == mWidth - 1 || row == 0 || row == mHeight - 1) {
+        } else if (x == 0 || x == mWidth - 1 || y == 0 || y == mHeight - 1) {
             return PositionStatus::OnBorder;
         } else {
             return PositionStatus::Inside;
@@ -441,9 +447,7 @@ public:
      */
     [[nodiscard]] PositionStatus where(Coord const& coords) const noexcept
     {
-        auto const x{coords.getX()};
-        auto const y{coords.getY()};
-        return where(y, x);
+        return where(coords.getX(), coords.getY());
     }
     /**
      * @brief      Moves a position in the grid according to a given direction.
@@ -457,8 +461,13 @@ public:
     [[nodiscard]] constexpr std::optional<Coord>
     move(Coord const& position, Direction2D const& direction) const noexcept
     {
-        auto const result{position.move(direction)};
-        if (!result || where(*result) == PositionStatus::Outside) {
+        /* Reject invalid positions */
+        if (where(position) == PositionStatus::Outside) {
+            return std::nullopt;
+        }
+        /* do movement */
+        auto const result{utils::geometry2d::move(position, direction)};
+        if (where(result) == PositionStatus::Outside) {
             return std::nullopt;
         }
         return *result;
@@ -490,7 +499,7 @@ private:
      *
      * @details    Rows are concatenated one after another.
      */
-    std::vector<T> mFlatGrid{};
+    std::vector<ValueType> mFlatGrid{};
     /**
      * The width of the grid.
      */

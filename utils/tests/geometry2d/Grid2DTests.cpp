@@ -364,12 +364,12 @@ TEST_CASE("[Grid2D] findAll() method", "[utils][Grid2D]")
 {
     SECTION("Empty grid")
     {
-        Grid2D<int> const grid2D{std::vector<std::vector<int>>{}};
+        Grid2D<int32_t> const grid2D{std::vector<std::vector<int32_t>>{}};
         REQUIRE(grid2D.findAll(34).empty());
     }
     SECTION("Filled grid")
     {
-        Grid2D<int> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
+        Grid2D<int32_t> const grid2D{{{1, 2}, {3, 4}, {5, 6}}};
         SECTION("Found")
         {
             auto const result{grid2D.findAll(3)};

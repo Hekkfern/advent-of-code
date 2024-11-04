@@ -190,4 +190,4 @@ void operator+=(Point2D<T>& point, Direction2D const& direction)
     point = point + direction;
 }
 
-} // namespace utils::geometry2d
+} // namespace utils::geometry2d::operation

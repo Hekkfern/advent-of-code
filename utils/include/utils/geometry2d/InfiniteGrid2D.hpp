@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Coordinate2D.hpp"
+#include "Direction2D.hpp"
+#include "Operations2D.hpp"
+#include "Point2D.hpp"
 #include <range/v3/algorithm/swap_ranges.hpp>
 #include <range/v3/range/conversion.hpp>
 #include <range/v3/view/iota.hpp>
@@ -13,12 +15,14 @@ namespace utils::geometry2d {
  * @brief      A 2D grid of values that repeats the base grid infinitely in
  *             every direction in 2D spaces.
  *
- * @tparam     T     The type of the values in the grid.
+ * @tparam     ValueType     The type of the values in the grid.
+ * @tparam     CoordinateType     Type of the coordinate values.
  */
-template <typename T>
+template <typename ValueType, SignedIntegerType CoordinateType = int32_t>
 class InfiniteGrid2D {
 public:
-    using Coord = Coordinate2D<int64_t>;
+    using CoordType = CoordinateType;
+    using Coord = Point2D<CoordType>;
     /**
      * @brief      Constructs a new instance.
      */
@@ -28,7 +32,8 @@ public:
      *
      * @param[in]  grid  The grid in 2D format.
      */
-    explicit InfiniteGrid2D(std::vector<std::vector<T>> const& grid) noexcept
+    explicit InfiniteGrid2D(
+        std::vector<std::vector<ValueType>> const& grid) noexcept
     {
         if (!grid.empty()) {
             mFlatGrid = grid | ranges::views::join | ranges::to<std::vector>;
@@ -57,10 +62,7 @@ public:
      */
     [[nodiscard]] constexpr bool
     operator==(InfiniteGrid2D const& other) const noexcept
-    {
-        return mWidth == other.mWidth && mHeight == other.mHeight
-            && mFlatGrid == other.mFlatGrid;
-    }
+        = default;
     /**
      * @brief      Accesses the element at the specified row and column.
      *
@@ -74,12 +76,12 @@ public:
      *
      * @{
      */
-    [[nodiscard]] T& at(int64_t const row, int64_t const col) noexcept
+    [[nodiscard]] ValueType& at(int64_t const row, int64_t const col) noexcept
     {
         auto const clampedCoords{clampCoordinates(Coord{col, row})};
         return mFlatGrid[clampedCoords.getY() * mWidth + clampedCoords.getX()];
     }
-    [[nodiscard]] T const&
+    [[nodiscard]] ValueType const&
     at(int64_t const row, int64_t const col) const noexcept
     {
         auto const clampedCoords{clampCoordinates(Coord{col, row})};
@@ -98,22 +100,22 @@ public:
      *
      * @{
      */
-    [[nodiscard]] T& at(Coord const& coords) noexcept
+    [[nodiscard]] ValueType& at(Coord const& coords) noexcept
     {
         auto const clampedCoords{clampCoordinates(coords)};
         return mFlatGrid[clampedCoords.getY() * mWidth + clampedCoords.getX()];
     }
-    [[nodiscard]] T const& at(Coord const& coords) const noexcept
+    [[nodiscard]] ValueType const& at(Coord const& coords) const noexcept
     {
         auto const clampedCoords{clampCoordinates(coords)};
         return mFlatGrid[clampedCoords.getY() * mWidth + clampedCoords.getX()];
     }
-    [[nodiscard]] T& at(Coord&& coords) noexcept
+    [[nodiscard]] ValueType& at(Coord&& coords) noexcept
     {
         auto const clampedCoords{clampCoordinates(coords)};
         return mFlatGrid[clampedCoords.getY() * mWidth + clampedCoords.getX()];
     }
-    [[nodiscard]] T const& at(Coord&& coords) const noexcept
+    [[nodiscard]] ValueType const& at(Coord&& coords) const noexcept
     {
         auto const clampedCoords{clampCoordinates(coords)};
         return mFlatGrid[clampedCoords.getY() * mWidth + clampedCoords.getX()];
@@ -150,7 +152,7 @@ public:
      */
     void rotateClockwise() noexcept
     {
-        std::vector<T> rotatedGrid(mWidth * mHeight);
+        std::vector<ValueType> rotatedGrid(mWidth * mHeight);
         for (std::size_t row{0ULL}; row < mHeight; ++row) {
             for (std::size_t col{0ULL}; col < mWidth; ++col) {
                 rotatedGrid[col * mHeight + (mHeight - 1ULL - row)] = mFlatGrid
@@ -165,7 +167,7 @@ public:
      */
     void rotateCounterClockwise() noexcept
     {
-        std::vector<T> rotatedGrid(mWidth * mHeight);
+        std::vector<ValueType> rotatedGrid(mWidth * mHeight);
         for (std::size_t row{0ULL}; row < mHeight; ++row) {
             for (std::size_t col{0ULL}; col < mWidth; ++col) {
                 rotatedGrid[(mWidth - 1ULL - col) * mHeight + row] = mFlatGrid
@@ -187,11 +189,7 @@ public:
     [[nodiscard]] constexpr std::optional<Coord>
     move(Coord const& position, Direction2D const& direction) const noexcept
     {
-        auto const result{position.move(direction)};
-        if (!result) {
-            return std::nullopt;
-        }
-        return *result;
+        return utils::geometry2d::move(position, direction);
     }
     /**
      * @brief      Gets all the valid neighbors (in the four main directions) of
@@ -237,7 +235,7 @@ private:
      *
      * @details    Rows are concatenated one after another.
      */
-    std::vector<T> mFlatGrid{};
+    std::vector<ValueType> mFlatGrid{};
     /**
      * The width of the grid.
      */

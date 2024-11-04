@@ -40,7 +40,7 @@ public:
     [[nodiscard]] constexpr std::array<T, Dimension>
     getCoordinates() const noexcept
     {
-        return std::to_array(mX, mY);
+        return std::to_array({mX, mY});
     }
     /**
      * @brief      Gets the coordinate X.
@@ -62,11 +62,11 @@ public:
     [[nodiscard]] constexpr std::array<Point2D, 2 * Dimension>
     getNeighbors() const noexcept
     {
-        return {
+        return std::to_array({
             Point2D{mX, mY + 1},
             Point2D{mX + 1, mY},
             Point2D{mX, mY - 1},
-            Point2D{mX - 1, mY + 1}};
+            Point2D{mX - 1, mY + 1}});
     }
     /**
      * @brief      Sets the coordinate X.
