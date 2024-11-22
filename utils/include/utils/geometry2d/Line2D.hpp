@@ -134,11 +134,21 @@ public:
      *
      * @param[in] v Vector of movement of both vertexes.
      */
-    void move(Vector2D<T> const& v) noexcept
+    bool move(Vector2D<T> const& v) noexcept
     {
+        std::vector<Point2D<T>> newVertexes;
+        newVertexes.reserve(mVertexes.size());
         for (auto& vertex : mVertexes) {
-            vertex = utils::geometry2d::move(vertex, v);
+            if (auto const movedVertex = utils::geometry2d::move(vertex, v);
+                movedVertex) {
+                newVertexes.push_back(movedVertex);
+            }
         }
+        if (newVertexes.size() != mVertexes.size()) {
+            return false;
+        }
+        mVertexes = newVertexes;
+        return true;
     }
 
 private:

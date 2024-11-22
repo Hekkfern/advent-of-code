@@ -78,13 +78,13 @@ public:
      */
     [[nodiscard]] ValueType& at(int64_t const row, int64_t const col) noexcept
     {
-        auto const clampedCoords{clampCoordinates(Coord{col, row})};
+        auto const clampedCoords{clampCoordinates(Coord::create(col, row))};
         return mFlatGrid[clampedCoords.getY() * mWidth + clampedCoords.getX()];
     }
     [[nodiscard]] ValueType const&
     at(int64_t const row, int64_t const col) const noexcept
     {
-        auto const clampedCoords{clampCoordinates(Coord{col, row})};
+        auto const clampedCoords{clampCoordinates(Coord::create(col, row))};
         return mFlatGrid[clampedCoords.getY() * mWidth + clampedCoords.getX()];
     }
     /** }@ */
@@ -224,10 +224,10 @@ private:
     clampCoordinates(Coord const& coords) const noexcept
     {
         return Coord{
-            static_cast<int64_t>(
-                utils::math::modulusFloor<int64_t>(coords.getX(), mWidth)),
-            static_cast<int64_t>(
-                utils::math::modulusFloor<int64_t>(coords.getY(), mHeight))};
+            static_cast<CoordType>(utils::math::modulusFloor<int64_t>(
+                coords.getX(), static_cast<CoordType>(mWidth))),
+            static_cast<CoordType>(utils::math::modulusFloor<int64_t>(
+                coords.getY(), static_cast<CoordType>(mHeight)))};
     }
 
     /**

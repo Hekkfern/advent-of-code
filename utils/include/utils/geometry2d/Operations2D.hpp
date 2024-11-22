@@ -4,6 +4,7 @@
 #include "Point2D.hpp"
 #include "Vector2D.hpp"
 #include <utils/Concepts.hpp>
+#include <utils/Math.hpp>
 
 namespace utils::geometry2d {
 
@@ -19,9 +20,15 @@ namespace utils::geometry2d {
  * @return     Resulting position of the movement.
  */
 template <SignedIntegerType T = int32_t>
-[[maybe_unused]] [[nodiscard]] static Point2D<T>
+[[maybe_unused]] [[nodiscard]] static std::optional<Point2D<T>>
 move(Point2D<T> const& origin, Vector2D<T> const& movement)
 {
+    if (utils::math::willAdditionOverflow(origin.getX(), movement.getX())) {
+        return std::nullopt;
+    }
+    if (utils::math::willAdditionOverflow(origin.getY(), movement.getY())) {
+        return std::nullopt;
+    }
     return Point2D{
         origin.getX() + movement.getX(), origin.getY() + movement.getY()};
 }
@@ -84,7 +91,7 @@ toVector2D(Direction2D const& direction)
  * @return     Resulting position of the movement.
  */
 template <SignedIntegerType T = int32_t>
-[[maybe_unused]] [[nodiscard]] static Point2D<T>
+[[maybe_unused]] [[nodiscard]] static std::optional<Point2D<T>>
 move(Point2D<T> const& origin, Direction2D const& direction)
 {
     return origin + toVector2D(direction);
@@ -101,7 +108,7 @@ move(Point2D<T> const& origin, Direction2D const& direction)
  * @return     The result of the movement.
  */
 template <SignedIntegerType T = int32_t>
-[[maybe_unused]] [[nodiscard]] Point2D<T>
+[[maybe_unused]] [[nodiscard]] std::optional<Point2D<T>>
 operator+(Point2D<T> const& origin, Vector2D<T> const& movement)
 {
     return move(origin, movement);
@@ -118,27 +125,10 @@ operator+(Point2D<T> const& origin, Vector2D<T> const& movement)
  * @return     The result of the movement.
  */
 template <SignedIntegerType T = int32_t>
-[[maybe_unused]] [[nodiscard]] Point2D<T>
+[[maybe_unused]] [[nodiscard]] std::optional<Point2D<T>>
 operator+(Vector2D<T> const& movement, Point2D<T> const& origin)
 {
     return move(origin, movement);
-}
-/**
- * @brief      Addition assignment operator to move a @ref Point2D according to
- *             a @ref Vector2D.
- *
- * @param[in]  point     Original position.
- * @param[in]  movement  Vector of movement.
- *
- * @tparam     T         Type of the coordinates.
- *
- * @return     The result of the movement.
- */
-template <SignedIntegerType T = int32_t>
-[[maybe_unused]]
-void operator+=(Point2D<T>& point, Vector2D<T> const& movement)
-{
-    point = point + movement;
 }
 /**
  * @brief      Addition operator to move a @ref Point2D according to a @ref
@@ -152,7 +142,7 @@ void operator+=(Point2D<T>& point, Vector2D<T> const& movement)
  * @return     The result of the movement.
  */
 template <SignedIntegerType T = int32_t>
-[[maybe_unused]] [[nodiscard]] Point2D<T>
+[[maybe_unused]] [[nodiscard]] std::optional<Point2D<T>>
 operator+(Point2D<T> const& origin, Direction2D const& direction)
 {
     return move(origin, direction);
@@ -169,25 +159,10 @@ operator+(Point2D<T> const& origin, Direction2D const& direction)
  * @return     The result of the movement.
  */
 template <SignedIntegerType T = int32_t>
-[[maybe_unused]] [[nodiscard]] Point2D<T>
+[[maybe_unused]] [[nodiscard]] std::optional<Point2D<T>>
 operator+(Direction2D const& direction, Point2D<T> const& origin)
 {
     return move(origin, direction);
 }
-/**
- * @brief         Addition assignment operator to move a @ref Point2D according
- *                to a @ref Direction2D.
- *
- * @param[in,out] point      Position to move.
- * @param[in]     direction  Direction of movement.
- *
- * @tparam        T          Type of the coordinates.
- */
-template <SignedIntegerType T = int32_t>
-[[maybe_unused]]
-void operator+=(Point2D<T>& point, Direction2D const& direction)
-{
-    point = point + direction;
-}
 
-} // namespace utils::geometry2d::operation
+} // namespace utils::geometry2d

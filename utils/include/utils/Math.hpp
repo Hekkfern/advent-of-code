@@ -101,5 +101,39 @@ template <NumericType M, NumericType... Rest>
  */
 [[nodiscard]] std::vector<double> getLowestDegreePolynomial(
     std::vector<std::pair<double, double>> const& coords) noexcept;
+/**
+ * @brief      Checks if addition will overflow.
+ *
+ * @param[in]  a     First operand.
+ * @param[in]  b     Second operand.
+ *
+ * @tparam     T     Numeric types of the operands.
+ *
+ * @return     True if the addition operation will overflow. False otherwise.
+ */
+template <NumericType T>
+[[nodiscard]] bool willAdditionOverflow(T a, T b)
+{
+    return b > std::numeric_limits<T>::max() - a;
+}
+/**
+ * brief Checks if multiplication will overflow
+ *
+ * @param[in]  a     First operand.
+ * @param[in]  b     Second operand.
+ *
+ * @tparam     T     Numeric types of the operands.
+ *
+ * @return     True if the multiplication operation will overflow. False otherwise.
+ */
+template <NumericType T>
+[[nodiscard]] bool willMultiplicationOverflow(T a, T b)
+{
+    if (a == 0 || b == 0) {
+        // Multiplication with zero never overflows
+        return false;
+    }
+    return a > std::numeric_limits<T>::max() / b;
+}
 
 } // namespace utils::math

@@ -112,3 +112,41 @@ TEST_CASE("[Math] getLowestDegreePolynomial() method", "[utils][Math]")
         REQUIRE(areVectorsApproxEqual(result, expected));
     }
 }
+
+TEST_CASE("[Math] willAdditionOverflow() method", "[utils][Math]")
+{
+    SECTION("Positive numbers")
+    {
+        REQUIRE_FALSE(willAdditionOverflow(1, 0));
+        REQUIRE_FALSE(willAdditionOverflow(1, 1));
+        REQUIRE_FALSE(willAdditionOverflow(1, 2));
+        REQUIRE(willAdditionOverflow(std::numeric_limits<int>::max(), 1));
+    }
+
+    SECTION("Negative numbers")
+    {
+        REQUIRE_FALSE(willAdditionOverflow(-1, 0));
+        REQUIRE_FALSE(willAdditionOverflow(-1, -1));
+        REQUIRE_FALSE(willAdditionOverflow(-1, -2));
+        REQUIRE(willAdditionOverflow(std::numeric_limits<int>::min(), -1));
+    }
+}
+
+TEST_CASE("[Math] willMultiplicationOverflow() method", "[utils][Math]")
+{
+    SECTION("Positive numbers")
+    {
+        REQUIRE_FALSE(willMultiplicationOverflow(1, 0));
+        REQUIRE_FALSE(willMultiplicationOverflow(1, 1));
+        REQUIRE_FALSE(willMultiplicationOverflow(1, 2));
+        REQUIRE(willMultiplicationOverflow(std::numeric_limits<int>::max(), 2));
+    }
+
+    SECTION("Negative numbers")
+    {
+        REQUIRE_FALSE(willMultiplicationOverflow(-1, 0));
+        REQUIRE_FALSE(willMultiplicationOverflow(-1, -1));
+        REQUIRE_FALSE(willMultiplicationOverflow(-1, -2));
+        REQUIRE(willMultiplicationOverflow(std::numeric_limits<int>::min(), 2));
+    }
+}
