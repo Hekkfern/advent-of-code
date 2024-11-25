@@ -133,21 +133,17 @@ public:
      * @brief Moves both vertexes as the provided vector indicates.
      *
      * @param[in] v Vector of movement of both vertexes.
+     *
+     * @return True if the movement was successful, False otherwise.
      */
     bool move(Vector2D<T> const& v) noexcept
     {
-        std::vector<Point2D<T>> newVertexes;
-        newVertexes.reserve(mVertexes.size());
-        for (auto& vertex : mVertexes) {
-            if (auto const movedVertex = utils::geometry2d::move(vertex, v);
-                movedVertex) {
-                newVertexes.push_back(movedVertex);
-            }
-        }
-        if (newVertexes.size() != mVertexes.size()) {
+        auto movedVertex1 = utils::geometry2d::move(mVertexes[0], v);
+        auto movedVertex2 = utils::geometry2d::move(mVertexes[1], v);
+        if (!movedVertex1 || !movedVertex2) {
             return false;
         }
-        mVertexes = newVertexes;
+        mVertexes = {std::move(*movedVertex1), std::move(*movedVertex2)};
         return true;
     }
 

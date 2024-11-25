@@ -29,10 +29,10 @@ public:
      * @param[in]  bottomLeft  The bottom left point.
      * @param[in]  topRight    The top right point.
      */
-    explicit Rectangle2D(
-        Point2D<T> const& bottomLeft, Point2D<T> const& topRight)
-        : Rectangle2D{bottomLeft, Vector2D{bottomLeft, topRight}}
+    static std::optional<Rectangle2D>
+    create(Point2D<T> const& bottomLeft, Point2D<T> const& topRight)
     {
+        return create(bottomLeft, Vector2D{bottomLeft, topRight});
     }
     /**
      * @brief      Constructs a new instance.
@@ -41,13 +41,13 @@ public:
      * @param[in]  diagonal    The diagonal vector from the bottom left point to
      *                         the top right point.
      */
-    explicit Rectangle2D(
-        Point2D<T> const& bottomLeft, Vector2D<T> const& diagonal)
-        : Rectangle2D{
-              bottomLeft,
-              static_cast<uint32_t>(diagonal.size()[0]),
-              static_cast<uint32_t>(diagonal.size()[1])}
+    static std::optional<Rectangle2D>
+    create(Point2D<T> const& bottomLeft, Vector2D<T> const& diagonal)
     {
+        return create(
+            bottomLeft,
+            static_cast<uint32_t>(diagonal.size()[0]),
+            static_cast<uint32_t>(diagonal.size()[1]));
     }
     /**
      * @brief      Constructs a new instance.
@@ -56,12 +56,36 @@ public:
      * @param[in]  width       The width of the shape.
      * @param[in]  height      The height of the shape.
      */
-    explicit Rectangle2D(
-        Point2D<T> const& bottomLeft, uint32_t width, uint32_t height)
-        : mVertexes{{bottomLeft, bottomLeft + Vector2D<T>{static_cast<T>(width), 0}, bottomLeft + Vector2D<T>{static_cast<T>(width), static_cast<T>(height)}, bottomLeft + Vector2D<T>{0, static_cast<T>(height)}}}
-        , mWidth{width}
-        , mHeight{height}
+    static std::optional<Rectangle2D>
+    create(Point2D<T> const& bottomLeft, uint32_t width, uint32_t height)
     {
+        std::array<Point2D<T>, NumberOfVertexes> vertexes;
+        vertexes[0] = bottomLeft;
+        {
+            auto bottomRight{
+                bottomLeft + Vector2D<T>{static_cast<T>(width), 0}};
+            if (!bottomRight) {
+                return {};
+            }
+            vertexes[1] = *bottomRight;
+        }
+        {
+            auto topRight{
+                bottomLeft
+                + Vector2D<T>{static_cast<T>(width), static_cast<T>(height)}};
+            if (!topRight) {
+                return {};
+            }
+            vertexes[2] = *topRight;
+        }
+        {
+            auto topLeft{bottomLeft + Vector2D<T>{0, static_cast<T>(height)}};
+            if (!topLeft) {
+                return {};
+            }
+            vertexes[3] = *topLeft;
+        }
+        return Rectangle2D{std::move(vertexes), width, height};
     }
     /**
      * @brief      Gets the size of the shape, in terms of width and height.
@@ -135,6 +159,23 @@ public:
 
 private:
     /**
+     * @brief      Constructs a new instance.
+     *
+     * @param[in]  vertexes    The list of vertexes of this shaped, ordered
+     * counter-clockwise through the perimeter.
+     * @param[in]  width       The width of the shape.
+     * @param[in]  height      The height of the shape.
+     */
+    explicit Rectangle2D(
+        std::array<Point2D<T>, NumberOfVertexes>&& vertexes,
+        uint32_t width,
+        uint32_t height)
+        : mVertexes{std::move(vertexes)}
+        , mWidth{width}
+        , mHeight{height}
+    {
+    }
+    /**
      * @brief      Calculates the bottom left point of this shape.
      *
      * @return     The bottom left point.
@@ -154,7 +195,8 @@ private:
     }
 
     /**
-     * Stores the vertexes (points 2D) of this shape.
+     * Stores the vertexes (points 2D) of this shape ordered counter-clockwise
+     * through the perimeter.
      */
     std::array<Point2D<T>, NumberOfVertexes> mVertexes;
     /**

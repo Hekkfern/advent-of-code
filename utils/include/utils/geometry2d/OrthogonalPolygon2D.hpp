@@ -26,7 +26,7 @@ public:
      *                       following the perimeter (clockwise or
      *                       counterclockwise).
      */
-    OrthogonalPolygon2D(std::vector<Point2D<T>> const& vertexes)
+    explicit OrthogonalPolygon2D(std::vector<Point2D<T>> const& vertexes)
         : mVertexes{vertexes}
     {
     }
@@ -126,7 +126,7 @@ public:
             /* get points */
             Point2D currentPoint{mVertexes[index]};
             while (currentPoint != mVertexes[nextIndex]) {
-                currentPoint += unaryVector;
+                currentPoint = *(currentPoint + unaryVector);
                 points.emplace_back(currentPoint);
             }
         }

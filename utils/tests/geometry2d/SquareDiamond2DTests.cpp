@@ -8,17 +8,19 @@ TEST_CASE(
     "[SquareDiamond2D - getter] Getters return correct values",
     "[SquareDiamond2D, SquareDiamond2D_getter]")
 {
-    SquareDiamond2D<> const shape{Point2D<>{10, 10}, 2};
-    CHECK(shape.getCenter().getCoordinates() == std::to_array({10, 10}));
-    CHECK(shape.getDistance() == 2);
+    auto const shape{SquareDiamond2D<>::create(Point2D<>{10, 10}, 2)};
+    REQUIRE(shape);
+    CHECK(shape->getCenter().getCoordinates() == std::to_array({10, 10}));
+    CHECK(shape->getDistance() == 2);
 }
 
 TEST_CASE(
     "[SquareDiamond2D - getVertexes] getVertexes() returns correct values",
     "[SquareDiamond2D, SquareDiamond2D_getVertexes]")
 {
-    SquareDiamond2D const shape{Point2D{10, 10}, 2};
-    auto const vertexes{shape.getVertexes()};
+    auto const shape{SquareDiamond2D<>::create(Point2D{10, 10}, 2)};
+    REQUIRE(shape);
+    auto const vertexes{shape->getVertexes()};
     CHECK(vertexes[0] == (Point2D{10, 12}));
     CHECK(vertexes[1] == (Point2D{12, 10}));
     CHECK(vertexes[2] == (Point2D{10, 8}));
@@ -30,8 +32,9 @@ TEST_CASE(
     "outside",
     "[SquareDiamond2D, SquareDiamond2D_isOutside]")
 {
-    SquareDiamond2D const shape{Point2D{10, 10}, 2};
-    CHECK(shape.isOutside(Point2D{2, 2}));
+    auto const shape{SquareDiamond2D<>::create(Point2D{10, 10}, 2)};
+    REQUIRE(shape);
+    CHECK(shape->isOutside(Point2D{2, 2}));
 }
 
 TEST_CASE(
@@ -39,8 +42,9 @@ TEST_CASE(
     "in the perimeter",
     "[SquareDiamond2D, SquareDiamond2D_isOutside]")
 {
-    SquareDiamond2D const shape{Point2D{10, 10}, 2};
-    CHECK_FALSE(shape.isOutside(Point2D{8, 10}));
+    auto const shape{SquareDiamond2D<>::create(Point2D{10, 10}, 2)};
+    REQUIRE(shape);
+    CHECK_FALSE(shape->isOutside(Point2D{8, 10}));
 }
 
 TEST_CASE(
@@ -48,8 +52,9 @@ TEST_CASE(
     "in the inside",
     "[SquareDiamond2D, SquareDiamond2D_isOutside]")
 {
-    SquareDiamond2D const shape{Point2D{10, 10}, 2};
-    CHECK_FALSE(shape.isOutside(Point2D{11, 10}));
+    auto const shape{SquareDiamond2D<>::create(Point2D{10, 10}, 2)};
+    REQUIRE(shape);
+    CHECK_FALSE(shape->isOutside(Point2D{11, 10}));
 }
 
 TEST_CASE(
@@ -57,8 +62,9 @@ TEST_CASE(
     "outside",
     "[SquareDiamond2D, SquareDiamond2D_isInside]")
 {
-    SquareDiamond2D const shape{Point2D{10, 10}, 2};
-    CHECK_FALSE(shape.isInside(Point2D{2, 2}));
+    auto const shape{SquareDiamond2D<>::create(Point2D{10, 10}, 2)};
+    REQUIRE(shape);
+    CHECK_FALSE(shape->isInside(Point2D{2, 2}));
 }
 
 TEST_CASE(
@@ -66,8 +72,9 @@ TEST_CASE(
     "in the perimeter",
     "[SquareDiamond2D, SquareDiamond2D_isInside]")
 {
-    SquareDiamond2D const shape{Point2D{10, 10}, 2};
-    CHECK(shape.isInside(Point2D{8, 10}));
+    auto const shape{SquareDiamond2D<>::create(Point2D{10, 10}, 2)};
+    REQUIRE(shape);
+    CHECK(shape->isInside(Point2D{8, 10}));
 }
 
 TEST_CASE(
@@ -75,8 +82,9 @@ TEST_CASE(
     "in the inside",
     "[SquareDiamond2D, SquareDiamond2D_isInside]")
 {
-    SquareDiamond2D const shape{Point2D{10, 10}, 2};
-    CHECK(shape.isInside(Point2D{11, 10}));
+    auto const shape{SquareDiamond2D<>::create(Point2D{10, 10}, 2)};
+    REQUIRE(shape);
+    CHECK(shape->isInside(Point2D{11, 10}));
 }
 
 TEST_CASE(
@@ -84,8 +92,9 @@ TEST_CASE(
     "point is outside",
     "[SquareDiamond2D, SquareDiamond2D_isInPerimeter]")
 {
-    SquareDiamond2D const shape{Point2D{10, 10}, 2};
-    CHECK_FALSE(shape.isInPerimeter(Point2D{2, 2}));
+    auto const shape{SquareDiamond2D<>::create(Point2D{10, 10}, 2)};
+    REQUIRE(shape);
+    CHECK_FALSE(shape->isInPerimeter(Point2D{2, 2}));
 }
 
 TEST_CASE(
@@ -93,8 +102,9 @@ TEST_CASE(
     "point is in the perimeter",
     "[SquareDiamond2D, SquareDiamond2D_isInPerimeter]")
 {
-    SquareDiamond2D const shape{Point2D{10, 10}, 2};
-    CHECK(shape.isInPerimeter(Point2D{8, 10}));
+    auto const shape{SquareDiamond2D<>::create(Point2D{10, 10}, 2)};
+    REQUIRE(shape);
+    CHECK(shape->isInPerimeter(Point2D{8, 10}));
 }
 
 TEST_CASE(
@@ -102,16 +112,18 @@ TEST_CASE(
     "point is in the inside",
     "[SquareDiamond2D, SquareDiamond2D_isInPerimeter]")
 {
-    SquareDiamond2D const shape{Point2D{10, 10}, 2};
-    CHECK_FALSE(shape.isInPerimeter(Point2D{11, 10}));
+    auto const shape{SquareDiamond2D<>::create(Point2D{10, 10}, 2)};
+    REQUIRE(shape);
+    CHECK_FALSE(shape->isInPerimeter(Point2D{11, 10}));
 }
 
 TEST_CASE(
     "[SquareDiamond2D - area] area() returns the correct value",
     "[SquareDiamond2D, SquareDiamond2D_area]")
 {
-    SquareDiamond2D const shape{Point2D{10, 10}, 2};
-    CHECK(shape.area() == 13U);
+    auto const shape{SquareDiamond2D<>::create(Point2D{10, 10}, 2)};
+    REQUIRE(shape);
+    CHECK(shape->area() == 13U);
 }
 
 TEST_CASE(
@@ -119,36 +131,37 @@ TEST_CASE(
     "correct value",
     "[SquareDiamond2D, SquareDiamond2D_stepAroundOutside]")
 {
-    SquareDiamond2D shape{Point2D{10, 10}, 2};
+    auto shape{SquareDiamond2D<>::create(Point2D{10, 10}, 2)};
+    REQUIRE(shape);
     // start from top
-    auto point{shape.stepAroundOutside()};
+    auto point{shape->stepAroundOutside()};
     REQUIRE(*point == Point2D{10, 13});
     // from top to right
-    point = shape.stepAroundOutside();
+    point = shape->stepAroundOutside();
     REQUIRE(*point == Point2D{11, 12});
-    point = shape.stepAroundOutside();
+    point = shape->stepAroundOutside();
     REQUIRE(*point == Point2D{12, 11});
-    point = shape.stepAroundOutside();
+    point = shape->stepAroundOutside();
     REQUIRE(*point == Point2D{13, 10});
     // from right to bottom
-    point = shape.stepAroundOutside();
+    point = shape->stepAroundOutside();
     REQUIRE(*point == Point2D{12, 9});
-    point = shape.stepAroundOutside();
+    point = shape->stepAroundOutside();
     REQUIRE(*point == Point2D{11, 8});
-    point = shape.stepAroundOutside();
+    point = shape->stepAroundOutside();
     REQUIRE(*point == Point2D{10, 7});
     // from bottom to left
-    point = shape.stepAroundOutside();
+    point = shape->stepAroundOutside();
     REQUIRE(*point == Point2D{9, 8});
-    point = shape.stepAroundOutside();
+    point = shape->stepAroundOutside();
     REQUIRE(*point == Point2D{8, 9});
-    point = shape.stepAroundOutside();
+    point = shape->stepAroundOutside();
     REQUIRE(*point == Point2D{7, 10});
     // from right to top
-    point = shape.stepAroundOutside();
+    point = shape->stepAroundOutside();
     REQUIRE(*point == Point2D{8, 11});
-    point = shape.stepAroundOutside();
+    point = shape->stepAroundOutside();
     REQUIRE(*point == Point2D{9, 12});
-    point = shape.stepAroundOutside();
+    point = shape->stepAroundOutside();
     REQUIRE_FALSE(point);
 }

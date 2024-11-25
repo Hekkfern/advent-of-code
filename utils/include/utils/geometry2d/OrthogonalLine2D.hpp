@@ -156,7 +156,7 @@ public:
         std::vector<Point2D<T>> points{mVertexes[0]};
         Point2D point{mVertexes.front()};
         while (point != mVertexes[1]) {
-            point += unaryVector;
+            point = *(point + unaryVector);
             points.emplace_back(point);
         }
         return points;
@@ -165,12 +165,18 @@ public:
      * @brief Moves both vertexes as the provided vector indicates.
      *
      * @param[in] v Vector of movement of both vertexes.
+     *
+     * @return True if the movement was successful, False otherwise.
      */
-    void move(Vector2D<T> const& v) noexcept
+    bool move(Vector2D<T> const& v) noexcept
     {
-        for (auto& vertex : mVertexes) {
-            vertex = utils::geometry2d::move(vertex, v);
+        auto movedVertex1 = utils::geometry2d::move(mVertexes[0], v);
+        auto movedVertex2 = utils::geometry2d::move(mVertexes[1], v);
+        if (!movedVertex1 || !movedVertex2) {
+            return false;
         }
+        mVertexes = {std::move(*movedVertex1), std::move(*movedVertex2)};
+        return true;
     }
 
 private:

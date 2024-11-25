@@ -30,11 +30,11 @@ public:
      * @param[in]  centerPoint     The center point.
      * @param[in]  perimeterPoint  Any perimeter point.
      */
-    explicit SquareDiamond2D(
-        Point2D<T> const& centerPoint, Point2D<T> const& perimeterPoint)
-        : SquareDiamond2D{
-              centerPoint, Vector2D{centerPoint, perimeterPoint}.distance()}
+    static std::optional<SquareDiamond2D>
+    create(Point2D<T> const& centerPoint, Point2D<T> const& perimeterPoint)
     {
+        return SquareDiamond2D{
+            centerPoint, Vector2D{centerPoint, perimeterPoint}.distance()};
     }
     /**
      * @brief      Constructs a new instance.
@@ -42,16 +42,40 @@ public:
      * @param[in]  centerPoint  The center point.
      * @param[in]  distance     The distance from the center to the perimeter.
      */
-    explicit SquareDiamond2D(
-        Point2D<T> const& centerPoint, uint64_t const distance)
-        : mCenter{centerPoint}
-        , mDistance{distance}
-        , mVertexes{
-              centerPoint + Vector2D{0, static_cast<T>(distance)},
-              centerPoint + Vector2D{static_cast<T>(distance), 0},
-              centerPoint + Vector2D{0, -static_cast<T>(distance)},
-              centerPoint + Vector2D{-static_cast<T>(distance), 0}}
+    static std::optional<SquareDiamond2D>
+    create(Point2D<T> const& centerPoint, uint64_t const distance)
     {
+        std::array<Point2D<T>, NumberOfVertexes> vertexes;
+        {
+            auto top{centerPoint + Vector2D<T>{0, static_cast<T>(distance)}};
+            if (!top) {
+                return {};
+            }
+            vertexes[0] = *top;
+        }
+        {
+            auto left{centerPoint + Vector2D{-static_cast<T>(distance), 0}};
+            if (!left) {
+                return {};
+            }
+            vertexes[1] = *left;
+        }
+        {
+            auto bottom{
+                centerPoint + Vector2D<T>{0, -static_cast<T>(distance)}};
+            if (!bottom) {
+                return {};
+            }
+            vertexes[2] = *bottom;
+        }
+        {
+            auto right{centerPoint + Vector2D<T>{static_cast<T>(distance), 0}};
+            if (!right) {
+                return {};
+            }
+            vertexes[3] = *right;
+        }
+        return SquareDiamond2D{centerPoint, distance, std::move(vertexes)};
     }
     /**
      * @brief      Gets the central point.
@@ -183,6 +207,24 @@ public:
 
 private:
     /**
+     * @brief      Constructs a new instance.
+     *
+     * @param[in]  centerPoint  The center point.
+     * @param[in]  distance     The distance from the center to the perimeter.
+     * @param[in]  vertexes    The list of vertexes of this shaped, ordered
+     * counter-clockwise through the perimeter.
+     */
+    explicit SquareDiamond2D(
+        Point2D<T> const& centerPoint,
+        uint64_t const distance,
+        std::array<Point2D<T>, NumberOfVertexes>&& vertexes)
+        : mCenter{centerPoint}
+        , mDistance{distance}
+        , mVertexes{std::move(vertexes)}
+    {
+    }
+
+    /**
      * Stores the central point of the shape.
      */
     Point2D<T> mCenter;
@@ -191,7 +233,8 @@ private:
      */
     uint64_t mDistance;
     /**
-     * Stores the vertexes (points 2D) of this shape.
+     * Stores the vertexes (points 2D) of this shape ordered counter-clockwise
+     * through the perimeter.
      */
     std::array<Point2D<T>, NumberOfVertexes> mVertexes;
     /**
