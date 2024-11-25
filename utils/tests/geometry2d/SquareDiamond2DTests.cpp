@@ -22,9 +22,9 @@ TEST_CASE(
     REQUIRE(shape);
     auto const vertexes{shape->getVertexes()};
     CHECK(vertexes[0] == (Point2D{10, 12}));
-    CHECK(vertexes[1] == (Point2D{12, 10}));
+    CHECK(vertexes[1] == (Point2D{8, 10}));
     CHECK(vertexes[2] == (Point2D{10, 8}));
-    CHECK(vertexes[3] == (Point2D{8, 10}));
+    CHECK(vertexes[3] == (Point2D{12, 10}));
 }
 
 TEST_CASE(
