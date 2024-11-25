@@ -24,7 +24,7 @@ enum class Vector2DType { Arbitrary, Zero, Horizontal, Vertical, Diagonal };
 template <SignedIntegerType T = int32_t>
 class Vector2D {
 public:
-    static uint32_t const Dimension{2U};
+    static constexpr uint32_t Dimension{2U};
     /**
      * @brief      Default constructor.
      */

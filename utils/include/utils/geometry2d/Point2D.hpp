@@ -16,7 +16,7 @@ namespace utils::geometry2d {
 template <SignedIntegerType T = int32_t>
 class Point2D {
 public:
-    static uint32_t const Dimension{2U};
+    static constexpr uint32_t Dimension{2U};
     /**
      * @brief      Default constructor.
      */

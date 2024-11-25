@@ -29,6 +29,7 @@ enum class Vector3DType {
 template <SignedIntegerType T = int32_t>
 class Vector3D {
 public:
+    static constexpr uint32_t Dimension{3U};
     /**
      * @brief      Default constructor.
      */
@@ -61,16 +62,6 @@ public:
     }
     /**
      * @brief      Constructs a new instance where the the origin is the
-     * coordinate (0,0,0) and the destination is the selected coordinate.
-     *
-     * @param[in]  coords     Coordinates.
-     */
-    constexpr explicit Vector3D(Coordinate3D<T> const coords) noexcept
-        : Vector3D{coords.getX(), coords.getY(), coords.getZ()}
-    {
-    }
-    /**
-     * @brief      Constructs a new instance where the the origin is the
      *             coordinate (0,0,0) and the destination is the selected point.
      *
      * @param[in]  p     Point.
@@ -84,9 +75,10 @@ public:
      *
      * @return     The coordinates as a group (X,Y,Z).
      */
-    [[nodiscard]] constexpr Coordinate3D<T> getCoordinates() const noexcept
+    [[nodiscard]] constexpr std::array<T, Dimension>
+    getCoordinates() const noexcept
     {
-        return Coordinate3D<T>{mX, mY, mZ};
+        return std::to_array({mX, mY, mZ});
     }
     /**
      * @brief      Gets the coordinate X.

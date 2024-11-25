@@ -51,7 +51,6 @@ set(_SOURCES_UTILS_GEOMETRY2D
 set(_SOURCES_UTILS_GEOMETRY3D
     include/utils/geometry3d/Point3D.hpp
     include/utils/geometry3d/Vector3D.hpp
-    include/utils/geometry3d/Coordinate3D.hpp
     include/utils/geometry3d/Operations3D.hpp
     include/utils/geometry3d/Line3D.hpp
     include/utils/geometry3d/OrthogonalLine3D.hpp)

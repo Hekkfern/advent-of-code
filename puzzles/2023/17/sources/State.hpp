@@ -2,8 +2,8 @@
 
 #include <functional>
 #include <utils/Hash.hpp>
-#include <utils/geometry2d/Point2D.hpp>
 #include <utils/geometry2d/Direction2D.hpp>
+#include <utils/geometry2d/Point2D.hpp>
 
 namespace aoc_2023_17 {
 

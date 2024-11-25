@@ -36,9 +36,9 @@ TEST_CASE("[Point3D] Constructor", "[Point3D]")
             CHECK(point3D.getY() == 0);
             CHECK(point3D.getZ() == 0);
             auto const coords{point3D.getCoordinates()};
-            CHECK(coords.getX() == 0);
-            CHECK(coords.getY() == 0);
-            CHECK(coords.getZ() == 0);
+            CHECK(coords[0] == 0);
+            CHECK(coords[1] == 0);
+            CHECK(coords[2] == 0);
         }
         SECTION("Parametrized constructor")
         {
@@ -49,9 +49,9 @@ TEST_CASE("[Point3D] Constructor", "[Point3D]")
                 CHECK(point3D.getY() == 4);
                 CHECK(point3D.getZ() == 5);
                 auto const coords{point3D.getCoordinates()};
-                CHECK(coords.getX() == 2);
-                CHECK(coords.getY() == 4);
-                CHECK(coords.getZ() == 5);
+                CHECK(coords[0] == 2);
+                CHECK(coords[1] == 4);
+                CHECK(coords[2] == 5);
             }
             SECTION("Positive and negatives values")
             {
@@ -60,34 +60,34 @@ TEST_CASE("[Point3D] Constructor", "[Point3D]")
                 CHECK(point3D.getY() == 3);
                 CHECK(point3D.getZ() == 5);
                 auto const coords{point3D.getCoordinates()};
-                CHECK(coords.getX() == -2);
-                CHECK(coords.getY() == 3);
-                CHECK(coords.getZ() == 5);
+                CHECK(coords[0] == -2);
+                CHECK(coords[1] == 3);
+                CHECK(coords[2] == 5);
             }
         }
         SECTION("Group constructor")
         {
             SECTION("Positive values")
             {
-                Point3D<> const point3D{Coordinate3D{2, 4, 5}};
+                Point3D<> const point3D{Point3D{2, 4, 5}};
                 CHECK(point3D.getX() == 2);
                 CHECK(point3D.getY() == 4);
                 CHECK(point3D.getZ() == 5);
                 auto const coords{point3D.getCoordinates()};
-                CHECK(coords.getX() == 2);
-                CHECK(coords.getY() == 4);
-                CHECK(coords.getZ() == 5);
+                CHECK(coords[0] == 2);
+                CHECK(coords[1] == 4);
+                CHECK(coords[2] == 5);
             }
             SECTION("Positive and negatives values")
             {
-                Point3D<> const point3D{Coordinate3D{-2, 3, 5}};
+                Point3D<> const point3D{Point3D{-2, 3, 5}};
                 CHECK(point3D.getX() == -2);
                 CHECK(point3D.getY() == 3);
                 CHECK(point3D.getZ() == 5);
                 auto const coords{point3D.getCoordinates()};
-                CHECK(coords.getX() == -2);
-                CHECK(coords.getY() == 3);
-                CHECK(coords.getZ() == 5);
+                CHECK(coords[0] == -2);
+                CHECK(coords[1] == 3);
+                CHECK(coords[2] == 5);
             }
         }
     }
@@ -113,7 +113,7 @@ TEST_CASE("[Point3D] getNeighbors() method", "[utils][Point3D]")
 {
     SECTION("Runtime tests")
     {
-        Point3D<> const point3D{Coordinate3D{2, 4, 5}};
+        Point3D<> const point3D{Point3D{2, 4, 5}};
         auto const neighbors{point3D.getNeighbors()};
         CHECK(neighbors.size() == 6U);
     }
@@ -227,4 +227,27 @@ TEST_CASE("[Point3D] Negation operator", "[utils][Point3D]")
         STATIC_CHECK(-p1 == Point3D<>{2, -3, -5});
         STATIC_CHECK(-p2 == Point3D<>{-4, 2, -5});
     }
+}
+
+TEST_CASE("[Point3D] Structured binding", "[utils][Point3D]")
+{
+    Point3D<> const coords{1, 2, 3};
+    auto const [x, y, z]{coords};
+    CHECK(x == 1);
+    CHECK(y == 2);
+    CHECK(z == 3);
+}
+
+TEST_CASE("[Point3D] Hash calculation", "[utils][Point3D]")
+{
+    std::hash<Point3D<int32_t>> hasher;
+    Point3D<> const coords1{1, 7, 2};
+    Point3D<> const coords2{1, 7, 2};
+    Point3D<> const coords3{4, 8, 1};
+
+    SECTION("Same") { REQUIRE(hasher(coords1) == hasher(coords1)); }
+
+    SECTION("Equal") { REQUIRE(hasher(coords1) == hasher(coords2)); }
+
+    SECTION("Different") { REQUIRE(hasher(coords1) != hasher(coords3)); }
 }

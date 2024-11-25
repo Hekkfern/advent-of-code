@@ -52,17 +52,6 @@ public:
     /**
      * @brief      Constructs a new instance.
      *
-     * @param[in]  coord1  The first point.
-     * @param[in]  coord2  The second point.
-     */
-    explicit OrthogonalLine3D(
-        Coordinate3D<T> const& coord1, Coordinate3D<T> const& coord2) noexcept
-        : OrthogonalLine3D<T>{Point3D<T>{coord1}, Point3D<T>{coord2}}
-    {
-    }
-    /**
-     * @brief      Constructs a new instance.
-     *
      * @param[in]  origin  The origin
      * @param[in]  vector  The vector
      */
