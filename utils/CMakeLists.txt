@@ -23,13 +23,15 @@ set(_SOURCES_UTILS
     include/utils/DynamicProgramming.hpp
     include/utils/Hash.hpp
     src/Math.cpp)
-set(_SOURCES_UTILS_ALGORITHMS include/utils/algorithms/ClampedCountIf.hpp
-                              include/utils/algorithms/SteppedIota.hpp)
+set(_SOURCES_UTILS_ALGORITHMS
+    include/utils/algorithms/ClampedCountIf.hpp
+    include/utils/algorithms/RemoveDuplicates.hpp
+    include/utils/algorithms/SteppedIota.hpp)
 set(_SOURCES_UTILS_INTERVAL include/utils/interval/Interval.hpp
                             include/utils/interval/IntervalSet.hpp)
 set(_SOURCES_UTILS_CACHE
-    include/utils/cache/Memoization.hpp include/utils/cache/LRUCache.hpp
-    include/utils/cache/LoopCache.hpp include/utils/cache/InfiniteCache.hpp)
+    include/utils/cache/LRUCache.hpp include/utils/cache/LoopCache.hpp
+    include/utils/cache/InfiniteCache.hpp)
 set(_SOURCES_UTILS_GEOMETRY2D
     include/utils/geometry2d/Direction2D.hpp
     include/utils/geometry2d/Point2D.hpp

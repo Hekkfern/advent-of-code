@@ -114,7 +114,15 @@ template <NumericType M, NumericType... Rest>
 template <NumericType T>
 [[nodiscard]] bool willAdditionOverflow(T a, T b)
 {
-    return b > std::numeric_limits<T>::max() - a;
+    if (b > 0 && a > std::numeric_limits<T>::max() - b) {
+        // Positive overflow case.
+        return true;
+    }
+    if (b < 0 && a < std::numeric_limits<T>::min() - b) {
+        // Negative underflow case.
+        return true;
+    }
+    return false;
 }
 /**
  * brief Checks if multiplication will overflow
@@ -124,7 +132,8 @@ template <NumericType T>
  *
  * @tparam     T     Numeric types of the operands.
  *
- * @return     True if the multiplication operation will overflow. False otherwise.
+ * @return     True if the multiplication operation will overflow. False
+ * otherwise.
  */
 template <NumericType T>
 [[nodiscard]] bool willMultiplicationOverflow(T a, T b)
@@ -133,7 +142,23 @@ template <NumericType T>
         // Multiplication with zero never overflows
         return false;
     }
-    return a > std::numeric_limits<T>::max() / b;
+    if (a > 0) {
+        if (b > 0) {
+            // Both positive.
+            return a > std::numeric_limits<T>::max() / b;
+        } else {
+            // a positive, b negative.
+            return b < std::numeric_limits<T>::min() / a;
+        }
+    } else {
+        if (b > 0) {
+            // a negative, b positive.
+            return a < std::numeric_limits<T>::min() / b;
+        } else {
+            // Both negative.
+            return a < std::numeric_limits<T>::max() / b;
+        }
+    }
 }
 
 } // namespace utils::math

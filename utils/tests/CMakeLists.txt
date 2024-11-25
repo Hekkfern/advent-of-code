@@ -13,8 +13,8 @@ set(_TESTFILES
 set(_TESTFILES_ALGORITHMS
     algorithms/ClampedCountIfTests.cpp algorithms/SteppedIotaTests.cpp
     algorithms/RemoveDuplicatesTests.cpp)
-set(_TESTFILES_CACHE cache/LRUCacheTests.cpp cache/MemoizationTests.cpp
-                     cache/LoopCacheTests.cpp cache/InfiniteCacheTests.cpp)
+set(_TESTFILES_CACHE cache/LRUCacheTests.cpp cache/LoopCacheTests.cpp
+                     cache/InfiniteCacheTests.cpp)
 set(_TESTFILES_INTERVAL interval/IntervalTests.cpp
                         interval/IntervalSetTests.cpp)
 set(_TESTFILES_GEOMETRY2D

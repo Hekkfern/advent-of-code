@@ -62,11 +62,11 @@ public:
     [[nodiscard]] constexpr std::array<Point2D, 2 * Dimension>
     getNeighbors() const noexcept
     {
-        return std::to_array({
-            Point2D{mX, mY + 1},
-            Point2D{mX + 1, mY},
-            Point2D{mX, mY - 1},
-            Point2D{mX - 1, mY + 1}});
+        return std::to_array(
+            {Point2D{mX, mY + 1},
+             Point2D{mX + 1, mY},
+             Point2D{mX, mY - 1},
+             Point2D{mX - 1, mY + 1}});
     }
     /**
      * @brief      Sets the coordinate X.

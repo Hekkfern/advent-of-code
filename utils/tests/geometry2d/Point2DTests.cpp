@@ -223,10 +223,10 @@ TEST_CASE("[Point2D] mirrorY() method", "[utils][Point2D]")
 {
     SECTION("Runtime tests")
     {
-        Point2D<> const p1{-2, 3};
+        Point2D<> const p1{-2, -3};
         Point2D<> const p2{4, -2};
         CHECK(p1.mirrorY() == Point2D<>{2, -3});
-        CHECK(p2.mirrorY() == Point2D<>{-4, 2});
+        CHECK(p2.mirrorY() == Point2D<>{-4, -2});
     }
     SECTION("Static tests")
     {

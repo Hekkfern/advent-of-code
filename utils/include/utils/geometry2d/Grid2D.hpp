@@ -384,7 +384,9 @@ public:
                })
             | ranges::views::transform([this](auto const& pair) -> Coord {
                    std::size_t index = pair.first;
-                   return Coord{index % mWidth, index / mWidth};
+                   return Coord{
+                       static_cast<CoordinateType>(index % mWidth),
+                       static_cast<CoordinateType>(index / mWidth)};
                })
             | ranges::to<std::vector<Coord>>();
     }
@@ -428,9 +430,15 @@ public:
     [[nodiscard]] PositionStatus
     where(CoordinateType const x, CoordinateType const y) const noexcept
     {
-        if (x < 0 || x >= mWidth || y < 0 || y >= mHeight) {
+        int64_t const intX{static_cast<int64_t>(x)};
+        int64_t const intY{static_cast<int64_t>(y)};
+        int64_t const intWidth{static_cast<int64_t>(mWidth)};
+        int64_t const intHeight{static_cast<int64_t>(mHeight)};
+        if (intX < 0 || intX >= intWidth || intY < 0 || intY >= intHeight) {
             return PositionStatus::Outside;
-        } else if (x == 0 || x == mWidth - 1 || y == 0 || y == mHeight - 1) {
+        } else if (
+            intX == 0 || intX == intWidth - 1 || intY == 0
+            || intY == intHeight - 1) {
             return PositionStatus::OnBorder;
         } else {
             return PositionStatus::Inside;
