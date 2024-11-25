@@ -4,6 +4,7 @@
 #include <cmath>
 #include <fstream>
 #include <range/v3/algorithm/fold_left.hpp>
+#include <sstream>
 #include <utils/String.hpp>
 #include <vector>
 
