@@ -467,7 +467,7 @@ public:
         }
         /* do movement */
         auto const result{utils::geometry2d::move(position, direction)};
-        if (where(result) == PositionStatus::Outside) {
+        if (!result || where(*result) == PositionStatus::Outside) {
             return std::nullopt;
         }
         return *result;
