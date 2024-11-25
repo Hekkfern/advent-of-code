@@ -2,20 +2,20 @@
 
 #include <functional>
 #include <utils/Hash.hpp>
-#include <utils/geometry2d/Coordinate2D.hpp>
+#include <utils/geometry2d/Point2D.hpp>
 #include <utils/geometry2d/Direction2D.hpp>
 
 namespace aoc_2023_17 {
 
 struct State {
     State(
-        utils::geometry2d::Coordinate2D<std::size_t> const& position,
+        utils::geometry2d::Point2D<> const& position,
         utils::geometry2d::Direction2D const& direction,
         uint32_t steps,
         uint32_t heatLoss);
     bool operator==(State const& b) const = default;
 
-    utils::geometry2d::Coordinate2D<std::size_t> position;
+    utils::geometry2d::Point2D<> position;
     utils::geometry2d::Direction2D direction;
     uint32_t steps;
     uint32_t heatLoss;

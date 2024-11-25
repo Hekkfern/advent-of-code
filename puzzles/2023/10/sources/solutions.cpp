@@ -94,9 +94,9 @@ Point2D<int32_t> move(
     auto const translation{PipeTranslation.at(
         getTypeForPosition(field, pipePosition.getY(), pipePosition.getX()))};
     if (pipePosition + translation.first == previousPosition) {
-        return pipePosition + translation.second;
+        return *(pipePosition + translation.second);
     } else {
-        return pipePosition + translation.first;
+        return *(pipePosition + translation.first);
     }
 }
 

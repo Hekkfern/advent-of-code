@@ -112,7 +112,7 @@ std::string solve(std::vector<Instruction> const& instructions)
     for (auto const& instruction : instructions) {
         auto vec{
             toVector2D<int64_t>(instruction.direction) * instruction.steps};
-        currentPoint += vec;
+        currentPoint = *(currentPoint + vec);
         vertexes.emplace_back(currentPoint);
     }
     /* generate result */

@@ -16,7 +16,7 @@ namespace utils::geometry3d {
  * @return     Resulting position of the movement.
  */
 template <SignedIntegerType T = int32_t>
-[[nodiscard]] static Point3D<T>
+[[maybe_unused]] [[nodiscard]] static Point3D<T>
 move(Point3D<T> const& origin, Vector3D<T> const& movement) noexcept
 {
     return Point3D<T>{

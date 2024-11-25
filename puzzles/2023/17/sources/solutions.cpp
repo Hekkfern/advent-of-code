@@ -5,15 +5,15 @@
 #include <queue>
 #include <unordered_map>
 #include <utils/File.hpp>
-#include <utils/geometry2d/Coordinate2D.hpp>
 #include <utils/geometry2d/Direction2D.hpp>
 #include <utils/geometry2d/Grid2D.hpp>
+#include <utils/geometry2d/Point2D.hpp>
 #include <vector>
 
 namespace aoc_2023_17 {
 
 using namespace utils::geometry2d;
-using Coord = Coordinate2D<std::size_t>;
+using Coord = Point2D<>;
 
 // ---------- Private Methods ----------
 
@@ -87,8 +87,10 @@ std::vector<std::pair<Coord, Direction2D>> getNextSteps(
 uint32_t getLeastHeatLoss(
     HeatLossGrid const& grid, uint8_t const minSteps, uint8_t const maxSteps)
 {
-    Coord const destination{grid.getWidth() - 1ULL, 0ULL};
-    Coord const origin{0ULL, grid.getHeight() - 1ULL};
+    Coord const destination{
+        static_cast<HeatLossGrid::CoordType>(grid.getWidth() - 1ULL), 0ULL};
+    Coord const origin{
+        0ULL, static_cast<HeatLossGrid::CoordType>(grid.getHeight() - 1ULL)};
     State const startingThroughEast{origin, Direction2D::Right, 0, 0};
     State const startingThroughSouth{origin, Direction2D::Down, 0, 0};
     std::priority_queue<State, std::vector<State>, CompareStates> pq;

@@ -43,7 +43,9 @@ parseInputForPart1(std::filesystem::path const& filePath) noexcept
             row.reserve(line.size());
             for (char const c : line) {
                 if (c == 'S') {
-                    startPosition = Garden1Grid::Coord{row.size(), data.size()};
+                    startPosition = Garden1Grid::Coord{
+                        static_cast<Garden1Grid::CoordType>(row.size()),
+                        static_cast<Garden1Grid::CoordType>(data.size())};
                     row.emplace_back(PositionType::GardenPlot);
                 } else {
                     row.emplace_back(convertToPositionType(c));
@@ -71,8 +73,8 @@ parseInputForPart2(std::filesystem::path const& filePath) noexcept
             for (char const c : line) {
                 if (c == 'S') {
                     startPosition = Garden2Grid::Coord{
-                        static_cast<int64_t>(row.size()),
-                        static_cast<int64_t>(data.size())};
+                        static_cast<Garden2Grid::CoordType>(row.size()),
+                        static_cast<Garden2Grid::CoordType>(data.size())};
                     row.emplace_back(PositionType::GardenPlot);
                 } else {
                     row.emplace_back(convertToPositionType(c));
