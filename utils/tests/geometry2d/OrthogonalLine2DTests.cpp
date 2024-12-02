@@ -134,14 +134,16 @@ TEST_CASE("[OrthogonalLine2D] move() method", "[utils][OrthogonalLine2D]")
     SECTION("Positive vector")
     {
         Vector2D<> const v{1, 2};
-        obj1.move(v);
+        const auto result{obj1.move(v)};
+        REQUIRE(result);
         CHECK(obj1.getVertexes()[0] == Point2D<>{3, 5});
         CHECK(obj1.getVertexes()[1] == Point2D<>{3, 4});
     }
     SECTION("Negative vector")
     {
         Vector2D<> const v{-1, -3};
-        obj1.move(v);
+        const auto result{obj1.move(v)};
+        REQUIRE(result);
         CHECK(obj1.getVertexes()[0] == Point2D<>{1, 0});
         CHECK(obj1.getVertexes()[1] == Point2D<>{1, -1});
     }

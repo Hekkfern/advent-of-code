@@ -7,8 +7,9 @@ using namespace utils::geometry3d;
 TEST_CASE("[Operations3D] Move point by a vector", "[Operations3D]")
 {
     Point3D<> const p1{3, -2, 1};
-    Point3D<> const p2{move(p1, Vector3D<>{-1, 4, 1})};
-    CHECK(p2 == Point3D<>{2, 2, 2});
+    auto const p2{move(p1, Vector3D<>{-1, 4, 1})};
+    REQUIRE(p2);
+    CHECK(*p2 == Point3D<>{2, 2, 2});
 }
 
 TEST_CASE("[Operations3D] Point3D + Vector3D", "[utils][Operations3D]")
@@ -16,9 +17,10 @@ TEST_CASE("[Operations3D] Point3D + Vector3D", "[utils][Operations3D]")
     Point3D<> const point3D{4, 1, 1};
     Vector3D<> const vector3D{2, 3, 1};
     auto const newPoint3D{point3D + vector3D};
-    CHECK(newPoint3D.getX() == 6);
-    CHECK(newPoint3D.getY() == 4);
-    CHECK(newPoint3D.getZ() == 2);
+    REQUIRE(newPoint3D);
+    CHECK(newPoint3D->getX() == 6);
+    CHECK(newPoint3D->getY() == 4);
+    CHECK(newPoint3D->getZ() == 2);
 }
 
 TEST_CASE("[Operations3D] Vector3D + Point3D", "[utils][Operations3D]")
@@ -26,17 +28,8 @@ TEST_CASE("[Operations3D] Vector3D + Point3D", "[utils][Operations3D]")
     Point3D<> const point3D{4, 1, 1};
     Vector3D<> const vector3D{2, 3, 1};
     auto const newPoint3D{vector3D + point3D};
-    CHECK(newPoint3D.getX() == 6);
-    CHECK(newPoint3D.getY() == 4);
-    CHECK(newPoint3D.getZ() == 2);
-}
-
-TEST_CASE("[Operations3D] Point3D += Vector3D", "[utils][Operations3D]")
-{
-    Point3D<> point3D{4, 1, 1};
-    Vector3D<> const vector3D{2, 3, 1};
-    point3D += vector3D;
-    CHECK(point3D.getX() == 6);
-    CHECK(point3D.getY() == 4);
-    CHECK(point3D.getZ() == 2);
+    REQUIRE(newPoint3D);
+    CHECK(newPoint3D->getX() == 6);
+    CHECK(newPoint3D->getY() == 4);
+    CHECK(newPoint3D->getZ() == 2);
 }

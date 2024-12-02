@@ -94,12 +94,12 @@ std::string solvePart1(std::filesystem::path const& filePath)
         for (auto const& brickPoint : brick.getPoints()) {
             maxHeight = std::max(
                 maxHeight,
-                maxHeightMap[convertPoint3DTo2D(brickPoint)] + MinimumHeight);
+                maxHeightMap[convertPoint3DTo2D(brickPoint)] + 1);
         }
         /* move the brick to the new height */
         brick.move(
             utils::geometry3d::Vector3D<>{
-                0, 0, findLowestZ(brick) - maxHeight + 1});
+                0, 0, findLowestZ(brick) - maxHeight});
         /* update the maximum height of the brick stack in the positions below
          * this brick */
         for (auto const& brickPoint : brick.getPoints()) {

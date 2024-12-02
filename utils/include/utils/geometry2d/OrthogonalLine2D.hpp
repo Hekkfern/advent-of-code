@@ -170,8 +170,13 @@ public:
      */
     bool move(Vector2D<T> const& v) noexcept
     {
-        auto movedVertex1 = utils::geometry2d::move(mVertexes[0], v);
-        auto movedVertex2 = utils::geometry2d::move(mVertexes[1], v);
+        /* early return if vector is empty */
+        if (v == Vector2D<T>{}) {
+            return true;
+        }
+        /* move each vertex */
+        auto movedVertex1{utils::geometry2d::move(mVertexes[0], v)};
+        auto movedVertex2{utils::geometry2d::move(mVertexes[1], v)};
         if (!movedVertex1 || !movedVertex2) {
             return false;
         }

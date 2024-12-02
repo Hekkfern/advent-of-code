@@ -3,6 +3,7 @@
 #include "Point3D.hpp"
 #include "Vector3D.hpp"
 #include "utils/Concepts.hpp"
+#include "utils/Math.hpp"
 
 namespace utils::geometry3d {
 
@@ -16,9 +17,18 @@ namespace utils::geometry3d {
  * @return     Resulting position of the movement.
  */
 template <SignedIntegerType T = int32_t>
-[[maybe_unused]] [[nodiscard]] static Point3D<T>
+[[maybe_unused]] [[nodiscard]] static std::optional<Point3D<T>>
 move(Point3D<T> const& origin, Vector3D<T> const& movement) noexcept
 {
+    if (utils::math::willAdditionOverflow(origin.getX(), movement.getX())) {
+        return std::nullopt;
+    }
+    if (utils::math::willAdditionOverflow(origin.getY(), movement.getY())) {
+        return std::nullopt;
+    }
+    if (utils::math::willAdditionOverflow(origin.getZ(), movement.getZ())) {
+        return std::nullopt;
+    }
     return Point3D<T>{
         origin.getX() + movement.getX(),
         origin.getY() + movement.getY(),
@@ -35,7 +45,7 @@ move(Point3D<T> const& origin, Vector3D<T> const& movement) noexcept
  * @return     The result of the movement.
  */
 template <SignedIntegerType T = int32_t>
-[[nodiscard]] Point3D<T>
+[[nodiscard]] std::optional<Point3D<T>>
 operator+(Point3D<T> const& origin, Vector3D<T> const& movement) noexcept
 {
     return move(origin, movement);
@@ -51,27 +61,10 @@ operator+(Point3D<T> const& origin, Vector3D<T> const& movement) noexcept
  * @return     The result of the movement.
  */
 template <SignedIntegerType T = int32_t>
-[[nodiscard]] Point3D<T>
+[[nodiscard]] std::optional<Point3D<T>>
 operator+(Vector3D<T> const& movement, Point3D<T> const& origin) noexcept
 {
     return move(origin, movement);
-}
-
-/**
- * @brief      Addition assignment operator to move a @ref Point3D according to
- *             a @ref Vector3D.
- *
- * @param[in]  point     Original position.
- * @param[in]  movement  Vector of movement.
- *
- * @tparam     T         Type of the coordinates.
- *
- * @return     The result of the movement.
- */
-template <SignedIntegerType T = int32_t>
-void operator+=(Point3D<T>& point, Vector3D<T> const& movement) noexcept
-{
-    point = point + movement;
 }
 
 } // namespace utils::geometry3d

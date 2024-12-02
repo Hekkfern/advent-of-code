@@ -146,12 +146,23 @@ public:
      * @brief Moves both vertexes as the provided vector indicates.
      *
      * @param[in] v Vector of movement of both vertexes.
+     *
+     * @return True if the movement was successful, False otherwise.
      */
-    void move(Vector3D<T> const& v) noexcept
+    bool move(Vector3D<T> const& v) noexcept
     {
-        for (auto& vertex : mVertexes) {
-            vertex = utils::geometry3d::move(vertex, v);
+        /* early return if vector is empty */
+        if (v == Vector3D<T>{}) {
+            return true;
         }
+        /* move each vertex */
+        auto movedVertex1{utils::geometry3d::move(mVertexes[0], v)};
+        auto movedVertex2{utils::geometry3d::move(mVertexes[1], v)};
+        if (!movedVertex1 || !movedVertex2) {
+            return false;
+        }
+        mVertexes = {std::move(*movedVertex1), std::move(*movedVertex2)};
+        return true;
     }
 
 private:
