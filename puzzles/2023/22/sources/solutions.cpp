@@ -10,12 +10,16 @@
 
 namespace aoc_2023_22 {
 
-using Brick = utils::geometry3d::OrthogonalLine3D<>;
-using BrickStack = std::vector<Brick>;
-
 constexpr int32_t MinimumHeight{1};
 
 // ---------- Private Methods ----------
+
+struct Brick {
+    utils::geometry3d::OrthogonalLine3D<> mLine;
+    std::vector<Brick*> mSupportedBy{};
+};
+
+using BrickStack = std::vector<Brick>;
 
 /**
  *
@@ -35,7 +39,8 @@ Brick parseLine(std::string_view const line)
         *utils::string::toNumber<int32_t>(p2Coords[0]),
         *utils::string::toNumber<int32_t>(p2Coords[1]),
         *utils::string::toNumber<int32_t>(p2Coords[2])};
-    return Brick{std::move(p1), std::move(p2)};
+    return Brick{
+        utils::geometry3d::OrthogonalLine3D<>{std::move(p1), std::move(p2)}};
 }
 
 /**
@@ -64,7 +69,7 @@ parseInput(std::filesystem::path const& filePath) noexcept
  */
 [[nodiscard]] int32_t findLowestZ(Brick const& brick) noexcept
 {
-    auto const [vertex1, vertex2]{brick.getVertexes()};
+    auto const [vertex1, vertex2]{brick.mLine.getVertexes()};
     return std::min(vertex1.getZ(), vertex2.getZ());
 }
 
@@ -86,25 +91,37 @@ std::string solvePart1(std::filesystem::path const& filePath)
         return findLowestZ(lhs) < findLowestZ(rhs);
     });
     /* make the bricks fall */
-    std::unordered_map<utils::geometry2d::Point2D<>, int32_t> maxHeightMap;
+    std::unordered_map<utils::geometry2d::Point2D<>, std::pair<int32_t, Brick*>>
+        maxHeightMap;
     for (auto& brick : bricks) {
         /* look for maximum height of the brick stack in the positions below
          * this brick */
         int32_t maxHeight{MinimumHeight};
-        for (auto const& brickPoint : brick.getPoints()) {
-            maxHeight = std::max(
-                maxHeight,
-                maxHeightMap[convertPoint3DTo2D(brickPoint)] + 1);
+        std::vector<std::pair<int32_t, Brick*>> willLandOn;
+        for (auto const& brickPoint : brick.mLine.getPoints()) {
+            auto const& valueInMap{
+                maxHeightMap[convertPoint3DTo2D(brickPoint)]};
+            int32_t const highestHeightInMap{valueInMap.first + 1};
+            if (maxHeight < highestHeightInMap) {
+                maxHeight = highestHeightInMap;
+                willLandOn = {valueInMap.second};
+            } else if (maxHeight == highestHeightInMap) {
+                willLandOn.emplace_back(valueInMap.second);
+            }
         }
         /* move the brick to the new height */
-        brick.move(
+        brick.mLine.move(
             utils::geometry3d::Vector3D<>{
-                0, 0, findLowestZ(brick) - maxHeight});
+                0, 0, maxHeight - findLowestZ(brick)});
         /* update the maximum height of the brick stack in the positions below
          * this brick */
-        for (auto const& brickPoint : brick.getPoints()) {
-            maxHeightMap[convertPoint3DTo2D(brickPoint)] = maxHeight;
+        for (auto const& brickPoint : brick.mLine.getPoints()) {
+            auto& valueInMap{maxHeightMap[convertPoint3DTo2D(brickPoint)]};
+            valueInMap.first = maxHeight;
+            //TODO
         }
+        /* update the list of bricks supporting this brick */
+        brick.mSupportedBy = std::move(willLandOn);
     }
     // TODO
     return "";
